@@ -397,14 +397,8 @@ textarea{min-height:110px}
     </div>
     <div class="m-body">
       <div id="radio-cards"></div>
-      <div id="rec-panel" style="display:none;background:var(--bg3);border-radius:14px;padding:16px;margin-top:16px;border:1px solid var(--border)">
-        <div style="font-weight:700;margin-bottom:8px">🔴 جاري التسجيل: <span id="rec-radio-name"></span></div>
-        <div id="rec-clock" style="font-size:28px;font-weight:900;color:var(--danger);margin-bottom:12px;font-variant-numeric:tabular-nums">00:00</div>
-        <button class="btn-sec btn-danger" onclick="stop_radio_rec()">⏹️ إيقاف وحفظ</button>
-      </div>
       <div style="margin-top:20px">
-        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2)">💾 التسجيلات المحفوظة</div>
-        <div id="saved-recs"><div style="font-size:13px;color:var(--text2)">لا توجد تسجيلات بعد</div></div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2)">📻 اختر الإذاعة واستمع مباشرة</div>
       </div>
       <audio id="radio-audio"></audio>
     </div>
@@ -474,7 +468,7 @@ textarea{min-height:110px}
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+
 
 <script>
 // ============================================================
@@ -488,7 +482,7 @@ firebase.initializeApp({
   messagingSenderId:"154416885085",
   appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"
 });
-const auth=firebase.auth(), db=firebase.firestore(), storage=firebase.storage();
+const auth=firebase.auth(), db=firebase.firestore();
 
 // ============================================================
 // STATE
@@ -970,7 +964,6 @@ function build_radio_cards(){
       </div>
       <div class="radio-acts">
         <button class="btn-sec" id="play-btn-${i}" onclick="toggle_radio(${i})">▶️ استماع</button>
-        <button class="btn-sec" id="rec-btn-${i}" onclick="toggle_radio_rec(${i})">⏺️ تسجيل</button>
       </div>
     </div>`).join('');
 }
@@ -1030,16 +1023,19 @@ async function save_radio_rec(name){
   try{
     const blob=new Blob(radioChunks,{type:'audio/webm'});
     const fname=`${name}_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-    const ref=storage.ref(`recordings/${USER.uid}/${fname}`);
-    await ref.put(blob);
-    const url=await ref.getDownloadURL();
+    // Save locally on device
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=fname; a.click();
+    // Save record in Firestore (without file)
     await db.collection('recordings').add({
-      radioName:name, fname, url, userId:USER.uid,
+      radioName:name, fname,
+      userId:USER.uid,
       user:USER.displayName||USER.email,
       duration:radioSecs,
       createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
-    toast('✅ تم حفظ التسجيل');
+    toast('✅ تم حفظ التسجيل على جهازك');
     load_saved_recs();
   }catch(e){toast('خطأ في الحفظ: '+e.message)}
 }
@@ -1058,9 +1054,9 @@ async function load_saved_recs(){
       c.innerHTML+=`<div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
         <div style="flex:1">
           <div style="font-size:13px;font-weight:700">${d.radioName}</div>
-          <div style="font-size:11px;color:var(--text2)">${fmt_time(d.duration||0)}</div>
+          <div style="font-size:11px;color:var(--text2)">${fmt_time(d.duration||0)} — ${d.fname}</div>
         </div>
-        <a href="${d.url}" download class="btn-sec" style="font-size:12px;text-decoration:none" target="_blank">⬇️ تحميل</a>
+        <span style="font-size:11px;color:var(--accent2)">✅ محفوظ</span>
       </div>`;
     });
   }catch(e){console.log('recs err',e)}
