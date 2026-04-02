@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DESK BOT — Digital Newsroom System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #EBF3FF;
+  --bg2: #ffffff;
+  --bg3: #f0f6ff;
+  --text: #0f1e35;
+  --text2: #4a6080;
+  --accent: #1a4fdb;
+  --accent2: #0ea472;
+  --border: rgba(26,79,219,0.12);
+  --shadow: 0 4px 24px rgba(26,79,219,0.08);
+  --danger: #ef4444;
+  --amber: #f59e0b;
+  --card-hover: 0 8px 32px rgba(26,79,219,0.14);
+}
+[data-theme="dark"] {
+  --bg: #0a1628;
+  --bg2: #111f38;
+  --bg3: #162540;
+  --text: #e2ecff;
+  --text2: #7a9cc0;
+  --accent: #4a7fff;
+  --accent2: #10c98a;
+  --border: rgba(74,127,255,0.15);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --card-hover: 0 8px 32px rgba(0,0,0,0.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);direction:rtl;min-height:100vh;transition:background .3s,color .3s}
+
+/* ===== LOGIN ===== */
+#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg)}
+.login-wrap{background:var(--bg2);border-radius:24px;padding:52px 44px;box-shadow:var(--shadow);text-align:center;max-width:420px;width:100%;border:1px solid var(--border)}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px}
+.logo-box{width:56px;height:56px;background:linear-gradient(135deg,#1a4fdb,#0ea4d4);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.logo-name{font-size:34px;font-weight:900;letter-spacing:-1px}
+.logo-name span{color:var(--accent)}
+.login-tag{font-size:10px;letter-spacing:3px;color:var(--text2);margin-bottom:40px;display:flex;align-items:center;justify-content:center;gap:8px}
+.login-tag::before{content:'';width:7px;height:7px;background:var(--accent2);border-radius:50%}
+.google-btn{background:#fff;border:1.5px solid #dadce0;border-radius:14px;padding:14px 20px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;color:#3c4043;font-family:'Cairo',sans-serif;font-weight:600;transition:box-shadow .2s,border-color .2s}
+.google-btn:hover{box-shadow:0 2px 12px rgba(0,0,0,0.15);border-color:#aaa}
+[data-theme="dark"] .google-btn{background:#1e2d42;color:var(--text);border-color:var(--border)}
+
+/* ===== APP ===== */
+#main-app{display:none;min-height:100vh}
+
+/* ===== HEADER ===== */
+.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+.h-logo{display:flex;align-items:center;gap:10px}
+.h-logo .logo-box{width:36px;height:36px;font-size:17px;border-radius:10px}
+.h-logo-text{font-size:20px;font-weight:900}
+.h-logo-text span{color:var(--accent)}
+.h-right{display:flex;align-items:center;gap:8px}
+.live-pill{background:var(--text);color:var(--bg);border-radius:20px;padding:6px 14px;font-size:10px;letter-spacing:2.5px;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:'Cairo',sans-serif;border:none}
+.live-dot{width:7px;height:7px;background:#ef4444;border-radius:50%;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.h-btn{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 14px;cursor:pointer;color:var(--text);font-size:13px;display:flex;align-items:center;gap:6px;transition:all .2s;font-family:'Cairo',sans-serif;font-weight:600}
+.h-btn:hover{border-color:var(--accent);color:var(--accent)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0}
+
+/* ===== CONTENT ===== */
+.content{max-width:1060px;margin:0 auto;padding:32px 24px}
+.notice-bar{background:linear-gradient(135deg,#fef3c7,#fff7e0);border:1px solid #f59e0b;border-radius:12px;padding:12px 18px;font-size:13px;color:#92400e;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.notice-bar button{background:none;border:none;color:#92400e;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;text-decoration:underline}
+.sec-label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* ===== TOOL CARDS ===== */
+.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tool-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:18px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;overflow:hidden}
+.tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),#0ea4d4);opacity:0;transition:opacity .22s}
+.tool-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--card-hover)}
+.tool-card:hover::before{opacity:.04}
+.t-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;z-index:1}
+.t-name{font-size:14px;font-weight:700;position:relative;z-index:1}
+.ic-blue{background:#dbeafe} .ic-orange{background:#ffedd5} .ic-green{background:#dcfce7}
+.ic-red{background:#fee2e2} .ic-purple{background:#f3e8ff} .ic-teal{background:#ccfbf1}
+.ic-amber{background:#fef3c7} .ic-pink{background:#fce7f3} .ic-indigo{background:#e0e7ff}
+
+/* ===== MODAL ===== */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:22px;width:100%;max-width:780px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);border:1px solid var(--border)}
+.m-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1;border-radius:22px 22px 0 0}
+.m-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+.m-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.m-close:hover{background:var(--bg3)}
+.m-body{padding:24px}
+
+/* ===== FORM ELEMENTS ===== */
+.field{margin-bottom:16px}
+.label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px;display:block;letter-spacing:.5px}
+textarea,input[type=text],input[type=date]{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;font-size:14px;color:var(--text);font-family:'Cairo',sans-serif;direction:rtl;resize:vertical;transition:border-color .2s;outline:none}
+textarea:focus,input:focus{border-color:var(--accent)}
+textarea{min-height:110px}
+
+/* ===== BUTTONS ===== */
+.btn{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:opacity .2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{opacity:.88}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-sec{background:var(--bg3);color:var(--text);border:1.5px solid var(--border);border-radius:12px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+.btn-danger{border-color:#ef4444;color:#ef4444}
+.btn-danger:hover{background:#fee2e2;border-color:#ef4444}
+
+/* ===== RESULT ===== */
+.result-box{background:var(--bg3);border:1.5px solid var(--border);border-radius:14px;padding:18px;font-size:14px;line-height:1.9;white-space:pre-wrap;direction:rtl;color:var(--text);margin-top:16px;min-height:80px}
+.result-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.loading{display:flex;align-items:center;gap:10px;color:var(--text2);font-size:14px;padding:20px 0}
+.spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== ARCHIVE ITEMS ===== */
+.arc-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.arc-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.arc-badge{background:var(--accent);color:#fff;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700}
+.arc-user{font-size:12px;color:var(--text2)}
+.arc-time{font-size:11px;color:var(--text2);margin-right:auto}
+.arc-prev{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== AGENDA ===== */
+.ag-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px}
+.ag-date{background:var(--accent);color:#fff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.ag-body{flex:1}
+.ag-event{font-size:14px;font-weight:700;margin-bottom:3px}
+.ag-by{font-size:11px;color:var(--text2)}
+.ag-acts{display:flex;gap:6px;flex-shrink:0}
+
+/* ===== RADIO ===== */
+.radio-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:all .2s}
+.radio-card.on{border-color:var(--accent2);background:rgba(14,164,114,.06)}
+.radio-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.radio-info{flex:1}
+.radio-name{font-size:14px;font-weight:700}
+.radio-sub{font-size:12px;color:var(--text2)}
+.radio-acts{display:flex;gap:8px}
+
+/* ===== SMART RECORD ===== */
+.rec-center{text-align:center;padding:28px 0}
+.rec-status{font-size:15px;color:var(--text2);margin-bottom:16px}
+.rec-timer{font-size:52px;font-weight:900;color:var(--accent);margin-bottom:24px;display:none;font-variant-numeric:tabular-nums}
+.rec-main-btn{font-size:16px;padding:18px 44px;border-radius:16px}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 26px;border-radius:14px;font-size:14px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+
+@media(max-width:768px){
+  .priority-grid{grid-template-columns:1fr}
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .h-btn span{display:none}
+  .content{padding:20px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- =================== LOGIN =================== -->
+<div id="login-screen">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="logo-box">📰</div>
+      <div class="logo-name">DESK <span>BOT</span></div>
+    </div>
+    <div class="login-tag">DIGITAL NEWSROOM SYSTEM</div>
+    <button class="google-btn" onclick="googleLogin()">
+      <svg width="20" height="20" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      تسجيل الدخول بحساب Google
+    </button>
+  </div>
+</div>
+
+<!-- =================== MAIN APP =================== -->
+<div id="main-app">
+
+  <header class="header">
+    <div class="h-logo">
+      <div class="logo-box">📰</div>
+      <div class="h-logo-text">DESK <span>BOT</span></div>
+    </div>
+    <div class="h-right">
+      <button class="live-pill" onclick="open_modal('radio-modal')">
+        <div class="live-dot"></div>LIVE STREAM
+      </button>
+      <button class="h-btn" onclick="open_archive()">🗂️ <span>الأرشيف</span></button>
+      <button class="h-btn" onclick="toggle_theme()" id="theme-btn">🌙</button>
+      <div class="avatar" id="avatar" title="تسجيل الخروج" onclick="do_signout()">ح</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <div id="api-notice" class="notice-bar" style="display:none">
+      ⚠️ مفتاح Gemini API غير موجود —
+      <button onclick="open_modal('settings-modal')">اضغط هنا لإدخاله</button>
+    </div>
+
+    <div class="sec-label">✨ مركز المعالجة الذكية</div>
+    <div class="priority-grid">
+      <div class="tool-card" onclick="open_tool('editor')">
+        <div class="t-icon ic-blue">📝</div>
+        <div class="t-name">المحرر الرقمي Pro</div>
+      </div>
+      <div class="tool-card" onclick="open_tool('rewrite')">
+        <div class="t-icon ic-orange">✍️</div>
+        <div class="t-name">إعادة صياغة محترفة</div>
+      </div>
+      <div class="tool-card" onclick="open_tool('headlines')">
+        <div class="t-icon ic-green" style="font-size:20px;font-weight:900">T</div>
+        <div class="t-name">عناوين احترافية</div>
+      </div>
+    </div>
+
+    <div class="sec-label">🔧 الأدوات العامة</div>
+    <div class="tools-grid">
+      <div class="tool-card" onclick="open_tool('flash')">
+        <div class="t-icon ic-red">📡</div><div class="t-name">فلاش إخباري</div>
+      </div>
+      <div class="tool-card" onclick="open_tool('transcribe')">
+        <div class="t-icon ic-purple">🎙️</div><div class="t-name">تفريغ وتحرير</div>
+      </div>
+      <div class="tool-card" onclick="open_tool('monitor')">
+        <div class="t-icon ic-teal">🔭</div><div class="t-name">اقتراحات تحريرية</div>
+      </div>
+      <div class="tool-card" onclick="open_today()">
+        <div class="t-icon ic-amber">📅</div><div class="t-name">حدث اليوم</div>
+      </div>
+      <div class="tool-card" onclick="open_modal('matches-modal')">
+        <div class="t-icon ic-green">⚽</div><div class="t-name">أرشيف المواجهات</div>
+      </div>
+      <div class="tool-card" onclick="open_modal('profile-modal')">
+        <div class="t-icon ic-blue">👤</div><div class="t-name">ملف الشخصية</div>
+      </div>
+      <div class="tool-card" onclick="open_modal('agenda-modal')">
+        <div class="t-icon ic-orange">🗓️</div><div class="t-name">الأجندة</div>
+      </div>
+      <div class="tool-card" onclick="open_tool('checker')">
+        <div class="t-icon ic-pink">🔍</div><div class="t-name">مدقق المحتوى</div>
+      </div>
+      <div class="tool-card" onclick="open_modal('smart-modal')">
+        <div class="t-icon ic-indigo">🎤</div><div class="t-name">التسجيل الذكي</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== MODALS =================== -->
+
+<!-- Generic AI Modal -->
+<div class="overlay" id="ai-modal">
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title" id="ai-title">الأداة</div>
+      <button class="m-close" onclick="close_modal('ai-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="field">
+        <label class="label" id="ai-label">أدخل النص</label>
+        <textarea id="ai-input" rows="6" placeholder="اكتب هنا..."></textarea>
+      </div>
+      <button class="btn" onclick="run_ai()" id="ai-run-btn">✨ تشغيل</button>
+      <div id="ai-load" class="loading" style="display:none"><div class="spin"></div>جاري المعالجة...</div>
+      <div id="ai-result" class="result-box" style="display:none"></div>
+      <div id="ai-acts" class="result-actions" style="display:none">
+        <button class="btn-sec" onclick="copy_el('ai-result')">📋 نسخ</button>
+        <button class="btn-sec" onclick="wa_share('ai-result')">💬 واتساب</button>
+        <button class="btn-sec" onclick="email_share('ai-result')">📧 إيميل</button>
+        <button class="btn-sec" onclick="arc_save_el('ai-result')">🗂️ حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Today Modal -->
+<div class="overlay" id="today-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="m-head">
+      <div class="m-title">📅 حدث اليوم</div>
+      <button class="m-close" onclick="close_modal('today-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="field">
+        <label class="label">التاريخ</label>
+        <input type="date" id="today-date">
+      </div>
+      <button class="btn" onclick="run_today()">🔍 بحث</button>
+      <div id="today-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث التاريخي...</div>
+      <div id="today-res" class="result-box" style="display:none"></div>
+      <div id="today-acts" class="result-actions" style="display:none">
+        <button class="btn-sec" onclick="copy_el('today-res')">📋 نسخ</button>
+        <button class="btn-sec" onclick="arc_save_el('today-res','حدث اليوم')">🗂️ حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Matches Modal -->
+<div class="overlay" id="matches-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="m-head">
+      <div class="m-title">⚽ أرشيف المواجهات</div>
+      <button class="m-close" onclick="close_modal('matches-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;margin-bottom:16px">
+        <div><label class="label">الفريق الأول</label><input type="text" id="team1" placeholder="مثال: الترجي الرياضي"></div>
+        <div style="font-weight:900;color:var(--text2);padding-bottom:12px;font-size:18px">ضد</div>
+        <div><label class="label">الفريق الثاني</label><input type="text" id="team2" placeholder="مثال: النادي الإفريقي"></div>
+      </div>
+      <button class="btn" onclick="run_matches()">⚽ بحث عن المواجهات</button>
+      <div id="matches-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث في المواقع الرياضية...</div>
+      <div id="matches-res" class="result-box" style="display:none"></div>
+      <div id="matches-acts" class="result-actions" style="display:none">
+        <button class="btn-sec" onclick="copy_el('matches-res')">📋 نسخ</button>
+        <button class="btn-sec" onclick="arc_save_el('matches-res','أرشيف المواجهات')">🗂️ حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="overlay" id="profile-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="m-head">
+      <div class="m-title">👤 ملف الشخصية</div>
+      <button class="m-close" onclick="close_modal('profile-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="field">
+        <label class="label">اسم الشخصية</label>
+        <input type="text" id="prof-name" placeholder="مثال: كمال الجندوبي">
+      </div>
+      <button class="btn" onclick="run_profile()">🔍 استخراج الملف الكامل</button>
+      <div id="prof-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث المعمق...</div>
+      <div id="prof-res" class="result-box" style="display:none"></div>
+      <div id="prof-acts" class="result-actions" style="display:none">
+        <button class="btn-sec" onclick="copy_el('prof-res')">📋 نسخ</button>
+        <button class="btn-sec" onclick="arc_save_el('prof-res','ملف الشخصية')">🗂️ حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agenda Modal -->
+<div class="overlay" id="agenda-modal">
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title">🗓️ الأجندة المشتركة</div>
+      <button class="m-close" onclick="close_modal('agenda-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div style="background:var(--bg3);border-radius:14px;padding:18px;margin-bottom:20px;border:1px solid var(--border)">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">➕ إضافة حدث جديد</div>
+        <div class="field"><label class="label">التاريخ</label><input type="date" id="ag-add-date"></div>
+        <div class="field"><label class="label">وصف الحدث</label><input type="text" id="ag-add-ev" placeholder="مثال: مؤتمر صحفي — وزارة التربية"></div>
+        <button class="btn" onclick="ag_add()">💾 حفظ في الأجندة</button>
+      </div>
+      <div style="background:var(--bg3);border-radius:14px;padding:18px;border:1px solid var(--border)">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">🔍 البحث في الأجندة</div>
+        <div style="display:flex;gap:10px;align-items:flex-end">
+          <div style="flex:1"><label class="label">التاريخ</label><input type="date" id="ag-srch-date"></div>
+          <button class="btn" onclick="ag_search()">بحث</button>
+        </div>
+        <div id="ag-results" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Archive Modal -->
+<div class="overlay" id="arc-modal">
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title">🗂️ أرشيف الفريق — آخر 24 ساعة</div>
+      <button class="m-close" onclick="close_modal('arc-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div id="arc-list"><div class="loading"><div class="spin"></div>جاري التحميل...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Radio Modal -->
+<div class="overlay" id="radio-modal">
+  <div class="modal" style="max-width:620px">
+    <div class="m-head">
+      <div class="m-title">📻 الإذاعات التونسية المباشرة</div>
+      <button class="m-close" onclick="close_modal('radio-modal');stop_radio()">✕</button>
+    </div>
+    <div class="m-body">
+      <div id="radio-cards"></div>
+      <div id="rec-panel" style="display:none;background:var(--bg3);border-radius:14px;padding:16px;margin-top:16px;border:1px solid var(--border)">
+        <div style="font-weight:700;margin-bottom:8px">🔴 جاري التسجيل: <span id="rec-radio-name"></span></div>
+        <div id="rec-clock" style="font-size:28px;font-weight:900;color:var(--danger);margin-bottom:12px;font-variant-numeric:tabular-nums">00:00</div>
+        <button class="btn-sec btn-danger" onclick="stop_radio_rec()">⏹️ إيقاف وحفظ</button>
+      </div>
+      <div style="margin-top:20px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2)">💾 التسجيلات المحفوظة</div>
+        <div id="saved-recs"><div style="font-size:13px;color:var(--text2)">لا توجد تسجيلات بعد</div></div>
+      </div>
+      <audio id="radio-audio"></audio>
+    </div>
+  </div>
+</div>
+
+<!-- Smart Record Modal -->
+<div class="overlay" id="smart-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="m-head">
+      <div class="m-title">🎤 التسجيل الذكي — AI Transcription Engine</div>
+      <button class="m-close" onclick="close_modal('smart-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="rec-center">
+        <div class="rec-status" id="sr-status">جاهز للتسجيل</div>
+        <div class="rec-timer" id="sr-timer">00:00</div>
+        <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()">🎙️ بدء تسجيل جديد</button>
+      </div>
+      <div id="sr-result" style="display:none">
+        <div style="font-weight:700;margin-bottom:10px">📝 التفريغ الحرفي</div>
+        <div id="sr-transcription" class="result-box"></div>
+        <div class="result-actions" style="margin-top:10px">
+          <button class="btn" onclick="convert_to_article()">📰 تحويل لمقال</button>
+          <button class="btn-sec" onclick="copy_el('sr-transcription')">📋 نسخ</button>
+          <button class="btn-sec" onclick="wa_share_id('sr-transcription')">💬 واتساب</button>
+          <button class="btn-sec" onclick="email_share_id('sr-transcription')">📧 إيميل</button>
+        </div>
+        <div id="sr-article" style="display:none;margin-top:20px">
+          <div style="font-weight:700;margin-bottom:10px">📰 المقال الإخباري</div>
+          <div id="sr-article-content" class="result-box"></div>
+          <div class="result-actions" style="margin-top:10px">
+            <button class="btn-sec" onclick="copy_el('sr-article-content')">📋 نسخ</button>
+            <button class="btn-sec" onclick="wa_share_id('sr-article-content')">💬 واتساب</button>
+            <button class="btn-sec" onclick="email_share_id('sr-article-content')">📧 إيميل</button>
+            <button class="btn-sec" onclick="arc_save_el('sr-article-content','تسجيل ذكي')">🗂️ حفظ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="overlay" id="settings-modal">
+  <div class="modal" style="max-width:480px">
+    <div class="m-head">
+      <div class="m-title">⚙️ إعدادات DESK BOT</div>
+      <button class="m-close" onclick="close_modal('settings-modal')">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="notice-bar" style="margin-bottom:20px">
+        احصل على مفتاحك المجاني من <strong>aistudio.google.com</strong> ← Get API Key
+      </div>
+      <div class="field">
+        <label class="label">مفتاح Gemini API</label>
+        <input type="text" id="api-key-inp" placeholder="AIzaSy...">
+      </div>
+      <button class="btn" onclick="save_api_key()">💾 حفظ المفتاح</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- =================== FIREBASE =================== -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+
+<script>
+// ============================================================
+// FIREBASE INIT
+// ============================================================
+firebase.initializeApp({
+  apiKey:"AIzaSyCot5bPMOzdEV5s5PQ-MRg_1oBzRWJHTqA",
+  authDomain:"deskbot-bfc98.firebaseapp.com",
+  projectId:"deskbot-bfc98",
+  storageBucket:"deskbot-bfc98.firebasestorage.app",
+  messagingSenderId:"154416885085",
+  appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"
+});
+const auth=firebase.auth(), db=firebase.firestore(), storage=firebase.storage();
+
+// ============================================================
+// STATE
+// ============================================================
+let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
+let radioAudio=null, radioRec=null, radioChunks=[], radioTimerID=null, radioSecs=0, activeRadioIdx=-1;
+let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
+
+// ============================================================
+// RADIOS
+// ============================================================
+const RADIOS=[
+  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://diwan.live-streaming.eu.com:5240/;stream.mp3',color:'#1a4fdb'},
+  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#e11d48'},
+  {name:'شمس أف أم',sub:'Shems FM',url:'https://stream.zeno.fm/4d5yvulvp8zuv',color:'#f59e0b'},
+  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'http://www.radiotunis.com:8004/rtci.mp3',color:'#059669'},
+  {name:'راديو IFM',sub:'IFM Radio',url:'https://stream.zeno.fm/gcasak0wgzzuv',color:'#7c3aed'},
+  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#dc2626'},
+];
+
+// ============================================================
+// MASTER PROMPT
+// ============================================================
+const SYS=`أنت DESK BOT، نظام غرفة الأخبار الرقمية الذكي، متخصص في خدمة الصحفيين التونسيين. تعمل وفق معايير وكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم. اللغة: العربية الفصحى الحديثة حصراً.\n\n`;
+
+const PROMPTS={
+editor:`${SYS}أنت محرر أخبار أول (Senior News Editor).
+
+الإخراج الإلزامي (بهذا الترتيب حصراً):
+➊ السطر الأول: تحرير مقال جديد (حمدي)
+➋ خمسة عناوين تقريرية (12 كلمة كحد أقصى)
+➌ النص الإخباري المهيكل
+
+قواعد الاستهلال:
+✓ فعل مبني للمعلوم + الفاعل مباشرة (قرر، أكد، أعلنت، أفادت، نفى، كشف)
+✗ يُمنع: تقرر، أُعلن، صُودق على، انعقد، استقبل
+
+بروتوكول المصدر (الفقرة الثانية حصراً):
+"وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..."
+
+المعالجة: العملات بالدينار التونسي بين قوسين. الأشهر: جانفي فيفري مارس أفريل ماي جوان جويلية أوت سبتمبر أكتوبر نوفمبر ديسمبر.
+الفقرات: جملة إلى 3 جمل كحد أقصى. يُمنع: الاستنتاج، التضخيم.
+النص:`,
+
+rewrite:`${SYS}أنت محرر إعادة صياغة للمواقع الإذاعية الرقمية.
+
+الإخراج:
+➊ خمسة عناوين SEO (12 كلمة كحد)
+➋ النص المعاد صياغته (هرم مقلوب، فقرات قصيرة، محايد، كلمات مفتاحية)
+✗ يُمنع: عناوين فرعية، مجاز، تضخيم، تكرار
+النص:`,
+
+headlines:`${SYS}أنت رئيس تحرير. أخرج 12 عنواناً في 4 فئات (3 لكل فئة):
+● إخبارية تقريرية (Hard News)
+● إسناد واقتباس مباشر (النقطتان الرأسيتان)
+● مركبة وسياقية (إثر، بسبب، تزامناً)
+● تحليلية ومتابعات
+الطول: 8 إلى 14 كلمة. عنصران على الأقل: حدث/فاعل/مكان/نتيجة.
+مصطلحات: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي، النيابة العمومية.
+✗ يُمنع: Clickbait، تعجب، مبالغة
+النص:`,
+
+flash:`${SYS}أنت مذيع فلاش إخباري في ديوان أف أم.
+الإخراج:
+➊ عنوان ديوان (8 كلمات كحد، غير مشكول)
+➋ نص الفلاش (30-50 كلمة، مشكول)
+التشكيل: الأعداد كاملة (خَمْسَةُ وَعِشْرُونَ أَلْفَ دِينَارٍ). باقي النص: الحرف الأخير فقط (وزارةُ لا وِزَارَةُ).
+الأرقام بالحروف. جملة واحدة تحمل الخبر. ✗ تجاوز 50 كلمة ممنوع.
+النص:`,
+
+transcribe:`${SYS}أنت أداة تفريغ صوتي حرفي (Strict Verbatim Transcriber).
+ابدأ التفريغ مباشرة بلا مقدمة. تمييز: [مذيع] [ضيف] [ضيف 2].
+غير واضح: [غير واضح]. اسم غير متأكد: [اسم؟]. رقم غير واضح: [رقم؟].
+✗ يُمنع: إعادة صياغة، حذف كلمة، تلخيص، تعليق
+النص:`,
+
+monitor:`${SYS}ابحث في الإنترنت واستخرج أهم 15 خبراً خلال الـ12 ساعة الماضية.
+الإخراج:
+🕐 رصد إخباري — آخر 12 ساعة
+📅 [التاريخ والوقت الحالي]
+
+🇹🇳 الشأن التونسي (7 أخبار):
+[رقم]. [العنوان] — [المصدر]
+[سطر ملخص]
+
+🌍 الشأن العربي والدولي (5 أخبار):
+[رقم]. [العنوان] — [المصدر]
+[سطر ملخص]
+
+⚡ يستحق المتابعة (3 أخبار):
+[رقم]. [العنوان] — [السبب في سطر]
+✗ يُمنع: اختلاق أخبار، تجاوز 12 ساعة`,
+
+checker:`${SYS}ابحث في المواقع الإعلامية التونسية خلال الـ12 ساعة الماضية واستخرج الأخطاء.
+الإخراج:
+🔍 تقرير مدقق المحتوى | 📅 [التاريخ] | آخر 12 ساعة
+
+📌 ملخص تنفيذي: عدد المقالات / الأخطاء / الأكثر تكراراً
+
+① الأخطاء النحوية: المصدر | ✗ الخطأ | السبب | ✓ التصويب | القاعدة
+② الأخطاء المنهجية: (غياب مصدر / هرم مقلوب / مصدر مجهول)
+③ الأخطاء التحريرية: (عنوان مضلل / إثارة / تكرار)
+④ درس اليوم: الخطأ الأكثر تكراراً + القاعدة + 3 أمثلة صحيحة
+⑤ توصيات تحريرية لليوم (3 توصيات)
+✗ يُمنع: ذكر أسماء الصحفيين — الأسلوب تعليمي دائماً`,
+
+today:`${SYS}ابحث واستخرج كل الأحداث والشخصيات المرتبطة بالتاريخ المُدخل عبر التاريخ.
+الإخراج:
+📅 في مثل هذا اليوم — [التاريخ]
+
+🇹🇳 أحداث تونسية ومحلية:
+[السنة] — [الحدث]
+
+🌍 أحداث عربية وعالمية:
+[السنة] — [الحدث]
+
+🎂 شخصيات وُلدت اليوم:
+[السنة] — [الاسم] — [الصفة والجنسية]
+
+🕊️ شخصيات رحلت اليوم:
+[السنة] — [الاسم] — [الصفة والجنسية]
+✗ يُمنع: اختلاق أحداث
+التاريخ:`,
+
+matches:`${SYS}ابحث في المواقع الرياضية (FIFA، UEFA، Transfermarkt، Soccerway، ESPN) واستخرج كامل سجل المواجهات.
+الإخراج:
+⚽ [الفريق 1] 🆚 [الفريق 2]
+
+📊 ملخص: المباريات / الفوز / التعادل / الأهداف
+
+📅 السجل (من الأحدث):
+[التاريخ] | [المسابقة]
+[النتيجة]
+⚽ [الهدافون والدقائق]
+
+🏆 أبرز الهدافين التاريخيين
+📌 أبرز المواجهات
+✗ يُمنع: اختلاق نتائج
+الفريقان:`,
+
+profile:`${SYS}ابحث معمقاً واستخرج ملفاً صحفياً شاملاً.
+الإخراج:
+👤 ملف الشخصية — [الاسم]
+
+📋 اللمحة التعريفية (5-7 أسطر)
+🏆 أبرز الأعمال والإنجازات (5 عناصر + السنة)
+
+🎤 أهم وأحدث 5 تصريحات إعلامية:
+① [التاريخ] — [المصدر]
+الموضوع: [الموضوع]
+التصريح: "[النص الدقيق]"
+
+❓ 10 أسئلة صحفية احترافية:
+● استفسارية (3): مبنية على التصريحات
+● مواجهة (3): تواجهه بتناقض أو تصريح سابق
+● استشرافية (2): رؤية مستقبلية
+● شخصية مهنية (2): مسار وتجربة
+✗ يُمنع: اختلاق تصريحات — أسئلة عامة
+الشخصية:`,
+
+article:`${SYS}حوّل النص المفرّغ الآتي إلى مقال إخباري احترافي وفق معايير وات وديوان أف أم.
+الإخراج:
+➊ تحرير مقال جديد (حمدي)
+➋ خمسة عناوين تقريرية
+➌ المقال المهيكل
+
+قواعد التحويل: استخرج الحقائق. تجاهل التأتأة والعامية. الاقتباس المباشر للجمل الأهم فقط بين "".
+"وأوضح [الضيف]، في تصريح لـ ديوان أف أم، أن..."
+النص المفرّغ:`
+};
+
+// ============================================================
+// TOOL CONFIG
+// ============================================================
+const TOOLS={
+  editor:{title:'📝 المحرر الرقمي Pro',label:'أدخل النص الخام أو معطيات الخبر',ph:'الصق هنا النص الخام أو اكتب معطيات الخبر...',key:'editor'},
+  rewrite:{title:'✍️ إعادة صياغة محترفة',label:'أدخل النص المراد إعادة صياغته',ph:'الصق النص هنا...',key:'rewrite'},
+  headlines:{title:'T عناوين احترافية',label:'أدخل نص الخبر',ph:'الصق النص هنا...',key:'headlines'},
+  flash:{title:'📡 فلاش إخباري',label:'أدخل معطيات الخبر',ph:'اكتب أو الصق الخبر هنا...',key:'flash'},
+  transcribe:{title:'🎙️ تفريغ وتحرير',label:'أدخل محتوى التسجيل',ph:'الصق محتوى التسجيل أو صف ما يحتويه...',key:'transcribe'},
+  monitor:{title:'🔭 اقتراحات تحريرية',label:'اكتب "رصد" لبدء الرصد الإخباري',ph:'رصد',key:'monitor'},
+  checker:{title:'🔍 مدقق المحتوى',label:'اكتب "مدقق" لبدء التدقيق',ph:'مدقق',key:'checker'},
+};
+
+// ============================================================
+// AUTH
+// ============================================================
+auth.onAuthStateChanged(u=>{
+  if(u){
+    USER=u;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('main-app').style.display='block';
+    const init=(u.displayName||u.email||'ح').charAt(0).toUpperCase();
+    document.getElementById('avatar').textContent=init;
+    load_api_key();
+    build_radio_cards();
+    load_saved_recs();
+  }else{
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('main-app').style.display='none';
+  }
+});
+
+function googleLogin(){
+  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    .catch(e=>toast('خطأ في تسجيل الدخول: '+e.message));
+}
+function do_signout(){
+  if(confirm('تسجيل الخروج؟')) auth.signOut();
+}
+
+// ============================================================
+// API KEY
+// ============================================================
+async function load_api_key(){
+  try{
+    const d=await db.collection('config').doc('gemini').get();
+    if(d.exists&&d.data().key){
+      GEMINI_KEY=d.data().key;
+      document.getElementById('api-notice').style.display='none';
+    }else{
+      document.getElementById('api-notice').style.display='flex';
+    }
+  }catch(e){document.getElementById('api-notice').style.display='flex'}
+}
+async function save_api_key(){
+  const k=document.getElementById('api-key-inp').value.trim();
+  if(!k) return toast('أدخل المفتاح أولاً');
+  try{
+    await db.collection('config').doc('gemini').set({key:k});
+    GEMINI_KEY=k;
+    document.getElementById('api-notice').style.display='none';
+    close_modal('settings-modal');
+    toast('✅ تم حفظ المفتاح');
+  }catch(e){toast('خطأ: '+e.message)}
+}
+
+// ============================================================
+// GEMINI
+// ============================================================
+async function gemini(prompt){
+  if(!GEMINI_KEY){open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      contents:[{parts:[{text:prompt}]}],
+      generationConfig:{temperature:.7,maxOutputTokens:4096,topP:.9}
+    })
+  });
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'خطأ في الاتصال')}
+  const d=await r.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'لم يتم الحصول على نتيجة';
+}
+
+// ============================================================
+// TOOL RUNNER
+// ============================================================
+function open_tool(name){
+  const cfg=TOOLS[name]; if(!cfg) return;
+  CUR_TOOL=name; CUR_TOOL_NAME=cfg.title;
+  document.getElementById('ai-title').textContent=cfg.title;
+  document.getElementById('ai-label').textContent=cfg.label;
+  document.getElementById('ai-input').placeholder=cfg.ph;
+  document.getElementById('ai-input').value=(name==='monitor')?'رصد':(name==='checker')?'مدقق':'';
+  hide('ai-result'); hide('ai-acts'); hide('ai-load');
+  document.getElementById('ai-run-btn').disabled=false;
+  open_modal('ai-modal');
+}
+
+async function run_ai(){
+  const inp=document.getElementById('ai-input').value.trim();
+  if(!inp) return toast('أدخل النص أولاً');
+  const cfg=TOOLS[CUR_TOOL];
+  show_load('ai-load'); hide('ai-result'); hide('ai-acts');
+  document.getElementById('ai-run-btn').disabled=true;
+  try{
+    const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
+    document.getElementById('ai-result').textContent=res;
+    show('ai-result'); show('ai-acts');
+    await arc_auto(cfg.title, inp.substring(0,200), res);
+  }catch(e){toast('خطأ: '+e.message)}
+  finally{hide('ai-load');document.getElementById('ai-run-btn').disabled=false}
+}
+
+// ============================================================
+// TODAY
+// ============================================================
+function open_today(){
+  document.getElementById('today-date').value=new Date().toISOString().split('T')[0];
+  open_modal('today-modal');
+}
+async function run_today(){
+  const dv=document.getElementById('today-date').value;
+  if(!dv) return toast('اختر تاريخاً');
+  const d=new Date(dv);
+  const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const fmt=`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  show_load('today-load'); hide('today-res'); hide('today-acts');
+  try{
+    const r=await gemini(PROMPTS.today+'\n\n'+fmt);
+    document.getElementById('today-res').textContent=r;
+    show('today-res'); show('today-acts');
+    await arc_auto('حدث اليوم',fmt,r);
+  }catch(e){toast('خطأ: '+e.message)}
+  finally{hide('today-load')}
+}
+
+// ============================================================
+// MATCHES
+// ============================================================
+async function run_matches(){
+  const t1=document.getElementById('team1').value.trim();
+  const t2=document.getElementById('team2').value.trim();
+  if(!t1||!t2) return toast('أدخل اسمي الفريقين');
+  show_load('matches-load'); hide('matches-res'); hide('matches-acts');
+  try{
+    const r=await gemini(PROMPTS.matches+'\n\n'+t1+' ضد '+t2);
+    document.getElementById('matches-res').textContent=r;
+    show('matches-res'); show('matches-acts');
+    await arc_auto('أرشيف المواجهات',t1+' ضد '+t2,r);
+  }catch(e){toast('خطأ: '+e.message)}
+  finally{hide('matches-load')}
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+async function run_profile(){
+  const name=document.getElementById('prof-name').value.trim();
+  if(!name) return toast('أدخل اسم الشخصية');
+  show_load('prof-load'); hide('prof-res'); hide('prof-acts');
+  try{
+    const r=await gemini(PROMPTS.profile+'\n\n'+name);
+    document.getElementById('prof-res').textContent=r;
+    show('prof-res'); show('prof-acts');
+    await arc_auto('ملف الشخصية',name,r);
+  }catch(e){toast('خطأ: '+e.message)}
+  finally{hide('prof-load')}
+}
+
+// ============================================================
+// AGENDA
+// ============================================================
+async function ag_add(){
+  const date=document.getElementById('ag-add-date').value;
+  const ev=document.getElementById('ag-add-ev').value.trim();
+  if(!date||!ev) return toast('أدخل التاريخ والحدث');
+  try{
+    await db.collection('agenda').add({
+      date, event:ev,
+      addedBy:USER.displayName||USER.email,
+      addedById:USER.uid,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('ag-add-date').value='';
+    document.getElementById('ag-add-ev').value='';
+    toast('✅ تم حفظ الحدث في الأجندة');
+  }catch(e){toast('خطأ: '+e.message)}
+}
+
+async function ag_search(){
+  const date=document.getElementById('ag-srch-date').value;
+  if(!date) return toast('اختر تاريخاً');
+  const c=document.getElementById('ag-results');
+  c.innerHTML='<div class="loading"><div class="spin"></div>جاري البحث...</div>';
+  try{
+    const s=await db.collection('agenda').where('date','==',date).orderBy('createdAt','desc').get();
+    if(s.empty){c.innerHTML='<p style="color:var(--text2);text-align:center;padding:20px">لا توجد أحداث لهذا التاريخ</p>';return}
+    c.innerHTML='';
+    s.forEach(doc=>{
+      const d=doc.data(), canDel=d.addedById===USER.uid;
+      const dObj=new Date(date);
+      const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+      const fdate=`${dObj.getDate()} ${months[dObj.getMonth()]}`;
+      c.innerHTML+=`<div class="ag-item">
+        <div class="ag-date">${fdate}</div>
+        <div class="ag-body">
+          <div class="ag-event" id="ag-ev-${doc.id}">${d.event}</div>
+          <div class="ag-by">👤 ${d.addedBy}</div>
+        </div>
+        <div class="ag-acts">
+          <button class="btn-sec" style="padding:6px 10px" onclick="ag_edit('${doc.id}','${d.event.replace(/'/g,"\\'")}')">✏️</button>
+          ${canDel?`<button class="btn-sec btn-danger" style="padding:6px 10px" onclick="ag_del('${doc.id}')">🗑️</button>`:''}
+        </div>
+      </div>`;
+    });
+  }catch(e){c.innerHTML='<p style="color:var(--danger)">خطأ في البحث</p>'}
+}
+
+async function ag_edit(id,cur){
+  const nv=prompt('تعديل الحدث:',cur);
+  if(!nv||nv===cur) return;
+  try{
+    await db.collection('agenda').doc(id).update({event:nv});
+    document.getElementById('ag-ev-'+id).textContent=nv;
+    toast('✅ تم التعديل');
+  }catch(e){toast('خطأ: '+e.message)}
+}
+async function ag_del(id){
+  if(!confirm('حذف هذا الحدث؟')) return;
+  try{await db.collection('agenda').doc(id).delete();ag_search();toast('✅ تم الحذف')}
+  catch(e){toast('خطأ: '+e.message)}
+}
+
+// ============================================================
+// ARCHIVE
+// ============================================================
+async function arc_auto(toolName,input,result){
+  try{
+    await db.collection('archive').add({
+      toolName, input:input.substring(0,300), result:result.substring(0,1200),
+      user:USER.displayName||USER.email, userId:USER.uid,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }catch(e){console.log('arc err',e)}
+}
+
+function arc_save_el(elId,toolName){
+  toolName=toolName||CUR_TOOL_NAME;
+  const txt=document.getElementById(elId)?.textContent;
+  if(!txt) return;
+  arc_auto(toolName,'',txt);
+  toast('✅ تم الحفظ في الأرشيف');
+}
+
+async function open_archive(){
+  open_modal('arc-modal');
+  const c=document.getElementById('arc-list');
+  c.innerHTML='<div class="loading"><div class="spin"></div>جاري التحميل...</div>';
+  try{
+    const since=new Date(Date.now()-24*60*60*1000);
+    const s=await db.collection('archive')
+      .where('createdAt','>',firebase.firestore.Timestamp.fromDate(since))
+      .orderBy('createdAt','desc').get();
+    if(s.empty){c.innerHTML='<p style="color:var(--text2);text-align:center;padding:30px">لا توجد عمليات خلال آخر 24 ساعة</p>';return}
+    c.innerHTML='';
+    s.forEach(doc=>{
+      const d=doc.data();
+      const t=d.createdAt?.toDate?d.createdAt.toDate().toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'}):'';
+      const preview=(d.result||'').replace(/</g,'&lt;').substring(0,130);
+      const fullText=(d.result||'').replace(/`/g,'\\`').replace(/\\/g,'\\\\');
+      c.innerHTML+=`<div class="arc-item">
+        <div class="arc-meta">
+          <span class="arc-badge">${d.toolName}</span>
+          <span class="arc-user">👤 ${d.user}</span>
+          <span class="arc-time">🕐 ${t}</span>
+        </div>
+        <div class="arc-prev">${preview}...</div>
+        <div class="result-actions" style="margin-top:8px">
+          <button class="btn-sec" onclick="arc_view(this)" data-full="${fullText.replace(/"/g,'&quot;')}">👁️ عرض</button>
+          <button class="btn-sec" onclick="arc_copy(this)" data-full="${fullText.replace(/"/g,'&quot;')}">📋 نسخ</button>
+        </div>
+      </div>`;
+    });
+  }catch(e){c.innerHTML='<p style="color:var(--danger);text-align:center;padding:20px">خطأ في التحميل — تأكد من إعداد Firestore Rules</p>'}
+}
+
+function arc_view(btn){
+  const txt=btn.getAttribute('data-full');
+  alert(txt);
+}
+function arc_copy(btn){
+  const txt=btn.getAttribute('data-full');
+  navigator.clipboard.writeText(txt).then(()=>toast('✅ تم النسخ'));
+}
+
+// ============================================================
+// RADIO
+// ============================================================
+function build_radio_cards(){
+  const c=document.getElementById('radio-cards');
+  c.innerHTML=RADIOS.map((r,i)=>`
+    <div class="radio-card" id="rc-${i}">
+      <div class="radio-dot" style="background:${r.color}"></div>
+      <div class="radio-info">
+        <div class="radio-name">${r.name}</div>
+        <div class="radio-sub">${r.sub}</div>
+      </div>
+      <div class="radio-acts">
+        <button class="btn-sec" id="play-btn-${i}" onclick="toggle_radio(${i})">▶️ استماع</button>
+        <button class="btn-sec" id="rec-btn-${i}" onclick="toggle_radio_rec(${i})">⏺️ تسجيل</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggle_radio(i){
+  const audio=document.getElementById('radio-audio');
+  if(activeRadioIdx===i && !audio.paused){
+    audio.pause(); activeRadioIdx=-1;
+    document.getElementById('play-btn-'+i).textContent='▶️ استماع';
+    document.getElementById('rc-'+i).classList.remove('on');
+    return;
+  }
+  // Stop previous
+  if(activeRadioIdx>=0){
+    document.getElementById('play-btn-'+activeRadioIdx).textContent='▶️ استماع';
+    document.getElementById('rc-'+activeRadioIdx).classList.remove('on');
+  }
+  audio.src=RADIOS[i].url;
+  audio.play().catch(()=>toast('تعذّر التشغيل — تحقق من رابط البث أو الاتصال'));
+  activeRadioIdx=i;
+  document.getElementById('play-btn-'+i).textContent='⏸️ إيقاف';
+  document.getElementById('rc-'+i).classList.add('on');
+}
+
+async function toggle_radio_rec(i){
+  if(radioRec&&radioRec.state==='recording'){stop_radio_rec();return}
+  toggle_radio(i);
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    radioChunks=[];
+    radioRec=new MediaRecorder(stream);
+    radioRec.ondataavailable=e=>radioChunks.push(e.data);
+    radioRec.onstop=()=>save_radio_rec(RADIOS[i].name);
+    radioRec.start();
+    radioSecs=0;
+    show('rec-panel');
+    document.getElementById('rec-radio-name').textContent=RADIOS[i].name;
+    document.getElementById('rec-btn-'+i).textContent='⏹️ إيقاف';
+    radioTimerID=setInterval(()=>{
+      radioSecs++;
+      document.getElementById('rec-clock').textContent=fmt_time(radioSecs);
+    },1000);
+  }catch(e){toast('لا يمكن الوصول للميكروفون')}
+}
+
+function stop_radio_rec(){
+  if(radioRec){radioRec.stop();radioRec=null}
+  if(radioTimerID){clearInterval(radioTimerID);radioTimerID=null}
+  hide('rec-panel');
+  RADIOS.forEach((_,i)=>{
+    const b=document.getElementById('rec-btn-'+i);
+    if(b) b.textContent='⏺️ تسجيل';
+  });
+}
+
+async function save_radio_rec(name){
+  try{
+    const blob=new Blob(radioChunks,{type:'audio/webm'});
+    const fname=`${name}_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+    const ref=storage.ref(`recordings/${USER.uid}/${fname}`);
+    await ref.put(blob);
+    const url=await ref.getDownloadURL();
+    await db.collection('recordings').add({
+      radioName:name, fname, url, userId:USER.uid,
+      user:USER.displayName||USER.email,
+      duration:radioSecs,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    toast('✅ تم حفظ التسجيل');
+    load_saved_recs();
+  }catch(e){toast('خطأ في الحفظ: '+e.message)}
+}
+
+async function load_saved_recs(){
+  try{
+    const s=await db.collection('recordings')
+      .where('userId','==',USER.uid)
+      .orderBy('createdAt','desc').limit(8).get();
+    const c=document.getElementById('saved-recs');
+    if(!c) return;
+    if(s.empty){c.innerHTML='<div style="font-size:13px;color:var(--text2)">لا توجد تسجيلات بعد</div>';return}
+    c.innerHTML='';
+    s.forEach(doc=>{
+      const d=doc.data();
+      c.innerHTML+=`<div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">${d.radioName}</div>
+          <div style="font-size:11px;color:var(--text2)">${fmt_time(d.duration||0)}</div>
+        </div>
+        <a href="${d.url}" download class="btn-sec" style="font-size:12px;text-decoration:none" target="_blank">⬇️ تحميل</a>
+      </div>`;
+    });
+  }catch(e){console.log('recs err',e)}
+}
+
+function stop_radio(){
+  const a=document.getElementById('radio-audio');
+  if(a) a.pause();
+  activeRadioIdx=-1;
+}
+
+// ============================================================
+// SMART RECORD
+// ============================================================
+async function toggle_smart_rec(){
+  if(isSmartRec) stop_smart_rec(); else start_smart_rec();
+}
+
+async function start_smart_rec(){
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    smartChunks=[];
+    smartRec=new MediaRecorder(stream);
+    smartRec.ondataavailable=e=>smartChunks.push(e.data);
+    smartRec.onstop=process_smart_rec;
+    smartRec.start();
+    isSmartRec=true; smartSecs=0;
+    document.getElementById('sr-status').textContent='🔴 جاري التسجيل... تحدث بوضوح';
+    document.getElementById('sr-timer').style.display='block';
+    document.getElementById('sr-btn').textContent='⏹️ إيقاف وتفريغ';
+    document.getElementById('sr-btn').style.background='#ef4444';
+    smartTimerID=setInterval(()=>{
+      smartSecs++;
+      document.getElementById('sr-timer').textContent=fmt_time(smartSecs);
+    },1000);
+  }catch(e){toast('لا يمكن الوصول للميكروفون')}
+}
+
+function stop_smart_rec(){
+  if(smartRec){smartRec.stop();smartRec=null}
+  if(smartTimerID){clearInterval(smartTimerID);smartTimerID=null}
+  isSmartRec=false;
+  document.getElementById('sr-status').textContent='⏳ جاري المعالجة...';
+  document.getElementById('sr-btn').textContent='🎙️ بدء تسجيل جديد';
+  document.getElementById('sr-btn').style.background='';
+}
+
+async function process_smart_rec(){
+  const blob=new Blob(smartChunks,{type:'audio/webm'});
+  // Download the file
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`interview_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+  a.click();
+  document.getElementById('sr-status').textContent='✅ تم حفظ التسجيل — يمكنك نسخ محتوى المقابلة للتفريغ';
+  document.getElementById('sr-timer').style.display='none';
+  document.getElementById('sr-result').style.display='block';
+  document.getElementById('sr-transcription').textContent='تم تحميل ملف التسجيل على جهازك.\n\nللتفريغ الكامل:\n1. انسخ محتوى المقابلة في الحقل أدناه\n2. أو افتح أداة "تفريغ وتحرير" وأدخل المحتوى\n3. اضغط "تحويل لمقال" للحصول على المقال النهائي\n\nملاحظة: دعم التفريغ المباشر من الصوت قادم في التحديث القادم 🔜';
+}
+
+async function convert_to_article(){
+  const txt=document.getElementById('sr-transcription').textContent;
+  if(!txt) return;
+  document.getElementById('sr-article').style.display='block';
+  document.getElementById('sr-article-content').textContent='⏳ جاري التحويل...';
+  try{
+    const r=await gemini(PROMPTS.article+'\n\n'+txt);
+    document.getElementById('sr-article-content').textContent=r;
+    await arc_auto('تسجيل ذكي',txt.substring(0,100),r);
+  }catch(e){toast('خطأ: '+e.message)}
+}
+
+// ============================================================
+// SHARE HELPERS
+// ============================================================
+function copy_el(id){
+  const t=document.getElementById(id)?.textContent;
+  if(t) navigator.clipboard.writeText(t).then(()=>toast('✅ تم النسخ'));
+}
+function wa_share(id){
+  const t=document.getElementById(id)?.textContent;
+  if(t) window.open('https://wa.me/?text='+encodeURIComponent(t));
+}
+function email_share(id){
+  const t=document.getElementById(id)?.textContent;
+  if(t) window.open('mailto:?subject=DESK BOT&body='+encodeURIComponent(t));
+}
+function wa_share_id(id){wa_share(id)}
+function email_share_id(id){email_share(id)}
+
+// ============================================================
+// THEME
+// ============================================================
+function toggle_theme(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  const next=dark?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  document.getElementById('theme-btn').textContent=dark?'🌙':'☀️';
+  localStorage.setItem('deskbot-theme',next);
+}
+(()=>{
+  const t=localStorage.getItem('deskbot-theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+})();
+
+// ============================================================
+// MODAL HELPERS
+// ============================================================
+function open_modal(id){document.getElementById(id).classList.add('open')}
+function close_modal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o) o.classList.remove('open')})
+});
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function show(id){document.getElementById(id).style.display='block'}
+function hide(id){document.getElementById(id).style.display='none'}
+function show_load(id){document.getElementById(id).style.display='flex'}
+function fmt_time(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('on');
+  setTimeout(()=>el.classList.remove('on'),3000);
+}
+</script>
+</body>
+</html>
