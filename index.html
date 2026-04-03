@@ -1076,9 +1076,7 @@ async function save_api_key(){
 // OPENROUTER — DUAL MODEL SYSTEM
 // ============================================================
 const MODELS=[
-  {id:'meta-llama/llama-3.3-70b-instruct:free', name:'Llama 3.3 70B',  color:'#1a73e8'},
-  {id:'qwen/qwen3.6-plus:free',                  name:'Qwen 3.6 Plus',   color:'#9333ea'},
-  {id:'google/gemma-3-27b-it:free',               name:'Gemma 3 27B',    color:'#ea4335'},
+  {id:'qwen/qwen3.6-plus:free', name:'Qwen 3.6 Plus', color:'#9333ea'},
 ];
 
 const EDITORIAL_TOOLS=['editor','rewrite','headlines','flash'];
@@ -1150,7 +1148,7 @@ async function run_ai(){
       const results=await gemini(PROMPTS[cfg.key]+'\n\n'+inp, true);
 
       // Build triple result UI
-      let html=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px">`;
+      let html=`<div style="display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:8px">`;
       results.forEach((r,i)=>{
         const m=MODELS[i];
         const content=r.status==='fulfilled'?r.value:'❌ خطأ: '+r.reason?.message;
