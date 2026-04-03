@@ -459,9 +459,8 @@ textarea{min-height:110px}
         <input type="text" id="api-key-inp" placeholder="AIzaSy...">
       </div>
       <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
-        🤖 النماذج المستخدمة:<br>
-        • Gemini 2.0 Flash — الأسرع والأفضل للعربية<br>
-        • Gemini 1.5 Pro — الأعمق تحليلاً<br>
+        🤖 النموذج المستخدم: <strong>Gemini 1.5 Flash</strong><br>
+        ✅ الأسرع والأدق للعربية الإعلامية<br>
         ✅ 1500 طلب/يوم مجاناً لكل صحفي
       </div>
       <button class="btn" onclick="save_api_key()">💾 حفظ المفتاح</button>
@@ -1073,47 +1072,26 @@ async function save_api_key(){
 }
 
 // ============================================================
-// GOOGLE GEMINI — DUAL MODEL SYSTEM
+// GOOGLE GEMINI 1.5 FLASH — SINGLE MODEL
 // ============================================================
-const MODELS=[
-  {id:'gemini-2.0-flash',      name:'Gemini 2.0 Flash',   color:'#1a4fdb'},
-  {id:'gemini-1.5-pro',        name:'Gemini 1.5 Pro',     color:'#0ea472'},
-];
-
 const EDITORIAL_TOOLS=['editor','rewrite','headlines','flash'];
 
-async function call_model(modelId, prompt){
+async function gemini(prompt){
+  if(!GEMINI_KEY){open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
   const r=await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${GEMINI_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`,
     {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         contents:[{parts:[{text:prompt}]}],
-        generationConfig:{
-          temperature:0.7,
-          maxOutputTokens:4096,
-          topP:0.9
-        }
+        generationConfig:{temperature:0.7,maxOutputTokens:4096,topP:0.9}
       })
     }
   );
-  if(!r.ok){
-    const e=await r.json();
-    throw new Error(e.error?.message||'خطأ في الاتصال بـ '+modelId)
-  }
+  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'خطأ في الاتصال')}
   const d=await r.json();
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'لم تُعد نتيجة';
-}
-
-async function gemini(prompt, useDouble=false){
-  if(!GEMINI_KEY){open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
-  if(useDouble){
-    const results=await Promise.allSettled(MODELS.map(m=>call_model(m.id,prompt)));
-    return results;
-  }else{
-    return await call_model(MODELS[0].id, prompt);
-  }
 }
 
 // ============================================================
@@ -1135,74 +1113,20 @@ async function run_ai(){
   const inp=document.getElementById('ai-input').value.trim();
   if(!inp) return toast('أدخل النص أولاً');
   const cfg=TOOLS[CUR_TOOL];
-  const isEditorial=EDITORIAL_TOOLS.includes(CUR_TOOL);
   show_load('ai-load'); hide('ai-result'); hide('ai-acts');
   document.getElementById('ai-run-btn').disabled=true;
-
   try{
-    if(isEditorial){
-      // Double model mode
-      document.getElementById('ai-load').innerHTML='<div class="spin"></div>جاري المعالجة بنموذجين في نفس الوقت...';
-      const results=await gemini(PROMPTS[cfg.key]+'\n\n'+inp, true);
-
-      // Build triple result UI
-      let html=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">`;
-      results.forEach((r,i)=>{
-        const m=MODELS[i];
-        const content=r.status==='fulfilled'?r.value:'❌ خطأ: '+r.reason?.message;
-        html+=`
-        <div style="border:1.5px solid ${m.color}30;border-radius:12px;overflow:hidden">
-          <div style="background:${m.color}15;padding:8px 12px;font-size:12px;font-weight:700;color:${m.color};border-bottom:1px solid ${m.color}20">
-            ${m.name}
-          </div>
-          <div style="padding:12px;font-size:13px;line-height:1.8;white-space:pre-wrap;max-height:420px;overflow-y:auto;direction:rtl" id="res-${i}">${content}</div>
-          <div style="padding:8px 12px;border-top:1px solid ${m.color}20;display:flex;gap:6px">
-            <button class="btn-sec" style="font-size:11px;padding:4px 10px" onclick="copy_res(${i})">📋 نسخ</button>
-            <button class="btn-sec" style="font-size:11px;padding:4px 10px" onclick="wa_res(${i})">💬</button>
-            <button class="btn" style="font-size:11px;padding:4px 10px;background:${m.color}" onclick="arc_save_res(${i},'${cfg.title}')">🗂️</button>
-          </div>
-        </div>`;
-      });
-      html+=`</div>`;
-      document.getElementById('ai-result').innerHTML=html;
-      document.getElementById('ai-result').style.background='transparent';
-      document.getElementById('ai-result').style.border='none';
-      document.getElementById('ai-result').style.padding='0';
-      show('ai-result');
-      hide('ai-acts');
-      // Save first successful result to archive
-      const first=results.find(r=>r.status==='fulfilled');
-      if(first) await arc_auto(cfg.title, inp.substring(0,200), first.value);
-    }else{
-      // Single model mode
-      document.getElementById('ai-load').innerHTML='<div class="spin"></div>جاري المعالجة...';
-      const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
-      document.getElementById('ai-result').textContent=res;
-      document.getElementById('ai-result').style.background='';
-      document.getElementById('ai-result').style.border='';
-      document.getElementById('ai-result').style.padding='';
-      show('ai-result'); show('ai-acts');
-      await arc_auto(cfg.title, inp.substring(0,200), res);
-    }
+    const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
+    document.getElementById('ai-result').textContent=res;
+    document.getElementById('ai-result').style.cssText='';
+    show('ai-result'); show('ai-acts');
+    await arc_auto(cfg.title, inp.substring(0,200), res);
   }catch(e){toast('خطأ: '+e.message)}
   finally{
     hide('ai-load');
     document.getElementById('ai-run-btn').disabled=false;
     document.getElementById('ai-load').innerHTML='<div class="spin"></div>جاري المعالجة...';
   }
-}
-
-function copy_res(i){
-  const t=document.getElementById('res-'+i)?.textContent;
-  if(t) navigator.clipboard.writeText(t).then(()=>toast('✅ تم النسخ'));
-}
-function wa_res(i){
-  const t=document.getElementById('res-'+i)?.textContent;
-  if(t) window.open('https://wa.me/?text='+encodeURIComponent(t));
-}
-function arc_save_res(i,toolName){
-  const t=document.getElementById('res-'+i)?.textContent;
-  if(t){arc_auto(toolName+'  — '+MODELS[i].name,'',t);toast('✅ تم الحفظ في الأرشيف')}
 }
 
 // ============================================================
