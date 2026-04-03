@@ -200,7 +200,7 @@ textarea{min-height:110px}
   <div class="content">
 
     <div id="api-notice" class="notice-bar" style="display:none">
-      ⚠️ مفتاح Groq API غير موجود —
+      ⚠️ مفتاح OpenRouter API غير موجود —
       <button onclick="open_modal('settings-modal')">اضغط هنا لإدخاله</button>
     </div>
 
@@ -452,11 +452,11 @@ textarea{min-height:110px}
     </div>
     <div class="m-body">
       <div class="notice-bar" style="margin-bottom:20px">
-        احصل على مفتاحك المجاني من <strong>console.groq.com</strong> ← API Keys ← Create API Key
+        احصل على مفتاحك المجاني من <strong>openrouter.ai</strong> ← Sign in ← API Keys ← Create Key
       </div>
       <div class="field">
         <label class="label">مفتاح Groq API</label>
-        <input type="text" id="api-key-inp" placeholder="gsk_...">
+        <input type="text" id="api-key-inp" placeholder="sk-or-...">
       </div>
       <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
         🤖 النماذج المستخدمة:<br>
@@ -1073,30 +1073,32 @@ async function save_api_key(){
 }
 
 // ============================================================
-// GROQ — DUAL MODEL SYSTEM
+// OPENROUTER — DUAL MODEL SYSTEM
 // ============================================================
 const MODELS=[
-  {id:'llama-3.3-70b-versatile', name:'Llama 3.3 70B', color:'#6366f1'},
-  {id:'mixtral-8x7b-32768',      name:'Mixtral 8x7B',  color:'#f59e0b'},
+  {id:'google/gemini-2.0-flash-exp:free', name:'Gemini 2.0 Flash', color:'#1a73e8'},
+  {id:'meta-llama/llama-4-scout:free',    name:'Llama 4 Scout',    color:'#0ea472'},
 ];
 
 const EDITORIAL_TOOLS=['editor','rewrite','headlines','flash'];
 
 async function call_model(modelId, prompt){
-  const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+  const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
     method:'POST',
     headers:{
       'Content-Type':'application/json',
-      'Authorization':'Bearer '+GEMINI_KEY
+      'Authorization':'Bearer '+GEMINI_KEY,
+      'HTTP-Referer':'https://deskbot-six.vercel.app',
+      'X-Title':'DESK BOT — Digital Newsroom'
     },
     body:JSON.stringify({
       model:modelId,
       messages:[
-        {role:'system',content:'أنت مساعد صحفي متخصص في الإعلام التونسي. تكتب باللغة العربية الفصحى الحديثة حصراً. تلتزم بأعلى معايير الصحافة المهنية.'},
+        {role:'system',content:'أنت DESK BOT، محرر أول ومساعد صحفي احترافي متخصص في الإعلام التونسي والعربي. تعمل بمعايير وكالة تونس إفريقيا للأنباء (وات) وكبرى المؤسسات الإعلامية. التزاماتك الصارمة: ① العربية الفصحى الحديثة الرصينة حصراً ② أسلوب تقريري مباشر خالٍ من الحشو والإنشاء ③ الدقة والموضوعية وتجنّب التضخيم ④ الهرم المقلوب في الكتابة الإخبارية ⑤ ذكر المصادر والمراجع ⑥ مراعاة السياق التونسي في المصطلحات. تُنتج محتوى جاهزاً للنشر الفوري دون مراجعة إضافية.'},
         {role:'user',content:prompt}
       ],
-      temperature:0.7,
-      max_tokens:4096
+      temperature:0.4,
+      max_tokens:8000
     })
   });
   if(!r.ok){
