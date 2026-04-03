@@ -200,7 +200,7 @@ textarea{min-height:110px}
   <div class="content">
 
     <div id="api-notice" class="notice-bar" style="display:none">
-      ⚠️ مفتاح OpenRouter API غير موجود —
+      ⚠️ مفتاح Gemini API غير موجود —
       <button onclick="open_modal('settings-modal')">اضغط هنا لإدخاله</button>
     </div>
 
@@ -452,17 +452,17 @@ textarea{min-height:110px}
     </div>
     <div class="m-body">
       <div class="notice-bar" style="margin-bottom:20px">
-        احصل على مفتاحك المجاني من <strong>openrouter.ai</strong> ← Sign in ← API Keys ← Create Key
+        احصل على مفتاحك من <strong>aistudio.google.com</strong> ← Get API Key ← Create API Key
       </div>
       <div class="field">
-        <label class="label">مفتاح Groq API</label>
-        <input type="text" id="api-key-inp" placeholder="sk-or-...">
+        <label class="label">مفتاح Google Gemini API</label>
+        <input type="text" id="api-key-inp" placeholder="AIzaSy...">
       </div>
       <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
         🤖 النماذج المستخدمة:<br>
-        • Llama 3.3 70B &nbsp;•&nbsp; Mixtral 8x7B<br>
-        ✅ مجاني تماماً — لا يحتاج بطاقة بنكية<br>
-        ⚡ 14400 طلب/يوم
+        • Gemini 2.0 Flash — الأسرع والأفضل للعربية<br>
+        • Gemini 1.5 Pro — الأعمق تحليلاً<br>
+        ✅ 1500 طلب/يوم مجاناً لكل صحفي
       </div>
       <button class="btn" onclick="save_api_key()">💾 حفظ المفتاح</button>
     </div>
@@ -1073,39 +1073,37 @@ async function save_api_key(){
 }
 
 // ============================================================
-// OPENROUTER — DUAL MODEL SYSTEM
+// GOOGLE GEMINI — DUAL MODEL SYSTEM
 // ============================================================
 const MODELS=[
-  {id:'qwen/qwen3.6-plus:free', name:'Qwen 3.6 Plus', color:'#9333ea'},
+  {id:'gemini-2.0-flash',      name:'Gemini 2.0 Flash',   color:'#1a4fdb'},
+  {id:'gemini-1.5-pro',        name:'Gemini 1.5 Pro',     color:'#0ea472'},
 ];
 
 const EDITORIAL_TOOLS=['editor','rewrite','headlines','flash'];
 
 async function call_model(modelId, prompt){
-  const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Authorization':'Bearer '+GEMINI_KEY,
-      'HTTP-Referer':'https://deskbot-six.vercel.app',
-      'X-Title':'DESK BOT - Digital Newsroom'
-    },
-    body:JSON.stringify({
-      model:modelId,
-      messages:[
-        {role:'system',content:'أنت DESK BOT، محرر أول ومساعد صحفي احترافي متخصص في الإعلام التونسي والعربي. تعمل بمعايير وكالة تونس إفريقيا للأنباء (وات) وكبرى المؤسسات الإعلامية. التزاماتك الصارمة: ① العربية الفصحى الحديثة الرصينة حصراً ② أسلوب تقريري مباشر خالٍ من الحشو والإنشاء ③ الدقة والموضوعية وتجنّب التضخيم ④ الهرم المقلوب في الكتابة الإخبارية ⑤ ذكر المصادر والمراجع ⑥ مراعاة السياق التونسي في المصطلحات. تُنتج محتوى جاهزاً للنشر الفوري دون مراجعة إضافية.'},
-        {role:'user',content:prompt}
-      ],
-      temperature:0.4,
-      max_tokens:8000
-    })
-  });
+  const r=await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${GEMINI_KEY}`,
+    {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{
+          temperature:0.7,
+          maxOutputTokens:4096,
+          topP:0.9
+        }
+      })
+    }
+  );
   if(!r.ok){
     const e=await r.json();
     throw new Error(e.error?.message||'خطأ في الاتصال بـ '+modelId)
   }
   const d=await r.json();
-  return d.choices?.[0]?.message?.content||'لم تُعد نتيجة';
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'لم تُعد نتيجة';
 }
 
 async function gemini(prompt, useDouble=false){
@@ -1148,7 +1146,7 @@ async function run_ai(){
       const results=await gemini(PROMPTS[cfg.key]+'\n\n'+inp, true);
 
       // Build triple result UI
-      let html=`<div style="display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:8px">`;
+      let html=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:8px">`;
       results.forEach((r,i)=>{
         const m=MODELS[i];
         const content=r.status==='fulfilled'?r.value:'❌ خطأ: '+r.reason?.message;
