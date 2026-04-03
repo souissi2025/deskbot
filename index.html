@@ -189,7 +189,7 @@ textarea{min-height:110px}
     </div>
     <div class="h-right">
       <select id="ai-model-select" class="h-btn" style="outline: none;">
-        <option value="gemini-1.5-flash">Gemini 1.5 Flash ⚡</option>
+        <option value="gemini-2.0-flash">Gemini 2.0 Flash ⚡</option>
         <option value="gemini-2.0-flash">Gemini 2.0 Flash 🚀</option>
       </select>
       <button class="live-pill" onclick="open_modal('radio-modal')">
@@ -453,7 +453,7 @@ textarea{min-height:110px}
         <input type="text" id="api-key-inp" placeholder="AIzaSy...">
       </div>
       <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
-        النماذج المستخدمة: <strong>Gemini 1.5 Flash / Pro</strong><br>
+        النماذج المستخدمة: <strong>Gemini 2.0 Flash / Pro</strong><br>
         1500 طلب/يوم مجاناً لكل صحفي
       </div>
       <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
@@ -1072,7 +1072,7 @@ async function gemini(prompt){
   if(!GEMINI_KEY){open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
   const selectedModel = document.getElementById('ai-model-select').value;
   const r=await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${GEMINI_KEY}`,
+    `https://generativelanguage.googleapis.com/v1/models/${selectedModel}:generateContent?key=${GEMINI_KEY}`,
     {
       method:'POST',
       headers:{'Content-Type':'application/json'},
