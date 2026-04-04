@@ -1,178 +1,756 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar" data-theme="light">
+<html dir="rtl" lang="ar" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DESK BOT — Digital Newsroom System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+/* ============================================================
+   DESIGN SYSTEM — DESK BOT 2.0
+   Dark-first, Glassmorphism, Bento Grid, Bloomberg-inspired
+============================================================ */
 :root {
-  --bg: #EBF3FF;
-  --bg2: #ffffff;
-  --bg3: #f0f6ff;
-  --text: #0f1e35;
-  --text2: #4a6080;
-  --accent: #1a4fdb;
-  --accent2: #0ea472;
-  --border: rgba(26,79,219,0.12);
-  --shadow: 0 4px 24px rgba(26,79,219,0.08);
-  --danger: #ef4444;
-  --amber: #f59e0b;
-  --card-hover: 0 8px 32px rgba(26,79,219,0.14);
-}
-[data-theme="dark"] {
-  --bg: #0a1628;
-  --bg2: #111f38;
-  --bg3: #162540;
-  --text: #e2ecff;
-  --text2: #7a9cc0;
-  --accent: #4a7fff;
+  --bg:      #07111f;
+  --bg2:     #0d1d33;
+  --bg3:     #132540;
+  --glass:   rgba(13,29,51,0.7);
+  --glass2:  rgba(19,37,64,0.85);
+  --text:    #e8f1ff;
+  --text2:   #7a9cc0;
+  --text3:   #4a6a8a;
+  --accent:  #3d7eff;
   --accent2: #10c98a;
-  --border: rgba(74,127,255,0.15);
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  --card-hover: 0 8px 32px rgba(0,0,0,0.5);
+  --gold:    #c9a84c;
+  --danger:  #ef4444;
+  --amber:   #f59e0b;
+  --purple:  #8b5cf6;
+  --border:  rgba(61,126,255,0.18);
+  --border2: rgba(201,168,76,0.25);
+  --glow:    0 0 30px rgba(61,126,255,0.15);
+  --shadow:  0 8px 32px rgba(0,0,0,0.4);
+  --shadow2: 0 20px 60px rgba(0,0,0,0.6);
+  --r:       16px;
+  --r2:      22px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);direction:rtl;min-height:100vh;transition:background .3s,color .3s}
+[data-theme="light"] {
+  --bg:      #f0f5ff;
+  --bg2:     #ffffff;
+  --bg3:     #e8f0ff;
+  --glass:   rgba(255,255,255,0.8);
+  --glass2:  rgba(240,245,255,0.9);
+  --text:    #0a1628;
+  --text2:   #4a6080;
+  --text3:   #8a9db5;
+  --accent:  #1a4fdb;
+  --accent2: #0ea472;
+  --gold:    #b8930a;
+  --border:  rgba(26,79,219,0.15);
+  --border2: rgba(184,147,10,0.3);
+  --glow:    0 0 30px rgba(26,79,219,0.08);
+  --shadow:  0 4px 24px rgba(26,79,219,0.08);
+  --shadow2: 0 20px 60px rgba(26,79,219,0.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  direction:rtl;
+  min-height:100vh;
+  transition:background .4s,color .4s;
+  overflow-x:hidden;
+}
+
+/* === BACKGROUND TEXTURE === */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(61,126,255,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(139,92,246,0.03) 0%, transparent 40%),
+    radial-gradient(circle at 60% 80%, rgba(16,201,138,0.03) 0%, transparent 40%);
+  pointer-events:none;
+  z-index:0;
+}
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(61,126,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61,126,255,0.02) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+  z-index:0;
+}
+#main-app, #login-screen{position:relative;z-index:1}
 
 /* ===== LOGIN ===== */
-#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:var(--bg)}
-.login-wrap{background:var(--bg2);border-radius:24px;padding:52px 44px;box-shadow:var(--shadow);text-align:center;max-width:420px;width:100%;border:1px solid var(--border)}
-.login-logo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px}
-.logo-box{width:56px;height:56px;background:linear-gradient(135deg,#1a4fdb,#0ea4d4);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;flex-shrink:0}
-.logo-name{font-size:34px;font-weight:900;letter-spacing:-1px}
+#login-screen{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:20px;background:var(--bg);
+}
+.login-wrap{
+  background:var(--glass2);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-radius:28px;
+  padding:56px 48px;
+  box-shadow:var(--shadow2);
+  text-align:center;
+  max-width:440px;
+  width:100%;
+  border:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.login-wrap::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--gold),transparent);
+}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:8px}
+.logo-box{
+  width:60px;height:60px;
+  background:linear-gradient(135deg,#1a4fdb,#0ea4d4);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;color:#fff;flex-shrink:0;
+  box-shadow:0 8px 24px rgba(61,126,255,0.4);
+}
+.logo-name{font-size:36px;font-weight:900;letter-spacing:-1px;font-family:'Oswald',sans-serif}
 .logo-name span{color:var(--accent)}
-.login-tag{font-size:10px;letter-spacing:3px;color:var(--text2);margin-bottom:40px;display:flex;align-items:center;justify-content:center;gap:8px}
-.login-tag::before{content:'';width:7px;height:7px;background:var(--accent2);border-radius:50%}
-.google-btn{background:#fff;border:1.5px solid #dadce0;border-radius:14px;padding:14px 20px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;color:#3c4043;font-family:'Cairo',sans-serif;font-weight:600;transition:box-shadow .2s,border-color .2s}
-.google-btn:hover{box-shadow:0 2px 12px rgba(0,0,0,0.15);border-color:#aaa}
-[data-theme="dark"] .google-btn{background:#1e2d42;color:var(--text);border-color:var(--border)}
+.login-sub{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:44px;text-transform:uppercase}
+.google-btn{
+  background:rgba(255,255,255,0.05);
+  border:1.5px solid var(--border);
+  border-radius:14px;padding:15px 20px;
+  font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  width:100%;color:var(--text);
+  font-family:'Cairo',sans-serif;font-weight:600;
+  transition:all .25s;
+}
+.google-btn:hover{background:rgba(61,126,255,0.1);border-color:var(--accent);transform:translateY(-1px)}
+[data-theme="light"] .google-btn{background:#fff;color:#3c4043;border-color:#dadce0}
 
 /* ===== APP ===== */
 #main-app{display:none;min-height:100vh}
 
 /* ===== HEADER ===== */
-.header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+.header{
+  background:var(--glass2);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
 .h-logo{display:flex;align-items:center;gap:10px}
-.h-logo .logo-box{width:36px;height:36px;font-size:17px;border-radius:10px;color:#fff}
-.h-logo-text{font-size:20px;font-weight:900}
+.h-logo .logo-box{width:34px;height:34px;font-size:16px;border-radius:10px}
+.h-logo-text{font-size:18px;font-weight:900;font-family:'Oswald',sans-serif;letter-spacing:1px}
 .h-logo-text span{color:var(--accent)}
-.h-right{display:flex;align-items:center;gap:8px}
-.live-pill{background:var(--text);color:var(--bg);border-radius:20px;padding:6px 14px;font-size:10px;letter-spacing:2.5px;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:'Cairo',sans-serif;border:none}
-.live-dot{width:7px;height:7px;background:#ef4444;border-radius:50%;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.h-btn{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:7px 14px;cursor:pointer;color:var(--text);font-size:13px;display:flex;align-items:center;gap:6px;transition:all .2s;font-family:'Cairo',sans-serif;font-weight:600}
-.h-btn:hover{border-color:var(--accent);color:var(--accent)}
-select.h-btn{appearance:none;padding-right:14px;padding-left:24px;background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");background-repeat:no-repeat;background-position:left .7em top 50%;background-size:.65em auto}
-[data-theme="dark"] select.h-btn{background-image:url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")}
-.avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0}
+.h-center{
+  display:flex;align-items:center;gap:16px;
+  font-size:12px;color:var(--text2);
+}
+.h-clock{
+  font-family:'Oswald',sans-serif;
+  font-size:14px;font-weight:400;
+  color:var(--text);
+  letter-spacing:1px;
+}
+.h-date{font-size:11px;color:var(--text2)}
+.quota-wrap{display:flex;align-items:center;gap:8px}
+.quota-bar{
+  width:80px;height:5px;
+  background:var(--border);
+  border-radius:10px;overflow:hidden;
+}
+.quota-fill{
+  height:100%;
+  background:var(--accent2);
+  border-radius:10px;
+  transition:width .5s,background .3s;
+}
+.quota-text{font-size:10px;color:var(--text2);white-space:nowrap}
+.h-right{display:flex;align-items:center;gap:6px}
+.live-pill{
+  background:rgba(239,68,68,0.1);
+  border:1px solid rgba(239,68,68,0.3);
+  color:#ef4444;
+  border-radius:20px;padding:5px 12px;
+  font-size:10px;letter-spacing:2px;
+  display:flex;align-items:center;gap:6px;
+  cursor:pointer;font-family:'Cairo',sans-serif;border:none;
+  border:1px solid rgba(239,68,68,0.3);
+  transition:all .2s;
+}
+.live-pill:hover{background:rgba(239,68,68,0.2)}
+.live-dot{width:6px;height:6px;background:#ef4444;border-radius:50%;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.h-btn{
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:10px;padding:6px 12px;
+  cursor:pointer;color:var(--text2);
+  font-size:12px;
+  display:flex;align-items:center;gap:6px;
+  transition:all .2s;
+  font-family:'Cairo',sans-serif;font-weight:600;
+  white-space:nowrap;
+}
+.h-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(61,126,255,0.08)}
+.h-btn.gold{border-color:var(--border2);color:var(--gold)}
+.h-btn.gold:hover{background:rgba(201,168,76,0.1)}
+select.h-btn{
+  appearance:none;cursor:pointer;
+  padding-right:12px;padding-left:28px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a9cc0'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:left 8px center;
+  background-color:rgba(255,255,255,0.05);
+}
+[data-theme="light"] select.h-btn{background-color:#f8f9ff}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;
+  border:2px solid rgba(255,255,255,0.1);
+}
+.kbd-hint{
+  font-size:10px;color:var(--text3);
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:6px;padding:2px 7px;
+  font-family:monospace;
+  cursor:pointer;transition:all .2s;
+}
+.kbd-hint:hover{color:var(--accent);border-color:var(--accent)}
 
 /* ===== CONTENT ===== */
-.content{max-width:1060px;margin:0 auto;padding:32px 24px}
-.notice-bar{background:linear-gradient(135deg,#fef3c7,#fff7e0);border:1px solid #f59e0b;border-radius:12px;padding:12px 18px;font-size:13px;color:#92400e;margin-bottom:24px;display:flex;align-items:center;gap:10px}
-.notice-bar button{background:none;border:none;color:#92400e;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;text-decoration:underline}
-.sec-label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:2px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.content{max-width:1100px;margin:0 auto;padding:28px 24px}
 
-/* ===== TOOL CARDS ===== */
-.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
-.tools-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.tool-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:18px;padding:24px 16px;cursor:pointer;text-align:center;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:14px;position:relative;overflow:hidden}
-.tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),#0ea4d4);opacity:0;transition:opacity .22s}
-.tool-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--card-hover)}
+/* ===== WELCOME BAR ===== */
+.welcome-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:28px;
+  padding:18px 22px;
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  border-radius:var(--r2);
+  border:1px solid var(--border);
+}
+.welcome-text .wt-greeting{font-size:15px;font-weight:700;margin-bottom:2px}
+.welcome-text .wt-sub{font-size:12px;color:var(--text2)}
+.welcome-stats{display:flex;align-items:center;gap:20px}
+.w-stat{text-align:center}
+.w-stat-val{font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;color:var(--accent)}
+.w-stat-lbl{font-size:10px;color:var(--text3)}
+
+/* ===== NOTICE BAR ===== */
+.notice-bar{
+  background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.06));
+  border:1px solid rgba(245,158,11,0.3);
+  border-radius:var(--r);padding:12px 18px;
+  font-size:13px;color:#fbbf24;
+  margin-bottom:24px;display:flex;align-items:center;gap:10px;
+}
+.notice-bar button{
+  background:none;border:none;color:#fbbf24;
+  font-weight:700;cursor:pointer;
+  font-family:'Cairo',sans-serif;text-decoration:underline;
+}
+
+/* ===== SECTION LABEL ===== */
+.sec-label{
+  font-size:10px;font-weight:700;color:var(--gold);
+  letter-spacing:3px;margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+  text-transform:uppercase;
+}
+.sec-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border2),transparent);
+}
+
+/* ===== BENTO GRID — PRIORITY TOOLS ===== */
+.bento-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:14px;
+  margin-bottom:28px;
+}
+.tool-card{
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:24px 20px;
+  cursor:pointer;
+  transition:all .25s;
+  display:flex;flex-direction:column;
+  gap:12px;
+  position:relative;overflow:hidden;
+}
+.tool-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  opacity:0;transition:opacity .25s;
+  border-radius:var(--r2);
+}
+.tool-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+  box-shadow:var(--glow), 0 12px 40px rgba(0,0,0,0.3);
+}
 .tool-card:hover::before{opacity:.04}
-.t-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;position:relative;z-index:1;color:var(--text)}
-.t-name{font-size:14px;font-weight:700;position:relative;z-index:1}
-.ic-blue{background:#dbeafe; color:#1e40af;} .ic-orange{background:#ffedd5; color:#c2410c;} .ic-green{background:#dcfce7; color:#15803d;}
-.ic-red{background:#fee2e2; color:#b91c1c;} .ic-purple{background:#f3e8ff; color:#7e22ce;} .ic-teal{background:#ccfbf1; color:#0f766e;}
-.ic-amber{background:#fef3c7; color:#b45309;} .ic-pink{background:#fce7f3; color:#be185d;} .ic-indigo{background:#e0e7ff; color:#4338ca;}
+.tool-card.featured{
+  grid-column:1;grid-row:1/3;
+  padding:32px 28px;
+  border-color:var(--border2);
+}
+.tool-card.featured::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.tool-card.featured:hover{border-color:var(--gold)}
+.t-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;position:relative;z-index:1;
+  flex-shrink:0;
+}
+.t-content{position:relative;z-index:1;flex:1}
+.t-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.tool-card.featured .t-name{font-size:19px;font-family:'Amiri',serif}
+.t-desc{font-size:11px;color:var(--text2);line-height:1.5}
+.t-badge{
+  position:absolute;top:16px;left:16px;
+  background:var(--gold);color:#000;
+  font-size:9px;font-weight:700;
+  border-radius:6px;padding:2px 8px;
+  letter-spacing:1px;
+  font-family:'Oswald',sans-serif;
+}
+.t-shortcut{
+  position:absolute;bottom:14px;left:16px;
+  font-size:10px;color:var(--text3);
+  font-family:monospace;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:5px;padding:1px 6px;
+}
+
+/* === ICON COLORS === */
+.ic-blue{background:rgba(59,130,246,0.15);color:#60a5fa}
+.ic-orange{background:rgba(249,115,22,0.15);color:#fb923c}
+.ic-green{background:rgba(34,197,94,0.15);color:#4ade80}
+.ic-red{background:rgba(239,68,68,0.15);color:#f87171}
+.ic-purple{background:rgba(139,92,246,0.15);color:#a78bfa}
+.ic-teal{background:rgba(20,184,166,0.15);color:#2dd4bf}
+.ic-amber{background:rgba(245,158,11,0.15);color:#fbbf24}
+.ic-pink{background:rgba(236,72,153,0.15);color:#f472b6}
+.ic-indigo{background:rgba(99,102,241,0.15);color:#818cf8}
+.ic-gold{background:rgba(201,168,76,0.15);color:#c9a84c}
+
+/* ===== TOOLS GRID ===== */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:28px;
+}
+.tool-card.mini{padding:18px 16px}
+.tool-card.mini .t-name{font-size:13px}
+
+/* ===== LAST ACTIVITY BAR ===== */
+.activity-bar{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:14px 18px;
+  display:flex;align-items:center;gap:12px;
+  overflow:hidden;margin-bottom:24px;
+}
+.activity-label{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:2px;white-space:nowrap;flex-shrink:0}
+.activity-scroll{display:flex;gap:16px;overflow:hidden;flex:1}
+.activity-item{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:8px;padding:5px 12px;
+  white-space:nowrap;flex-shrink:0;
+  font-size:11px;color:var(--text2);
+  cursor:pointer;transition:all .2s;
+}
+.activity-item:hover{border-color:var(--accent);color:var(--text)}
+.activity-badge{
+  background:var(--accent);color:#fff;
+  font-size:9px;font-weight:700;
+  border-radius:4px;padding:1px 6px;
+}
 
 /* ===== MODAL ===== */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
-.overlay.open{display:flex}
-.modal{background:var(--bg2);border-radius:22px;width:100%;max-width:780px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);border:1px solid var(--border)}
-.m-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1;border-radius:22px 22px 0 0}
-.m-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
-.m-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text2);width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.m-close:hover{background:var(--bg3)}
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.65);z-index:200;
+  align-items:center;justify-content:center;
+  padding:16px;
+  backdrop-filter:blur(6px);
+}
+.overlay.open{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--glass2);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-radius:var(--r2);
+  width:100%;max-width:800px;
+  max-height:92vh;overflow-y:auto;
+  box-shadow:var(--shadow2);
+  border:1px solid var(--border);
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.m-head{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;
+  background:var(--glass2);
+  backdrop-filter:blur(20px);
+  z-index:1;border-radius:var(--r2) var(--r2) 0 0;
+}
+.m-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px;font-family:'Amiri',serif}
+.m-close{
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  font-size:14px;cursor:pointer;color:var(--text2);
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.m-close:hover{background:rgba(239,68,68,0.15);color:#ef4444;border-color:rgba(239,68,68,0.3)}
 .m-body{padding:24px}
+
+/* ===== COMMAND PALETTE ===== */
+#cmd-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.75);z-index:500;
+  align-items:flex-start;justify-content:center;
+  padding-top:80px;
+  backdrop-filter:blur(8px);
+}
+#cmd-overlay.open{display:flex;animation:fadeIn .15s ease}
+.cmd-box{
+  background:var(--glass2);
+  backdrop-filter:blur(24px);
+  border-radius:20px;
+  width:100%;max-width:600px;
+  border:1px solid var(--border);
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  overflow:hidden;
+  animation:slideDown .2s ease;
+}
+@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.cmd-input-wrap{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+}
+.cmd-input-wrap i{color:var(--text3);font-size:16px}
+#cmd-input{
+  flex:1;background:none;border:none;outline:none;
+  font-size:17px;color:var(--text);
+  font-family:'Cairo',sans-serif;
+  direction:rtl;
+}
+#cmd-input::placeholder{color:var(--text3)}
+.cmd-list{max-height:380px;overflow-y:auto;padding:8px}
+.cmd-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:12px;
+  cursor:pointer;transition:all .15s;
+}
+.cmd-item:hover,.cmd-item.active{
+  background:rgba(61,126,255,0.12);
+}
+.cmd-item-icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.cmd-item-name{font-size:14px;font-weight:600;flex:1}
+.cmd-item-key{
+  font-size:10px;color:var(--text3);
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);border-radius:5px;
+  padding:2px 7px;font-family:monospace;
+}
+.cmd-footer{
+  padding:10px 16px;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+  font-size:10px;color:var(--text3);
+}
+.cmd-hint{display:flex;align-items:center;gap:5px}
+.cmd-hint kbd{
+  background:rgba(255,255,255,0.07);
+  border:1px solid var(--border);border-radius:4px;
+  padding:1px 6px;font-family:monospace;font-size:10px;
+}
 
 /* ===== FORM ELEMENTS ===== */
 .field{margin-bottom:16px}
-.label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px;display:block;letter-spacing:.5px}
-textarea,input[type=text],input[type=date]{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;font-size:14px;color:var(--text);font-family:'Cairo',sans-serif;direction:rtl;resize:vertical;transition:border-color .2s;outline:none}
-textarea:focus,input:focus{border-color:var(--accent)}
-textarea{min-height:110px}
+.label{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px;display:block;letter-spacing:.5px;text-transform:uppercase}
+textarea,input[type=text],input[type=date]{
+  width:100%;
+  background:rgba(255,255,255,0.04);
+  border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 16px;
+  font-size:14px;color:var(--text);
+  font-family:'Cairo',sans-serif;direction:rtl;
+  resize:vertical;transition:border-color .2s;outline:none;
+}
+textarea:focus,input:focus{border-color:var(--accent);background:rgba(61,126,255,0.05)}
+textarea{min-height:120px;line-height:1.7}
+[data-theme="light"] textarea,[data-theme="light"] input[type=text],[data-theme="light"] input[type=date]{
+  background:#f8faff;border-color:rgba(26,79,219,0.2);
+}
 
 /* ===== BUTTONS ===== */
-.btn{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:opacity .2s;display:inline-flex;align-items:center;gap:8px}
-.btn:hover{opacity:.88}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn-sec{background:var(--bg3);color:var(--text);border:1.5px solid var(--border);border-radius:12px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
-.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
-.btn-danger{border-color:#ef4444;color:#ef4444}
-.btn-danger:hover{background:#fee2e2;border-color:#ef4444}
+.btn{
+  background:var(--accent);color:#fff;border:none;
+  border-radius:12px;padding:12px 24px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'Cairo',sans-serif;
+  transition:all .2s;
+  display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 4px 16px rgba(61,126,255,0.3);
+}
+.btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(61,126,255,0.4)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-sec{
+  background:rgba(255,255,255,0.05);
+  color:var(--text2);
+  border:1.5px solid var(--border);border-radius:12px;
+  padding:9px 18px;font-size:13px;font-weight:600;
+  cursor:pointer;font-family:'Cairo',sans-serif;
+  transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent);background:rgba(61,126,255,0.08)}
+.btn-danger{border-color:rgba(239,68,68,0.4);color:#ef4444}
+.btn-danger:hover{background:rgba(239,68,68,0.1)}
 
-/* ===== RESULT ===== */
-.result-box{background:var(--bg3);border:1.5px solid var(--border);border-radius:14px;padding:18px;font-size:14px;line-height:1.9;white-space:pre-wrap;direction:rtl;color:var(--text);margin-top:16px;min-height:80px}
-.result-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-.loading{display:flex;align-items:center;gap:10px;color:var(--text2);font-size:14px;padding:20px 0}
-.spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
+/* ===== RESULT BOX ===== */
+.result-wrap{margin-top:18px}
+.result-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.result-tag{
+  font-size:10px;font-weight:700;color:var(--accent2);
+  letter-spacing:2px;text-transform:uppercase;
+}
+.result-box{
+  background:rgba(255,255,255,0.03);
+  border:1.5px solid var(--border);
+  border-radius:14px;padding:20px;
+  font-size:14px;line-height:2;
+  direction:rtl;color:var(--text);
+  position:relative;
+  font-family:'Cairo',sans-serif;
+}
+.result-box.rendered h1,.result-box.rendered h2,.result-box.rendered h3{
+  font-family:'Amiri',serif;
+  color:var(--gold);margin-bottom:8px;margin-top:16px;
+}
+.result-box.rendered h1{font-size:22px}
+.result-box.rendered h2{font-size:18px}
+.result-box.rendered p{margin-bottom:10px;line-height:1.9}
+.result-box.rendered strong{color:var(--accent);font-weight:700}
+.result-box.rendered em{color:var(--text2)}
+.result-box.rendered ul,.result-box.rendered ol{padding-right:20px;margin-bottom:10px}
+.result-box.rendered li{margin-bottom:6px;line-height:1.7}
+.result-box.rendered blockquote{
+  border-right:3px solid var(--gold);
+  padding-right:16px;margin:12px 0;
+  color:var(--text2);font-style:italic;
+}
+.result-box.tashkeel{
+  font-family:'Amiri',serif;
+  font-size:17px;line-height:2.4;
+}
+.result-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+/* ===== LOADING ===== */
+.loading{
+  display:flex;align-items:center;gap:12px;
+  color:var(--text2);font-size:13px;padding:20px 0;
+}
+.spin{
+  width:20px;height:20px;
+  border:2px solid var(--border);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:spin .7s linear infinite;flex-shrink:0;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
+.loading-dots::after{
+  content:'...';animation:dots 1.5s infinite;
+}
+@keyframes dots{
+  0%{content:'.'}33%{content:'..'}66%{content:'...'}
+}
 
-/* ===== ARCHIVE ITEMS ===== */
-.arc-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+/* ===== FOCUS MODE ===== */
+.overlay.focus-mode .modal{
+  max-width:95vw;max-height:95vh;
+}
+
+/* ===== ARCHIVE ===== */
+.arc-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:14px;padding:14px 16px;margin-bottom:10px;
+  transition:border-color .2s;
+}
+.arc-item:hover{border-color:var(--accent)}
 .arc-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.arc-badge{background:var(--accent);color:#fff;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700}
-.arc-user{font-size:12px;color:var(--text2)}
-.arc-time{font-size:11px;color:var(--text2);margin-right:auto}
-.arc-prev{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arc-badge{
+  background:rgba(61,126,255,0.2);color:var(--accent);
+  border-radius:6px;padding:3px 10px;font-size:10px;font-weight:700;
+  border:1px solid rgba(61,126,255,0.3);
+}
+.arc-user{font-size:11px;color:var(--text2)}
+.arc-time{font-size:10px;color:var(--text3);margin-right:auto}
+.arc-prev{
+  font-size:12px;color:var(--text2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
 
 /* ===== AGENDA ===== */
-.ag-item{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px}
-.ag-date{background:var(--accent);color:#fff;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:700;white-space:nowrap;flex-shrink:0}
-.ag-body{flex:1}
+.ag-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:14px;padding:14px 16px;
+  margin-bottom:10px;display:flex;
+  align-items:flex-start;gap:12px;
+}
+.ag-date{
+  background:rgba(201,168,76,0.15);
+  color:var(--gold);
+  border:1px solid var(--border2);
+  border-radius:10px;padding:6px 12px;
+  font-size:12px;font-weight:700;
+  white-space:nowrap;flex-shrink:0;
+  font-family:'Oswald',sans-serif;
+}
 .ag-event{font-size:14px;font-weight:700;margin-bottom:3px}
-.ag-by{font-size:11px;color:var(--text2)}
-.ag-acts{display:flex;gap:6px;flex-shrink:0}
+.ag-by{font-size:11px;color:var(--text3)}
 
 /* ===== RADIO ===== */
-.radio-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;transition:all .2s}
-.radio-card.on{border-color:var(--accent2);background:rgba(14,164,114,.06)}
-.radio-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
-.radio-info{flex:1}
+.radio-card{
+  background:rgba(255,255,255,0.03);
+  border:1.5px solid var(--border);
+  border-radius:14px;padding:14px 16px;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:12px;
+  transition:all .2s;cursor:pointer;
+}
+.radio-card.on{
+  border-color:var(--accent2);
+  background:rgba(16,201,138,0.06);
+}
+.radio-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .radio-name{font-size:14px;font-weight:700}
-.radio-sub{font-size:12px;color:var(--text2)}
-.radio-acts{display:flex;gap:8px}
+.radio-sub{font-size:11px;color:var(--text2)}
 
 /* ===== SMART RECORD ===== */
-.rec-center{text-align:center;padding:28px 0}
-.rec-status{font-size:15px;color:var(--text2);margin-bottom:16px}
-.rec-timer{font-size:52px;font-weight:900;color:var(--accent);margin-bottom:24px;display:none;font-variant-numeric:tabular-nums}
-.rec-main-btn{font-size:16px;padding:18px 44px;border-radius:16px}
+.rec-center{text-align:center;padding:32px 0}
+.rec-status{font-size:14px;color:var(--text2);margin-bottom:14px}
+.rec-timer{
+  font-size:56px;font-weight:900;
+  color:var(--accent);margin-bottom:24px;
+  display:none;font-variant-numeric:tabular-nums;
+  font-family:'Oswald',sans-serif;
+  text-shadow:0 0 30px rgba(61,126,255,0.5);
+}
+.rec-timer.recording{color:#ef4444;text-shadow:0 0 30px rgba(239,68,68,0.5);animation:recPulse 1.5s infinite}
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:.7}}
+.rec-main-btn{font-size:15px;padding:16px 40px;border-radius:14px}
 
 /* ===== TOAST ===== */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 26px;border-radius:14px;font-size:14px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-.toast.on{opacity:1}
-
-@media(max-width:768px){
-  .priority-grid{grid-template-columns:1fr}
-  .tools-grid{grid-template-columns:repeat(2,1fr)}
-  .h-btn span{display:none}
-  .content{padding:20px 14px}
+.toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--glass2);
+  backdrop-filter:blur(20px);
+  color:var(--text);padding:12px 22px;
+  border-radius:14px;font-size:13px;font-weight:600;
+  z-index:9999;opacity:0;transition:all .3s;
+  pointer-events:none;white-space:nowrap;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow2);
+  display:flex;align-items:center;gap:8px;
 }
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,201,138,0.4);color:var(--accent2)}
+.toast.error{border-color:rgba(239,68,68,0.4);color:#ef4444}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .bento-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .tool-card.featured{grid-column:1/3;grid-row:1}
+  .tools-grid{grid-template-columns:repeat(3,1fr)}
+  .h-center{display:none}
+  .quota-wrap{display:none}
+}
+@media(max-width:600px){
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .bento-grid{grid-template-columns:1fr}
+  .tool-card.featured{grid-column:1;grid-row:1}
+  .content{padding:16px 12px}
+  .h-btn span{display:none}
+  .welcome-stats{display:none}
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ===== TRANSITIONS ===== */
+.tool-card,.btn,.btn-sec,.h-btn,.arc-item,.radio-card{will-change:transform}
 </style>
 </head>
 <body>
 
+<!-- =================== LOGIN =================== -->
 <div id="login-screen">
   <div class="login-wrap">
     <div class="login-logo">
       <div class="logo-box"><i class="fa-solid fa-newspaper"></i></div>
       <div class="logo-name">DESK <span>BOT</span></div>
     </div>
-    <div class="login-tag">DIGITAL NEWSROOM SYSTEM</div>
+    <div class="login-sub">Digital Newsroom System</div>
     <button class="google-btn" onclick="googleLogin()">
       <svg width="20" height="20" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
       تسجيل الدخول بحساب Google
@@ -180,23 +758,38 @@ textarea{min-height:110px}
   </div>
 </div>
 
+<!-- =================== MAIN APP =================== -->
 <div id="main-app">
 
+  <!-- HEADER -->
   <header class="header">
     <div class="h-logo">
       <div class="logo-box"><i class="fa-solid fa-newspaper"></i></div>
       <div class="h-logo-text">DESK <span>BOT</span></div>
     </div>
+
+    <div class="h-center">
+      <div>
+        <div class="h-clock" id="live-clock">--:--:--</div>
+        <div class="h-date" id="live-date">--</div>
+      </div>
+      <div class="quota-wrap">
+        <div class="quota-bar"><div class="quota-fill" id="quota-fill" style="width:0%"></div></div>
+        <div class="quota-text" id="quota-text">0 / 1500</div>
+      </div>
+      <div class="kbd-hint" onclick="open_cmd()" title="Command Palette">⌘K</div>
+    </div>
+
     <div class="h-right">
-      <select id="ai-model-select" class="h-btn" style="outline: none;">
-        <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-        <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+      <select id="ai-model-select" class="h-btn" title="النموذج">
+        <option value="gemini-1.5-flash">Flash ⚡</option>
+        <option value="gemini-1.5-pro">Pro 🧠</option>
       </select>
       <button class="live-pill" onclick="open_modal('radio-modal')">
-        <div class="live-dot"></div>LIVE STREAM
+        <div class="live-dot"></div>LIVE
       </button>
-      <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-folder-open"></i> <span>الأرشيف</span></button>
-      <button class="h-btn" onclick="open_modal('settings-modal')"><i class="fa-solid fa-gear"></i> <span>API</span></button>
+      <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
+      <button class="h-btn gold" onclick="open_modal('settings-modal')"><i class="fa-solid fa-gear"></i> <span>API</span></button>
       <button class="h-btn" onclick="toggle_theme()" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
       <div class="avatar" id="avatar" title="تسجيل الخروج" onclick="do_signout()">ح</div>
     </div>
@@ -204,108 +797,212 @@ textarea{min-height:110px}
 
   <div class="content">
 
+    <!-- NOTICE BAR -->
     <div id="api-notice" class="notice-bar" style="display:none">
-      <i class="fa-solid fa-triangle-exclamation"></i> مفتاح Gemini API غير موجود —
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      مفتاح Gemini API غير موجود —
       <button onclick="open_modal('settings-modal')">اضغط هنا لإدخاله</button>
     </div>
 
-    <div class="sec-label"><i class="fa-solid fa-wand-magic-sparkles"></i> مركز المعالجة الذكية</div>
-    <div class="priority-grid">
-      <div class="tool-card" onclick="open_tool('editor')">
-        <div class="t-icon ic-blue"><i class="fa-solid fa-pen-nib"></i></div>
-        <div class="t-name">المحرر الرقمي Pro</div>
+    <!-- WELCOME BAR -->
+    <div class="welcome-bar">
+      <div class="welcome-text">
+        <div class="wt-greeting" id="welcome-greeting">مرحباً 👋</div>
+        <div class="wt-sub" id="welcome-sub">جاهز لبدء العمل التحريري</div>
       </div>
-      <div class="tool-card" onclick="open_tool('rewrite')">
-        <div class="t-icon ic-orange"><i class="fa-solid fa-pen-to-square"></i></div>
-        <div class="t-name">إعادة صياغة محترفة</div>
-      </div>
-      <div class="tool-card" onclick="open_tool('headlines')">
-        <div class="t-icon ic-green"><i class="fa-solid fa-heading"></i></div>
-        <div class="t-name">عناوين احترافية</div>
+      <div class="welcome-stats">
+        <div class="w-stat">
+          <div class="w-stat-val" id="ws-requests">0</div>
+          <div class="w-stat-lbl">طلبات اليوم</div>
+        </div>
+        <div class="w-stat">
+          <div class="w-stat-val" id="ws-remaining">1500</div>
+          <div class="w-stat-lbl">متبقية</div>
+        </div>
       </div>
     </div>
 
-    <div class="sec-label"><i class="fa-solid fa-wrench"></i> الأدوات العامة</div>
-    <div class="tools-grid">
+    <!-- ACTIVITY BAR -->
+    <div class="activity-bar" id="activity-bar" style="display:none">
+      <div class="activity-label">آخر الأنشطة</div>
+      <div class="activity-scroll" id="activity-scroll"></div>
+    </div>
+
+    <!-- PRIORITY TOOLS — BENTO GRID -->
+    <div class="sec-label"><i class="fa-solid fa-wand-magic-sparkles"></i> مركز المعالجة الذكية</div>
+    <div class="bento-grid">
+
+      <div class="tool-card featured" onclick="open_tool('editor')">
+        <div class="t-badge">PRO</div>
+        <div class="t-shortcut">Ctrl+1</div>
+        <div class="t-icon ic-gold" style="width:60px;height:60px;font-size:26px"><i class="fa-solid fa-pen-nib"></i></div>
+        <div class="t-content">
+          <div class="t-name">المحرر الرقمي Pro</div>
+          <div class="t-desc">تحويل النص الخام إلى مادة إخبارية احترافية وفق معايير وات وديوان أف أم — 5 عناوين + مقال مهيكل</div>
+        </div>
+      </div>
+
+      <div class="tool-card" onclick="open_tool('rewrite')">
+        <div class="t-shortcut">Ctrl+2</div>
+        <div class="t-icon ic-orange"><i class="fa-solid fa-pen-to-square"></i></div>
+        <div class="t-content">
+          <div class="t-name">إعادة صياغة محترفة</div>
+          <div class="t-desc">إعادة هيكلة للنشر الرقمي مع تحسين SEO</div>
+        </div>
+      </div>
+
+      <div class="tool-card" onclick="open_tool('headlines')">
+        <div class="t-shortcut">Ctrl+3</div>
+        <div class="t-icon ic-blue"><i class="fa-solid fa-heading"></i></div>
+        <div class="t-content">
+          <div class="t-name">عناوين احترافية</div>
+          <div class="t-desc">12 عنواناً في 4 فئات تحريرية متخصصة</div>
+        </div>
+      </div>
+
       <div class="tool-card" onclick="open_tool('flash')">
-        <div class="t-icon ic-red"><i class="fa-solid fa-bolt"></i></div><div class="t-name">فلاش إخباري</div>
+        <div class="t-shortcut">Ctrl+4</div>
+        <div class="t-icon ic-red"><i class="fa-solid fa-bolt"></i></div>
+        <div class="t-content">
+          <div class="t-name">فلاش إخباري</div>
+          <div class="t-desc">موجز إذاعي مشكول للإلقاء المباشر</div>
+        </div>
       </div>
-      <div class="tool-card" onclick="open_tool('transcribe')">
-        <div class="t-icon ic-purple"><i class="fa-solid fa-microphone"></i></div><div class="t-name">تفريغ وتحرير</div>
+
+    </div>
+
+    <!-- GENERAL TOOLS -->
+    <div class="sec-label"><i class="fa-solid fa-toolbox"></i> الأدوات العامة</div>
+    <div class="tools-grid">
+
+      <div class="tool-card mini" onclick="open_tool('transcribe')">
+        <div class="t-icon ic-purple"><i class="fa-solid fa-microphone"></i></div>
+        <div class="t-name">تفريغ وتحرير</div>
       </div>
-      <div class="tool-card" onclick="open_tool('monitor')">
-        <div class="t-icon ic-teal"><i class="fa-solid fa-satellite-dish"></i></div><div class="t-name">اقتراحات تحريرية</div>
+
+      <div class="tool-card mini" onclick="open_tool('monitor')">
+        <div class="t-icon ic-teal"><i class="fa-solid fa-satellite-dish"></i></div>
+        <div class="t-name">اقتراحات تحريرية</div>
       </div>
-      <div class="tool-card" onclick="open_today()">
-        <div class="t-icon ic-amber"><i class="fa-solid fa-calendar-day"></i></div><div class="t-name">حدث اليوم</div>
+
+      <div class="tool-card mini" onclick="open_today()">
+        <div class="t-icon ic-amber"><i class="fa-solid fa-calendar-day"></i></div>
+        <div class="t-name">حدث اليوم</div>
       </div>
-      <div class="tool-card" onclick="open_modal('matches-modal')">
-        <div class="t-icon ic-green"><i class="fa-solid fa-futbol"></i></div><div class="t-name">أرشيف المواجهات</div>
+
+      <div class="tool-card mini" onclick="open_modal('matches-modal')">
+        <div class="t-icon ic-green"><i class="fa-solid fa-futbol"></i></div>
+        <div class="t-name">أرشيف المواجهات</div>
       </div>
-      <div class="tool-card" onclick="open_modal('profile-modal')">
-        <div class="t-icon ic-blue"><i class="fa-solid fa-user"></i></div><div class="t-name">ملف الشخصية</div>
+
+      <div class="tool-card mini" onclick="open_modal('profile-modal')">
+        <div class="t-icon ic-blue"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="t-name">ملف الشخصية</div>
       </div>
-      <div class="tool-card" onclick="open_modal('agenda-modal')">
-        <div class="t-icon ic-orange"><i class="fa-solid fa-calendar-days"></i></div><div class="t-name">الأجندة</div>
+
+      <div class="tool-card mini" onclick="open_modal('agenda-modal')">
+        <div class="t-icon ic-gold"><i class="fa-solid fa-calendar-days"></i></div>
+        <div class="t-name">الأجندة المشتركة</div>
       </div>
-      <div class="tool-card" onclick="open_tool('checker')">
-        <div class="t-icon ic-pink"><i class="fa-solid fa-spell-check"></i></div><div class="t-name">مدقق المحتوى</div>
+
+      <div class="tool-card mini" onclick="open_tool('checker')">
+        <div class="t-icon ic-pink"><i class="fa-solid fa-spell-check"></i></div>
+        <div class="t-name">مدقق المحتوى</div>
       </div>
-      <div class="tool-card" onclick="open_modal('smart-modal')">
-        <div class="t-icon ic-indigo"><i class="fa-solid fa-microphone-lines"></i></div><div class="t-name">التسجيل الذكي</div>
+
+      <div class="tool-card mini" onclick="open_modal('smart-modal')">
+        <div class="t-icon ic-indigo"><i class="fa-solid fa-microphone-lines"></i></div>
+        <div class="t-name">التسجيل الذكي</div>
       </div>
+
     </div>
   </div>
 </div>
 
+<!-- =================== COMMAND PALETTE =================== -->
+<div id="cmd-overlay" onclick="if(event.target===this) close_cmd()">
+  <div class="cmd-box">
+    <div class="cmd-input-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="cmd-input" placeholder="ابحث عن أداة أو اكتب أمراً..." autocomplete="off" oninput="cmd_filter()" onkeydown="cmd_key(event)">
+    </div>
+    <div class="cmd-list" id="cmd-list"></div>
+    <div class="cmd-footer">
+      <div class="cmd-hint"><kbd>↑↓</kbd> للتنقل</div>
+      <div class="cmd-hint"><kbd>Enter</kbd> للفتح</div>
+      <div class="cmd-hint"><kbd>Esc</kbd> للإغلاق</div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== AI MODAL =================== -->
 <div class="overlay" id="ai-modal">
   <div class="modal">
     <div class="m-head">
-      <div class="m-title" id="ai-title">الأداة</div>
-      <button class="m-close" onclick="close_modal('ai-modal')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="m-title" id="ai-title"><i class="fa-solid fa-wand-magic-sparkles"></i> الأداة</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('ai-modal')" title="وضع التركيز"><i class="fa-solid fa-expand"></i></button>
+        <button class="m-close" onclick="close_modal('ai-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
     </div>
     <div class="m-body">
       <div class="field">
         <label class="label" id="ai-label">أدخل النص</label>
         <textarea id="ai-input" rows="6" placeholder="اكتب هنا..."></textarea>
       </div>
-      <button class="btn" onclick="run_ai()" id="ai-run-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل</button>
-      <div id="ai-load" class="loading" style="display:none"><div class="spin"></div>جاري المعالجة...</div>
-      <div id="ai-result" class="result-box" style="display:none"></div>
-      <div id="ai-acts" class="result-actions" style="display:none">
-        <button class="btn-sec" onclick="copy_el('ai-result')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-        <button class="btn-sec" onclick="wa_share('ai-result')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
-        <button class="btn-sec" onclick="email_share('ai-result')"><i class="fa-solid fa-envelope"></i> إيميل</button>
-        <button class="btn-sec" onclick="arc_save_el('ai-result')"><i class="fa-solid fa-folder-open"></i> حفظ</button>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="btn" onclick="run_ai()" id="ai-run-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل</button>
+        <button class="btn-sec" onclick="document.getElementById('ai-input').value='';hide('ai-result');hide('ai-acts')" style="padding:10px 16px"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <div id="ai-load" class="loading" style="display:none">
+        <div class="spin"></div>
+        <span class="loading-dots">جاري المعالجة</span>
+      </div>
+      <div id="ai-result-wrap" class="result-wrap" style="display:none">
+        <div class="result-header">
+          <div class="result-tag"><i class="fa-solid fa-check-circle"></i> النتيجة</div>
+          <div style="display:flex;gap:6px">
+            <button class="btn-sec" style="padding:4px 10px;font-size:11px" onclick="toggle_result_format()" id="format-btn" title="تبديل التنسيق"><i class="fa-solid fa-eye"></i></button>
+          </div>
+        </div>
+        <div id="ai-result" class="result-box"></div>
+        <div id="ai-acts" class="result-actions">
+          <button class="btn-sec" onclick="copy_el('ai-result')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="wa_share('ai-result')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
+          <button class="btn-sec" onclick="email_share('ai-result')"><i class="fa-solid fa-envelope"></i> إيميل</button>
+          <button class="btn-sec" onclick="arc_save_el('ai-result')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- =================== TODAY MODAL =================== -->
 <div class="overlay" id="today-modal">
-  <div class="modal" style="max-width:680px">
+  <div class="modal" style="max-width:700px">
     <div class="m-head">
       <div class="m-title"><i class="fa-solid fa-calendar-day"></i> حدث اليوم</div>
       <button class="m-close" onclick="close_modal('today-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-      <div class="field">
-        <label class="label">التاريخ</label>
-        <input type="date" id="today-date">
-      </div>
-      <button class="btn" onclick="run_today()"><i class="fa-solid fa-magnifying-glass"></i> بحث</button>
-      <div id="today-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث التاريخي...</div>
-      <div id="today-res" class="result-box" style="display:none"></div>
-      <div id="today-acts" class="result-actions" style="display:none">
-        <button class="btn-sec" onclick="copy_el('today-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-        <button class="btn-sec" onclick="arc_save_el('today-res','حدث اليوم')"><i class="fa-solid fa-folder-open"></i> حفظ</button>
+      <div class="field"><label class="label">التاريخ</label><input type="date" id="today-date"></div>
+      <button class="btn" onclick="run_today()"><i class="fa-solid fa-magnifying-glass"></i> بحث تاريخي</button>
+      <div id="today-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث في التاريخ...</div>
+      <div id="today-result-wrap" class="result-wrap" style="display:none">
+        <div class="result-header"><div class="result-tag">النتيجة</div></div>
+        <div id="today-res" class="result-box"></div>
+        <div class="result-actions">
+          <button class="btn-sec" onclick="copy_el('today-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="arc_save_el('today-res','حدث اليوم')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- =================== MATCHES MODAL =================== -->
 <div class="overlay" id="matches-modal">
-  <div class="modal" style="max-width:680px">
+  <div class="modal" style="max-width:700px">
     <div class="m-head">
       <div class="m-title"><i class="fa-solid fa-futbol"></i> أرشيف المواجهات</div>
       <button class="m-close" onclick="close_modal('matches-modal')"><i class="fa-solid fa-xmark"></i></button>
@@ -313,42 +1010,47 @@ textarea{min-height:110px}
     <div class="m-body">
       <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;margin-bottom:16px">
         <div><label class="label">الفريق الأول</label><input type="text" id="team1" placeholder="مثال: الترجي الرياضي"></div>
-        <div style="font-weight:900;color:var(--text2);padding-bottom:12px;font-size:18px">ضد</div>
+        <div style="font-weight:900;color:var(--text2);padding-bottom:12px;font-size:18px;text-align:center">ضد</div>
         <div><label class="label">الفريق الثاني</label><input type="text" id="team2" placeholder="مثال: النادي الإفريقي"></div>
       </div>
       <button class="btn" onclick="run_matches()"><i class="fa-solid fa-futbol"></i> بحث عن المواجهات</button>
       <div id="matches-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث في المواقع الرياضية...</div>
-      <div id="matches-res" class="result-box" style="display:none"></div>
-      <div id="matches-acts" class="result-actions" style="display:none">
-        <button class="btn-sec" onclick="copy_el('matches-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-        <button class="btn-sec" onclick="arc_save_el('matches-res','أرشيف المواجهات')"><i class="fa-solid fa-folder-open"></i> حفظ</button>
+      <div id="matches-result-wrap" class="result-wrap" style="display:none">
+        <div class="result-header"><div class="result-tag">النتيجة</div></div>
+        <div id="matches-res" class="result-box"></div>
+        <div class="result-actions">
+          <button class="btn-sec" onclick="copy_el('matches-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="arc_save_el('matches-res','أرشيف المواجهات')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- =================== PROFILE MODAL =================== -->
 <div class="overlay" id="profile-modal">
-  <div class="modal" style="max-width:680px">
+  <div class="modal" style="max-width:700px">
     <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-user"></i> ملف الشخصية</div>
+      <div class="m-title"><i class="fa-solid fa-user-tie"></i> ملف الشخصية</div>
       <button class="m-close" onclick="close_modal('profile-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-      <div class="field">
-        <label class="label">اسم الشخصية</label>
-        <input type="text" id="prof-name" placeholder="مثال: كمال الجندوبي">
-      </div>
+      <div class="field"><label class="label">اسم الشخصية</label><input type="text" id="prof-name" placeholder="مثال: كمال الجندوبي"></div>
       <button class="btn" onclick="run_profile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف الكامل</button>
       <div id="prof-load" class="loading" style="display:none"><div class="spin"></div>جاري البحث المعمق...</div>
-      <div id="prof-res" class="result-box" style="display:none"></div>
-      <div id="prof-acts" class="result-actions" style="display:none">
-        <button class="btn-sec" onclick="copy_el('prof-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-        <button class="btn-sec" onclick="arc_save_el('prof-res','ملف الشخصية')"><i class="fa-solid fa-folder-open"></i> حفظ</button>
+      <div id="prof-result-wrap" class="result-wrap" style="display:none">
+        <div class="result-header"><div class="result-tag">الملف الصحفي</div></div>
+        <div id="prof-res" class="result-box"></div>
+        <div class="result-actions">
+          <button class="btn-sec" onclick="copy_el('prof-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="arc_save_el('prof-res','ملف الشخصية')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- =================== AGENDA MODAL =================== -->
 <div class="overlay" id="agenda-modal">
   <div class="modal">
     <div class="m-head">
@@ -356,14 +1058,14 @@ textarea{min-height:110px}
       <button class="m-close" onclick="close_modal('agenda-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-      <div style="background:var(--bg3);border-radius:14px;padding:18px;margin-bottom:20px;border:1px solid var(--border)">
-        <div style="font-size:14px;font-weight:700;margin-bottom:14px"><i class="fa-solid fa-plus"></i> إضافة حدث جديد</div>
+      <div style="background:rgba(201,168,76,0.06);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-bottom:20px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--gold)"><i class="fa-solid fa-plus"></i> إضافة حدث جديد</div>
         <div class="field"><label class="label">التاريخ</label><input type="date" id="ag-add-date"></div>
         <div class="field"><label class="label">وصف الحدث</label><input type="text" id="ag-add-ev" placeholder="مثال: مؤتمر صحفي — وزارة التربية"></div>
         <button class="btn" onclick="ag_add()"><i class="fa-solid fa-floppy-disk"></i> حفظ في الأجندة</button>
       </div>
-      <div style="background:var(--bg3);border-radius:14px;padding:18px;border:1px solid var(--border)">
-        <div style="font-size:14px;font-weight:700;margin-bottom:14px"><i class="fa-solid fa-magnifying-glass"></i> البحث في الأجندة</div>
+      <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;padding:18px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:14px"><i class="fa-solid fa-magnifying-glass"></i> البحث في الأجندة</div>
         <div style="display:flex;gap:10px;align-items:flex-end">
           <div style="flex:1"><label class="label">التاريخ</label><input type="date" id="ag-srch-date"></div>
           <button class="btn" onclick="ag_search()">بحث</button>
@@ -374,10 +1076,11 @@ textarea{min-height:110px}
   </div>
 </div>
 
+<!-- =================== ARCHIVE MODAL =================== -->
 <div class="overlay" id="arc-modal">
   <div class="modal">
     <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-folder-open"></i> أرشيف الفريق — آخر 24 ساعة</div>
+      <div class="m-title"><i class="fa-solid fa-clock-rotate-left"></i> أرشيف الفريق — آخر 24 ساعة</div>
       <button class="m-close" onclick="close_modal('arc-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
@@ -386,36 +1089,37 @@ textarea{min-height:110px}
   </div>
 </div>
 
+<!-- =================== RADIO MODAL =================== -->
 <div class="overlay" id="radio-modal">
-  <div class="modal" style="max-width:620px">
+  <div class="modal" style="max-width:600px">
     <div class="m-head">
       <div class="m-title"><i class="fa-solid fa-radio"></i> الإذاعات التونسية المباشرة</div>
       <button class="m-close" onclick="close_modal('radio-modal');stop_radio()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
       <div id="radio-cards"></div>
-      <div style="margin-top:20px">
-        <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2)">اختر الإذاعة واستمع مباشرة</div>
-      </div>
       <audio id="radio-audio"></audio>
     </div>
   </div>
 </div>
 
+<!-- =================== SMART RECORD MODAL =================== -->
 <div class="overlay" id="smart-modal">
-  <div class="modal" style="max-width:680px">
+  <div class="modal" style="max-width:700px">
     <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-microphone-lines"></i> التسجيل الذكي — AI Transcription Engine</div>
+      <div class="m-title"><i class="fa-solid fa-microphone-lines"></i> التسجيل الذكي</div>
       <button class="m-close" onclick="close_modal('smart-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
       <div class="rec-center">
         <div class="rec-status" id="sr-status">جاهز للتسجيل</div>
         <div class="rec-timer" id="sr-timer">00:00</div>
-        <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()"><i class="fa-solid fa-microphone"></i> بدء تسجيل جديد</button>
+        <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()">
+          <i class="fa-solid fa-microphone"></i> بدء تسجيل جديد
+        </button>
       </div>
       <div id="sr-result" style="display:none">
-        <div style="font-weight:700;margin-bottom:10px">التفريغ الحرفي</div>
+        <div style="font-weight:700;margin-bottom:10px;font-family:'Amiri',serif;font-size:16px">التفريغ الحرفي</div>
         <div id="sr-transcription" class="result-box"></div>
         <div class="result-actions" style="margin-top:10px">
           <button class="btn" onclick="convert_to_article()"><i class="fa-solid fa-newspaper"></i> تحويل لمقال</button>
@@ -423,14 +1127,14 @@ textarea{min-height:110px}
           <button class="btn-sec" onclick="wa_share_id('sr-transcription')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
           <button class="btn-sec" onclick="email_share_id('sr-transcription')"><i class="fa-solid fa-envelope"></i> إيميل</button>
         </div>
-        <div id="sr-article" style="display:none;margin-top:20px">
-          <div style="font-weight:700;margin-bottom:10px">المقال الإخباري</div>
+        <div id="sr-article" style="display:none;margin-top:24px">
+          <div style="font-weight:700;margin-bottom:10px;font-family:'Amiri',serif;font-size:16px;color:var(--gold)">المقال الإخباري</div>
           <div id="sr-article-content" class="result-box"></div>
           <div class="result-actions" style="margin-top:10px">
             <button class="btn-sec" onclick="copy_el('sr-article-content')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
             <button class="btn-sec" onclick="wa_share_id('sr-article-content')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
             <button class="btn-sec" onclick="email_share_id('sr-article-content')"><i class="fa-solid fa-envelope"></i> إيميل</button>
-            <button class="btn-sec" onclick="arc_save_el('sr-article-content','تسجيل ذكي')"><i class="fa-solid fa-folder-open"></i> حفظ</button>
+            <button class="btn-sec" onclick="arc_save_el('sr-article-content','تسجيل ذكي')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
           </div>
         </div>
       </div>
@@ -438,6 +1142,7 @@ textarea{min-height:110px}
   </div>
 </div>
 
+<!-- =================== SETTINGS MODAL =================== -->
 <div class="overlay" id="settings-modal">
   <div class="modal" style="max-width:480px">
     <div class="m-head">
@@ -446,27 +1151,31 @@ textarea{min-height:110px}
     </div>
     <div class="m-body">
       <div class="notice-bar" style="margin-bottom:20px">
-        احصل على مفتاحك من <strong>aistudio.google.com</strong> ← Get API Key ← Create API Key
+        <i class="fa-solid fa-info-circle"></i>
+        احصل على مفتاحك من <strong>aistudio.google.com</strong> ← Get API Key
       </div>
       <div class="field">
         <label class="label">مفتاح Google Gemini API</label>
         <input type="text" id="api-key-inp" placeholder="AIzaSy...">
       </div>
-      <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
-        النماذج المستخدمة: <strong>Gemini 2.5 Flash / Pro</strong><br>
-        1500 طلب/يوم مجاناً لكل صحفي
+      <div style="background:rgba(16,201,138,0.06);border:1px solid rgba(16,201,138,0.2);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
+        <i class="fa-solid fa-circle-check" style="color:var(--accent2)"></i>
+        النموذج: <strong style="color:var(--text)">Gemini 1.5 Flash / Pro</strong><br>
+        <i class="fa-solid fa-chart-bar" style="color:var(--accent2)"></i>
+        الكوتا المجانية: <strong style="color:var(--accent2)">1500 طلب/يوم</strong> لكل صحفي
       </div>
-      <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح محلياً</button>
+      <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
     </div>
   </div>
 </div>
 
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- =================== FIREBASE =================== -->
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-
 
 <script>
 // ============================================================
@@ -486,20 +1195,43 @@ const auth=firebase.auth(), db=firebase.firestore();
 // STATE
 // ============================================================
 let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
-let radioAudio=null, radioRec=null, radioChunks=[], radioTimerID=null, radioSecs=0, activeRadioIdx=-1;
+let radioAudio=null, activeRadioIdx=-1;
 let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
+let dailyRequests=0, isResultRaw=true;
 
 // ============================================================
 // RADIOS
 // ============================================================
 const RADIOS=[
-  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://diwan.live-streaming.eu.com:5240/;stream.mp3',color:'#1a4fdb'},
-  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#e11d48'},
+  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://diwan.live-streaming.eu.com:5240/;stream.mp3',color:'#3d7eff'},
+  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#ef4444'},
   {name:'شمس أف أم',sub:'Shems FM',url:'https://stream.zeno.fm/4d5yvulvp8zuv',color:'#f59e0b'},
-  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'http://www.radiotunis.com:8004/rtci.mp3',color:'#059669'},
-  {name:'راديو IFM',sub:'IFM Radio',url:'https://stream.zeno.fm/gcasak0wgzzuv',color:'#7c3aed'},
-  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#dc2626'},
+  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'http://www.radiotunis.com:8004/rtci.mp3',color:'#10c98a'},
+  {name:'راديو IFM',sub:'IFM Radio',url:'https://stream.zeno.fm/gcasak0wgzzuv',color:'#8b5cf6'},
+  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#ef4444'},
 ];
+
+// ============================================================
+// COMMAND PALETTE DATA
+// ============================================================
+const CMD_ITEMS=[
+  {name:'المحرر الرقمي Pro',icon:'fa-pen-nib',cls:'ic-gold',key:'Ctrl+1',action:()=>open_tool('editor')},
+  {name:'إعادة صياغة محترفة',icon:'fa-pen-to-square',cls:'ic-orange',key:'Ctrl+2',action:()=>open_tool('rewrite')},
+  {name:'عناوين احترافية',icon:'fa-heading',cls:'ic-blue',key:'Ctrl+3',action:()=>open_tool('headlines')},
+  {name:'فلاش إخباري',icon:'fa-bolt',cls:'ic-red',key:'Ctrl+4',action:()=>open_tool('flash')},
+  {name:'تفريغ وتحرير',icon:'fa-microphone',cls:'ic-purple',key:'',action:()=>open_tool('transcribe')},
+  {name:'اقتراحات تحريرية',icon:'fa-satellite-dish',cls:'ic-teal',key:'',action:()=>open_tool('monitor')},
+  {name:'حدث اليوم',icon:'fa-calendar-day',cls:'ic-amber',key:'',action:()=>open_today()},
+  {name:'أرشيف المواجهات',icon:'fa-futbol',cls:'ic-green',key:'',action:()=>open_modal('matches-modal')},
+  {name:'ملف الشخصية',icon:'fa-user-tie',cls:'ic-blue',key:'',action:()=>open_modal('profile-modal')},
+  {name:'الأجندة المشتركة',icon:'fa-calendar-days',cls:'ic-gold',key:'',action:()=>open_modal('agenda-modal')},
+  {name:'مدقق المحتوى',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
+  {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
+  {name:'الإذاعات المباشرة',icon:'fa-radio',cls:'ic-red',key:'',action:()=>open_modal('radio-modal')},
+  {name:'الأرشيف',icon:'fa-clock-rotate-left',cls:'ic-teal',key:'',action:()=>open_archive()},
+  {name:'إعدادات API',icon:'fa-gear',cls:'ic-amber',key:'',action:()=>open_modal('settings-modal')},
+];
+let cmdIdx=0, cmdFiltered=[...CMD_ITEMS];
 
 // ============================================================
 // MASTER PROMPT
@@ -547,11 +1279,11 @@ editor:`${SYS}## دورك: محرر أخبار أول (Senior News Editor)
 - الأشهر: جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر
 
 ### محظورات مطلقة:
-- الاستنتاج والتأويل الشخصي
-- صفات التضخيم (ضخم، هائل، تاريخي)
-- الخواتيم المفتوحة أو الاستفهامية
-- العبارات العاطفية والتبريرية
-- أي نص خارج المخرجات الثلاث المحددة
+✗ الاستنتاج والتأويل الشخصي
+✗ صفات التضخيم (ضخم، هائل، تاريخي)
+✗ الخواتيم المفتوحة أو الاستفهامية
+✗ العبارات العاطفية والتبريرية
+✗ أي نص خارج المخرجات الثلاث المحددة
 
 ### النص الخام:`,
 
@@ -566,435 +1298,182 @@ rewrite:`${SYS}## دورك: محرر إعادة صياغة رقمية (Digital N
 - قصيرة ومباشرة (8 إلى 12 كلمة)
 - تتضمن الكلمات المفتاحية الأساسية للخبر
 - لا تبدأ بفعل مبني للمجهول
-- تعكس المضمون الحقيقي دون إثارة مضللة
 
 **ثانياً — النص المعاد صياغته:**
+- الهرم المقلوب: الأهم أولاً ثم التفاصيل ثم السياق
+- فقرات قصيرة مستقلة (جملة إلى 3 جمل)
+- لغة رسمية دقيقة تقريرية محايدة
+- كلمات مفتاحية في الاستهلال للـ SEO
 
-### معايير الصياغة الرقمية:
-- **الاستهلال:** يجيب على الأسئلة الصحفية الخمسة في الفقرتين الأوليين
-- **الهرم المقلوب:** الأهم أولاً ثم التفاصيل ثم السياق
-- **الفقرات:** قصيرة ومستقلة (جملة إلى 3 جمل) قابلة للمسح البصري
-- **اللغة:** رسمية دقيقة تقريرية محايدة تماماً
-- **SEO:** الكلمات المفتاحية في الاستهلال والفقرات الأولى بشكل طبيعي
-- **الكثافة:** حذف كل كلمة لا تضيف قيمة إخبارية صلبة
+### محظورات:
+✗ عناوين فرعية، مجاز، تضخيم، تكرار
 
-### محظورات مطلقة:
-- العناوين الفرعية داخل النص
-- لغة المجاز والصفات التضخيمية
-- المقدمات الترحيبية والعبارات الإنشائية
-- تكرار المعلومات أو قوالب الربط الركيكة
-- أي نص خارج المخرجين المحددين
+### النص:`,
 
-### النص المراد إعادة صياغته:`,
-
-headlines:`${SYS}## دورك: رئيس تحرير متخصص في صناعة العناوين الإخبارية
-
-### مهمتك:
-صياغة 12 عنواناً صحفياً متكاملاً يغطي كل الأساليب التحريرية المعتمدة في الإعلام التونسي.
+headlines:`${SYS}## دورك: رئيس تحرير متخصص في صناعة العناوين
 
 ### الإخراج: 12 عنواناً في 4 فئات (3 لكل فئة)
 
-**الفئة الأولى — إخبارية تقريرية (Hard News):**
-دقيقة ومباشرة تركز على الحدث الرسمي الموثّق
-مثال: إشراف رئيس الحكومة على مجلس وزاري لتدارس المؤشرات الاقتصادية
+**الفئة الأولى — إخبارية تقريرية:**
+دقيقة ومباشرة تركز على الحدث الرسمي
 
 **الفئة الثانية — إسناد واقتباس مباشر:**
-تبرز الموقف أو التصريح الأهم مع النقطتين الرأسيتين والصفة الكاملة
-مثال: وزير الصحة: "المنظومة الصحية تواجه ضغطاً غير مسبوق وتحتاج إصلاحاً عاجلاً"
+النقطتان الرأسيتان مع الصفة الكاملة
 
 **الفئة الثالثة — مركبة وسياقية:**
-تربط الحدث بمسبباته أو إطاره المكاني أو الزمني
-مثال: إثر عمليات تمشيط واسعة: ضبط شبكة تهريب بولاية القصرين وإيقاف 19 موقوفاً
+تربط الحدث بمسبباته (إثر، بسبب، تزامناً)
 
 **الفئة الرابعة — تحليلية ومتابعات:**
-للتقارير المعمقة تركز على التداعيات والمآلات
-مثال: تراجع مؤشرات التضخم في الثلاثي الأول: قراءة في الأسباب والانعكاسات على القدرة الشرائية
+للتقارير المعمقة والتداعيات
 
-### قواعد صارمة لكل العناوين:
+### القواعد:
 - الطول: 8 إلى 14 كلمة حصراً
-- عنصران على الأقل من: الحدث، الفاعل، المكان، النتيجة أو الرقم
-- تنويع الاستهلال: فعل مباشر أو ظرفية سببية أو جهة فاعلة
-- مصطلحات تونسية معتمدة: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي، النيابة العمومية، تفكيك شبكة
-
-### محظورات مطلقة:
-- Clickbait وأساليب الإثارة
-- علامات التعجب والمبالغات
-- الاختزال المخل بالمعنى أو الإطناب فوق 14 كلمة
-- أي نص خارج الـ 12 عنواناً المطلوبة
+- عنصران على الأقل: حدث/فاعل/مكان/نتيجة
+- مصطلحات تونسية: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي
+✗ Clickbait، تعجب، مبالغة
 
 ### النص:`,
 
-flash:`${SYS}## دورك: مذيع فلاش إخباري في إذاعة ديوان أف أم
-
-### مهمتك:
-صياغة موجز إخباري مشكول جاهز للإلقاء المباشر على الهواء.
+flash:`${SYS}## دورك: مذيع فلاش إخباري في ديوان أف أم
 
 ### الإخراج الإلزامي:
+**أولاً — عنوان ديوان:** (8 كلمات كحد، غير مشكول)
+**ثانياً — نص الفلاش المشكول:** (30-50 كلمة)
 
-**أولاً — عنوان ديوان:**
-- لا يتجاوز 8 كلمات
-- ذكي وجذاب وغير مشكول
-- يحمل جوهر الخبر
-
-**ثانياً — نص الفلاش المشكول:**
-- بين 30 و50 كلمة حصراً
-- مهيّأ للإلقاء الصوتي المباشر
-- إيقاع مناسب لنفس المذيع
-
-### قواعد التشكيل المعتمدة:
-
-**الأعداد: تشكيل كامل 100% إلزامي**
-مثال صحيح: خَمْسَةُ وَعِشْرُونَ أَلْفَ دِينَارٍ
-مثال صحيح: ثَلَاثَةُ آلَافِ مُوَاطِنٍ
-
-**باقي النص: الحرف الأخير فقط**
-صحيح: وزارةُ التربيةِ أعلنتْ
-خطأ: وِزَارَةُ التَّرْبِيَةِ
-
-### قواعد البناء:
-- جملة واحدة أو جملتان تحملان الخبر كاملاً
+### قواعد التشكيل:
+- الأعداد: تشكيل كامل 100% → خَمْسَةُ وَعِشْرُونَ أَلْفَ دِينَارٍ
+- باقي النص: الحرف الأخير فقط → وزارةُ (صح) وِزَارَةُ (خطأ)
 - الأرقام بالحروف دائماً
-- الألقاب تُحذف ويُكتفى بالصفة الرسمية
-- لا تواريخ روتينية للبلاغات
-
-### محظورات مطلقة:
-- تجاوز 50 كلمة
-- المقدمات والتمهيدات
-- التفاصيل الثانوية والحيثيات الطويلة
-- الجمل المركبة الطويلة
+✗ تجاوز 50 كلمة، مقدمات، تفاصيل ثانوية
 
 ### النص:`,
 
-transcribe:`${SYS}## دورك: محرك تفريغ صوتي حرفي متخصص (Professional Verbatim Transcriber)
+transcribe:`${SYS}## دورك: محرك تفريغ صوتي حرفي متخصص
 
-### مهمتك الوحيدة:
-تحويل المحتوى الصوتي إلى نص مكتوب بدقة 100% مع الحفاظ الكامل على كل كلمة كما نُطقت.
-
-### بروتوكولات الإخراج:
+ابدأ التفريغ مباشرة بلا مقدمة.
 
 **تمييز المتحدثين إلزامي:**
 [مذيع]: نص كلامه
 [ضيف]: نص كلامه
-[ضيف 2]: إذا تعدد الضيوف
 
-**معالجة الغموض الصوتي:**
-- كلمة غير مفهومة تماماً: [غير واضح]
-- اسم غير متأكد منه: [اسم؟]
+**معالجة الغموض:**
+- غير مفهوم: [غير واضح]
+- اسم غير متأكد: [اسم؟]
 - رقم غير واضح: [رقم؟]
-- مقطع كامل غير مفهوم: [مقطع غير واضح — ثانية تقريبية]
 
-**الهيكلة:**
-- فقرة جديدة عند كل تغيير متحدث
-- سطر فارغ بين المتحدثين
-- لا كتل نصية ضخمة
+✗ إعادة صياغة، حذف كلمة، تلخيص، تعليق
 
-### محظورات مطلقة:
-- إعادة الصياغة أو تحسين الأسلوب
-- حذف أي كلمة مهما بدت زائدة أو خاطئة
-- التلخيص أو الاختصار
-- تصحيح الأخطاء النحوية
-- أي مقدمة أو خاتمة أو تعليق
+**النص:**`,
 
-**ابدأ التفريغ مباشرة بلا مقدمة:**`,
+monitor:`${SYS}## دورك: محرر رصد إخباري متخصص
 
-monitor:`${SYS}## دورك: محرر رصد إخباري متخصص (News Monitor)
+ابحث في الإنترنت واستخرج أهم 15 خبراً خلال الـ12 ساعة الماضية.
 
-### مهمتك:
-رصد المشهد الإعلامي التونسي والعالمي في الـ 12 ساعة الماضية واستخراج أهم 15 خبراً للتوظيف التحريري.
+**الإخراج:**
+🕐 رصد إخباري — آخر 12 ساعة
+📅 [التاريخ والوقت الحالي بدقة]
 
-### مصادر الرصد المعتمدة:
-- وكالة تونس إفريقيا للأنباء (TAP)
-- الصحف والمواقع الإلكترونية التونسية الكبرى
-- إذاعة ديوان أف أم وموزاييك أف أم
-- الجزيرة، العربية، BBC عربي
-- Reuters, AFP, AP
-
-### الإخراج الإلزامي:
-
-**رصد إخباري — آخر 12 ساعة**
-[التاريخ والوقت الحالي بدقة]
-
----
-
-**الشأن التونسي — 7 أخبار:**
+🇹🇳 **الشأن التونسي — 7 أخبار:**
 1. [العنوان الكامل] — [المصدر]
-   - [سطر واحد: جوهر الخبر وأهميته التحريرية]
+   ↳ [سطر واحد: جوهر الخبر]
 
-**الشأن العربي والدولي — 5 أخبار:**
-8. [العنوان الكامل] — [المصدر]
-   - [سطر واحد: جوهر الخبر]
+🌍 **الشأن العربي والدولي — 5 أخبار:**
+8. [العنوان] — [المصدر]
+   ↳ [سطر واحد]
 
-**يستحق المتابعة العاجلة — 3 أخبار:**
-13. [العنوان] — [المصدر]
-    - [سبب الأهمية التحريرية في سطر]
+⚡ **يستحق المتابعة العاجلة — 3 أخبار:**
+13. [العنوان] — [سبب الأهمية]
 
-### ضوابط الرصد:
-- الأخبار الموثّقة والمتداولة فعلاً فقط
-- الأولوية للأخبار الطازجة خلال 12 ساعة
-- المصدر إلزامي لكل خبر
+✗ اختلاق أخبار، تجاوز 12 ساعة`,
 
-### محظورات مطلقة:
-- اختلاق أخبار أو مصادر وهمية
-- أخبار تتجاوز نطاق الـ 12 ساعة`,
+checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص
 
-checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص في الإعلام الرقمي التونسي
+ابحث في المواقع الإعلامية التونسية خلال الـ12 ساعة الماضية.
 
-### مهمتك:
-رصد وتحليل الأخطاء في المحتوى الإعلامي التونسي المنشور خلال الـ 12 ساعة الماضية وتحويلها إلى دروس تحريرية عملية.
+**الإخراج:**
+🔍 تقرير مدقق المحتوى | 📅 [التاريخ] | آخر 12 ساعة
 
-### مواقع الرصد المستهدفة:
-إذاعة ديوان أف أم، وكالة TAP، موزاييك أف أم، الصحف الإلكترونية التونسية الكبرى
+📌 الملخص التنفيذي: المقالات / الأخطاء / الأكثر تكراراً
 
-### الإخراج الإلزامي:
+① الأخطاء النحوية: المصدر | ✗ الخطأ | السبب | ✓ التصويب | القاعدة
+② الأخطاء المنهجية: (غياب مصدر / هرم مقلوب / مصدر مجهول)
+③ الأخطاء التحريرية: (عنوان مضلل / إثارة / تكرار)
+④ درس اليوم: الخطأ الأكثر تكراراً + القاعدة + 3 أمثلة صحيحة
+⑤ توصيات تحريرية لليوم (3 توصيات)
+✗ ذكر أسماء الصحفيين — الأسلوب تعليمي دائماً`,
 
-**تقرير مدقق المحتوى**
-[التاريخ] | آخر 12 ساعة
+today:`${SYS}## دورك: موسوعة تاريخية متخصصة
 
----
+ابحث واستخرج كل الأحداث والشخصيات المرتبطة بالتاريخ المُدخل.
 
-**الملخص التنفيذي:**
-| المقالات المحللة | الأخطاء المرصودة | الأكثر تكراراً |
-|---|---|---|
-| [عدد] | [عدد] | [النوع] |
+**الإخراج:**
+📅 في مثل هذا اليوم — [التاريخ]
 
----
+🇹🇳 أحداث تونسية ومحلية: [السنة] — [الحدث]
+🌍 أحداث عربية وعالمية: [السنة] — [الحدث]
+🎂 شخصيات وُلدت: [السنة] — [الاسم] — [الصفة والجنسية]
+🕊️ شخصيات رحلت: [السنة] — [الاسم] — [الصفة والجنسية]
 
-**① الأخطاء النحوية واللغوية:**
+✗ اختلاق أحداث غير موثّقة
 
-الخطأ #1:
-- المصدر: [اسم الموقع]
-- النص الخاطئ: "[الجملة كما نُشرت]"
-- تشخيص الخطأ: [شرح دقيق]
-- التصويب: "[النص الصحيح]"
-- القاعدة: [القاعدة النحوية المخالَفة]
+**التاريخ المطلوب:**`,
 
----
+matches:`${SYS}## دورك: محلل رياضي متخصص في أرشيف المواجهات
 
-**② الأخطاء المنهجية الصحفية:**
+ابحث في FIFA، UEFA، Transfermarkt، Soccerway واستخرج كامل سجل المواجهات.
 
-الخطأ #1:
-- المصدر: [اسم الموقع]
-- النوع: [غياب مصدر / انهيار الهرم المقلوب / مصدر مجهول / تحيّز واضح]
-- الفقرة المشكلة: "[النص]"
-- التوجيه: "[كيف كان ينبغي كتابتها]"
+**الإخراج:**
+⚽ [الفريق 1] 🆚 [الفريق 2]
 
----
+📊 ملخص: المباريات / الفوز / التعادل / الأهداف
 
-**③ الأخطاء التحريرية:**
+📅 السجل (من الأحدث):
+[التاريخ] | [المسابقة]
+[النتيجة] — ⚽ [الهدافون والدقائق]
 
-الخطأ #1:
-- المصدر: [اسم الموقع]
-- النوع: [عنوان مضلل / إثارة مبالغة / تكرار / مقدمة ركيكة]
-- ما نُشر: "[النص]"
-- المعيار الصحيح: "[الصواب]"
+🏆 أبرز الهدافين التاريخيين
+📌 أبرز مواجهة تاريخياً
+✗ اختلاق نتائج أو هدافين
 
----
+**الفريقان:**`,
 
-**④ درس اليوم — الخطأ الأكثر تكراراً:**
-- تكرّر في [عدد] مواقع
-- القاعدة الذهبية: [جملة واحدة حاسمة]
-- أمثلة تطبيقية صحيحة:
-  [مثال 1]
-  [مثال 2]
-  [مثال 3]
+profile:`${SYS}## دورك: صحفي محقق متخصص في إعداد الملفات الشخصية
 
----
+ابحث معمقاً واستخرج ملفاً صحفياً شاملاً.
 
-**⑤ التوصيات التحريرية لليوم:**
-1. [توصية عملية مباشرة قابلة للتطبيق فوراً]
-2. [توصية عملية مباشرة]
-3. [توصية عملية مباشرة]
+**الإخراج:**
+👤 ملف الشخصية — [الاسم]
 
-### ضوابط التقرير:
-- لا تُذكر أسماء الصحفيين الأفراد — الموقع فقط
-- الأسلوب تعليمي بنّاء وليس انتقادياً
-- لا تختلق أخطاء غير موجودة فعلاً`,
+📋 اللمحة التعريفية (5-7 أسطر)
+🏆 أبرز الأعمال والإنجازات (5 عناصر + السنة)
 
-today:`${SYS}## دورك: موسوعة تاريخية وثقافية متخصصة في التاريخ التونسي والعالمي
+🎤 أهم وأحدث 5 تصريحات إعلامية:
+① [التاريخ] — [المصدر]
+الموضوع: [الموضوع]
+التصريح: "[النص الدقيق]"
 
-### مهمتك:
-استخراج كل الأحداث والشخصيات الموثّقة المرتبطة بالتاريخ المُدخل عبر القرون.
+❓ 10 أسئلة صحفية احترافية:
+● استفسارية (3): مبنية على التصريحات
+● مواجهة (3): تواجهه بتناقض موثّق
+● استشرافية (2): رؤية مستقبلية
+● شخصية مهنية (2): مسار وتجربة
+✗ اختلاق تصريحات — أسئلة عامة
 
-### الإخراج الإلزامي:
+**الشخصية المطلوبة:**`,
 
-**في مثل هذا اليوم — [التاريخ]**
+article:`${SYS}## دورك: محرر أول متخصص في تحويل تفريغات المقابلات
 
----
+حوّل النص المفرّغ إلى مقال إخباري وفق معايير وات وديوان أف أم.
 
-**الأحداث التونسية والمحلية:**
-[السنة] — [الحدث بصياغة موجزة ودقيقة]
+**الإخراج:**
+➊ تحرير مقال جديد (حمدي)
+➋ خمسة عناوين تقريرية
+➌ المقال المهيكل
 
-**الأحداث العربية والعالمية:**
-[السنة] — [الحدث]
+قواعد: استخرج الحقائق فقط، تجاهل التأتأة والعامية.
+الإسناد: "وأوضح [الضيف]، في تصريح لـ ديوان أف أم، أن..."
 
-**شخصيات وُلدت في هذا اليوم:**
-[السنة] — [الاسم الكامل] — [الصفة والجنسية والمجال]
-
-**شخصيات رحلت في هذا اليوم:**
-[السنة] — [الاسم الكامل] — [الصفة والجنسية والإرث]
-
-### ضوابط الاسترجاع:
-- الأحداث الموثّقة تاريخياً فقط
-- الأولوية للأحداث التونسية أولاً ثم العربية ثم العالمية
-- السنة إلزامية لكل حدث وشخصية
-- الشخصيات: السياسية، الفنية، الرياضية، الأدبية، العلمية
-- تنسيق مقبول: "15 أفريل" أو "اليوم" أو تاريخ كامل
-
-### محظور مطلق:
-- اختلاق أحداث أو شخصيات غير موثّقة تاريخياً
-
-### التاريخ المطلوب:`,
-
-matches:`${SYS}## دورك: محلل رياضي متخصص في أرشيف المواجهات والإحصاءات التاريخية
-
-### مهمتك:
-البحث في المواقع الرياضية المتخصصة واستخراج كامل سجل المواجهات بين الفريقين بدقة موثّقة.
-
-### مصادر البحث المعتمدة:
-FIFA، UEFA، CAF، Transfermarkt، Soccerway، ESPN، BBC Sport، الاتحاد التونسي لكرة القدم
-
-### الإخراج الإلزامي:
-
-**[الفريق الأول] ضد [الفريق الثاني]**
-
----
-
-**الملخص الإحصائي الكامل:**
-| المؤشر | القيمة |
-|---|---|
-| إجمالي المباريات | [عدد] |
-| فوز [الفريق الأول] | [عدد] |
-| فوز [الفريق الثاني] | [عدد] |
-| التعادل | [عدد] |
-| مجموع الأهداف | [عدد] |
-| معدل الأهداف للمباراة | [عدد] |
-
----
-
-**سجل المواجهات التفصيلي (من الأحدث للأقدم):**
-
-[التاريخ] | [المسابقة] | [المرحلة]
-[الفريق الأول] **[النتيجة]** [الفريق الثاني]
-الهدافون: [الاسم] ([الدقيقة]') — [الاسم] ([الدقيقة]')
-
----
-
-**أبرز الهدافين التاريخيين في هذه المواجهات:**
-
-في مواجهات [الفريق الأول]:
-1. [الاسم] — [عدد] أهداف
-2. [الاسم] — [عدد] أهداف
-
-في مواجهات [الفريق الثاني]:
-1. [الاسم] — [عدد] أهداف
-
----
-
-**أبرز مواجهة تاريخياً:**
-[وصف موجز للمباراة الأكثر أهمية بينهما]
-
-### ضوابط البحث:
-- البيانات الموثّقة من المواقع الرياضية فقط
-- جميع المسابقات: دوري، كأس، مواجهات قارية، دولية
-- إذا لم تتوفر بيانات كافية: أذكر ما هو متاح وأشر إلى ذلك صراحةً
-
-### محظور مطلق:
-- اختلاق نتائج أو هدافين غير موثّقين
-
-### الفريقان:`,
-
-profile:`${SYS}## دورك: صحفي محقق متخصص في إعداد الملفات الشخصية للمقابلات الإعلامية
-
-### مهمتك:
-البحث المعمّق في الإنترنت واستخراج ملف صحفي شامل ودقيق يُمكّن أي صحفي من إجراء مقابلة احترافية.
-
-### الإخراج الإلزامي:
-
-**ملف الشخصية — [الاسم الكامل]**
-
----
-
-**اللمحة التعريفية:**
-[فقرة من 5 إلى 7 أسطر تغطي: الاسم الكامل، تاريخ ومكان الولادة، الجنسية، المجال، المنصب الحالي، المسار المهني بمحطاته الأساسية]
-
----
-
-**أبرز الأعمال والإنجازات:**
-1. [الإنجاز] — [السنة]
-2. [الإنجاز] — [السنة]
-3. [الإنجاز] — [السنة]
-4. [الإنجاز] — [السنة]
-5. [الإنجاز] — [السنة]
-
----
-
-**أهم وأحدث 5 تصريحات إعلامية:**
-
-① [التاريخ] — [المصدر الإعلامي الكامل]
-   الموضوع: [موضوع التصريح]
-   التصريح: "[نص التصريح أو ملخصه الدقيق]"
-
-② [التاريخ] — [المصدر]
-   الموضوع: [الموضوع]
-   التصريح: "[النص]"
-
-③ — ④ — ⑤ [بنفس الهيكل]
-
----
-
-**10 أسئلة صحفية احترافية:**
-
-*مبنية حصراً على التصريحات والمعطيات المستخرجة من البحث:*
-
-**أسئلة استفسارية (3):**
-1. [سؤال يستفسر عن موقف أو قرار أو مبادرة محددة]
-2. [سؤال]
-3. [سؤال]
-
-**أسئلة مواجهة (3):**
-4. [سؤال يواجهه بتصريح سابق أو تناقض موثّق]
-5. [سؤال]
-6. [سؤال]
-
-**أسئلة استشرافية (2):**
-7. [سؤال عن الرؤية المستقبلية والأهداف القادمة]
-8. [سؤال]
-
-**أسئلة شخصية مهنية (2):**
-9. [سؤال عن التجربة والمسار الشخصي]
-10. [سؤال]
-
-### ضوابط البحث:
-- التصريحات موثّقة بالمصدر والتاريخ الدقيق
-- الأولوية للتصريحات الأحدث والأكثر جدلاً
-- الأسئلة مبنية على البحث وليست عامة
-- الأولوية للمصادر التونسية إن كانت الشخصية تونسية
-
-### محظورات مطلقة:
-- اختلاق تصريحات أو إنجازات
-- أسئلة عامة لا تستند للبحث
-- تجاوز 5 تصريحات أو 10 أسئلة
-
-### الشخصية المطلوبة:`,
-
-article:`${SYS}## دورك: محرر أول متخصص في تحويل تفريغات المقابلات إلى مواد إخبارية
-
-### مهمتك:
-استخلاص الحقائق الصحفية من التفريغ الحرفي وتحويلها إلى مقال إخباري احترافي وفق معايير وات وديوان أف أم.
-
-### الإخراج الإلزامي:
-**أولاً:** تحرير مقال جديد (حمدي)
-**ثانياً:** خمسة عناوين تقريرية
-**ثالثاً:** المقال المهيكل
-
-### قواعد التحويل من تفريغ لمقال:
-- استخرج الحقائق والأرقام والمواقف الصريحة فقط
-- تجاهل: التأتأة، العامية، الحشو، العبارات غير الإخبارية
-- التصريح المباشر المهم فقط بين "" مع الإسناد
-- صيغة الإسناد: "وأوضح [الضيف]، في تصريح لـ ديوان أف أم، أن..."
-- الباقي: صياغة تقريرية غير مباشرة
-
-### النص المفرّغ:`
+**النص المفرّغ:**`
 };
 
 // ============================================================
@@ -1005,7 +1484,7 @@ const TOOLS={
   rewrite:{title:'إعادة صياغة محترفة',label:'أدخل النص المراد إعادة صياغته',ph:'الصق النص هنا...',key:'rewrite'},
   headlines:{title:'عناوين احترافية',label:'أدخل نص الخبر',ph:'الصق النص هنا...',key:'headlines'},
   flash:{title:'فلاش إخباري',label:'أدخل معطيات الخبر',ph:'اكتب أو الصق الخبر هنا...',key:'flash'},
-  transcribe:{title:'تفريغ وتحرير',label:'أدخل محتوى التسجيل',ph:'الصق محتوى التسجيل أو صف ما يحتويه...',key:'transcribe'},
+  transcribe:{title:'تفريغ وتحرير',label:'أدخل محتوى التسجيل',ph:'الصق محتوى التسجيل...',key:'transcribe'},
   monitor:{title:'اقتراحات تحريرية',label:'اكتب "رصد" لبدء الرصد الإخباري',ph:'رصد',key:'monitor'},
   checker:{title:'مدقق المحتوى',label:'اكتب "مدقق" لبدء التدقيق',ph:'مدقق',key:'checker'},
 };
@@ -1022,7 +1501,8 @@ auth.onAuthStateChanged(u=>{
     document.getElementById('avatar').textContent=init;
     load_api_key();
     build_radio_cards();
-    load_saved_recs();
+    update_welcome();
+    load_daily_requests();
   }else{
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('main-app').style.display='none';
@@ -1031,7 +1511,7 @@ auth.onAuthStateChanged(u=>{
 
 function googleLogin(){
   auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    .catch(e=>toast('خطأ في تسجيل الدخول: '+e.message));
+    .catch(e=>toast('خطأ في تسجيل الدخول','error'));
 }
 function do_signout(){
   if(confirm('تسجيل الخروج؟')) auth.signOut();
@@ -1040,34 +1520,44 @@ function do_signout(){
 // ============================================================
 // API KEY
 // ============================================================
-function load_api_key(){
-  const k = localStorage.getItem('deskbot_gemini_key');
-  if(k){
-    GEMINI_KEY = k;
-    document.getElementById('api-key-inp').value = k;
-    document.getElementById('api-notice').style.display = 'none';
-  } else {
-    document.getElementById('api-notice').style.display = 'flex';
+async function load_api_key(){
+  try{
+    const d=await db.collection('config').doc('gemini').get();
+    if(d.exists&&d.data().key){
+      GEMINI_KEY=d.data().key;
+      document.getElementById('api-notice').style.display='none';
+    }else{
+      document.getElementById('api-notice').style.display='flex';
+    }
+  }catch(e){document.getElementById('api-notice').style.display='flex'}
+}
+async function save_api_key(){
+  const k=document.getElementById('api-key-inp').value.trim();
+  if(!k) return toast('أدخل المفتاح أولاً','error');
+  try{
+    await db.collection('config').doc('gemini').set({key:k});
+    GEMINI_KEY=k;
+    document.getElementById('api-notice').style.display='none';
+    close_modal('settings-modal');
+    toast('✅ تم حفظ المفتاح','success');
+  }catch(e){
+    localStorage.setItem('gemini_key',k);
+    GEMINI_KEY=k;
+    document.getElementById('api-notice').style.display='none';
+    close_modal('settings-modal');
+    toast('✅ تم حفظ المفتاح محلياً','success');
   }
 }
-function save_api_key(){
-  const k = document.getElementById('api-key-inp').value.trim();
-  if(!k) return toast('أدخل المفتاح أولاً');
-  localStorage.setItem('deskbot_gemini_key', k);
-  GEMINI_KEY = k;
-  document.getElementById('api-notice').style.display = 'none';
-  close_modal('settings-modal');
-  toast('تم حفظ المفتاح محلياً');
-}
 
 // ============================================================
-// GOOGLE GEMINI API
+// GEMINI API
 // ============================================================
-const EDITORIAL_TOOLS=['editor','rewrite','headlines','flash'];
-
 async function gemini(prompt){
-  if(!GEMINI_KEY){open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
-  const selectedModel = document.getElementById('ai-model-select').value;
+  if(!GEMINI_KEY){
+    if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
+    else{open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
+  }
+  const selectedModel=document.getElementById('ai-model-select').value;
   const r=await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${GEMINI_KEY}`,
     {
@@ -1081,42 +1571,219 @@ async function gemini(prompt){
   );
   if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'خطأ في الاتصال')}
   const d=await r.json();
+  inc_requests();
   return d.candidates?.[0]?.content?.parts?.[0]?.text||'لم تُعد نتيجة';
 }
+
+// ============================================================
+// QUOTA COUNTER
+// ============================================================
+async function load_daily_requests(){
+  try{
+    const today=new Date().toDateString();
+    const stored=localStorage.getItem('deskbot_req_'+today);
+    dailyRequests=stored?parseInt(stored):0;
+    update_quota_ui();
+  }catch(e){}
+}
+function inc_requests(){
+  dailyRequests++;
+  const today=new Date().toDateString();
+  localStorage.setItem('deskbot_req_'+today,dailyRequests);
+  update_quota_ui();
+}
+function update_quota_ui(){
+  const pct=Math.min((dailyRequests/1500)*100,100);
+  document.getElementById('quota-fill').style.width=pct+'%';
+  const fill=document.getElementById('quota-fill');
+  fill.style.background=pct>80?'#ef4444':pct>50?'#f59e0b':'#10c98a';
+  document.getElementById('quota-text').textContent=dailyRequests+' / 1500';
+  document.getElementById('ws-requests').textContent=dailyRequests;
+  document.getElementById('ws-remaining').textContent=Math.max(1500-dailyRequests,0);
+  if(dailyRequests>=1400) toast('⚠️ اقتربت من حد الكوتا اليومية','error');
+}
+
+// ============================================================
+// LIVE CLOCK
+// ============================================================
+function update_clock(){
+  const now=new Date();
+  const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('live-clock').textContent=`${h}:${m}:${s}`;
+  document.getElementById('live-date').textContent=`${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+}
+setInterval(update_clock,1000);
+update_clock();
+
+// Auto dark/light based on time
+function auto_theme(){
+  const h=new Date().getHours();
+  const stored=localStorage.getItem('deskbot-theme');
+  if(!stored){
+    const isDark=h>=20||h<7;
+    document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
+    document.getElementById('theme-btn').innerHTML=isDark?'<i class="fa-solid fa-sun"></i>':'<i class="fa-solid fa-moon"></i>';
+  }
+}
+
+// ============================================================
+// WELCOME MESSAGE
+// ============================================================
+function update_welcome(){
+  const h=new Date().getHours();
+  const name=USER?.displayName?.split(' ')[0]||'يا صحفي';
+  let greeting='';
+  if(h>=5&&h<12) greeting=`صباح الخير ${name} ☀️`;
+  else if(h>=12&&h<17) greeting=`مساء الخير ${name} 🌤️`;
+  else if(h>=17&&h<20) greeting=`مساء النور ${name} 🌅`;
+  else greeting=`مساء الخير ${name} 🌙`;
+  document.getElementById('welcome-greeting').textContent=greeting;
+  document.getElementById('welcome-sub').textContent='DESK BOT جاهز — نظام غرفة الأخبار الرقمية';
+}
+
+// ============================================================
+// COMMAND PALETTE
+// ============================================================
+function open_cmd(){
+  document.getElementById('cmd-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('cmd-input').focus(),50);
+  cmdIdx=0;cmdFiltered=[...CMD_ITEMS];
+  render_cmd();
+}
+function close_cmd(){
+  document.getElementById('cmd-overlay').classList.remove('open');
+  document.getElementById('cmd-input').value='';
+}
+function cmd_filter(){
+  const q=document.getElementById('cmd-input').value.toLowerCase();
+  cmdFiltered=CMD_ITEMS.filter(i=>i.name.toLowerCase().includes(q)||i.name.includes(q));
+  cmdIdx=0;render_cmd();
+}
+function render_cmd(){
+  const c=document.getElementById('cmd-list');
+  c.innerHTML=cmdFiltered.map((item,i)=>`
+    <div class="cmd-item ${i===cmdIdx?'active':''}" onclick="cmd_exec(${i})">
+      <div class="cmd-item-icon ${item.cls}"><i class="fa-solid ${item.icon}"></i></div>
+      <div class="cmd-item-name">${item.name}</div>
+      ${item.key?`<div class="cmd-item-key">${item.key}</div>`:''}
+    </div>`).join('');
+}
+function cmd_exec(i){
+  const item=cmdFiltered[i];
+  if(item){close_cmd();item.action()}
+}
+function cmd_key(e){
+  if(e.key==='ArrowDown'){cmdIdx=Math.min(cmdIdx+1,cmdFiltered.length-1);render_cmd()}
+  else if(e.key==='ArrowUp'){cmdIdx=Math.max(cmdIdx-1,0);render_cmd()}
+  else if(e.key==='Enter'){cmd_exec(cmdIdx)}
+  else if(e.key==='Escape'){close_cmd()}
+}
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey){
+    switch(e.key){
+      case 'k': e.preventDefault(); open_cmd(); break;
+      case '1': e.preventDefault(); open_tool('editor'); break;
+      case '2': e.preventDefault(); open_tool('rewrite'); break;
+      case '3': e.preventDefault(); open_tool('headlines'); break;
+      case '4': e.preventDefault(); open_tool('flash'); break;
+    }
+  }
+  if(e.key==='Escape'){
+    document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));
+    close_cmd();
+  }
+});
 
 // ============================================================
 // TOOL RUNNER
 // ============================================================
 function open_tool(name){
-  const cfg=TOOLS[name]; if(!cfg) return;
-  CUR_TOOL=name; CUR_TOOL_NAME=cfg.title;
-  document.getElementById('ai-title').textContent=cfg.title;
+  const cfg=TOOLS[name];if(!cfg)return;
+  CUR_TOOL=name;CUR_TOOL_NAME=cfg.title;
+  document.getElementById('ai-title').innerHTML=`<i class="fa-solid fa-wand-magic-sparkles"></i> ${cfg.title}`;
   document.getElementById('ai-label').textContent=cfg.label;
   document.getElementById('ai-input').placeholder=cfg.ph;
   document.getElementById('ai-input').value=(name==='monitor')?'رصد':(name==='checker')?'مدقق':'';
-  hide('ai-result'); hide('ai-acts'); hide('ai-load');
+  hide_result_ai();
   document.getElementById('ai-run-btn').disabled=false;
+  isResultRaw=true;
   open_modal('ai-modal');
 }
 
 async function run_ai(){
   const inp=document.getElementById('ai-input').value.trim();
-  if(!inp) return toast('أدخل النص أولاً');
+  if(!inp)return toast('أدخل النص أولاً','error');
   const cfg=TOOLS[CUR_TOOL];
-  show_load('ai-load'); hide('ai-result'); hide('ai-acts');
+  show_load('ai-load');hide_result_ai();
   document.getElementById('ai-run-btn').disabled=true;
   try{
     const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
-    document.getElementById('ai-result').textContent=res;
-    document.getElementById('ai-result').style.cssText='';
-    show('ai-result'); show('ai-acts');
-    await arc_auto(cfg.title, inp.substring(0,200), res);
-  }catch(e){toast('خطأ: '+e.message)}
+    const box=document.getElementById('ai-result');
+    box.textContent=res;
+    box.className='result-box';
+    isResultRaw=true;
+    document.getElementById('ai-result-wrap').style.display='block';
+    document.getElementById('ai-acts').style.display='flex';
+    add_activity(cfg.title,res.substring(0,60));
+    await arc_auto(cfg.title,inp.substring(0,200),res);
+  }catch(e){toast('خطأ: '+e.message,'error')}
   finally{
     hide('ai-load');
     document.getElementById('ai-run-btn').disabled=false;
-    document.getElementById('ai-load').innerHTML='<div class="spin"></div>جاري المعالجة...';
   }
+}
+
+function hide_result_ai(){
+  document.getElementById('ai-result-wrap').style.display='none';
+  document.getElementById('ai-acts').style.display='none';
+  hide('ai-load');
+}
+
+// Markdown renderer toggle
+function toggle_result_format(){
+  const box=document.getElementById('ai-result');
+  const btn=document.getElementById('format-btn');
+  if(isResultRaw){
+    const txt=box.textContent;
+    box.innerHTML=simple_md(txt);
+    box.className='result-box rendered';
+    btn.innerHTML='<i class="fa-solid fa-code"></i>';
+    isResultRaw=false;
+  }else{
+    box.className='result-box';
+    box.innerHTML='';
+    box.textContent=box.innerText||box.textContent;
+    btn.innerHTML='<i class="fa-solid fa-eye"></i>';
+    isResultRaw=true;
+  }
+}
+
+function simple_md(txt){
+  return txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>');
+}
+
+// Focus mode toggle
+function toggle_focus(id){
+  const overlay=document.getElementById(id);
+  overlay.classList.toggle('focus-mode');
 }
 
 // ============================================================
@@ -1128,17 +1795,18 @@ function open_today(){
 }
 async function run_today(){
   const dv=document.getElementById('today-date').value;
-  if(!dv) return toast('اختر تاريخاً');
+  if(!dv)return toast('اختر تاريخاً','error');
   const d=new Date(dv);
   const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
   const fmt=`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-  show_load('today-load'); hide('today-res'); hide('today-acts');
+  show_load('today-load');
+  document.getElementById('today-result-wrap').style.display='none';
   try{
     const r=await gemini(PROMPTS.today+'\n\n'+fmt);
     document.getElementById('today-res').textContent=r;
-    show('today-res'); show('today-acts');
+    document.getElementById('today-result-wrap').style.display='block';
     await arc_auto('حدث اليوم',fmt,r);
-  }catch(e){toast('خطأ: '+e.message)}
+  }catch(e){toast('خطأ: '+e.message,'error')}
   finally{hide('today-load')}
 }
 
@@ -1148,14 +1816,15 @@ async function run_today(){
 async function run_matches(){
   const t1=document.getElementById('team1').value.trim();
   const t2=document.getElementById('team2').value.trim();
-  if(!t1||t2=='') return toast('أدخل اسمي الفريقين');
-  show_load('matches-load'); hide('matches-res'); hide('matches-acts');
+  if(!t1||!t2)return toast('أدخل اسمي الفريقين','error');
+  show_load('matches-load');
+  document.getElementById('matches-result-wrap').style.display='none';
   try{
     const r=await gemini(PROMPTS.matches+'\n\n'+t1+' ضد '+t2);
     document.getElementById('matches-res').textContent=r;
-    show('matches-res'); show('matches-acts');
+    document.getElementById('matches-result-wrap').style.display='block';
     await arc_auto('أرشيف المواجهات',t1+' ضد '+t2,r);
-  }catch(e){toast('خطأ: '+e.message)}
+  }catch(e){toast('خطأ: '+e.message,'error')}
   finally{hide('matches-load')}
 }
 
@@ -1164,14 +1833,15 @@ async function run_matches(){
 // ============================================================
 async function run_profile(){
   const name=document.getElementById('prof-name').value.trim();
-  if(!name) return toast('أدخل اسم الشخصية');
-  show_load('prof-load'); hide('prof-res'); hide('prof-acts');
+  if(!name)return toast('أدخل اسم الشخصية','error');
+  show_load('prof-load');
+  document.getElementById('prof-result-wrap').style.display='none';
   try{
     const r=await gemini(PROMPTS.profile+'\n\n'+name);
     document.getElementById('prof-res').textContent=r;
-    show('prof-res'); show('prof-acts');
+    document.getElementById('prof-result-wrap').style.display='block';
     await arc_auto('ملف الشخصية',name,r);
-  }catch(e){toast('خطأ: '+e.message)}
+  }catch(e){toast('خطأ: '+e.message,'error')}
   finally{hide('prof-load')}
 }
 
@@ -1181,23 +1851,22 @@ async function run_profile(){
 async function ag_add(){
   const date=document.getElementById('ag-add-date').value;
   const ev=document.getElementById('ag-add-ev').value.trim();
-  if(!date||!ev) return toast('أدخل التاريخ والحدث');
+  if(!date||!ev)return toast('أدخل التاريخ والحدث','error');
   try{
     await db.collection('agenda').add({
-      date, event:ev,
+      date,event:ev,
       addedBy:USER.displayName||USER.email,
       addedById:USER.uid,
       createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('ag-add-date').value='';
     document.getElementById('ag-add-ev').value='';
-    toast('تم حفظ الحدث في الأجندة');
-  }catch(e){toast('خطأ: '+e.message)}
+    toast('✅ تم حفظ الحدث في الأجندة','success');
+  }catch(e){toast('خطأ: '+e.message,'error')}
 }
-
 async function ag_search(){
   const date=document.getElementById('ag-srch-date').value;
-  if(!date) return toast('اختر تاريخاً');
+  if(!date)return toast('اختر تاريخاً','error');
   const c=document.getElementById('ag-results');
   c.innerHTML='<div class="loading"><div class="spin"></div>جاري البحث...</div>';
   try{
@@ -1205,17 +1874,17 @@ async function ag_search(){
     if(s.empty){c.innerHTML='<p style="color:var(--text2);text-align:center;padding:20px">لا توجد أحداث لهذا التاريخ</p>';return}
     c.innerHTML='';
     s.forEach(doc=>{
-      const d=doc.data(), canDel=d.addedById===USER.uid;
+      const d=doc.data(),canDel=d.addedById===USER.uid;
       const dObj=new Date(date);
       const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
       const fdate=`${dObj.getDate()} ${months[dObj.getMonth()]}`;
       c.innerHTML+=`<div class="ag-item">
         <div class="ag-date">${fdate}</div>
-        <div class="ag-body">
+        <div style="flex:1">
           <div class="ag-event" id="ag-ev-${doc.id}">${d.event}</div>
-          <div class="ag-by"><i class="fa-solid fa-user"></i> ${d.addedBy}</div>
+          <div class="ag-by">👤 ${d.addedBy}</div>
         </div>
-        <div class="ag-acts">
+        <div style="display:flex;gap:6px;flex-shrink:0">
           <button class="btn-sec" style="padding:6px 10px" onclick="ag_edit('${doc.id}','${d.event.replace(/'/g,"\\'")}')"><i class="fa-solid fa-pen"></i></button>
           ${canDel?`<button class="btn-sec btn-danger" style="padding:6px 10px" onclick="ag_del('${doc.id}')"><i class="fa-solid fa-trash"></i></button>`:''}
         </div>
@@ -1223,20 +1892,19 @@ async function ag_search(){
     });
   }catch(e){c.innerHTML='<p style="color:var(--danger)">خطأ في البحث</p>'}
 }
-
 async function ag_edit(id,cur){
   const nv=prompt('تعديل الحدث:',cur);
-  if(!nv||nv===cur) return;
+  if(!nv||nv===cur)return;
   try{
     await db.collection('agenda').doc(id).update({event:nv});
     document.getElementById('ag-ev-'+id).textContent=nv;
-    toast('تم التعديل');
-  }catch(e){toast('خطأ: '+e.message)}
+    toast('✅ تم التعديل','success');
+  }catch(e){toast('خطأ: '+e.message,'error')}
 }
 async function ag_del(id){
-  if(!confirm('حذف هذا الحدث؟')) return;
-  try{await db.collection('agenda').doc(id).delete();ag_search();toast('تم الحذف')}
-  catch(e){toast('خطأ: '+e.message)}
+  if(!confirm('حذف هذا الحدث؟'))return;
+  try{await db.collection('agenda').doc(id).delete();ag_search();toast('✅ تم الحذف','success')}
+  catch(e){toast('خطأ: '+e.message,'error')}
 }
 
 // ============================================================
@@ -1245,21 +1913,19 @@ async function ag_del(id){
 async function arc_auto(toolName,input,result){
   try{
     await db.collection('archive').add({
-      toolName, input:input.substring(0,300), result:result.substring(0,1200),
-      user:USER.displayName||USER.email, userId:USER.uid,
+      toolName,input:input.substring(0,300),result:result.substring(0,1200),
+      user:USER.displayName||USER.email,userId:USER.uid,
       createdAt:firebase.firestore.FieldValue.serverTimestamp()
     });
   }catch(e){console.log('arc err',e)}
 }
-
 function arc_save_el(elId,toolName){
   toolName=toolName||CUR_TOOL_NAME;
-  const txt=document.getElementById(elId)?.textContent;
-  if(!txt) return;
+  const txt=document.getElementById(elId)?.innerText||document.getElementById(elId)?.textContent;
+  if(!txt)return;
   arc_auto(toolName,'',txt);
-  toast('تم الحفظ في الأرشيف');
+  toast('✅ تم الحفظ في الأرشيف','success');
 }
-
 async function open_archive(){
   open_modal('arc-modal');
   const c=document.getElementById('arc-list');
@@ -1274,31 +1940,38 @@ async function open_archive(){
     s.forEach(doc=>{
       const d=doc.data();
       const t=d.createdAt?.toDate?d.createdAt.toDate().toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'}):'';
-      const preview=(d.result||'').replace(/</g,'&lt;').substring(0,130);
-      const fullText=(d.result||'').replace(/`/g,'\\`').replace(/\\/g,'\\\\');
+      const preview=(d.result||'').substring(0,120);
+      const full=encodeURIComponent(d.result||'');
       c.innerHTML+=`<div class="arc-item">
         <div class="arc-meta">
           <span class="arc-badge">${d.toolName}</span>
-          <span class="arc-user"><i class="fa-solid fa-user"></i> ${d.user}</span>
-          <span class="arc-time"><i class="fa-regular fa-clock"></i> ${t}</span>
+          <span class="arc-user">👤 ${d.user}</span>
+          <span class="arc-time">🕐 ${t}</span>
         </div>
         <div class="arc-prev">${preview}...</div>
         <div class="result-actions" style="margin-top:8px">
-          <button class="btn-sec" onclick="arc_view(this)" data-full="${fullText.replace(/"/g,'&quot;')}"><i class="fa-solid fa-eye"></i> عرض</button>
-          <button class="btn-sec" onclick="arc_copy(this)" data-full="${fullText.replace(/"/g,'&quot;')}"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" style="font-size:11px;padding:5px 10px" onclick="arc_copy_full('${full}')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
         </div>
       </div>`;
     });
-  }catch(e){c.innerHTML='<p style="color:var(--danger);text-align:center;padding:20px">خطأ في التحميل — تأكد من إعداد Firestore Rules</p>'}
+  }catch(e){c.innerHTML='<p style="color:var(--danger);text-align:center;padding:20px">خطأ في التحميل</p>'}
+}
+function arc_copy_full(enc){
+  navigator.clipboard.writeText(decodeURIComponent(enc)).then(()=>toast('✅ تم النسخ','success'));
 }
 
-function arc_view(btn){
-  const txt=btn.getAttribute('data-full');
-  alert(txt);
-}
-function arc_copy(btn){
-  const txt=btn.getAttribute('data-full');
-  navigator.clipboard.writeText(txt).then(()=>toast('تم النسخ'));
+// ============================================================
+// ACTIVITY BAR
+// ============================================================
+function add_activity(toolName,preview){
+  const bar=document.getElementById('activity-bar');
+  const scroll=document.getElementById('activity-scroll');
+  bar.style.display='flex';
+  const item=document.createElement('div');
+  item.className='activity-item';
+  item.innerHTML=`<span class="activity-badge">${toolName}</span><span>${preview}...</span>`;
+  scroll.insertBefore(item,scroll.firstChild);
+  if(scroll.children.length>5) scroll.removeChild(scroll.lastChild);
 }
 
 // ============================================================
@@ -1307,22 +1980,21 @@ function arc_copy(btn){
 function build_radio_cards(){
   const c=document.getElementById('radio-cards');
   c.innerHTML=RADIOS.map((r,i)=>`
-    <div class="radio-card" id="rc-${i}">
+    <div class="radio-card" id="rc-${i}" onclick="toggle_radio(${i})">
       <div class="radio-dot" style="background:${r.color}"></div>
-      <div class="radio-info">
+      <div style="flex:1">
         <div class="radio-name">${r.name}</div>
         <div class="radio-sub">${r.sub}</div>
       </div>
-      <div class="radio-acts">
-        <button class="btn-sec" id="play-btn-${i}" onclick="toggle_radio(${i})"><i class="fa-solid fa-play"></i> استماع</button>
-      </div>
+      <button class="btn-sec" id="play-btn-${i}" style="padding:6px 14px;font-size:12px" onclick="event.stopPropagation();toggle_radio(${i})">
+        <i class="fa-solid fa-play"></i> استماع
+      </button>
     </div>`).join('');
 }
-
 function toggle_radio(i){
   const audio=document.getElementById('radio-audio');
-  if(activeRadioIdx===i && !audio.paused){
-    audio.pause(); activeRadioIdx=-1;
+  if(activeRadioIdx===i&&!audio.paused){
+    audio.pause();activeRadioIdx=-1;
     document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-play"></i> استماع';
     document.getElementById('rc-'+i).classList.remove('on');
     return;
@@ -1332,87 +2004,14 @@ function toggle_radio(i){
     document.getElementById('rc-'+activeRadioIdx).classList.remove('on');
   }
   audio.src=RADIOS[i].url;
-  audio.play().catch(()=>toast('تعذّر التشغيل — تحقق من رابط البث أو الاتصال'));
+  audio.play().catch(()=>toast('تعذّر التشغيل','error'));
   activeRadioIdx=i;
-  document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-pause"></i> إيقاف';
+  document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-stop"></i> إيقاف';
   document.getElementById('rc-'+i).classList.add('on');
 }
-
-async function toggle_radio_rec(i){
-  if(radioRec&&radioRec.state==='recording'){stop_radio_rec();return}
-  toggle_radio(i);
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    radioChunks=[];
-    radioRec=new MediaRecorder(stream);
-    radioRec.ondataavailable=e=>radioChunks.push(e.data);
-    radioRec.onstop=()=>save_radio_rec(RADIOS[i].name);
-    radioRec.start();
-    radioSecs=0;
-    show('rec-panel');
-    document.getElementById('rec-radio-name').textContent=RADIOS[i].name;
-    document.getElementById('rec-btn-'+i).innerHTML='<i class="fa-solid fa-stop"></i> إيقاف';
-    radioTimerID=setInterval(()=>{
-      radioSecs++;
-      document.getElementById('rec-clock').textContent=fmt_time(radioSecs);
-    },1000);
-  }catch(e){toast('لا يمكن الوصول للميكروفون')}
-}
-
-function stop_radio_rec(){
-  if(radioRec){radioRec.stop();radioRec=null}
-  if(radioTimerID){clearInterval(radioTimerID);radioTimerID=null}
-  hide('rec-panel');
-  RADIOS.forEach((_,i)=>{
-    const b=document.getElementById('rec-btn-'+i);
-    if(b) b.innerHTML='<i class="fa-solid fa-circle-dot"></i> تسجيل';
-  });
-}
-
-async function save_radio_rec(name){
-  try{
-    const blob=new Blob(radioChunks,{type:'audio/webm'});
-    const fname=`${name}_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url; a.download=fname; a.click();
-    await db.collection('recordings').add({
-      radioName:name, fname,
-      userId:USER.uid,
-      user:USER.displayName||USER.email,
-      duration:radioSecs,
-      createdAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
-    toast('تم حفظ التسجيل على جهازك');
-    load_saved_recs();
-  }catch(e){toast('خطأ في الحفظ: '+e.message)}
-}
-
-async function load_saved_recs(){
-  try{
-    const s=await db.collection('recordings')
-      .where('userId','==',USER.uid)
-      .orderBy('createdAt','desc').limit(8).get();
-    const c=document.getElementById('saved-recs');
-    if(!c) return;
-    if(s.empty){c.innerHTML='<div style="font-size:13px;color:var(--text2)">لا توجد تسجيلات بعد</div>';return}
-    c.innerHTML='';
-    s.forEach(doc=>{
-      const d=doc.data();
-      c.innerHTML+=`<div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
-        <div style="flex:1">
-          <div style="font-size:13px;font-weight:700">${d.radioName}</div>
-          <div style="font-size:11px;color:var(--text2)">${fmt_time(d.duration||0)} — ${d.fname}</div>
-        </div>
-        <span style="font-size:11px;color:var(--accent2)">محفوظ</span>
-      </div>`;
-    });
-  }catch(e){console.log('recs err',e)}
-}
-
 function stop_radio(){
   const a=document.getElementById('radio-audio');
-  if(a) a.pause();
+  if(a)a.pause();
   activeRadioIdx=-1;
 }
 
@@ -1420,9 +2019,8 @@ function stop_radio(){
 // SMART RECORD
 // ============================================================
 async function toggle_smart_rec(){
-  if(isSmartRec) stop_smart_rec(); else start_smart_rec();
+  if(isSmartRec)stop_smart_rec();else start_smart_rec();
 }
-
 async function start_smart_rec(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
@@ -1431,65 +2029,67 @@ async function start_smart_rec(){
     smartRec.ondataavailable=e=>smartChunks.push(e.data);
     smartRec.onstop=process_smart_rec;
     smartRec.start();
-    isSmartRec=true; smartSecs=0;
-    document.getElementById('sr-status').textContent='جاري التسجيل... تحدث بوضوح';
-    document.getElementById('sr-timer').style.display='block';
+    isSmartRec=true;smartSecs=0;
+    document.getElementById('sr-status').textContent='🔴 جاري التسجيل... تحدث بوضوح';
+    const timer=document.getElementById('sr-timer');
+    timer.style.display='block';
+    timer.classList.add('recording');
     document.getElementById('sr-btn').innerHTML='<i class="fa-solid fa-stop"></i> إيقاف وتفريغ';
     document.getElementById('sr-btn').style.background='#ef4444';
+    document.getElementById('sr-btn').style.boxShadow='0 4px 16px rgba(239,68,68,0.4)';
     smartTimerID=setInterval(()=>{
       smartSecs++;
       document.getElementById('sr-timer').textContent=fmt_time(smartSecs);
     },1000);
-  }catch(e){toast('لا يمكن الوصول للميكروفون')}
+  }catch(e){toast('لا يمكن الوصول للميكروفون','error')}
 }
-
 function stop_smart_rec(){
   if(smartRec){smartRec.stop();smartRec=null}
   if(smartTimerID){clearInterval(smartTimerID);smartTimerID=null}
   isSmartRec=false;
-  document.getElementById('sr-status').textContent='جاري المعالجة...';
-  document.getElementById('sr-btn').innerHTML='<i class="fa-solid fa-microphone"></i> بدء تسجيل جديد';
-  document.getElementById('sr-btn').style.background='';
+  document.getElementById('sr-status').textContent='⏳ جاري المعالجة...';
+  const btn=document.getElementById('sr-btn');
+  btn.innerHTML='<i class="fa-solid fa-microphone"></i> بدء تسجيل جديد';
+  btn.style.background='';btn.style.boxShadow='';
+  document.getElementById('sr-timer').classList.remove('recording');
 }
-
 async function process_smart_rec(){
   const blob=new Blob(smartChunks,{type:'audio/webm'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url; a.download=`interview_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
+  a.href=url;a.download=`interview_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
   a.click();
-  document.getElementById('sr-status').textContent='تم حفظ التسجيل — يمكنك نسخ محتوى المقابلة للتفريغ';
+  document.getElementById('sr-status').textContent='✅ تم حفظ التسجيل على جهازك';
   document.getElementById('sr-timer').style.display='none';
   document.getElementById('sr-result').style.display='block';
-  document.getElementById('sr-transcription').textContent='تم تحميل ملف التسجيل على جهازك.\n\nللتفريغ الكامل:\n1. انسخ محتوى المقابلة في الحقل أدناه\n2. أو افتح أداة "تفريغ وتحرير" وأدخل المحتوى\n3. اضغط "تحويل لمقال" للحصول على المقال النهائي\n\nملاحظة: دعم التفريغ المباشر من الصوت قادم في التحديث القادم';
+  document.getElementById('sr-transcription').textContent='تم تحميل ملف التسجيل على جهازك.\n\nللتفريغ الكامل:\n1. انسخ محتوى المقابلة في الحقل أدناه\n2. أو افتح أداة "تفريغ وتحرير" وأدخل المحتوى\n3. اضغط "تحويل لمقال" للحصول على المقال النهائي';
 }
-
 async function convert_to_article(){
   const txt=document.getElementById('sr-transcription').textContent;
-  if(!txt) return;
+  if(!txt)return;
   document.getElementById('sr-article').style.display='block';
-  document.getElementById('sr-article-content').textContent='جاري التحويل...';
+  document.getElementById('sr-article-content').textContent='⏳ جاري التحويل...';
   try{
     const r=await gemini(PROMPTS.article+'\n\n'+txt);
     document.getElementById('sr-article-content').textContent=r;
     await arc_auto('تسجيل ذكي',txt.substring(0,100),r);
-  }catch(e){toast('خطأ: '+e.message)}
+  }catch(e){toast('خطأ: '+e.message,'error')}
 }
 
 // ============================================================
 // SHARE HELPERS
 // ============================================================
 function copy_el(id){
-  const t=document.getElementById(id)?.textContent;
-  if(t) navigator.clipboard.writeText(t).then(()=>toast('تم النسخ'));
+  const t=document.getElementById(id)?.innerText||document.getElementById(id)?.textContent;
+  if(t)navigator.clipboard.writeText(t).then(()=>toast('✅ تم النسخ','success'));
 }
 function wa_share(id){
-  const t=document.getElementById(id)?.textContent;
-  if(t) window.open('https://wa.me/?text='+encodeURIComponent(t));
+  const t=document.getElementById(id)?.innerText||document.getElementById(id)?.textContent;
+  if(t)window.open('https://wa.me/?text='+encodeURIComponent(t));
 }
 function email_share(id){
-  const t=document.getElementById(id)?.textContent;
-  if(t) window.open('mailto:?subject=DESK BOT&body='+encodeURIComponent(t));
+  const t=document.getElementById(id)?.innerText||document.getElementById(id)?.textContent;
+  if(t)window.open('mailto:?subject=DESK BOT&body='+encodeURIComponent(t));
 }
 function wa_share_id(id){wa_share(id)}
 function email_share_id(id){email_share(id)}
@@ -1505,8 +2105,9 @@ function toggle_theme(){
   localStorage.setItem('deskbot-theme',next);
 }
 (()=>{
-  const t=localStorage.getItem('deskbot-theme')||'light';
+  const t=localStorage.getItem('deskbot-theme')||'dark';
   document.documentElement.setAttribute('data-theme',t);
+  if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
 })();
 
 // ============================================================
@@ -1515,7 +2116,7 @@ function toggle_theme(){
 function open_modal(id){document.getElementById(id).classList.add('open')}
 function close_modal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.overlay').forEach(o=>{
-  o.addEventListener('click',e=>{if(e.target===o) o.classList.remove('open')})
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')})
 });
 
 // ============================================================
@@ -1525,13 +2126,14 @@ function show(id){document.getElementById(id).style.display='block'}
 function hide(id){document.getElementById(id).style.display='none'}
 function show_load(id){document.getElementById(id).style.display='flex'}
 function fmt_time(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
-function toast(msg){
+function toast(msg,type=''){
   const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('on');
-  setTimeout(()=>el.classList.remove('on'),3000);
+  el.textContent=msg;el.className='toast on '+type;
+  setTimeout(()=>el.className='toast',3000);
 }
+
+// Init
+auto_theme();
 </script>
 </body>
 </html>
-
-
