@@ -151,18 +151,18 @@ body::after{
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
-  padding:0 24px;
-  height:58px;
+  padding:0 16px;
+  height:48px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:100;
 }
 .h-logo{display:flex;align-items:center;gap:10px}
-.h-logo .logo-box{width:34px;height:34px;font-size:16px;border-radius:10px}
-.h-logo-text{font-size:18px;font-weight:900;font-family:'Oswald',sans-serif;letter-spacing:1px}
+.h-logo .logo-box{width:28px;height:28px;font-size:14px;border-radius:8px}
+.h-logo-text{font-size:14px;font-weight:900;font-family:'Oswald',sans-serif;letter-spacing:0.5px}
 .h-logo-text span{color:var(--accent)}
 .h-center{
-  display:flex;align-items:center;gap:16px;
-  font-size:12px;color:var(--text2);
+  display:none;align-items:center;gap:12px;
+  font-size:11px;color:var(--text2);
 }
 .h-clock{
   font-family:'Oswald',sans-serif;
@@ -240,21 +240,21 @@ select.h-btn{
 .kbd-hint:hover{color:var(--accent);border-color:var(--accent)}
 
 /* ===== CONTENT ===== */
-.content{max-width:1100px;margin:0 auto;padding:28px 24px}
+.content{max-width:1100px;margin:0 auto;padding:16px 16px;background:var(--bg)}
 
 /* ===== WELCOME BAR ===== */
 .welcome-bar{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:28px;
-  padding:18px 22px;
+  margin-bottom:12px;
+  padding:12px 16px;
   background:var(--glass);
   backdrop-filter:blur(12px);
-  border-radius:var(--r2);
+  border-radius:12px;
   border:1px solid var(--border);
 }
-.welcome-text .wt-greeting{font-size:15px;font-weight:700;margin-bottom:2px}
-.welcome-text .wt-sub{font-size:12px;color:var(--text2)}
-.welcome-stats{display:flex;align-items:center;gap:20px}
+.welcome-text .wt-greeting{font-size:13px;font-weight:700;margin-bottom:2px}
+.welcome-text .wt-sub{font-size:11px;color:var(--text2)}
+.welcome-stats{display:flex;align-items:center;gap:12px}
 .w-stat{text-align:center}
 .w-stat-val{font-family:'Oswald',sans-serif;font-size:20px;font-weight:600;color:var(--accent)}
 .w-stat-lbl{font-size:10px;color:var(--text3)}
@@ -299,10 +299,10 @@ select.h-btn{
 /* ===== BENTO GRID — PRIORITY TOOLS ===== */
 .bento-grid{
   display:grid;
-  grid-template-columns:2fr 1fr 1fr;
+  grid-template-columns:1fr 1fr;
   grid-template-rows:auto auto;
-  gap:14px;
-  margin-bottom:28px;
+  gap:10px;
+  margin-bottom:16px;
 }
 .tool-card{
   background:var(--glass);
@@ -433,22 +433,22 @@ select.h-btn{
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
   border-radius:var(--r2);
-  width:100%;max-width:800px;
-  max-height:92vh;overflow-y:auto;
+  width:100%;max-width:700px;
+  max-height:88vh;overflow-y:auto;
   box-shadow:var(--shadow2);
   border:1px solid var(--border);
   animation:slideUp .25s ease;
 }
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .m-head{
-  padding:20px 24px;border-bottom:1px solid var(--border);
+  padding:16px 18px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;
   background:var(--glass2);
   backdrop-filter:blur(20px);
   z-index:1;border-radius:var(--r2) var(--r2) 0 0;
 }
-.m-title{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px;font-family:'Amiri',serif}
+.m-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;font-family:'Amiri',serif}
 .m-close{
   background:rgba(255,255,255,0.05);border:1px solid var(--border);
   font-size:14px;cursor:pointer;color:var(--text2);
@@ -457,7 +457,7 @@ select.h-btn{
   transition:all .2s;
 }
 .m-close:hover{background:rgba(239,68,68,0.15);color:#ef4444;border-color:rgba(239,68,68,0.3)}
-.m-body{padding:24px}
+.m-body{padding:18px}
 
 /* ===== COMMAND PALETTE ===== */
 #cmd-overlay{
@@ -1050,30 +1050,7 @@ textarea{min-height:120px;line-height:1.7}
         <div class="t-name">التسجيل الذكي</div>
       </div>
 
-      <div class="tool-card mini" onclick="open_tool('factchecker')">
-        <div class="t-icon ic-red"><i class="fa-solid fa-shield-halved"></i></div>
-        <div class="t-name">كاشف الزيف</div>
-      </div>
 
-      <div class="tool-card mini" onclick="open_tool('styleguide')">
-        <div class="t-icon ic-gold"><i class="fa-solid fa-book-journal-whills"></i></div>
-        <div class="t-name">دليل الأسلوب</div>
-      </div>
-
-      <div class="tool-card mini" onclick="open_tool('taskmanager')">
-        <div class="t-icon ic-teal"><i class="fa-solid fa-list-check"></i></div>
-        <div class="t-name">إدارة التكليفات</div>
-      </div>
-
-      <div class="tool-card mini" onclick="open_tool('smartsearch')">
-        <div class="t-icon ic-blue"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-        <div class="t-name">البحث الذكي</div>
-      </div>
-
-      <div class="tool-card mini" onclick="open_modal('help-modal')">
-        <div class="t-icon ic-purple"><i class="fa-solid fa-circle-info"></i></div>
-        <div class="t-name">دليل الأدوات</div>
-      </div>
 
     </div>
   </div>
@@ -1303,44 +1280,6 @@ textarea{min-height:120px;line-height:1.7}
   </div>
 </div>
 
-<!-- =================== HELP MODAL =================== -->
-<div class="overlay" id="help-modal">
-  <div class="modal" style="max-width:800px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-circle-info"></i> دليل استخدام أدوات DESK BOT</div>
-      <button class="m-close" onclick="close_modal('help-modal')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="m-body" style="max-height:70vh;overflow-y:auto;padding:20px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-        <div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:12px;border:1px solid var(--border)">
-          <h4 style="color:var(--gold);margin-bottom:10px"><i class="fa-solid fa-pen-nib"></i> المحرر الرقمي Pro</h4>
-          <p style="font-size:12px;color:var(--text2);line-height:1.6">الأداة الأساسية لتحويل النصوص الخام إلى مقالات مهيكلة وفق معايير وكالة "وات" وديوان أف أم. تنتج 5 عناوين ومقالاً كاملاً.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:12px;border:1px solid var(--border)">
-          <h4 style="color:var(--accent2);margin-bottom:10px"><i class="fa-solid fa-shield-halved"></i> كاشف الزيف</h4>
-          <p style="font-size:12px;color:var(--text2);line-height:1.6">أداة متخصصة للتحقق من صحة الأخبار والادعاءات. تقوم بتحليل النص وتصنيفه (صحيح/زائف) مع ذكر الأسباب.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:12px;border:1px solid var(--border)">
-          <h4 style="color:var(--gold);margin-bottom:10px"><i class="fa-solid fa-book-journal-whills"></i> دليل الأسلوب</h4>
-          <p style="font-size:12px;color:var(--text2);line-height:1.6">تضمن توافق النص مع الهوية التحريرية للمؤسسة، وتصحح المصطلحات الرسمية والجغرافية التونسية.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:12px;border:1px solid var(--border)">
-          <h4 style="color:var(--teal);margin-bottom:10px"><i class="fa-solid fa-list-check"></i> إدارة التكليفات</h4>
-          <p style="font-size:12px;color:var(--text2);line-height:1.6">تحول الأفكار إلى خطط عمل صحفية، وتحدد المهام المطلوبة والزوايا التحريرية والمصادر المقترحة.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:12px;border:1px solid var(--border)">
-          <h4 style="color:var(--accent);margin-bottom:10px"><i class="fa-solid fa-magnifying-glass-chart"></i> البحث الذكي</h4>
-          <p style="font-size:12px;color:var(--text2);line-height:1.6">تبحث في السياق التاريخي للمواضيع، وتقدم ملخصاً زمنياً للأحداث المرتبطة لتعميق المحتوى الإخباري.</p>
-        </div>
-        <div style="background:rgba(255,255,255,0.03);padding:15px;border-radius:12px;border:1px solid var(--border)">
-          <h4 style="color:var(--indigo);margin-bottom:10px"><i class="fa-solid fa-microphone-lines"></i> التسجيل الذكي</h4>
-          <p style="font-size:12px;color:var(--text2);line-height:1.6">تسجيل الحوارات والمؤتمرات، ثم تحويلها إلى نصوص مفرغة ومقالات جاهزة للنشر بضغطة زر.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- =================== SETTINGS MODAL =================== -->
 <div class="overlay" id="settings-modal">
   <div class="modal" style="max-width:480px">
@@ -1478,10 +1417,7 @@ const CMD_ITEMS=[
   {name:'الأجندة المشتركة',icon:'fa-calendar-days',cls:'ic-gold',key:'',action:()=>open_modal('agenda-modal')},
   {name:'مدقق المحتوى',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
   {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
-  {name:'كاشف الزيف',icon:'fa-shield-halved',cls:'ic-red',key:'',action:()=>open_tool('factchecker')},
-  {name:'دليل الأسلوب',icon:'fa-book-journal-whills',cls:'ic-gold',key:'',action:()=>open_tool('styleguide')},
-  {name:'إدارة التكليفات',icon:'fa-list-check',cls:'ic-teal',key:'',action:()=>open_tool('taskmanager')},
-  {name:'البحث الذكي',icon:'fa-magnifying-glass-chart',cls:'ic-blue',key:'',action:()=>open_tool('smartsearch')},
+
   {name:'الإذاعات المباشرة',icon:'fa-radio',cls:'ic-red',key:'',action:()=>open_modal('radio-modal')},
   {name:'الأرشيف',icon:'fa-clock-rotate-left',cls:'ic-teal',key:'',action:()=>open_archive()},
   {name:'إعدادات API',icon:'fa-gear',cls:'ic-amber',key:'',action:()=>open_modal('settings-modal')},
@@ -1494,7 +1430,6 @@ let cmdIdx=0, cmdFiltered=[...CMD_ITEMS];
 const SYS=`أنت DESK BOT، نظام غرفة الأخبار الرقمية المتقدم، مصمم خصيصاً للصحفيين والمحررين في المؤسسات الإعلامية التونسية. تعمل وفق أعلى معايير الصحافة المهنية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم وكبرى المؤسسات الإعلامية التونسية. اللغة الحصرية: العربية الفصحى الحديثة الرصينة. الأسلوب: تقريري مباشر خالٍ من الإنشاء والحشو.\n\n`;
 
 const PROMPTS={
-  factchecker: `${SYS}## دورك: خبير التحقق من الأخبار (Fact-Checking Specialist)
   
   ### المهمة:
   تحليل الخبر أو الادعاء المقدم ومقارنته بالحقائق والمنطق والمصادر الموثوقة لبيان مدى صحته.
@@ -1505,7 +1440,7 @@ const PROMPTS={
   3. **المصادر الموثوقة:** ذكر جهات أو وقائع تدعم التحقق.
   4. **نصيحة للجمهور:** كيف يتعامل مع هذا النوع من الأخبار.`,
 
-  styleguide: `${SYS}## دورك: حارس الهوية التحريرية (Style Guide Guardian)
+
   
   ### المهمة:
   مراجعة النص لضمان توافقه مع "دليل الأسلوب" الصحفي المعتمد (وكالة وات / ديوان أف أم).
@@ -1516,7 +1451,7 @@ const PROMPTS={
   - توحيد كتابة التواريخ والأرقام.
   - تنبيه الصحفي لأي عبارات عاطفية أو غير حيادية.`,
 
-  taskmanager: `${SYS}## دورك: منسق غرفة الأخبار (Newsroom Coordinator)
+
   
   ### المهمة:
   تحويل الفكرة أو الحدث إلى "خطة عمل" أو "تكليف صحفي" متكامل.
@@ -1527,7 +1462,7 @@ const PROMPTS={
   3. **الزاوية الصحفية:** (كيف نتناول الخبر بشكل مختلف؟).
   4. **المصادر المقترحة:** (جهات أو أشخاص للاتصال بهم).`,
 
-  smartsearch: `${SYS}## دورك: خبير الأرشفة والبحث الذكي (Smart Archive Analyst)
+
   
   ### المهمة:
   البحث في الأرشيف واستخراج الروابط أو المعلومات المتعلقة بموضوع معين مع تقديم ملخص تاريخي.
