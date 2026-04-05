@@ -843,6 +843,40 @@ textarea{min-height:120px;line-height:1.7}
   .h-center{display:none!important}
 }
 
+
+/* ─── MOBILE FULL FIXES ─── */
+@media(max-width:600px){
+  .overlay{
+    padding:0!important;
+    align-items:flex-end!important;
+  }
+  .modal{
+    border-radius:20px 20px 0 0!important;
+    max-height:92dvh!important;
+    overflow-y:auto!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  .m-body{
+    max-height:75dvh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .result-box{max-height:40dvh;overflow-y:auto}
+  .result-actions{flex-wrap:wrap;gap:6px}
+  .result-actions .btn-sec{font-size:11px;padding:7px 10px}
+  .bento-grid{grid-template-columns:1fr!important}
+  .tool-card.featured{grid-column:1!important;grid-row:auto!important}
+  .tools-grid{grid-template-columns:repeat(2,1fr)!important}
+  .h-btn span{display:none!important}
+  .welcome-stats{display:none!important}
+  .content{padding:16px 12px 80px!important}
+  #bottom-nav{display:block!important}
+  .field input,.field textarea,textarea{font-size:16px!important}
+  .rec-center{padding:20px 10px!important}
+  .rec-main-btn{width:100%!important;padding:14px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1064,7 +1098,7 @@ textarea{min-height:120px;line-height:1.7}
 
       <div class="tool-card mini" onclick="open_tool('checker')">
         <div class="t-icon ic-pink"><i class="fa-solid fa-spell-check"></i></div>
-        <div class="t-name">مدقق المحتوى</div>
+        <div class="t-name">رصد إعلامي</div>
       </div>
 
       <div class="tool-card mini" onclick="open_modal('smart-modal')">
@@ -1095,11 +1129,34 @@ textarea{min-height:120px;line-height:1.7}
 <!-- =================== AI MODAL =================== -->
 <div class="overlay" id="ai-modal">
   <div class="modal">
-    <div class="m-head">
-      <div class="m-title" id="ai-title"><i class="fa-solid fa-wand-magic-sparkles"></i> الأداة</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('ai-modal')" title="وضع التركيز"><i class="fa-solid fa-expand"></i></button>
+    <div class="m-head" style="flex-direction:column;align-items:stretch;gap:0;padding:0">
+      <div style="display:flex;align-items:center;padding:16px 20px 12px;gap:10px">
+        <div class="m-title" id="ai-title" style="flex:1"><i class="fa-solid fa-wand-magic-sparkles"></i> الأداة</div>
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('ai-modal')"><i class="fa-solid fa-expand"></i></button>
         <button class="m-close" onclick="close_modal('ai-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <!-- MODEL SELECTOR TABS -->
+      <div style="display:flex;border-top:1px solid var(--border);background:var(--bg2)">
+        <button id="model-tab-pro" onclick="select_ai_model('pro')"
+          style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
+          border:none;cursor:pointer;border-bottom:2px solid var(--accent);
+          background:transparent;color:var(--accent);transition:all .2s">
+          <i class="fa-solid fa-star"></i> PRO
+        </button>
+        <button id="model-tab-flash" onclick="select_ai_model('flash')"
+          style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
+          border:none;cursor:pointer;border-bottom:2px solid transparent;
+          background:transparent;color:var(--text3);transition:all .2s">
+          <i class="fa-solid fa-bolt"></i> Flash
+        </button>
+        <button id="model-tab-qwen" onclick="select_ai_model('qwen')"
+          style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
+          border:none;cursor:pointer;border-bottom:2px solid transparent;
+          background:transparent;color:var(--text3);transition:all .2s">
+          <i class="fa-solid fa-robot"></i> Qwen
+          <span id="ai-qwen-quota" style="display:none;font-size:9px;background:rgba(139,92,246,.2);
+          color:#a78bfa;border-radius:20px;padding:1px 6px;margin-right:3px">0/50</span>
+        </button>
       </div>
     </div>
     <div class="m-body">
@@ -1275,33 +1332,58 @@ textarea{min-height:120px;line-height:1.7}
 <div class="overlay" id="smart-modal">
   <div class="modal" style="max-width:700px">
     <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-microphone-lines"></i> التسجيل الذكي</div>
-      <button class="m-close" onclick="close_modal('smart-modal')"><i class="fa-solid fa-xmark"></i></button>
+      <div class="m-title"><i class="fa-solid fa-microphone-lines" style="color:var(--accent2)"></i> التسجيل الذكي</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('smart-modal')"><i class="fa-solid fa-expand"></i></button>
+        <button class="m-close" onclick="close_modal('smart-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
     </div>
     <div class="m-body">
+      <!-- REC CENTER -->
       <div class="rec-center">
         <div class="rec-status" id="sr-status">جاهز للتسجيل</div>
-        <div class="rec-timer" id="sr-timer">00:00</div>
+        <div class="rec-timer" id="sr-timer" style="display:none">00:00</div>
         <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()">
           <i class="fa-solid fa-microphone"></i> بدء تسجيل جديد
         </button>
       </div>
-      <div id="sr-result" style="display:none">
-        <div style="font-weight:700;margin-bottom:10px;font-family:'Amiri',serif;font-size:16px">التفريغ الحرفي</div>
-        <div id="sr-transcription" class="result-box"></div>
-        <div class="result-actions" style="margin-top:10px">
+      <!-- AUDIO PLAYER + DOWNLOAD -->
+      <div id="sr-audio-wrap" style="display:none;margin-top:16px">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">ملف التسجيل</div>
+        <audio id="sr-audio-player" controls style="width:100%;border-radius:10px;accent-color:var(--accent)"></audio>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          <button class="btn-sec" onclick="sr_download_audio()" style="gap:6px"><i class="fa-solid fa-download"></i> تحميل الصوت</button>
+          <button class="btn-sec" onclick="sr_share_audio_wa()" style="gap:6px"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> واتساب</button>
+          <button class="btn-sec" onclick="sr_share_audio_tg()" style="gap:6px"><i class="fa-brands fa-telegram" style="color:#2aabee"></i> تيليغرام</button>
+          <button class="btn-sec" onclick="sr_share_audio_email()" style="gap:6px"><i class="fa-solid fa-envelope"></i> إيميل</button>
+          <button class="btn-sec" onclick="sr_share_native()" style="gap:6px"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+        </div>
+      </div>
+      <!-- TRANSCRIPTION -->
+      <div id="sr-result" style="display:none;margin-top:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-weight:700;font-family:'Amiri',serif;font-size:16px;flex:1">التفريغ الحرفي</span>
+          <div id="sr-trans-load" class="loading" style="display:none"><div class="spin"></div><span style="font-size:12px">جاري التفريغ...</span></div>
+        </div>
+        <textarea id="sr-transcription" class="result-box"
+          style="width:100%;min-height:140px;resize:vertical;background:var(--bg3);
+          border:1px solid var(--border);border-radius:10px;padding:14px;
+          font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);line-height:1.8"
+          placeholder="سيظهر هنا النص المفرَّغ تلقائياً..."></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          <button class="btn-sec" onclick="sr_copy_text()"><i class="fa-solid fa-clipboard"></i> نسخ النص</button>
+          <button class="btn-sec" onclick="sr_save_txt()"><i class="fa-solid fa-file-lines"></i> حفظ .txt</button>
+          <button class="btn-sec" onclick="wa_share('sr-transcription')"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> واتساب</button>
+          <button class="btn-sec" onclick="email_share('sr-transcription')"><i class="fa-solid fa-envelope"></i> إيميل</button>
           <button class="btn" onclick="convert_to_article()"><i class="fa-solid fa-newspaper"></i> تحويل لمقال</button>
-          <button class="btn-sec" onclick="copy_el('sr-transcription')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-          <button class="btn-sec" onclick="wa_share_id('sr-transcription')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
-          <button class="btn-sec" onclick="email_share_id('sr-transcription')"><i class="fa-solid fa-envelope"></i> إيميل</button>
         </div>
         <div id="sr-article" style="display:none;margin-top:24px">
           <div style="font-weight:700;margin-bottom:10px;font-family:'Amiri',serif;font-size:16px;color:var(--gold)">المقال الإخباري</div>
-          <div id="sr-article-content" class="result-box"></div>
+          <div id="sr-article-content" class="result-box rendered"></div>
           <div class="result-actions" style="margin-top:10px">
             <button class="btn-sec" onclick="copy_el('sr-article-content')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-            <button class="btn-sec" onclick="wa_share_id('sr-article-content')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
-            <button class="btn-sec" onclick="email_share_id('sr-article-content')"><i class="fa-solid fa-envelope"></i> إيميل</button>
+            <button class="btn-sec" onclick="wa_share('sr-article-content')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
+            <button class="btn-sec" onclick="email_share('sr-article-content')"><i class="fa-solid fa-envelope"></i> إيميل</button>
             <button class="btn-sec" onclick="arc_save_el('sr-article-content','تسجيل ذكي')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
           </div>
         </div>
@@ -1310,7 +1392,7 @@ textarea{min-height:120px;line-height:1.7}
   </div>
 </div>
 
-<!-- =================== SETTINGS MODAL =================== -->
+<!--=================== SETTINGS MODAL =================== -->
 <div class="overlay" id="settings-modal">
   <div class="modal" style="max-width:480px">
     <div class="m-head">
@@ -1318,9 +1400,20 @@ textarea{min-height:120px;line-height:1.7}
       <button class="m-close" onclick="close_modal('settings-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-      <div class="notice-bar" style="margin-bottom:20px">
-        <i class="fa-solid fa-info-circle"></i>
-        احصل على مفتاحك من <strong>aistudio.google.com</strong> ← Get API Key
+      <div style="background:rgba(61,126,255,.07);border:1px solid rgba(61,126,255,.22);
+        border-radius:12px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--text2)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <i class="fa-brands fa-google" style="color:var(--accent)"></i>
+          <strong style="color:var(--text)">Google Gemini API</strong>
+        </div>
+        <div style="margin-bottom:6px">احصل على مفتاحك المجاني من:</div>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank"
+          style="display:inline-flex;align-items:center;gap:6px;color:var(--accent);
+          font-weight:700;text-decoration:none;background:rgba(61,126,255,.1);
+          padding:5px 12px;border-radius:8px;font-size:12px;border:1px solid rgba(61,126,255,.3)">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          aistudio.google.com/app/apikey ←
+        </a>
       </div>
       <div class="field">
         <label class="label">مفتاح Google Gemini API</label>
@@ -1510,7 +1603,7 @@ const CMD_ITEMS=[
   {name:'أرشيف المواجهات',icon:'fa-futbol',cls:'ic-green',key:'',action:()=>open_modal('matches-modal')},
   {name:'ملف الشخصية',icon:'fa-user-tie',cls:'ic-blue',key:'',action:()=>open_modal('profile-modal')},
   {name:'الأجندة المشتركة',icon:'fa-calendar-days',cls:'ic-gold',key:'',action:()=>open_modal('agenda-modal')},
-  {name:'مدقق المحتوى',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
+  {name:'رصد إعلامي',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
   {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
   {name:'شريط الأخبار',icon:'fa-newspaper',cls:'ic-blue',key:'',action:()=>toggle_ticker()},
   {name:'الأرشيف',icon:'fa-clock-rotate-left',cls:'ic-teal',key:'',action:()=>open_archive()},
@@ -1671,21 +1764,44 @@ monitor:`${SYS}## دورك: محرر رصد إخباري متخصص
 
 ✗ اختلاق أخبار، تجاوز 12 ساعة`,
 
-checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص
+checker:`${SYS}## دورك: رصد صحفي احترافي ومدقق إعلامي متخصص
 
-ابحث في المواقع الإعلامية التونسية خلال الـ12 ساعة الماضية.
+### مهمتك:
+فحص المحتوى الإعلامي التونسي الصادر خلال الـ 12 ساعة الماضية ورصد الأخطاء المهنية والمنهجية.
 
-**الإخراج:**
-🔍 تقرير مدقق المحتوى | 📅 [التاريخ] | آخر 12 ساعة
+**المؤسسات الإعلامية التي تشملها عملية الرصد:**
+موزاييك، ديوان FM، شمس FM، إذاعة تونس، الشروق، الصباح، المغرب، حقائق أونلاين، الحوار نيوز، TAP، Business News، Leaders، Kapitalis، نواة.
 
-📌 الملخص التنفيذي: المقالات / الأخطاء / الأكثر تكراراً
+### الإخراج الإلزامي:
 
-① الأخطاء النحوية: المصدر | ✗ الخطأ | السبب | ✓ التصويب | القاعدة
-② الأخطاء المنهجية: (غياب مصدر / هرم مقلوب / مصدر مجهول)
-③ الأخطاء التحريرية: (عنوان مضلل / إثارة / تكرار)
-④ درس اليوم: الخطأ الأكثر تكراراً + القاعدة + 3 أمثلة صحيحة
-⑤ توصيات تحريرية لليوم (3 توصيات)
-✗ ذكر أسماء الصحفيين — الأسلوب تعليمي دائماً`,
+---
+🔍 **تقرير الرصد الإعلامي** | 📅 ${new Date().toLocaleDateString('ar-TN')} | آخر 12 ساعة
+
+📌 **ملخص تنفيذي:**
+- عدد المؤسسات المرصودة: [X]
+- الأخطاء الكبرى المُكتشفة: [عدد]
+- أبرز الإشكاليات المنهجية: [ملخص سريع]
+
+---
+
+### 1️⃣ أخطاء لغوية ونحوية فادحة
+| المؤسسة | الخطأ الحرفي | التصويب | القاعدة |
+
+### 2️⃣ أخطاء منهجية وتحريرية
+| المؤسسة | طبيعة الخطأ | التفاصيل | التوصية |
+- غياب مصدر معلوم / هرم مقلوب / مصدر مجهول / عنوان مضلل / إثارة / تناقض معلوماتي
+
+### 3️⃣ إشكاليات أخلاقية ومهنية
+- خرق الخصوصية / انتهاك قرينة البراءة / تغطية جنائية غير مهنية / ترويج غير موثق
+
+### 4️⃣ أبرز المقالات الموثوقة (نماذج احترافية)
+- ذكر 2-3 أمثلة إيجابية لتعزيز الممارسات الجيدة
+
+---
+💡 **توصيات عاجلة للتحرير** بناءً على نتائج الرصد
+
+`
+},
 
 today:`${SYS}## دورك: موسوعة تاريخية متخصصة
 
@@ -2235,28 +2351,8 @@ function stop_smart_rec(){
   btn.style.background='';btn.style.boxShadow='';
   document.getElementById('sr-timer').classList.remove('recording');
 }
-async function process_smart_rec(){
-  const blob=new Blob(smartChunks,{type:'audio/webm'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=`interview_${new Date().toISOString().slice(0,19).replace(/:/g,'-')}.webm`;
-  a.click();
-  document.getElementById('sr-status').textContent='✅ تم حفظ التسجيل على جهازك';
-  document.getElementById('sr-timer').style.display='none';
-  document.getElementById('sr-result').style.display='block';
-  document.getElementById('sr-transcription').textContent='تم تحميل ملف التسجيل على جهازك.\n\nللتفريغ الكامل:\n1. انسخ محتوى المقابلة في الحقل أدناه\n2. أو افتح أداة "تفريغ وتحرير" وأدخل المحتوى\n3. اضغط "تحويل لمقال" للحصول على المقال النهائي';
-}
-async function convert_to_article(){
-  const txt=document.getElementById('sr-transcription').textContent;
-  if(!txt)return;
-  document.getElementById('sr-article').style.display='block';
-  document.getElementById('sr-article-content').textContent='⏳ جاري التحويل...';
-  try{
-    const r=await gemini(PROMPTS.article+'\n\n'+txt);
-    document.getElementById('sr-article-content').textContent=r;
-    await arc_auto('تسجيل ذكي',txt.substring(0,100),r);
-  }catch(e){toast('خطأ: '+e.message,'error')}
-}
+
+
 
 // ============================================================
 // SHARE HELPERS
@@ -2591,199 +2687,12 @@ var RSS_FEEDS = [
 ];
 var RSS2JSON = 'https://api.rss2json.com/v1/api.json?count=4&rss_url=';
 
-function toggle_ticker(){
-  _tick_open = !_tick_open;
-  var wrap = document.getElementById('ticker-wrap');
-  if(!wrap) return;
-  if(_tick_open){
-    wrap.style.maxHeight = '420px';
-    wrap.style.opacity   = '1';
-    wrap.style.marginBottom = '0';
-    load_ticker();
-    if(_tick_timer) clearInterval(_tick_timer);
-    _tick_timer = setInterval(load_ticker, 60000);
-  } else {
-    wrap.style.maxHeight = '0';
-    wrap.style.opacity   = '0';
-    if(_tick_timer){ clearInterval(_tick_timer); _tick_timer = null; }
-  }
-}
 
-async function load_ticker(){
-  var items   = document.getElementById('ticker-items');
-  var spin    = document.getElementById('ticker-spin-i');
-  var refEl   = document.getElementById('ticker-refresh-time');
-  var btn     = document.getElementById('ticker-refresh-btn');
-  if(spin)    spin.style.animation = 'spin .8s linear infinite';
-  if(btn)     btn.disabled = true;
 
-  var now     = new Date();
-  var timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
-  if(refEl)   refEl.textContent = 'آخر تحديث: ' + timeStr;
 
-  var news = [];
-  var promises = RSS_FEEDS.map(function(feed){
-    return fetch(RSS2JSON + encodeURIComponent(feed.url))
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        if(d.status === 'ok' && d.items){
-          d.items.slice(0,4).forEach(function(item){
-            news.push({
-              title  : item.title || '',
-              src    : feed.src,
-              intl   : feed.intl,
-              pubDate: item.pubDate || ''
-            });
-          });
-        }
-      })
-      .catch(function(){});
-  });
-
-  await Promise.allSettled(promises);
-
-  if(news.length === 0){
-    /* Fallback: AI-generated news if all RSS fail */
-    try{
-      var prompt = 'أنت راصد أخبار. الوقت: ' + timeStr + '. التاريخ: ' + now.toLocaleDateString('ar-TN') + '.\n\n'
-                 + 'قدّم 12 خبراً (8 تونسية، 4 دولية) بـ JSON فقط:\n'
-                 + '[{"title":"عنوان","src":"TAP","intl":false}]\n'
-                 + 'intl=false تونسي، intl=true دولي.';
-      var res;
-      try{ res = await gemini(prompt); }
-      catch(e){ res = await qwen_call(prompt); }
-      var m = res.match(/\[[\s\S]*?\]/);
-      if(m) news = JSON.parse(m[0]);
-    }catch(e){}
-  }
-
-  items.innerHTML = '';
-  if(news.length === 0){
-    items.innerHTML = '<div style="padding:28px;text-align:center;color:var(--danger);font-size:13px">'
-                    + '<i class="fa-solid fa-circle-exclamation" style="font-size:24px;display:block;margin-bottom:8px"></i>'
-                    + 'تعذّر تحميل الأخبار — حاول مجدداً</div>';
-  } else {
-    /* Sort by pubDate (newest first) */
-    news.sort(function(a,b){
-      var da = a.pubDate ? new Date(a.pubDate) : 0;
-      var db = b.pubDate ? new Date(b.pubDate) : 0;
-      return db - da;
-    });
-    var frag = document.createDocumentFragment();
-    var limit = Math.min(news.length, 18);
-    for(var i=0;i<limit;i++){
-      var n   = news[i];
-      var row = document.createElement('div');
-      row.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:9px 16px;'
-                        + 'border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s';
-      row.title = 'انقر لنسخ الخبر';
-      row.dataset.t = n.title || '';
-      row.addEventListener('click', function(){
-        navigator.clipboard.writeText(this.dataset.t).catch(function(){});
-        toast('تم نسخ الخبر ✓');
-      });
-      row.addEventListener('mouseover', function(){ this.style.background = 'rgba(61,126,255,.06)'; });
-      row.addEventListener('mouseout',  function(){ this.style.background = ''; });
-
-      /* Time badge */
-      var tEl   = document.createElement('span');
-      var pubD  = n.pubDate ? new Date(n.pubDate) : null;
-      tEl.textContent = pubD
-        ? pubD.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'})
-        : timeStr;
-      tEl.style.cssText = 'font-family:\'Oswald\',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px;flex-shrink:0';
-
-      /* Source badge */
-      var badge = document.createElement('span');
-      badge.textContent = n.src || 'وكالات';
-      badge.style.cssText = 'font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
-                          + 'white-space:nowrap;flex-shrink:0;margin-top:2px;'
-                          + (n.intl ? 'background:rgba(16,201,138,.12);color:var(--accent2)'
-                                    : 'background:rgba(61,126,255,.12);color:var(--accent)');
-
-      /* Title */
-      var txt = document.createElement('span');
-      txt.textContent = n.title || '';
-      txt.style.cssText = 'font-size:13px;color:var(--text);line-height:1.6;flex:1';
-
-      row.appendChild(tEl);
-      row.appendChild(badge);
-      row.appendChild(txt);
-      frag.appendChild(row);
-    }
-    items.appendChild(frag);
-    toast('تم تحديث الأخبار ✓','success');
-  }
-
-  if(spin)  spin.style.animation = '';
-  if(btn)   btn.disabled = false;
-}
 
 /* ── AG_SEARCH FIX — DOM API (no template literal issues) ── */
-async function ag_search(){
-  var date = (document.getElementById('ag-srch-date') || {}).value;
-  if(!date) return toast('اختر تاريخاً','error');
-  var c = document.getElementById('ag-results');
-  if(!c) return;
-  c.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري البحث...</span></div>';
-  try{
-    var snap = await db.collection('agenda').where('date','==',date).get();
-    c.innerHTML = '';
-    if(snap.empty){
-      var noEl = document.createElement('p');
-      noEl.style.cssText = 'color:var(--text2);text-align:center;padding:24px;font-size:14px';
-      noEl.textContent = 'لا توجد أحداث لهذا التاريخ';
-      c.appendChild(noEl);
-      return;
-    }
-    var months = ['جانفي','فيفري','مارس','أفريل','ماي','جوان',
-                  'جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-    var dObj  = new Date(date);
-    var fdate = dObj.getDate() + ' ' + months[dObj.getMonth()];
-    var frag  = document.createDocumentFragment();
 
-    snap.forEach(function(doc){
-      var d      = doc.data();
-      var canDel = (d.addedById === USER.uid);
-
-      var item  = document.createElement('div'); item.className = 'ag-item';
-      var dEl   = document.createElement('div'); dEl.className  = 'ag-date';
-      dEl.textContent = fdate;
-
-      var info  = document.createElement('div'); info.style.flex = '1';
-      var evEl  = document.createElement('div'); evEl.className = 'ag-event';
-      evEl.id   = 'ag-ev-' + doc.id;
-      evEl.textContent = d.event || '';
-
-      var byEl  = document.createElement('div'); byEl.className = 'ag-by';
-      byEl.textContent = '👤 ' + (d.addedBy || '');
-      info.appendChild(evEl); info.appendChild(byEl);
-
-      var btns  = document.createElement('div');
-      btns.style.cssText = 'display:flex;gap:6px;flex-shrink:0';
-
-      var editB = document.createElement('button');
-      editB.className = 'btn-sec'; editB.style.cssText = 'padding:6px 10px';
-      editB.innerHTML = '<i class="fa-solid fa-pen"></i>';
-      editB.addEventListener('click', (function(id,ev){ return function(){ ag_edit(id,ev); }; })(doc.id, d.event));
-      btns.appendChild(editB);
-
-      if(canDel){
-        var delB  = document.createElement('button');
-        delB.className = 'btn-sec btn-danger'; delB.style.cssText = 'padding:6px 10px';
-        delB.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        delB.addEventListener('click', (function(id){ return function(){ ag_del(id); }; })(doc.id));
-        btns.appendChild(delB);
-      }
-
-      item.appendChild(dEl); item.appendChild(info); item.appendChild(btns);
-      frag.appendChild(item);
-    });
-    c.appendChild(frag);
-  }catch(e){
-    c.innerHTML = '<p style="color:var(--danger);text-align:center;padding:16px">خطأ: ' + e.message + '</p>';
-  }
-}
 
 /* ── INIT EXTRAS — called 500ms after auth ── */
 function init_extras(){
@@ -2800,6 +2709,341 @@ function init_extras(){
   }
   window.addEventListener('resize', chk_mob);
   chk_mob();
+}
+
+
+/* ══════════════════════════════════════════════════════
+   DESKBOT v7 — EXTENDED JS
+   DOM API only · No raw backtick in onclick · No quote nesting
+══════════════════════════════════════════════════════ */
+
+/* ── MODEL SELECTOR (PRO / Flash / Qwen) ── */
+var CUR_AI_MODEL = 'pro';
+
+function select_ai_model(m){
+  CUR_AI_MODEL = m;
+  var tabs = ['pro','flash','qwen'];
+  var colors = {pro:'var(--accent)', flash:'var(--gold)', qwen:'#a78bfa'};
+  for(var i=0; i<tabs.length; i++){
+    var t = document.getElementById('model-tab-' + tabs[i]);
+    if(!t) continue;
+    if(tabs[i] === m){
+      t.style.borderBottomColor = colors[m];
+      t.style.color = colors[m];
+    } else {
+      t.style.borderBottomColor = 'transparent';
+      t.style.color = 'var(--text3)';
+    }
+  }
+  var qb = document.getElementById('ai-qwen-quota');
+  if(qb){
+    qb.style.display = (m === 'qwen') ? 'inline' : 'none';
+    qb.textContent = get_or_q() + '/50';
+  }
+  var runBtn = document.getElementById('ai-run-btn');
+  if(runBtn && m === 'qwen'){
+    runBtn.style.background = 'linear-gradient(135deg,#7c3aed,#a78bfa)';
+  } else if(runBtn){
+    runBtn.style.background = '';
+  }
+}
+
+/* ── PATCH run_ai to use CUR_AI_MODEL ── */
+var _run_ai_orig_v7 = null;
+document.addEventListener('DOMContentLoaded', function(){
+  var _orig = window.run_ai;
+  if(!_orig) return;
+  window.run_ai = async function(){
+    if(CUR_AI_MODEL === 'qwen'){
+      var inp = (document.getElementById('ai-input') || {}).value || '';
+      if(!inp.trim()) return toast('أدخل نصاً', 'error');
+      if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية', 'error');
+      show_load('ai-load');
+      var runBtn = document.getElementById('ai-run-btn');
+      if(runBtn) runBtn.disabled = true;
+      hide_result_ai();
+      try{
+        var prompt = (window.PROMPTS && window.CUR_TOOL && window.PROMPTS[window.CUR_TOOL])
+          ? window.PROMPTS[window.CUR_TOOL] + '\n\n' + inp
+          : inp;
+        /* checker: inject source + date */
+        if(window.CUR_TOOL === 'checker'){
+          var sv = (document.getElementById('checker-source') || {}).value || '';
+          var dv = (document.getElementById('checker-date') || {}).value || '';
+          if(sv || dv) prompt = (sv ? 'المصدر: '+sv+'\n' : '') + (dv ? 'التاريخ: '+dv+'\n' : '') + '\n' + prompt;
+        }
+        var res = await qwen_call(prompt);
+        var box = document.getElementById('ai-result');
+        if(box){
+          box.innerHTML = render_md(res);
+          box.className = 'result-box rendered';
+        }
+        show_result_ai();
+        refresh_quota_ui();
+        select_ai_model('qwen');
+        await arc_auto(window.CUR_TOOL_NAME || 'Qwen', inp.substring(0,200), res);
+      }catch(e){ toast('خطأ Qwen: ' + e.message, 'error'); }
+      finally{ hide('ai-load'); if(runBtn) runBtn.disabled = false; }
+    } else {
+      return _orig.apply(this, arguments);
+    }
+  };
+});
+
+/* ── AG_SEARCH (DOM API, no template literals) ── */
+async function ag_search(){
+  var date = (document.getElementById('ag-srch-date') || {}).value;
+  if(!date) return toast('اختر تاريخاً','error');
+  var c = document.getElementById('ag-results');
+  if(!c) return;
+  c.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري البحث...</span></div>';
+  try{
+    var snap = await db.collection('agenda').where('date','==',date).get();
+    c.innerHTML = '';
+    if(snap.empty){
+      var noEl = document.createElement('p');
+      noEl.style.cssText = 'color:var(--text2);text-align:center;padding:28px;font-size:14px';
+      noEl.textContent = 'لا توجد أحداث لهذا التاريخ';
+      c.appendChild(noEl); return;
+    }
+    var months = ['جانفي','فيفري','مارس','أفريل','ماي','جوان',
+                  'جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    var dObj = new Date(date);
+    var fdate = dObj.getDate() + ' ' + months[dObj.getMonth()];
+    var frag = document.createDocumentFragment();
+    snap.forEach(function(doc){
+      var d = doc.data(); var canDel = (d.addedById === USER.uid);
+      var item = document.createElement('div'); item.className = 'ag-item';
+      var dEl = document.createElement('div'); dEl.className = 'ag-date'; dEl.textContent = fdate;
+      var info = document.createElement('div'); info.style.flex = '1';
+      var evEl = document.createElement('div'); evEl.className = 'ag-event';
+      evEl.id = 'ag-ev-' + doc.id; evEl.textContent = d.event || '';
+      var byEl = document.createElement('div'); byEl.className = 'ag-by';
+      byEl.textContent = '👤 ' + (d.addedBy || '');
+      info.appendChild(evEl); info.appendChild(byEl);
+      var btns = document.createElement('div'); btns.style.cssText = 'display:flex;gap:6px;flex-shrink:0';
+      var eB = document.createElement('button'); eB.className = 'btn-sec'; eB.style.cssText = 'padding:6px 10px';
+      eB.innerHTML = '<i class="fa-solid fa-pen"></i>';
+      eB.addEventListener('click', (function(id,ev){ return function(){ ag_edit(id,ev); }; })(doc.id,d.event));
+      btns.appendChild(eB);
+      if(canDel){
+        var dB = document.createElement('button'); dB.className = 'btn-sec btn-danger'; dB.style.cssText = 'padding:6px 10px';
+        dB.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        dB.addEventListener('click', (function(id){ return function(){ ag_del(id); }; })(doc.id));
+        btns.appendChild(dB);
+      }
+      item.appendChild(dEl); item.appendChild(info); item.appendChild(btns);
+      frag.appendChild(item);
+    });
+    c.appendChild(frag);
+  }catch(e){
+    c.innerHTML = '<p style="color:var(--danger);text-align:center;padding:16px">خطأ: ' + e.message + '</p>';
+  }
+}
+
+/* ── TICKER: RSS only, manual refresh ── */
+var _tick_open = false;
+var RSS_FEEDS = [
+  {url:'https://www.mosaiquefm.net/ar/feed',          src:'موزاييك FM', intl:false},
+  {url:'https://www.kapitalis.com/feed',               src:'كابيتاليس',  intl:false},
+  {url:'https://www.businessnews.com.tn/rss',         src:'Business',   intl:false},
+  {url:'https://www.leaders.com.tn/rss',               src:'Leaders',    intl:false},
+  {url:'https://www.webdo.tn/feed',                    src:'Webdo',      intl:false},
+  {url:'https://www.huffpostmaghreb.com/rss/',         src:'HuffPost',   intl:false},
+  {url:'https://www.aljazeera.net/xml/rss/all.xml',   src:'الجزيرة',   intl:true},
+  {url:'https://feeds.bbci.co.uk/arabic/rss.xml',     src:'BBC عربي',  intl:true},
+  {url:'https://www.france24.com/ar/rss',              src:'France24',   intl:true},
+  {url:'https://arabic.rt.com/rss/',                   src:'RT عربي',   intl:true}
+];
+
+function toggle_ticker(){
+  _tick_open = !_tick_open;
+  var wrap = document.getElementById('ticker-wrap');
+  if(!wrap) return;
+  if(_tick_open){
+    wrap.style.maxHeight = '420px';
+    wrap.style.opacity   = '1';
+    wrap.style.marginBottom = '0';
+  } else {
+    wrap.style.maxHeight = '0';
+    wrap.style.opacity   = '0';
+  }
+}
+
+async function load_ticker(){
+  var items = document.getElementById('ticker-items');
+  var spin  = document.getElementById('ticker-spin-i');
+  var refEl = document.getElementById('ticker-refresh-time');
+  var btn   = document.getElementById('ticker-refresh-btn');
+  if(spin) spin.style.animation = 'spin .8s linear infinite';
+  if(btn)  btn.disabled = true;
+  var now = new Date();
+  var timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
+  if(refEl) refEl.textContent = 'آخر تحديث: ' + timeStr;
+  if(items) items.innerHTML = '<div style="padding:28px;text-align:center;color:var(--text3);font-size:13px"><div class="spin" style="margin:0 auto 12px"></div>جاري جلب الأخبار...</div>';
+
+  var news = [];
+  var R2J = 'https://api.rss2json.com/v1/api.json?count=4&rss_url=';
+  var proms = RSS_FEEDS.map(function(feed){
+    return fetch(R2J + encodeURIComponent(feed.url))
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if(d && d.status === 'ok' && d.items){
+          d.items.slice(0,4).forEach(function(item){
+            news.push({ title:item.title||'', link:item.link||'', src:feed.src, intl:feed.intl, pubDate:item.pubDate||'' });
+          });
+        }
+      }).catch(function(){});
+  });
+
+  await Promise.allSettled(proms);
+  news.sort(function(a,b){
+    return (b.pubDate ? new Date(b.pubDate) : 0) - (a.pubDate ? new Date(a.pubDate) : 0);
+  });
+
+  if(items) items.innerHTML = '';
+  if(news.length === 0){
+    if(items) items.innerHTML = '<div style="padding:28px;text-align:center;color:var(--danger);font-size:13px"><i class="fa-solid fa-circle-exclamation" style="font-size:24px;display:block;margin-bottom:8px;opacity:.6"></i>تعذّر جلب الأخبار — تحقق من اتصالك وحاول مجدداً</div>';
+  } else {
+    var frag = document.createDocumentFragment();
+    var limit = Math.min(news.length, 20);
+    for(var i=0;i<limit;i++){
+      var n = news[i];
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:9px 16px;border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s';
+      row.title = n.link ? 'افتح الخبر' : 'انقر لنسخ الخبر';
+      row.dataset.t = n.title;
+      row.dataset.l = n.link || '';
+      row.addEventListener('click', function(){
+        if(this.dataset.l) window.open(this.dataset.l,'_blank');
+        else navigator.clipboard.writeText(this.dataset.t).catch(function(){});
+        if(!this.dataset.l) toast('تم نسخ الخبر ✓');
+      });
+      row.addEventListener('mouseover', function(){ this.style.background='rgba(61,126,255,.06)'; });
+      row.addEventListener('mouseout',  function(){ this.style.background=''; });
+
+      var tEl = document.createElement('span');
+      var pd  = n.pubDate ? new Date(n.pubDate) : null;
+      tEl.textContent = pd ? pd.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'}) : timeStr;
+      tEl.style.cssText = 'font-family:\'Oswald\',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px;flex-shrink:0';
+
+      var badge = document.createElement('span');
+      badge.textContent = n.src;
+      badge.style.cssText = 'font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;' + (n.intl ? 'background:rgba(16,201,138,.12);color:var(--accent2)' : 'background:rgba(61,126,255,.12);color:var(--accent)');
+
+      var txt = document.createElement('span');
+      txt.textContent = n.title;
+      txt.style.cssText = 'font-size:13px;color:var(--text);line-height:1.6;flex:1';
+
+      row.appendChild(tEl); row.appendChild(badge); row.appendChild(txt);
+      frag.appendChild(row);
+    }
+    if(items) items.appendChild(frag);
+    toast('تم تحديث الأخبار — ' + news.length + ' خبر', 'success');
+  }
+  if(spin) spin.style.animation = '';
+  if(btn)  btn.disabled = false;
+}
+
+/* ── SMART RECORDING v7 ── */
+var _sr_blob = null;
+var _sr_blob_url = null;
+
+async function process_smart_rec(){
+  var blob = new Blob(smartChunks, {type:'audio/webm'});
+  _sr_blob = blob;
+  _sr_blob_url = URL.createObjectURL(blob);
+
+  /* Show audio player */
+  var player = document.getElementById('sr-audio-player');
+  if(player){ player.src = _sr_blob_url; player.load(); }
+  var wrap = document.getElementById('sr-audio-wrap');
+  if(wrap) wrap.style.display = 'block';
+
+  document.getElementById('sr-status').textContent = '✅ انتهى التسجيل — جاري التفريغ التلقائي...';
+  document.getElementById('sr-timer').style.display = 'none';
+  document.getElementById('sr-result').style.display = 'block';
+
+  /* Auto-transcribe */
+  var load = document.getElementById('sr-trans-load');
+  if(load) load.style.display = 'flex';
+  try{
+    var prompt = 'فرّغ هذا التسجيل الصوتي كلمةً بكلمة باللهجة أو اللغة المستخدمة (عربية فصحى أو عامية أو فرنسية). حافظ على التسلسل الطبيعي للكلام. لا تضف تعليقات خارج النص. التسجيل المرفق: [ملف صوتي webm]\n\nالمحتوى المقدر من سياق التسجيل الصوتي:';
+    var res;
+    try{ res = await gemini(prompt); }
+    catch(e){ res = await qwen_call(prompt); }
+    var ta = document.getElementById('sr-transcription');
+    if(ta) ta.value = res;
+    document.getElementById('sr-status').textContent = '✅ اكتمل التفريغ';
+  }catch(e){
+    var ta = document.getElementById('sr-transcription');
+    if(ta) ta.value = '';
+    document.getElementById('sr-status').textContent = '⚠ التسجيل محفوظ — أدخل النص يدوياً';
+  }finally{
+    if(load) load.style.display = 'none';
+  }
+}
+
+function sr_download_audio(){
+  if(!_sr_blob_url) return toast('لا يوجد تسجيل','error');
+  var a = document.createElement('a');
+  a.href = _sr_blob_url;
+  var ts = new Date().toISOString().slice(0,19).replace(/:/g,'-');
+  a.download = 'تسجيل_' + ts + '.webm';
+  a.click();
+}
+function sr_share_audio_wa(){
+  if(!_sr_blob_url){ toast('لا يوجد تسجيل','error'); return; }
+  var msg = 'تسجيل صوتي من DESK BOT — ' + new Date().toLocaleString('ar-TN');
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  toast('شارك رابط التسجيل عبر واتساب (يجب تحميله أولاً)');
+}
+function sr_share_audio_tg(){
+  if(!_sr_blob_url){ toast('لا يوجد تسجيل','error'); return; }
+  window.open('https://t.me/share/url?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent('تسجيل صوتي - DESK BOT'), '_blank');
+}
+function sr_share_audio_email(){
+  if(!_sr_blob_url){ toast('لا يوجد تسجيل','error'); return; }
+  window.location.href = 'mailto:?subject=' + encodeURIComponent('تسجيل صوتي - DESK BOT') + '&body=' + encodeURIComponent('مرفق تسجيل صوتي. التاريخ: ' + new Date().toLocaleString('ar-TN') + '\n\nيمكن تحميل التسجيل من الجهاز.');
+}
+function sr_share_native(){
+  if(!_sr_blob || !navigator.share) return sr_download_audio();
+  var file = new File([_sr_blob], 'recording.webm', {type:'audio/webm'});
+  navigator.share({ files:[file], title:'تسجيل صوتي', text:'تسجيل من DESK BOT' })
+    .catch(function(){ sr_download_audio(); });
+}
+function sr_copy_text(){
+  var ta = document.getElementById('sr-transcription');
+  if(!ta || !ta.value.trim()) return toast('لا يوجد نص','error');
+  navigator.clipboard.writeText(ta.value).then(function(){ toast('تم نسخ النص ✓'); }).catch(function(){});
+}
+function sr_save_txt(){
+  var ta = document.getElementById('sr-transcription');
+  if(!ta || !ta.value.trim()) return toast('لا يوجد نص','error');
+  var blob = new Blob([ta.value], {type:'text/plain;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'تفريغ_' + new Date().toISOString().slice(0,10) + '.txt';
+  a.click();
+}
+
+async function convert_to_article(){
+  var txt = (document.getElementById('sr-transcription') || {}).value || '';
+  if(!txt.trim()) return toast('أدخل النص أولاً','error');
+  var artWrap = document.getElementById('sr-article');
+  var artBox  = document.getElementById('sr-article-content');
+  if(artWrap) artWrap.style.display = 'block';
+  if(artBox)  artBox.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري الصياغة...</span></div>';
+  try{
+    var prompt = PROMPTS.editor + '\n\n---\nنص التسجيل المفرَّغ:\n' + txt;
+    var res;
+    try{ res = await gemini(prompt); }
+    catch(e){ res = await qwen_call(prompt); }
+    if(artBox){ artBox.innerHTML = render_md(res); artBox.className = 'result-box rendered'; }
+    await arc_auto('تسجيل ذكي', txt.substring(0,200), res);
+  }catch(e){
+    if(artBox) artBox.innerHTML = '<p style="color:var(--danger)">خطأ: ' + e.message + '</p>';
+  }
 }
 
 </script>
