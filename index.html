@@ -740,31 +740,38 @@ textarea{min-height:120px;line-height:1.7}
 /* ===== TRANSITIONS ===== */
 .tool-card,.btn,.btn-sec,.h-btn,.arc-item,.radio-card{will-change:transform}
 
-/* ─── NOTICE BAR SMOOTH HIDE ─── */
+/* ─── AMOLED THEME ─── */
+[data-theme="amoled"]{
+  --bg:#000000;--bg2:#080808;--bg3:#111111;
+  --glass:rgba(8,8,8,.94);--glass2:rgba(12,12,12,.97);
+  --text:#f0f6ff;--text2:#8aadd0;--text3:#4a6a8a;
+  --accent:#5299ff;--accent2:#17e8a7;--gold:#d4aa50;
+  --danger:#ff4d4d;--amber:#f59e0b;--purple:#a78bfa;
+  --border:rgba(82,153,255,.18);--border2:rgba(212,170,80,.22);
+  --glow:0 0 30px rgba(82,153,255,.22);
+  --shadow:0 8px 32px rgba(0,0,0,.85);
+  --shadow2:0 20px 60px rgba(0,0,0,.98);
+}
+
+/* ─── NOTICE SMOOTH HIDE ─── */
 .notice-bar{
   overflow:hidden;max-height:72px;
   transition:max-height .45s cubic-bezier(.4,0,.2,1),
-             padding .4s ease,margin .4s ease,
-             opacity .35s ease,border-width .4s ease;
+    padding .4s ease,margin .4s ease,opacity .35s ease,border-width .4s ease;
 }
 .notice-bar.nb-hide{
   max-height:0!important;padding-top:0!important;padding-bottom:0!important;
   margin-bottom:0!important;opacity:0!important;border-width:0!important;
-  pointer-events:none;overflow:hidden;
+  pointer-events:none;
 }
 
 /* ─── ATTACH BAR ─── */
-.attach-bar{
-  display:flex;align-items:center;gap:10px;
-  padding:6px 0;margin-bottom:10px;flex-wrap:wrap;
-}
+.attach-bar{display:flex;align-items:center;gap:10px;padding:6px 0;margin-bottom:10px;flex-wrap:wrap}
 .attach-btn{
   display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.05);
-  border:1px dashed var(--border);
-  border-radius:10px;padding:7px 14px;font-size:12px;
-  color:var(--text2);cursor:pointer;
-  transition:all .2s;font-family:'Cairo',sans-serif;font-weight:600;
+  background:rgba(255,255,255,.05);border:1px dashed var(--border);
+  border-radius:10px;padding:7px 14px;font-size:12px;color:var(--text2);
+  cursor:pointer;transition:all .2s;font-family:'Cairo',sans-serif;font-weight:600;
 }
 .attach-btn:hover{border-color:var(--accent);color:var(--accent)}
 .attach-preview{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1}
@@ -773,52 +780,49 @@ textarea{min-height:120px;line-height:1.7}
   background:rgba(61,126,255,.1);border:1px solid rgba(61,126,255,.25);
   border-radius:8px;padding:4px 10px;font-size:11px;color:var(--accent);
 }
-.attach-chip button{
-  background:none;border:none;color:var(--text3);cursor:pointer;
-  font-size:12px;padding:0 2px;transition:color .2s;
-}
+.attach-chip button{background:none;border:none;color:var(--text3);cursor:pointer;
+  font-size:13px;padding:0 2px;transition:color .2s}
 .attach-chip button:hover{color:var(--danger)}
 .attach-audio{width:100%;margin-top:8px;border-radius:8px;accent-color:var(--accent)}
 .attach-image{max-width:110px;max-height:75px;border-radius:8px;object-fit:cover;border:1px solid var(--border)}
 
-/* ─── RICH TEXT OUTPUT ─── */
+/* ─── RENDERED MARKDOWN OUTPUT ─── */
 .result-box.rendered{white-space:normal!important;line-height:1.9;font-size:14px}
 .result-box.rendered h1{
   font-family:'Amiri',serif;font-size:22px;font-weight:700;
-  color:var(--gold);margin:0 0 14px;padding-bottom:8px;
-  border-bottom:1px solid var(--border2);
-}
+  color:var(--gold);margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border2)}
 .result-box.rendered h2{
   font-family:'Amiri',serif;font-size:18px;font-weight:700;
-  color:var(--accent);margin:18px 0 10px;
-}
+  color:var(--accent);margin:18px 0 10px}
 .result-box.rendered h3{font-size:14px;font-weight:700;color:var(--text);margin:14px 0 8px}
 .result-box.rendered p{margin:0 0 14px;line-height:2}
 .result-box.rendered p:last-child{margin-bottom:0}
 .result-box.rendered ul,.result-box.rendered ol{padding-right:20px;margin:8px 0 14px}
 .result-box.rendered li{margin-bottom:6px;line-height:1.8}
 .result-box.rendered strong{color:var(--text);font-weight:700}
-.result-box.rendered em{color:var(--text2)}
 .result-box.rendered blockquote{
   border-right:3px solid var(--gold);padding:8px 14px;margin:12px 0;
   background:rgba(201,168,76,.06);border-radius:0 8px 8px 0;
-  color:var(--text2);font-style:italic;font-family:'Amiri',serif;font-size:15px;
-}
+  color:var(--text2);font-style:italic;font-family:'Amiri',serif;font-size:15px}
 .result-box.rendered hr{border:none;border-top:1px solid var(--border);margin:16px 0}
 .result-box.rendered table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
 .result-box.rendered th{
   background:rgba(61,126,255,.12);color:var(--accent);
-  padding:8px 12px;text-align:right;font-weight:700;border:1px solid var(--border);
-}
+  padding:8px 12px;text-align:right;font-weight:700;border:1px solid var(--border)}
 .result-box.rendered td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
-.result-box.rendered tr:hover td{background:rgba(255,255,255,.02)}
 .result-box.rendered code{
   background:rgba(61,126,255,.1);color:var(--accent);
-  padding:1px 6px;border-radius:4px;font-size:12px;
-}
+  padding:1px 6px;border-radius:4px;font-size:12px}
 
-/* ─── MOBILE BOTTOM NAV ─── */
-#bottom-nav{display:none}
+/* ─── BOTTOM NAV ─── */
+.bnav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:9px;color:var(--text3);cursor:pointer;border:none;background:none;
+  font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s;width:100%}
+.bnav-btn:hover,.bnav-btn:active{color:var(--accent)}
+.bnav-btn span{font-size:9px}
+
+/* ─── RESPONSIVE ─── */
 @media(max-width:600px){
   body{padding-bottom:68px!important}
   #bottom-nav{display:block!important}
@@ -905,30 +909,50 @@ textarea{min-height:120px;line-height:1.7}
     </div>
 
 
-    <!-- NEWS TICKER -->
-    <div id="ticker-wrap" style="overflow:hidden;max-height:0;opacity:0;margin-bottom:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s ease,margin .4s ease">
-      <div style="background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:24px">
-        <div style="padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(61,126,255,.1),transparent)">
+    <!-- LIVE TICKER -->
+    <div id="ticker-wrap" style="overflow:hidden;max-height:0;opacity:0;margin-bottom:0;
+      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin .4s ease">
+      <div style="background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+        border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:20px">
+        <div style="padding:10px 16px;display:flex;align-items:center;gap:10px;
+          border-bottom:1px solid var(--border);
+          background:linear-gradient(90deg,rgba(61,126,255,.1),transparent)">
           <i class="fa-solid fa-newspaper" style="color:var(--accent);flex-shrink:0"></i>
-          <span style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase;flex:1">آخر الأخبار — وطنية وعالمية</span>
+          <span style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent);
+            text-transform:uppercase;flex:1">آخر الأخبار — وطنية وعالمية</span>
           <span id="ticker-refresh-time" style="font-size:10px;color:var(--text3)"></span>
-          <button onclick="load_ticker()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">
+          <button id="ticker-refresh-btn" onclick="load_ticker()"
+            style="background:none;border:1px solid var(--border);border-radius:8px;
+            padding:4px 12px;font-size:11px;color:var(--text2);cursor:pointer;
+            font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s"
+            onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+            onmouseout="this.style.borderColor='';this.style.color=''">
             <i class="fa-solid fa-rotate-right" id="ticker-spin-i"></i> تحديث
           </button>
         </div>
         <div id="ticker-items" style="max-height:280px;overflow-y:auto">
-          <div style="padding:24px;text-align:center;color:var(--text3);font-size:13px">اضغط «تحديث» لتحميل آخر الأخبار</div>
+          <div style="padding:28px;text-align:center;color:var(--text3);font-size:13px">
+            <i class="fa-solid fa-newspaper" style="font-size:28px;margin-bottom:10px;opacity:.3;display:block"></i>
+            اضغط «تحديث» لتحميل آخر الأخبار الفوري
+          </div>
         </div>
       </div>
     </div>
 
     <!-- OPENROUTER NOTICE -->
-    <div id="or-notice" class="notice-bar nb-hide" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));border-color:rgba(139,92,246,.3);color:#a78bfa">
+    <div id="or-notice" class="notice-bar nb-hide"
+      style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
+        border-color:rgba(139,92,246,.3);color:#a78bfa">
       <i class="fa-solid fa-robot"></i>
       مفتاح OpenRouter (Qwen) غير مُدخل —
-      <button onclick="open_modal('settings-modal')" style="color:#a78bfa">أدخله من الإعدادات</button>
+      <button onclick="open_modal('settings-modal')" style="color:#a78bfa">
+        أدخله من الإعدادات
+      </button>
       &nbsp;|&nbsp;
-      <a href="https://openrouter.ai/keys" target="_blank" style="color:#a78bfa;font-weight:700;text-decoration:underline">احصل عليه مجاناً ←</a>
+      <a href="https://openrouter.ai/keys" target="_blank"
+        style="color:#a78bfa;font-weight:700;text-decoration:underline">
+        openrouter.ai/keys ←
+      </a>
     </div>
 
     <!-- WELCOME BAR -->
@@ -996,6 +1020,15 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
+      <div class="tool-card" onclick="open_qwen_modal()" style="border-color:rgba(139,92,246,.28);position:relative">
+        <div class="t-shortcut" style="color:#a78bfa;font-size:9px">Qwen 3 Free</div>
+        <div class="t-icon ic-purple"><i class="fa-solid fa-robot"></i></div>
+        <div class="t-content">
+          <div class="t-name" style="font-size:15px">Qwen AI</div>
+          <div class="t-desc">نموذج مجاني · <span id="qwen-card-quota" style="background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700">0/50</span></div>
+        </div>
+      </div>
+
     </div>
 
     <!-- GENERAL TOOLS -->
@@ -1007,11 +1040,7 @@ textarea{min-height:120px;line-height:1.7}
         <div class="t-name">تفريغ وتحرير</div>
       </div>
 
-      <div class="tool-card mini" onclick="open_qwen_modal()">
-        <div class="t-icon ic-purple"><i class="fa-solid fa-robot"></i></div>
-        <div class="t-name" style="font-size:12px">Qwen AI</div>
-        <div style="font-size:9px;color:var(--text3);margin-top:2px"><span id="qwen-card-quota" style="background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:1px 7px;font-weight:700">0/50</span></div>
-      </div>
+
 
       <div class="tool-card mini" onclick="open_today()">
         <div class="t-icon ic-amber"><i class="fa-solid fa-calendar-day"></i></div>
@@ -1074,6 +1103,19 @@ textarea{min-height:120px;line-height:1.7}
       </div>
     </div>
     <div class="m-body">
+      <!-- حقول إضافية للمدقق وغيره -->
+      <div id="checker-extra" style="display:none;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field" style="margin:0">
+            <label class="label">المصدر</label>
+            <input type="text" id="checker-source" placeholder="مثال: TAP، الجزيرة، وزارة...">
+          </div>
+          <div class="field" style="margin:0">
+            <label class="label">التاريخ</label>
+            <input type="date" id="checker-date">
+          </div>
+        </div>
+      </div>
       <div class="field">
         <label class="label" id="ai-label">أدخل النص</label>
         <textarea id="ai-input" rows="6" placeholder="اكتب هنا..."></textarea>
@@ -1082,7 +1124,8 @@ textarea{min-height:120px;line-height:1.7}
       <div class="attach-bar">
         <label class="attach-btn">
           <i class="fa-solid fa-paperclip"></i> إرفاق ملف
-          <input type="file" id="ai-file" accept="audio/*,image/*,video/*" onchange="handle_attach('ai-file','ai-attach-preview','ai-input')" style="display:none">
+          <input type="file" id="ai-file" accept="audio/*,image/*,video/*"
+            onchange="handle_attach('ai-file','ai-attach-preview','ai-input')" style="display:none">
         </label>
         <div id="ai-attach-preview" class="attach-preview"></div>
       </div>
@@ -1291,23 +1334,30 @@ textarea{min-height:120px;line-height:1.7}
       </div>
       <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini</button>
 
-      <!-- OpenRouter -->
-      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+      <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border)">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(139,92,246,.15);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0"><i class="fa-solid fa-robot"></i></div>
-          <div style="flex:1"><div style="font-size:13px;font-weight:700">OpenRouter — Qwen 3</div><div style="font-size:11px;color:var(--text2)">نموذج مجاني · <strong style="color:#a78bfa">50 طلب/يوم</strong></div></div>
-          <span id="or-quota-badge" style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(139,92,246,.18);color:#a78bfa">0 / 50</span>
-        </div>
-        <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2)">
-          <i class="fa-solid fa-circle-check" style="color:#a78bfa"></i>
-          <strong style="color:var(--text)">qwen/qwen3-235b-a22b:free</strong> —
-          <a href="https://openrouter.ai/keys" target="_blank" style="color:#a78bfa;font-weight:700">openrouter.ai/keys ←</a>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(139,92,246,.15);
+            color:#a78bfa;display:flex;align-items:center;justify-content:center;
+            font-size:16px;flex-shrink:0"><i class="fa-solid fa-robot"></i></div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700">OpenRouter — Qwen 3</div>
+            <div style="font-size:11px;color:var(--text2)">مجاني ·
+              <strong style="color:#a78bfa">50 طلب/يوم</strong> ·
+              <a href="https://openrouter.ai/keys" target="_blank"
+                style="color:#a78bfa;font-weight:700">احصل على مفتاح مجاني ←</a>
+            </div>
+          </div>
+          <span id="or-quota-badge"
+            style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;
+            background:rgba(139,92,246,.18);color:#a78bfa">0 / 50</span>
         </div>
         <div class="field">
           <label class="label">OpenRouter API Key</label>
           <input type="text" id="or-key-inp" placeholder="sk-or-v1-..." style="font-size:12px">
         </div>
-        <button class="btn" style="width:100%;background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 16px rgba(139,92,246,.35)" onclick="save_or_key()">
+        <button class="btn"
+          style="width:100%;background:linear-gradient(135deg,#7c3aed,#a78bfa);
+          box-shadow:0 4px 16px rgba(139,92,246,.35)" onclick="save_or_key()">
           <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter
         </button>
       </div>
@@ -1316,40 +1366,47 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 
-<!-- ═══════════ QWEN MODAL ═══════════ -->
+<!-- ═══ QWEN MODAL ═══ -->
 <div class="overlay" id="qwen-modal">
   <div class="modal">
     <div class="m-head">
       <div class="m-title">
         <i class="fa-solid fa-robot" style="color:#a78bfa"></i>
         Qwen 3 — OpenRouter
-        <span id="qwen-quota-badge" style="font-size:10px;background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:2px 10px;font-weight:700;margin-right:6px">0 / 50</span>
+        <span id="qwen-quota-badge"
+          style="font-size:10px;background:rgba(139,92,246,.2);color:#a78bfa;
+          border-radius:20px;padding:2px 10px;font-weight:700;margin-right:6px">0 / 50</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('qwen-modal')" title="وضع التركيز"><i class="fa-solid fa-expand"></i></button>
-        <button class="m-close" onclick="close_modal('qwen-modal')"><i class="fa-solid fa-xmark"></i></button>
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px"
+          onclick="toggle_focus('qwen-modal')"><i class="fa-solid fa-expand"></i></button>
+        <button class="m-close" onclick="close_modal('qwen-modal')">
+          <i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
     <div class="m-body">
-      <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2)">
+      <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);
+        border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2)">
         <i class="fa-solid fa-circle-info" style="color:#a78bfa"></i>
-        <strong style="color:#a78bfa">qwen/qwen3-235b-a22b:free</strong> — مجاني عبر OpenRouter
-        · حصة <strong style="color:var(--text)">50 طلب/يوم</strong>
+        <strong style="color:#a78bfa">qwen/qwen3-235b-a22b:free</strong>
+        — مجاني عبر OpenRouter · <strong style="color:var(--text)">50 طلب/يوم</strong>
       </div>
       <div class="field">
         <label class="label">نص أو سؤال أو مهمة</label>
-        <textarea id="qwen-input" rows="6" placeholder="تحرير، تحليل، ترجمة، سؤال..."></textarea>
+        <textarea id="qwen-input" rows="6" placeholder="تحرير، تحليل، ترجمة، أسئلة مهنية..."></textarea>
       </div>
       <div class="attach-bar">
         <label class="attach-btn">
           <i class="fa-solid fa-paperclip"></i> إرفاق ملف
           <input type="file" id="qwen-file" accept="audio/*,image/*,video/*"
-            onchange="handle_attach('qwen-file','qwen-attach-preview','qwen-input')" style="display:none">
+            onchange="handle_attach('qwen-file','qwen-attach-preview','qwen-input')"
+            style="display:none">
         </label>
         <div id="qwen-attach-preview" class="attach-preview"></div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 14px rgba(139,92,246,.35)"
+        <button class="btn"
+          style="background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 14px rgba(139,92,246,.35)"
           onclick="run_qwen()" id="qwen-run-btn">
           <i class="fa-solid fa-robot"></i> تشغيل Qwen
         </button>
@@ -1363,16 +1420,24 @@ textarea{min-height:120px;line-height:1.7}
       </div>
       <div id="qwen-result-wrap" class="result-wrap" style="display:none">
         <div class="result-header">
-          <div class="result-tag"><i class="fa-solid fa-robot" style="color:#a78bfa"></i> نتيجة Qwen</div>
+          <div class="result-tag">
+            <i class="fa-solid fa-robot" style="color:#a78bfa"></i> نتيجة Qwen
+          </div>
           <button class="btn-sec" style="padding:4px 10px;font-size:11px"
-            onclick="toggle_qwen_fmt()" id="qwen-fmt-btn"><i class="fa-solid fa-eye"></i></button>
+            onclick="toggle_qwen_fmt()" id="qwen-fmt-btn">
+            <i class="fa-solid fa-eye"></i>
+          </button>
         </div>
         <div id="qwen-result" class="result-box rendered"></div>
         <div class="result-actions">
-          <button class="btn-sec" onclick="copy_el('qwen-result')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-          <button class="btn-sec" onclick="wa_share('qwen-result')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
-          <button class="btn-sec" onclick="email_share('qwen-result')"><i class="fa-solid fa-envelope"></i> إيميل</button>
-          <button class="btn-sec" onclick="arc_save_el('qwen-result')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+          <button class="btn-sec" onclick="copy_el('qwen-result')">
+            <i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="wa_share('qwen-result')">
+            <i class="fa-brands fa-whatsapp"></i> واتساب</button>
+          <button class="btn-sec" onclick="email_share('qwen-result')">
+            <i class="fa-solid fa-envelope"></i> إيميل</button>
+          <button class="btn-sec" onclick="arc_save_el('qwen-result')">
+            <i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
         </div>
       </div>
     </div>
@@ -1380,41 +1445,21 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 
-<!-- BOTTOM NAV (mobile) -->
 <nav id="bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;
   background:var(--glass2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-top:1px solid var(--border);z-index:150;
   padding:6px 0 max(6px,env(safe-area-inset-bottom,6px))">
-  <div style="display:grid;grid-template-columns:repeat(5,1fr)">
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})"
-      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
-        color:var(--text3);cursor:pointer;border:none;background:none;
-        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
-      onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">
-      <i class="fa-solid fa-house" style="font-size:18px"></i>الرئيسية</button>
-    <button onclick="open_tool('editor')"
-      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
-        color:var(--text3);cursor:pointer;border:none;background:none;
-        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
-      onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">
-      <i class="fa-solid fa-pen-nib" style="font-size:18px"></i>المحرر</button>
-    <button onclick="toggle_ticker()"
-      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
-        color:var(--accent);cursor:pointer;border:none;background:none;
-        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s">
-      <i class="fa-solid fa-newspaper" style="font-size:18px"></i>أخبار</button>
-    <button onclick="open_modal('agenda-modal')"
-      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
-        color:var(--text3);cursor:pointer;border:none;background:none;
-        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
-      onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">
-      <i class="fa-solid fa-calendar-days" style="font-size:18px"></i>الأجندة</button>
-    <button onclick="open_modal('settings-modal')"
-      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
-        color:var(--text3);cursor:pointer;border:none;background:none;
-        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
-      onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=''">
-      <i class="fa-solid fa-gear" style="font-size:18px"></i>API</button>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);text-align:center">
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="bnav-btn">
+      <i class="fa-solid fa-house" style="font-size:19px"></i><span>الرئيسية</span></button>
+    <button onclick="open_tool('editor')" class="bnav-btn">
+      <i class="fa-solid fa-pen-nib" style="font-size:19px;color:var(--gold)"></i><span>المحرر</span></button>
+    <button onclick="toggle_ticker()" class="bnav-btn">
+      <i class="fa-solid fa-newspaper" style="font-size:19px;color:var(--accent)"></i><span>أخبار</span></button>
+    <button onclick="open_modal('agenda-modal')" class="bnav-btn">
+      <i class="fa-solid fa-calendar-days" style="font-size:19px"></i><span>الأجندة</span></button>
+    <button onclick="open_modal('settings-modal')" class="bnav-btn">
+      <i class="fa-solid fa-gear" style="font-size:19px"></i><span>API</span></button>
   </div>
 </nav>
 
@@ -1444,21 +1489,12 @@ const auth=firebase.auth(), db=firebase.firestore();
 // STATE
 // ============================================================
 let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
-let radioAudio=null, activeRadioIdx=-1;
 let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
 let dailyRequests=0, isResultRaw=true;
 
 // ============================================================
 // RADIOS
 // ============================================================
-const RADIOS=[
-  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABljp1AAAA0uQMVKtqYJC6Jw',color:'#3d7eff'},
-  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#ef4444'},
-  {name:'شمس أف أم',sub:'Shems FM',url:'https://stream.zeno.fm/4d5yvulvp8zuv',color:'#f59e0b'},
-  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'https://stream.zeno.fm/4nmjsyatdzzuv',color:'#10c98a'},
-  {name:'راديو IFM',sub:'IFM Radio',url:'https://stream.zeno.fm/gcasak0wgzzuv',color:'#8b5cf6'},
-  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#ef4444'},
-];
 
 // ============================================================
 // COMMAND PALETTE DATA
@@ -1751,7 +1787,7 @@ auth.onAuthStateChanged(u=>{
     load_api_key();
     update_welcome();
     load_daily_requests();
-    setTimeout(init_extras,400);
+    setTimeout(init_extras,500);
   }else{
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('main-app').style.display='none';
@@ -1774,9 +1810,11 @@ async function load_api_key(){
     const d=await db.collection('config').doc('gemini').get();
     if(d.exists&&d.data().key){
       GEMINI_KEY=d.data().key;
-      hide_nb('api-notice');
-    }else{ show_nb('api-notice'); }
-  }catch(e){ show_nb('api-notice'); }
+      document.getElementById('api-notice').classList.add('nb-hide');
+    }else{
+      document.getElementById('api-notice').classList.remove('nb-hide');
+    }
+  }catch(e){document.getElementById('api-notice').style.display='flex'}
 }
 async function save_api_key(){
   const k=document.getElementById('api-key-inp').value.trim();
@@ -1784,13 +1822,13 @@ async function save_api_key(){
   try{
     await db.collection('config').doc('gemini').set({key:k});
     GEMINI_KEY=k;
-    hide_nb('api-notice');
+    document.getElementById('api-notice').classList.add('nb-hide');
     close_modal('settings-modal');
     toast('✅ تم حفظ المفتاح','success');
   }catch(e){
     localStorage.setItem('gemini_key',k);
     GEMINI_KEY=k;
-    hide_nb('api-notice');
+    document.getElementById('api-notice').classList.add('nb-hide');
     close_modal('settings-modal');
     toast('✅ تم حفظ المفتاح محلياً','success');
   }
@@ -1952,18 +1990,7 @@ document.addEventListener('keydown',e=>{
 // ============================================================
 // TOOL RUNNER
 // ============================================================
-function open_tool(name){
-  const cfg=TOOLS[name];if(!cfg)return;
-  CUR_TOOL=name;CUR_TOOL_NAME=cfg.title;
-  document.getElementById('ai-title').innerHTML=`<i class="fa-solid fa-wand-magic-sparkles"></i> ${cfg.title}`;
-  document.getElementById('ai-label').textContent=cfg.label;
-  document.getElementById('ai-input').placeholder=cfg.ph;
-  document.getElementById('ai-input').value=(name==='monitor')?'رصد':(name==='checker')?'مدقق':'';
-  hide_result_ai();
-  document.getElementById('ai-run-btn').disabled=false;
-  isResultRaw=true;
-  open_modal('ai-modal');
-}
+
 
 async function run_ai(){
   const inp=document.getElementById('ai-input').value.trim();
@@ -1974,9 +2001,9 @@ async function run_ai(){
   try{
     const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
     const box=document.getElementById('ai-result');
-    box.innerHTML=render_md(res);
-    box.className='result-box rendered';
-    isResultRaw=false;
+    box.textContent=res;
+    box.className='result-box';
+    isResultRaw=true;
     document.getElementById('ai-result-wrap').style.display='block';
     document.getElementById('ai-acts').style.display='flex';
     add_activity(cfg.title,res.substring(0,60));
@@ -2083,34 +2110,7 @@ async function ag_add(){
     toast('✅ تم حفظ الحدث في الأجندة','success');
   }catch(e){toast('خطأ: '+e.message,'error')}
 }
-async function ag_search(){
-  const date=document.getElementById('ag-srch-date').value;
-  if(!date)return toast('اختر تاريخاً','error');
-  const c=document.getElementById('ag-results');
-  c.innerHTML='<div class="loading"><div class="spin"></div>جاري البحث...</div>';
-  try{
-    const s=await db.collection('agenda').where('date','==',date).orderBy('createdAt','desc').get();
-    if(s.empty){c.innerHTML='<p style="color:var(--text2);text-align:center;padding:20px">لا توجد أحداث لهذا التاريخ</p>';return}
-    c.innerHTML='';
-    s.forEach(doc=>{
-      const d=doc.data(),canDel=d.addedById===USER.uid;
-      const dObj=new Date(date);
-      const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-      const fdate=`${dObj.getDate()} ${months[dObj.getMonth()]}`;
-      c.innerHTML+=`<div class="ag-item">
-        <div class="ag-date">${fdate}</div>
-        <div style="flex:1">
-          <div class="ag-event" id="ag-ev-${doc.id}">${d.event}</div>
-          <div class="ag-by">👤 ${d.addedBy}</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-shrink:0">
-          <button class="btn-sec" style="padding:6px 10px" onclick="ag_edit('${doc.id}','${d.event.replace(/'/g,"\\'")}')"><i class="fa-solid fa-pen"></i></button>
-          ${canDel?`<button class="btn-sec btn-danger" style="padding:6px 10px" onclick="ag_del('${doc.id}')"><i class="fa-solid fa-trash"></i></button>`:''}
-        </div>
-      </div>`;
-    });
-  }catch(e){c.innerHTML='<p style="color:var(--danger)">خطأ في البحث</p>'}
-}
+
 async function ag_edit(id,cur){
   const nv=prompt('تعديل الحدث:',cur);
   if(!nv||nv===cur)return;
@@ -2196,43 +2196,6 @@ function add_activity(toolName,preview){
 // ============================================================
 // RADIO
 // ============================================================
-function build_radio_cards(){
-  const c=document.getElementById('radio-cards');
-  c.innerHTML=RADIOS.map((r,i)=>`
-    <div class="radio-card" id="rc-${i}" onclick="toggle_radio(${i})">
-      <div class="radio-dot" style="background:${r.color}"></div>
-      <div style="flex:1">
-        <div class="radio-name">${r.name}</div>
-        <div class="radio-sub">${r.sub}</div>
-      </div>
-      <button class="btn-sec" id="play-btn-${i}" style="padding:6px 14px;font-size:12px" onclick="event.stopPropagation();toggle_radio(${i})">
-        <i class="fa-solid fa-play"></i> استماع
-      </button>
-    </div>`).join('');
-}
-function toggle_radio(i){
-  const audio=document.getElementById('radio-audio');
-  if(activeRadioIdx===i&&!audio.paused){
-    audio.pause();activeRadioIdx=-1;
-    document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-play"></i> استماع';
-    document.getElementById('rc-'+i).classList.remove('on');
-    return;
-  }
-  if(activeRadioIdx>=0){
-    document.getElementById('play-btn-'+activeRadioIdx).innerHTML='<i class="fa-solid fa-play"></i> استماع';
-    document.getElementById('rc-'+activeRadioIdx).classList.remove('on');
-  }
-  audio.src=RADIOS[i].url;
-  audio.play().catch(()=>toast('تعذّر التشغيل','error'));
-  activeRadioIdx=i;
-  document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-stop"></i> إيقاف';
-  document.getElementById('rc-'+i).classList.add('on');
-}
-function stop_radio(){
-  const a=document.getElementById('radio-audio');
-  if(a)a.pause();
-  activeRadioIdx=-1;
-}
 
 // ============================================================
 // SMART RECORD
@@ -2316,13 +2279,7 @@ function email_share_id(id){email_share(id)}
 // ============================================================
 // THEME
 // ============================================================
-function toggle_theme(){
-  const dark=document.documentElement.getAttribute('data-theme')==='dark';
-  const next=dark?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next);
-  document.getElementById('theme-btn').innerHTML=dark?'<i class="fa-solid fa-moon"></i>':'<i class="fa-solid fa-sun"></i>';
-  localStorage.setItem('deskbot-theme',next);
-}
+
 (()=>{
   const t=localStorage.getItem('deskbot-theme')||'dark';
   document.documentElement.setAttribute('data-theme',t);
@@ -2354,90 +2311,147 @@ function toast(msg,type=''){
 // Init
 auto_theme();
 
-/* ══════════════════════════════════════════════════════
-   NOTICE HELPERS
-══════════════════════════════════════════════════════ */
-function hide_nb(id){ const el=document.getElementById(id); if(el) el.classList.add('nb-hide'); }
-function show_nb(id){ const el=document.getElementById(id); if(el) el.classList.remove('nb-hide'); }
+/* ════════════════════════════════════════════════════════
+   DESKBOT v6 — EXTENDED FUNCTIONS
+   All built with DOM API — zero backtick template literals
+════════════════════════════════════════════════════════ */
 
-/* ══════════════════════════════════════════════════════
-   MARKDOWN RENDERER — NO backticks in regex!
-══════════════════════════════════════════════════════ */
+/* ── NOTICE HELPERS ── */
+function nb_hide(id){ var el=document.getElementById(id); if(el) el.classList.add('nb-hide'); }
+function nb_show(id){ var el=document.getElementById(id); if(el) el.classList.remove('nb-hide'); }
+
+/* ── 3-STATE THEME: dark → light → amoled ── */
+var THEMES = ['dark','light','amoled'];
+var THEME_ICONS = {
+  dark  : '<i class="fa-solid fa-moon"></i>',
+  light : '<i class="fa-solid fa-sun"></i>',
+  amoled: '<i class="fa-solid fa-circle" style="color:#a78bfa"></i>'
+};
+var THEME_LABELS = { dark:'داكن', light:'فاتح', amoled:'AMOLED' };
+
+function toggle_theme(){
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var idx = THEMES.indexOf(cur);
+  var next = THEMES[(idx+1) % THEMES.length];
+  document.documentElement.setAttribute('data-theme', next);
+  var btn = document.getElementById('theme-btn');
+  if(btn) btn.innerHTML = THEME_ICONS[next];
+  localStorage.setItem('deskbot-theme', next);
+  toast('ثيم: ' + THEME_LABELS[next]);
+}
+
+function apply_saved_theme(){
+  var saved = localStorage.getItem('deskbot-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  var btn = document.getElementById('theme-btn');
+  if(btn) btn.innerHTML = THEME_ICONS[saved] || THEME_ICONS['dark'];
+}
+
+/* ── MARKDOWN RENDERER ── */
 function render_md(txt){
   if(!txt) return '';
-  // Escape HTML first
-  let h = txt
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-  // Headers
-  h = h.replace(/^### (.+)$/gm,'<h3>$1</h3>');
-  h = h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
-  h = h.replace(/^# (.+)$/gm,'<h1>$1</h1>');
-  // Bold/italic
-  h = h.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
-  h = h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  h = h.replace(/\*(.+?)\*/g,'<em>$1</em>');
-  // HR
-  h = h.replace(/^---$/gm,'<hr>');
-  // Blockquote
-  h = h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
-  // Lists
-  h = h.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
-  h = h.replace(/^[\-\*] (.+)$/gm,'<li>$1</li>');
-  // Wrap consecutive li in ul
-  h = h.replace(/(<li>[\s\S]+?<\/li>)(?=\s*(<li>|$))/g, function(m){ return m; });
-  h = h.replace(/((?:<li>[^<]*<\/li>\s*)+)/g,'<ul>$1</ul>');
-  // Inline code — use char code 96 to avoid raw backtick
   var BT = String.fromCharCode(96);
-  var re = new RegExp(BT+'(.+?)'+BT,'g');
-  h = h.replace(re,'<code>$1</code>');
-  // Paragraphs
-  h = h.replace(/\n\n/g,'</p><p>');
-  h = h.replace(/\n/g,'<br>');
-  // Wrap if not block
-  if(!/^<(h[1-3]|ul|ol|blockquote|hr|p)/.test(h)) h = '<p>'+h+'</p>';
+  var re_bt = new RegExp(BT + '(.+?)' + BT, 'g');
+  var h = txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^---$/gm,'<hr>')
+    .replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/^[-*] (.+)$/gm,'<li>$1</li>');
+  h = h.replace(re_bt,'<code>$1</code>');
+  h = h.replace(/((?:<li>[^<]*<\/li>\s*)+)/g,'<ul>$1</ul>');
+  h = h.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+  if(!/^<(h[1-3]|ul|ol|blockquote|hr|p)/.test(h)) h = '<p>' + h + '</p>';
   return h;
 }
 
-/* ══════════════════════════════════════════════════════
-   PATCH toggle_result_format to use render_md
-══════════════════════════════════════════════════════ */
+/* ── PATCH run_ai: render output ── */
+var _orig_run_ai = window.run_ai;
+/* We patch via result handler — override the format toggle */
 function toggle_result_format(){
-  var box=document.getElementById('ai-result');
-  var btn=document.getElementById('format-btn');
+  var box = document.getElementById('ai-result');
+  var btn = document.getElementById('format-btn');
   if(!box) return;
   if(box.classList.contains('rendered')){
-    box.textContent = box.innerText;
+    box.textContent = box.innerText || box.textContent;
     box.classList.remove('rendered');
-    if(btn) btn.innerHTML='<i class="fa-solid fa-eye"></i>';
+    if(btn) btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
   } else {
     box.innerHTML = render_md(box.textContent || box.innerText);
     box.classList.add('rendered');
-    if(btn) btn.innerHTML='<i class="fa-solid fa-code"></i>';
+    if(btn) btn.innerHTML = '<i class="fa-solid fa-code"></i>';
   }
 }
 
-/* ══════════════════════════════════════════════════════
-   FILE ATTACH — string concat, no backticks
-══════════════════════════════════════════════════════ */
+/* ── CHECKER: show/hide extra fields + build prompt ── */
+function open_tool(name){
+  var TOOLS_LOCAL = {
+    editor   : {title:'المحرر الرقمي Pro',label:'أدخل النص الخام أو معطيات الخبر',ph:'الصق هنا النص الخام أو اكتب معطيات الخبر...'},
+    rewrite  : {title:'إعادة صياغة احترافية',label:'أدخل النص المراد إعادة صياغته',ph:'الصق النص هنا...'},
+    headlines: {title:'عناوين احترافية',label:'أدخل نص الخبر',ph:'الصق النص هنا...'},
+    flash    : {title:'فلاش إخباري',label:'أدخل معطيات الخبر',ph:'اكتب أو الصق الخبر هنا...'},
+    transcribe:{title:'تفريغ وتحرير',label:'أدخل محتوى التسجيل',ph:'الصق محتوى التسجيل...'},
+    monitor  : {title:'اقتراحات تحريرية',label:'رصد إخباري',ph:'رصد'},
+    checker  : {title:'مدقق المحتوى',label:'أدخل النص للتدقيق',ph:'الصق النص هنا للتدقيق الصحفي...'}
+  };
+  var cfg = TOOLS_LOCAL[name];
+  if(!cfg) return;
+  CUR_TOOL = name;
+  CUR_TOOL_NAME = cfg.title;
+  var titleEl = document.getElementById('ai-title');
+  if(titleEl) titleEl.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> ' + cfg.title;
+  var labelEl = document.getElementById('ai-label');
+  if(labelEl) labelEl.textContent = cfg.label;
+  var inpEl = document.getElementById('ai-input');
+  if(inpEl){ inpEl.placeholder = cfg.ph; inpEl.value = ''; }
+  var extra = document.getElementById('checker-extra');
+  if(extra) extra.style.display = (name === 'checker') ? 'block' : 'none';
+  hide_result_ai();
+  var runBtn = document.getElementById('ai-run-btn');
+  if(runBtn) runBtn.disabled = false;
+  open_modal('ai-modal');
+}
+
+/* Patch run_ai to inject checker source/date into prompt */
+var _run_ai_orig = window.run_ai;
+window.addEventListener('load', function(){
+  var _orig = window.run_ai;
+  window.run_ai = async function(){
+    if(window.CUR_TOOL === 'checker'){
+      var src_val  = (document.getElementById('checker-source') || {}).value || '';
+      var date_val = (document.getElementById('checker-date') || {}).value || '';
+      var inp = document.getElementById('ai-input');
+      if(inp && (src_val || date_val)){
+        var prefix = '';
+        if(src_val)  prefix += 'المصدر: ' + src_val + '\n';
+        if(date_val) prefix += 'التاريخ: ' + date_val + '\n';
+        prefix += '\n';
+        inp.value = prefix + inp.value;
+      }
+    }
+    return _orig.apply(this, arguments);
+  };
+});
+
+/* ── FILE ATTACH (DOM API — zero quote nesting) ── */
 function handle_attach(inputId, previewId, textareaId){
-  var input   = document.getElementById(inputId);
-  var preview = document.getElementById(previewId);
+  var input = document.getElementById(inputId);
+  var wrap  = document.getElementById(previewId);
   if(!input || !input.files || !input.files[0]) return;
   var file    = input.files[0];
   var isAudio = file.type.startsWith('audio/');
   var isImage = file.type.startsWith('image/');
-  var isVideo = file.type.startsWith('video/');
   var url     = URL.createObjectURL(file);
   var label   = isAudio ? 'صوتي' : isImage ? 'صورة' : 'فيديو';
-
-  // Build with DOM API — zero quote nesting
-  preview.innerHTML = '';
-
+  wrap.innerHTML = '';
   var chip = document.createElement('div');
   chip.className = 'attach-chip';
-
   if(isImage){
     var img = document.createElement('img');
     img.src = url; img.className = 'attach-image';
@@ -2447,103 +2461,84 @@ function handle_attach(inputId, previewId, textareaId){
     ico.className = isAudio ? 'fa-solid fa-music' : 'fa-solid fa-video';
     chip.appendChild(ico);
   }
-
-  var nameSpan = document.createElement('span');
-  nameSpan.style.cssText = 'max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
-  nameSpan.textContent = file.name;
-  chip.appendChild(nameSpan);
-
-  var delBtn = document.createElement('button');
-  delBtn.textContent = '✕'; delBtn.title = 'حذف';
-  delBtn.addEventListener('click', function(){
-    remove_attach(inputId, previewId, textareaId);
-  });
-  chip.appendChild(delBtn);
-  preview.appendChild(chip);
-
+  var nm = document.createElement('span');
+  nm.style.cssText = 'max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+  nm.textContent = file.name;
+  chip.appendChild(nm);
+  var del = document.createElement('button');
+  del.textContent = '✕'; del.title = 'حذف';
+  del.addEventListener('click', (function(a,b,c){ return function(){ remove_attach(a,b,c); }; })(inputId,previewId,textareaId));
+  chip.appendChild(del);
+  wrap.appendChild(chip);
   if(isAudio){
-    var audio = document.createElement('audio');
-    audio.src = url; audio.controls = true; audio.className = 'attach-audio';
-    preview.appendChild(audio);
+    var aud = document.createElement('audio');
+    aud.src = url; aud.controls = true; aud.className = 'attach-audio';
+    wrap.appendChild(aud);
   }
-
   var ta = document.getElementById(textareaId);
-  if(ta && ta.value.indexOf('[ملف مرفق]') === -1){
-    ta.value += '\n\n[ملف مرفق: '+file.name+' — '+label+']';
-  }
+  if(ta && ta.value.indexOf('[ملف مرفق]') === -1)
+    ta.value += '\n\n[ملف مرفق: ' + file.name + ' — ' + label + ']';
 }
 
 function remove_attach(inputId, previewId, textareaId){
-  var inp  = document.getElementById(inputId);  if(inp)  inp.value = '';
-  var prev = document.getElementById(previewId); if(prev) prev.innerHTML = '';
-  var ta   = document.getElementById(textareaId);
-  if(ta) ta.value = ta.value.replace(/\n\n\[ملف مرفق:[^\]]*\]/g,'');
+  var i = document.getElementById(inputId); if(i) i.value = '';
+  var p = document.getElementById(previewId); if(p) p.innerHTML = '';
+  var t = document.getElementById(textareaId);
+  if(t) t.value = t.value.replace(/\n\n\[ملف مرفق:[^\]]*\]/g,'');
 }
 
-/* ══════════════════════════════════════════════════════
-   OPENROUTER / QWEN
-══════════════════════════════════════════════════════ */
-var OR_KEY  = '';
-var OR_MAX  = 50;
-
-function _or_day_key(){ return 'or_q_'+new Date().toDateString(); }
-function get_or_q(){ return parseInt(localStorage.getItem(_or_day_key())||'0',10); }
-function inc_or_q(){ localStorage.setItem(_or_day_key(), get_or_q()+1); refresh_quota_ui(); }
+/* ── OPENROUTER / QWEN ── */
+var OR_KEY = '';
+var OR_MAX = 50;
+function _or_day(){ return 'or_q_' + new Date().toDateString(); }
+function get_or_q(){ return parseInt(localStorage.getItem(_or_day()) || '0', 10); }
+function inc_or_q(){ localStorage.setItem(_or_day(), get_or_q() + 1); refresh_quota_ui(); }
 
 function refresh_quota_ui(){
   var q = get_or_q();
   var ids = ['qwen-card-quota','qwen-quota-badge','or-quota-badge'];
   for(var i=0;i<ids.length;i++){
     var el = document.getElementById(ids[i]);
-    if(el) el.textContent = q+' / '+OR_MAX;
+    if(el) el.textContent = q + '/50';
   }
 }
 
 function save_or_key(){
-  var k = (document.getElementById('or-key-inp').value||'').trim();
+  var k = (document.getElementById('or-key-inp').value || '').trim();
   if(!k) return toast('أدخل المفتاح أولاً','error');
   OR_KEY = k;
   localStorage.setItem('or_key', k);
-  hide_nb('or-notice');
+  nb_hide('or-notice');
   close_modal('settings-modal');
   toast('تم حفظ مفتاح OpenRouter ✓','success');
 }
 
 async function qwen_call(prompt){
   if(!OR_KEY){
-    var stored = localStorage.getItem('or_key');
-    if(stored){ OR_KEY = stored; }
-    else{ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter من الإعدادات'); }
+    var s = localStorage.getItem('or_key');
+    if(s){ OR_KEY = s; } else { open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter'); }
   }
-  if(get_or_q() >= OR_MAX) throw new Error('استُنفدت الحصة اليومية ('+OR_MAX+' طلب)');
+  if(get_or_q() >= OR_MAX) throw new Error('استُنفدت الحصة اليومية (50 طلب)');
   var resp = await fetch('https://openrouter.ai/api/v1/chat/completions',{
     method  : 'POST',
-    headers : {
-      'Content-Type' : 'application/json',
-      'Authorization': 'Bearer '+OR_KEY,
-      'HTTP-Referer' : 'https://deskbot-seven.vercel.app'
-    },
-    body: JSON.stringify({
-      model    : 'qwen/qwen3-235b-a22b:free',
-      messages : [{role:'user', content:prompt}],
-      max_tokens: 4096
-    })
+    headers : { 'Content-Type':'application/json',
+                'Authorization':'Bearer ' + OR_KEY,
+                'HTTP-Referer':'https://deskbot-seven.vercel.app' },
+    body: JSON.stringify({ model:'qwen/qwen3-235b-a22b:free',
+      messages:[{role:'user',content:prompt}], max_tokens:4096 })
   });
   if(!resp.ok){
-    var err = await resp.json().catch(function(){return{};});
-    throw new Error((err.error && err.error.message) ? err.error.message : 'خطأ OpenRouter '+resp.status);
+    var err = await resp.json().catch(function(){ return {}; });
+    throw new Error((err.error && err.error.message) ? err.error.message : 'خطأ OpenRouter ' + resp.status);
   }
   var data = await resp.json();
   inc_or_q();
   return data.choices[0].message.content;
 }
 
-/* ══════════════════════════════════════════════════════
-   QWEN MODAL LOGIC
-══════════════════════════════════════════════════════ */
 function open_qwen_modal(){ refresh_quota_ui(); open_modal('qwen-modal'); }
-
 var _qwen_raw = false;
+
 async function run_qwen(){
   var inp = document.getElementById('qwen-input').value.trim();
   if(!inp) return toast('أدخل نصاً أولاً','error');
@@ -2552,15 +2547,15 @@ async function run_qwen(){
   document.getElementById('qwen-run-btn').disabled = true;
   document.getElementById('qwen-result-wrap').style.display = 'none';
   try{
-    var res = await qwen_call(SYS+'\n\n'+inp);
+    var res = await qwen_call(SYS + '\n\n' + inp);
     var box = document.getElementById('qwen-result');
-    box.innerHTML   = render_md(res);
-    box.className   = 'result-box rendered';
-    _qwen_raw       = false;
+    box.innerHTML = render_md(res);
+    box.className = 'result-box rendered';
+    _qwen_raw = false;
     document.getElementById('qwen-result-wrap').style.display = 'block';
     refresh_quota_ui();
     await arc_auto('Qwen AI', inp.substring(0,200), res);
-  }catch(e){ toast('خطأ Qwen: '+e.message,'error'); }
+  }catch(e){ toast('خطأ Qwen: ' + e.message, 'error'); }
   finally{
     hide('qwen-load');
     document.getElementById('qwen-run-btn').disabled = false;
@@ -2573,78 +2568,113 @@ function toggle_qwen_fmt(){
   if(!box) return;
   if(_qwen_raw){
     box.innerHTML = render_md(box.textContent || box.innerText);
-    box.className = 'result-box rendered';
-    _qwen_raw = false;
+    box.className = 'result-box rendered'; _qwen_raw = false;
     if(btn) btn.innerHTML = '<i class="fa-solid fa-code"></i>';
   } else {
-    box.textContent = box.innerText;
-    box.className   = 'result-box';
-    _qwen_raw = true;
+    box.textContent = box.innerText || box.textContent;
+    box.className   = 'result-box'; _qwen_raw = true;
     if(btn) btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
   }
 }
 
-/* ══════════════════════════════════════════════════════
-   NEWS TICKER — LIVE AUTO-REFRESH
-   ⚠ ZERO backticks — all string concatenation
-══════════════════════════════════════════════════════ */
-var _tickerOpen  = false;
-var _tickerTimer = null;
+/* ── LIVE TICKER — RSS via rss2json.com ── */
+var _tick_open = false;
+var _tick_timer = null;
+var RSS_FEEDS = [
+  {url:'https://www.mosaiquefm.net/ar/feed',     src:'موزاييك',  intl:false},
+  {url:'https://www.kapitalis.com/feed',          src:'كابيتاليس',intl:false},
+  {url:'https://www.businessnews.com.tn/rss',    src:'Business', intl:false},
+  {url:'https://www.leaders.com.tn/rss',          src:'Leaders',  intl:false},
+  {url:'https://www.aljazeera.net/xml/rss/all.xml', src:'الجزيرة',intl:true},
+  {url:'https://feeds.bbci.co.uk/arabic/rss.xml', src:'BBC',     intl:true},
+  {url:'https://www.france24.com/ar/rss',         src:'France24', intl:true}
+];
+var RSS2JSON = 'https://api.rss2json.com/v1/api.json?count=4&rss_url=';
 
 function toggle_ticker(){
-  _tickerOpen = !_tickerOpen;
+  _tick_open = !_tick_open;
   var wrap = document.getElementById('ticker-wrap');
   if(!wrap) return;
-  if(_tickerOpen){
-    wrap.style.maxHeight    = '420px';
-    wrap.style.opacity      = '1';
+  if(_tick_open){
+    wrap.style.maxHeight = '420px';
+    wrap.style.opacity   = '1';
     wrap.style.marginBottom = '0';
     load_ticker();
-    if(_tickerTimer) clearInterval(_tickerTimer);
-    _tickerTimer = setInterval(load_ticker, 60000);
+    if(_tick_timer) clearInterval(_tick_timer);
+    _tick_timer = setInterval(load_ticker, 60000);
   } else {
-    wrap.style.maxHeight    = '0';
-    wrap.style.opacity      = '0';
-    wrap.style.marginBottom = '0';
-    if(_tickerTimer){ clearInterval(_tickerTimer); _tickerTimer = null; }
+    wrap.style.maxHeight = '0';
+    wrap.style.opacity   = '0';
+    if(_tick_timer){ clearInterval(_tick_timer); _tick_timer = null; }
   }
 }
 
 async function load_ticker(){
-  var items = document.getElementById('ticker-items');
-  var spin  = document.getElementById('ticker-spin-i');
-  var refEl = document.getElementById('ticker-refresh-time');
-  if(spin)  spin.style.animation = 'spin .8s linear infinite';
+  var items   = document.getElementById('ticker-items');
+  var spin    = document.getElementById('ticker-spin-i');
+  var refEl   = document.getElementById('ticker-refresh-time');
+  var btn     = document.getElementById('ticker-refresh-btn');
+  if(spin)    spin.style.animation = 'spin .8s linear infinite';
+  if(btn)     btn.disabled = true;
 
   var now     = new Date();
   var timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
-  var dateStr = now.toLocaleDateString('ar-TN');
-  if(refEl)   refEl.textContent = 'آخر تحديث: '+timeStr;
+  if(refEl)   refEl.textContent = 'آخر تحديث: ' + timeStr;
 
-  var prompt = 'أنت راصد أخبار فوري. الوقت: '+timeStr+'. التاريخ: '+dateStr+'.\n\n'
-             + 'قدّم بالضبط 15 خبراً من آخر 60 دقيقة:\n'
-             + '- 10 أخبار تونسية: TAP، ديوان FM، حقائق أونلاين، الحوار نيوز، تونس نيوز\n'
-             + '- 5 أخبار دولية: رويترز، AFP، الجزيرة، BBC عربي، العربية\n\n'
-             + 'أجب بـ JSON فقط لا شيء خارجه:\n'
-             + '[{"time":"'+timeStr+'","title":"عنوان دقيق كما نُشر","src":"TAP","intl":false}]\n\n'
-             + 'intl=false تونسي، intl=true دولي. عناوين واقعية لا مُخترعة.';
+  var news = [];
+  var promises = RSS_FEEDS.map(function(feed){
+    return fetch(RSS2JSON + encodeURIComponent(feed.url))
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if(d.status === 'ok' && d.items){
+          d.items.slice(0,4).forEach(function(item){
+            news.push({
+              title  : item.title || '',
+              src    : feed.src,
+              intl   : feed.intl,
+              pubDate: item.pubDate || ''
+            });
+          });
+        }
+      })
+      .catch(function(){});
+  });
 
-  try{
-    var res;
-    try{ res = await gemini(prompt); }
-    catch(e){ res = await qwen_call(prompt); }
+  await Promise.allSettled(promises);
 
-    var match = res.match(/\[[\s\S]*?\]/);
-    if(!match) throw new Error('لم يُرجع JSON صحيح');
-    var data = JSON.parse(match[0]);
+  if(news.length === 0){
+    /* Fallback: AI-generated news if all RSS fail */
+    try{
+      var prompt = 'أنت راصد أخبار. الوقت: ' + timeStr + '. التاريخ: ' + now.toLocaleDateString('ar-TN') + '.\n\n'
+                 + 'قدّم 12 خبراً (8 تونسية، 4 دولية) بـ JSON فقط:\n'
+                 + '[{"title":"عنوان","src":"TAP","intl":false}]\n'
+                 + 'intl=false تونسي، intl=true دولي.';
+      var res;
+      try{ res = await gemini(prompt); }
+      catch(e){ res = await qwen_call(prompt); }
+      var m = res.match(/\[[\s\S]*?\]/);
+      if(m) news = JSON.parse(m[0]);
+    }catch(e){}
+  }
 
-    // Build DOM nodes — NO innerHTML string building = NO quote issues
+  items.innerHTML = '';
+  if(news.length === 0){
+    items.innerHTML = '<div style="padding:28px;text-align:center;color:var(--danger);font-size:13px">'
+                    + '<i class="fa-solid fa-circle-exclamation" style="font-size:24px;display:block;margin-bottom:8px"></i>'
+                    + 'تعذّر تحميل الأخبار — حاول مجدداً</div>';
+  } else {
+    /* Sort by pubDate (newest first) */
+    news.sort(function(a,b){
+      var da = a.pubDate ? new Date(a.pubDate) : 0;
+      var db = b.pubDate ? new Date(b.pubDate) : 0;
+      return db - da;
+    });
     var frag = document.createDocumentFragment();
-    var limit = Math.min(data.length, 15);
-    for(var i=0; i<limit; i++){
-      var n = data[i];
+    var limit = Math.min(news.length, 18);
+    for(var i=0;i<limit;i++){
+      var n   = news[i];
       var row = document.createElement('div');
-      row.style.cssText = 'display:flex;align-items:flex-start;gap:12px;padding:10px 18px;'
+      row.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:9px 16px;'
                         + 'border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s';
       row.title = 'انقر لنسخ الخبر';
       row.dataset.t = n.title || '';
@@ -2652,55 +2682,124 @@ async function load_ticker(){
         navigator.clipboard.writeText(this.dataset.t).catch(function(){});
         toast('تم نسخ الخبر ✓');
       });
-      row.addEventListener('mouseover', function(){ this.style.background='rgba(61,126,255,.05)'; });
-      row.addEventListener('mouseout',  function(){ this.style.background=''; });
+      row.addEventListener('mouseover', function(){ this.style.background = 'rgba(61,126,255,.06)'; });
+      row.addEventListener('mouseout',  function(){ this.style.background = ''; });
 
-      var tEl = document.createElement('span');
-      tEl.style.cssText = 'font-family:\'Oswald\',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px';
-      tEl.textContent = n.time || timeStr;
+      /* Time badge */
+      var tEl   = document.createElement('span');
+      var pubD  = n.pubDate ? new Date(n.pubDate) : null;
+      tEl.textContent = pubD
+        ? pubD.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'})
+        : timeStr;
+      tEl.style.cssText = 'font-family:\'Oswald\',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px;flex-shrink:0';
 
+      /* Source badge */
       var badge = document.createElement('span');
+      badge.textContent = n.src || 'وكالات';
       badge.style.cssText = 'font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
                           + 'white-space:nowrap;flex-shrink:0;margin-top:2px;'
                           + (n.intl ? 'background:rgba(16,201,138,.12);color:var(--accent2)'
                                     : 'background:rgba(61,126,255,.12);color:var(--accent)');
-      badge.textContent = n.src || 'وكالات';
 
+      /* Title */
       var txt = document.createElement('span');
-      txt.style.cssText = 'font-size:13px;color:var(--text);line-height:1.6;flex:1';
       txt.textContent = n.title || '';
+      txt.style.cssText = 'font-size:13px;color:var(--text);line-height:1.6;flex:1';
 
       row.appendChild(tEl);
       row.appendChild(badge);
       row.appendChild(txt);
       frag.appendChild(row);
     }
-    items.innerHTML = '';
     items.appendChild(frag);
+    toast('تم تحديث الأخبار ✓','success');
+  }
+
+  if(spin)  spin.style.animation = '';
+  if(btn)   btn.disabled = false;
+}
+
+/* ── AG_SEARCH FIX — DOM API (no template literal issues) ── */
+async function ag_search(){
+  var date = (document.getElementById('ag-srch-date') || {}).value;
+  if(!date) return toast('اختر تاريخاً','error');
+  var c = document.getElementById('ag-results');
+  if(!c) return;
+  c.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري البحث...</span></div>';
+  try{
+    var snap = await db.collection('agenda').where('date','==',date).get();
+    c.innerHTML = '';
+    if(snap.empty){
+      var noEl = document.createElement('p');
+      noEl.style.cssText = 'color:var(--text2);text-align:center;padding:24px;font-size:14px';
+      noEl.textContent = 'لا توجد أحداث لهذا التاريخ';
+      c.appendChild(noEl);
+      return;
+    }
+    var months = ['جانفي','فيفري','مارس','أفريل','ماي','جوان',
+                  'جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    var dObj  = new Date(date);
+    var fdate = dObj.getDate() + ' ' + months[dObj.getMonth()];
+    var frag  = document.createDocumentFragment();
+
+    snap.forEach(function(doc){
+      var d      = doc.data();
+      var canDel = (d.addedById === USER.uid);
+
+      var item  = document.createElement('div'); item.className = 'ag-item';
+      var dEl   = document.createElement('div'); dEl.className  = 'ag-date';
+      dEl.textContent = fdate;
+
+      var info  = document.createElement('div'); info.style.flex = '1';
+      var evEl  = document.createElement('div'); evEl.className = 'ag-event';
+      evEl.id   = 'ag-ev-' + doc.id;
+      evEl.textContent = d.event || '';
+
+      var byEl  = document.createElement('div'); byEl.className = 'ag-by';
+      byEl.textContent = '👤 ' + (d.addedBy || '');
+      info.appendChild(evEl); info.appendChild(byEl);
+
+      var btns  = document.createElement('div');
+      btns.style.cssText = 'display:flex;gap:6px;flex-shrink:0';
+
+      var editB = document.createElement('button');
+      editB.className = 'btn-sec'; editB.style.cssText = 'padding:6px 10px';
+      editB.innerHTML = '<i class="fa-solid fa-pen"></i>';
+      editB.addEventListener('click', (function(id,ev){ return function(){ ag_edit(id,ev); }; })(doc.id, d.event));
+      btns.appendChild(editB);
+
+      if(canDel){
+        var delB  = document.createElement('button');
+        delB.className = 'btn-sec btn-danger'; delB.style.cssText = 'padding:6px 10px';
+        delB.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        delB.addEventListener('click', (function(id){ return function(){ ag_del(id); }; })(doc.id));
+        btns.appendChild(delB);
+      }
+
+      item.appendChild(dEl); item.appendChild(info); item.appendChild(btns);
+      frag.appendChild(item);
+    });
+    c.appendChild(frag);
   }catch(e){
-    if(items) items.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">'
-                              + 'خطأ: '+e.message+'</div>';
-  }finally{
-    if(spin) spin.style.animation = '';
+    c.innerHTML = '<p style="color:var(--danger);text-align:center;padding:16px">خطأ: ' + e.message + '</p>';
   }
 }
 
-
-/* ══════════════════════════════════════════════════════
-   INIT EXTRAS — called after auth (via setTimeout)
-══════════════════════════════════════════════════════ */
+/* ── INIT EXTRAS — called 500ms after auth ── */
 function init_extras(){
-  // Load OR key
+  apply_saved_theme();
   var ok = localStorage.getItem('or_key');
-  if(ok){
-    OR_KEY = ok;
-    hide_nb('or-notice');
-    var inp = document.getElementById('or-key-inp');
-    if(inp) inp.value = ok;
-  } else {
-    show_nb('or-notice');
-  }
+  if(ok){ OR_KEY = ok; nb_hide('or-notice');
+    var inp = document.getElementById('or-key-inp'); if(inp) inp.value = ok;
+  } else { nb_show('or-notice'); }
   refresh_quota_ui();
+  /* Mobile bottom nav */
+  function chk_mob(){
+    var nav = document.getElementById('bottom-nav');
+    if(nav) nav.style.display = window.innerWidth <= 600 ? 'block' : 'none';
+  }
+  window.addEventListener('resize', chk_mob);
+  chk_mob();
 }
 
 </script>
