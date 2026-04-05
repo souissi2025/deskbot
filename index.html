@@ -1282,6 +1282,8 @@ textarea{min-height:120px;line-height:1.7}
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
 <script>
+/* AUTH: ensure deskbot-seven.vercel.app is in Firebase Console > Auth > Authorized domains */
+
 // ============================================================
 // FIREBASE INIT
 // ============================================================
@@ -1294,6 +1296,13 @@ firebase.initializeApp({
   appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"
 });
 const auth=firebase.auth(), db=firebase.firestore();
+
+// Handle redirect result (after mobile/blocked popup → redirect)
+auth.getRedirectResult().then(function(result){
+  if(result&&result.user){ console.log('Redirect login OK:', result.user.email); }
+}).catch(function(err){
+  if(err.code&&err.code!=='auth/no-auth-event') toast('خطأ تسجيل الدخول: '+err.message,'error');
+});
 
 // ============================================================
 // STATE
@@ -1640,8 +1649,17 @@ auth.onAuthStateChanged(u=>{
 });
 
 function googleLogin(){
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    .catch(e=>toast('خطأ في تسجيل الدخول','error'));
+  var provider=new firebase.auth.GoogleAuthProvider();
+  provider.addScope('email');
+  provider.addScope('profile');
+  // Try popup first (desktop), fallback to redirect (mobile/blocked)
+  auth.signInWithPopup(provider).catch(function(err){
+    if(err.code==='auth/popup-blocked'||err.code==='auth/popup-closed-by-user'||err.code==='auth/cancelled-popup-request'){
+      auth.signInWithRedirect(provider);
+    } else {
+      toast('خطأ: '+err.message,'error');
+    }
+  });
 }
 function do_signout(){
   if(confirm('تسجيل الخروج؟')) auth.signOut();
