@@ -2432,22 +2432,47 @@ function handle_attach(inputId, previewId, textareaId){
   var url     = URL.createObjectURL(file);
   var label   = isAudio ? 'صوتي' : isImage ? 'صورة' : 'فيديو';
 
-  var chip = '<div class="attach-chip">';
-  if(isImage)      chip += '<img src="'+url+'" class="attach-image">';
-  else if(isAudio) chip += '<i class="fa-solid fa-music"></i>';
-  else             chip += '<i class="fa-solid fa-video"></i>';
-  chip += '<span style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+file.name+'</span>';
-  chip += '<button onclick="remove_attach(''+inputId+'',''+previewId+'',''+textareaId+'')" title="حذف">&#10005;</button>';
-  chip += '</div>';
-  if(isAudio) chip += '<audio class="attach-audio" src="'+url+'" controls></audio>';
+  // Build with DOM API — zero quote nesting
+  preview.innerHTML = '';
 
-  preview.innerHTML = chip;
+  var chip = document.createElement('div');
+  chip.className = 'attach-chip';
+
+  if(isImage){
+    var img = document.createElement('img');
+    img.src = url; img.className = 'attach-image';
+    chip.appendChild(img);
+  } else {
+    var ico = document.createElement('i');
+    ico.className = isAudio ? 'fa-solid fa-music' : 'fa-solid fa-video';
+    chip.appendChild(ico);
+  }
+
+  var nameSpan = document.createElement('span');
+  nameSpan.style.cssText = 'max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+  nameSpan.textContent = file.name;
+  chip.appendChild(nameSpan);
+
+  var delBtn = document.createElement('button');
+  delBtn.textContent = '✕'; delBtn.title = 'حذف';
+  delBtn.addEventListener('click', function(){
+    remove_attach(inputId, previewId, textareaId);
+  });
+  chip.appendChild(delBtn);
+  preview.appendChild(chip);
+
+  if(isAudio){
+    var audio = document.createElement('audio');
+    audio.src = url; audio.controls = true; audio.className = 'attach-audio';
+    preview.appendChild(audio);
+  }
 
   var ta = document.getElementById(textareaId);
   if(ta && ta.value.indexOf('[ملف مرفق]') === -1){
     ta.value += '\n\n[ملف مرفق: '+file.name+' — '+label+']';
   }
 }
+
 function remove_attach(inputId, previewId, textareaId){
   var inp  = document.getElementById(inputId);  if(inp)  inp.value = '';
   var prev = document.getElementById(previewId); if(prev) prev.innerHTML = '';
@@ -2594,56 +2619,72 @@ async function load_ticker(){
   var now     = new Date();
   var timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
   var dateStr = now.toLocaleDateString('ar-TN');
-  if(refEl) refEl.textContent = 'آخر تحديث: '+timeStr;
+  if(refEl)   refEl.textContent = 'آخر تحديث: '+timeStr;
 
-  // Build prompt WITHOUT backtick template literals
-  var prompt  = 'أنت راصد أخبار فوري. الوقت: '+timeStr+'. التاريخ: '+dateStr+'.\n\n';
-      prompt += 'قدّم بالضبط 15 خبراً من آخر 60 دقيقة:\n';
-      prompt += '- 10 أخبار تونسية: TAP، ديوان FM، حقائق أونلاين، الحوار نيوز، تونس نيوز\n';
-      prompt += '- 5 أخبار دولية: رويترز، AFP، الجزيرة، BBC عربي، العربية\n\n';
-      prompt += 'أجب بـ JSON فقط لا شيء خارجه — بهذا الشكل الحرفي:\n';
-      prompt += '[{"time":"'+timeStr+'","title":"عنوان دقيق كما نُشر","src":"TAP","intl":false}]\n\n';
-      prompt += 'intl=false خبر تونسي، intl=true خبر دولي. عناوين واقعية لا مُخترعة.';
+  var prompt = 'أنت راصد أخبار فوري. الوقت: '+timeStr+'. التاريخ: '+dateStr+'.\n\n'
+             + 'قدّم بالضبط 15 خبراً من آخر 60 دقيقة:\n'
+             + '- 10 أخبار تونسية: TAP، ديوان FM، حقائق أونلاين، الحوار نيوز، تونس نيوز\n'
+             + '- 5 أخبار دولية: رويترز، AFP، الجزيرة، BBC عربي، العربية\n\n'
+             + 'أجب بـ JSON فقط لا شيء خارجه:\n'
+             + '[{"time":"'+timeStr+'","title":"عنوان دقيق كما نُشر","src":"TAP","intl":false}]\n\n'
+             + 'intl=false تونسي، intl=true دولي. عناوين واقعية لا مُخترعة.';
 
   try{
     var res;
-    try { res = await gemini(prompt); }
+    try{ res = await gemini(prompt); }
     catch(e){ res = await qwen_call(prompt); }
 
     var match = res.match(/\[[\s\S]*?\]/);
     if(!match) throw new Error('لم يُرجع JSON صحيح');
     var data = JSON.parse(match[0]);
-    var html = '';
+
+    // Build DOM nodes — NO innerHTML string building = NO quote issues
+    var frag = document.createDocumentFragment();
     var limit = Math.min(data.length, 15);
     for(var i=0; i<limit; i++){
-      var n       = data[i];
-      var title   = (n.title||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-      var srcName = n.src || 'وكالات';
-      var tStr    = n.time || timeStr;
-      var isIntl  = !!n.intl;
-      var badgeStyle = isIntl
-        ? 'background:rgba(16,201,138,.12);color:var(--accent2)'
-        : 'background:rgba(61,126,255,.12);color:var(--accent)';
-      html += '<div'
-           +  ' title="انقر لنسخ الخبر"'
-           +  ' data-title="'+title+'"'
-           +  ' onclick="navigator.clipboard.writeText(this.dataset.title);toast('تم نسخ الخبر ✓')"'
-           +  ' style="display:flex;align-items:flex-start;gap:12px;padding:10px 18px;'
-           +         'border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s"'
-           +  ' onmouseover="this.style.background='rgba(61,126,255,.05)'"'
-           +  ' onmouseout="this.style.background=''">'
-           +  '<span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px">'+tStr+'</span>'
-           +  '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;'+badgeStyle+'">'+srcName+'</span>'
-           +  '<span style="font-size:13px;color:var(--text);line-height:1.6;flex:1">'+n.title+'</span>'
-           +  '</div>';
+      var n = data[i];
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:flex-start;gap:12px;padding:10px 18px;'
+                        + 'border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s';
+      row.title = 'انقر لنسخ الخبر';
+      row.dataset.t = n.title || '';
+      row.addEventListener('click', function(){
+        navigator.clipboard.writeText(this.dataset.t).catch(function(){});
+        toast('تم نسخ الخبر ✓');
+      });
+      row.addEventListener('mouseover', function(){ this.style.background='rgba(61,126,255,.05)'; });
+      row.addEventListener('mouseout',  function(){ this.style.background=''; });
+
+      var tEl = document.createElement('span');
+      tEl.style.cssText = 'font-family:\'Oswald\',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px';
+      tEl.textContent = n.time || timeStr;
+
+      var badge = document.createElement('span');
+      badge.style.cssText = 'font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
+                          + 'white-space:nowrap;flex-shrink:0;margin-top:2px;'
+                          + (n.intl ? 'background:rgba(16,201,138,.12);color:var(--accent2)'
+                                    : 'background:rgba(61,126,255,.12);color:var(--accent)');
+      badge.textContent = n.src || 'وكالات';
+
+      var txt = document.createElement('span');
+      txt.style.cssText = 'font-size:13px;color:var(--text);line-height:1.6;flex:1';
+      txt.textContent = n.title || '';
+
+      row.appendChild(tEl);
+      row.appendChild(badge);
+      row.appendChild(txt);
+      frag.appendChild(row);
     }
-    items.innerHTML = html;
+    items.innerHTML = '';
+    items.appendChild(frag);
   }catch(e){
-    if(items) items.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">خطأ: '+e.message+'</div>';
+    if(items) items.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">'
+                              + 'خطأ: '+e.message+'</div>';
   }finally{
     if(spin) spin.style.animation = '';
   }
 }
+
 
 /* ══════════════════════════════════════════════════════
    INIT EXTRAS — called after auth (via setTimeout)
