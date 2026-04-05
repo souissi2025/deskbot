@@ -8,6 +8,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+.news-ticker-container {
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: var(--r2); margin-bottom: 24px; overflow: hidden;
+  box-shadow: var(--shadow); max-height: 120px;
+}
+.nt-header {
+  padding: 12px 20px; display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, rgba(61,126,255,0.1), rgba(61,126,255,0.05));
+  border-bottom: 1px solid var(--border); font-weight: 600;
+}
+.nt-header i { color: var(--accent); font-size: 16px; }
+.nt-header span { font-size: 14px; color: var(--text); flex: 1; }
+.nt-refresh { padding: 6px 12px; font-size: 12px !important; }
+.nt-content { max-height: 84px; overflow-y: auto; }
+.nt-item {
+  padding: 14px 20px; border-bottom: 1px solid rgba(var(--border-rgb), 0.2);
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  font-size: 13px; line-height: 1.4;
+}
+.nt-item:hover { background: rgba(61,126,255,0.08); transform: translateX(-4px); }
+.nt-item:last-child { border-bottom: none; }
+.nt-time { font-size: 11px; color: var(--text3); font-weight: 600; min-width: 48px; }
+.nt-source { font-size: 11px; color: var(--accent2); font-weight: 500; }
+.nt-title { color: var(--text); flex: 1; }
+.nt-loading { padding: 24px 20px; text-align: center; color: var(--text2); }
+
 /* ============================================================
    DESIGN SYSTEM — DESK BOT 2.0
    Dark-first, Glassmorphism, Bento Grid, Bloomberg-inspired
@@ -721,7 +748,33 @@ textarea{min-height:120px;line-height:1.7}
 .toast.success{border-color:rgba(16,201,138,0.4);color:var(--accent2)}
 .toast.error{border-color:rgba(239,68,68,0.4);color:#ef4444}
 
-/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .content { padding: 24px 16px !important; }
+  .priority-grid { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr !important; gap: 12px; }
+  .tool-card { min-height: 88px; padding: 24px 20px; }
+  .header { height: 60px; padding: 0 16px; }
+  .h-right { gap: 2px; }
+  .h-btn span { display: none !important; }
+  .h-btn { padding: 10px 12px !important; min-width: 44px; }
+  .welcome-bar { padding: 16px; flex-direction: column; gap: 16px; }
+  .news-ticker-container { margin-bottom: 20px; max-height: 100px; }
+  .nt-content { max-height: 72px; }
+  .modal { margin: 8px; max-width: calc(100vw - 16px) !important; }
+  .m-body { padding: 20px 16px !important; }
+  body { padding-bottom: 0 !important; }
+}
+
+/* API NOTICE SMOOTH COLLAPSE */
+#api-notice {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  overflow: hidden; max-height: 72px;
+}
+#api-notice[style*="display: none"] {
+  max-height: 0 !important; margin: 0 !important; padding: 0 !important;
+}
+
 @media(max-width:900px){
   .bento-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
   .tool-card.featured{grid-column:1/3;grid-row:1}
@@ -901,7 +954,7 @@ textarea{min-height:120px;line-height:1.7}
         <option value="gemini-2.5-flash">Gemini Pro 🧠</option>
         <option value="qwen">Qwen 🌐</option>
       </select>
-      <button class="live-pill" onclick="open_modal('radio-modal')">
+      <button class="live-pill" onclick="toggleNewsTicker()">
         <div class="live-dot"></div>LIVE
       </button>
       <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
@@ -913,6 +966,21 @@ textarea{min-height:120px;line-height:1.7}
   </header>
 
   <div class="content">
+<div class="news-ticker-container" id="news-ticker" style="display: none;">
+  <div class="nt-header">
+    <i class="fa-solid fa-newspaper"></i>
+    <span>آخر الأخبار</span>
+    <button class="btn-sec nt-refresh" onclick="refreshNewsTicker()">
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+  </div>
+  <div class="nt-content" id="nt-content">
+    <div class="nt-loading">
+      <div class="spin"></div> جاري التحميل...
+    </div>
+  </div>
+</div>
+
 
     <!-- NOTICE BAR -->
     <div id="api-notice" class="notice-bar" style="display:none">
@@ -1208,20 +1276,6 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 <!-- =================== RADIO MODAL =================== -->
-<div class="overlay" id="radio-modal">
-  <div class="modal" style="max-width:600px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-radio"></i> الإذاعات التونسية المباشرة</div>
-      <button class="m-close" onclick="close_modal('radio-modal');stop_radio()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="m-body">
-      <div id="radio-cards"></div>
-      <audio id="radio-audio"></audio>
-    </div>
-  </div>
-</div>
-
-<!-- =================== SMART RECORD MODAL =================== -->
 <div class="overlay" id="smart-modal">
   <div class="modal" style="max-width:700px">
     <div class="m-head">
@@ -1340,9 +1394,174 @@ textarea{min-height:120px;line-height:1.7}
 <div class="toast" id="toast"></div>
 
 <!-- =================== FIREBASE =================== -->
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
+// === NEWS TICKER ===
+let newsData = [];
+function toggleNewsTicker() {
+  const ticker = document.getElementById('news-ticker');
+  const isVisible = ticker.style.display === 'block';
+  ticker.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible && newsData.length === 0) refreshNewsTicker();
+}
+async function refreshNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = '<div class="nt-loading"><div class="spin"></div>جاري التحميل...</div>';
+  try {
+    const prompt = `أنت راصد أخبار تونسي محترف. استخرج 8 أخبار من آخر 3 ساعات:
+
+**مطلوب JSON فقط:**
+[
+  {"time":"14:32", "title":"وزارة الصحة: انخفاض في معدلات الإصابة", "source":"TAP"},
+  ...
+]
+
+الوقت الحالي: ${new Date().toLocaleTimeString('ar-TN')}
+4 أخبار تونسية + 4 عالمية من TAP, ديوان FM, الجزيرة, Reuters`;
+
+    const response = await gemini(prompt);
+    newsData = JSON.parse(response);
+    renderNewsTicker();
+    toast('تم تحديث الأخبار', 'success');
+  } catch(e) {
+    content.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);">خطأ في تحميل الأخبار</div>';
+    toast('خطأ في الأخبار: ' + e.message, 'error');
+  }
+}
+function renderNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = newsData.slice(0,8).map(item => `
+    <div class="nt-item" onclick="navigator.clipboard.writeText('${item.title.replace(/'/g,"\'")}'); toast('تم نسخ الخبر');">
+      <span class="nt-time">${item.time}</span>
+      <span class="nt-source">${item.source}</span>
+      <span class="nt-title">${item.title}</span>
+    </div>
+  `).join('');
+}
+
+// Auto-hide ticker after 10s inactivity
+let tickerTimer;
+document.addEventListener('click', function(e) {
+  if (e.target.closest('#news-ticker')) {
+    clearTimeout(tickerTimer);
+    tickerTimer = setTimeout(() => {
+      document.getElementById('news-ticker').style.display = 'none';
+    }, 10000);
+  }
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js">
+// === NEWS TICKER ===
+let newsData = [];
+function toggleNewsTicker() {
+  const ticker = document.getElementById('news-ticker');
+  const isVisible = ticker.style.display === 'block';
+  ticker.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible && newsData.length === 0) refreshNewsTicker();
+}
+async function refreshNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = '<div class="nt-loading"><div class="spin"></div>جاري التحميل...</div>';
+  try {
+    const prompt = `أنت راصد أخبار تونسي محترف. استخرج 8 أخبار من آخر 3 ساعات:
+
+**مطلوب JSON فقط:**
+[
+  {"time":"14:32", "title":"وزارة الصحة: انخفاض في معدلات الإصابة", "source":"TAP"},
+  ...
+]
+
+الوقت الحالي: ${new Date().toLocaleTimeString('ar-TN')}
+4 أخبار تونسية + 4 عالمية من TAP, ديوان FM, الجزيرة, Reuters`;
+
+    const response = await gemini(prompt);
+    newsData = JSON.parse(response);
+    renderNewsTicker();
+    toast('تم تحديث الأخبار', 'success');
+  } catch(e) {
+    content.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);">خطأ في تحميل الأخبار</div>';
+    toast('خطأ في الأخبار: ' + e.message, 'error');
+  }
+}
+function renderNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = newsData.slice(0,8).map(item => `
+    <div class="nt-item" onclick="navigator.clipboard.writeText('${item.title.replace(/'/g,"\'")}'); toast('تم نسخ الخبر');">
+      <span class="nt-time">${item.time}</span>
+      <span class="nt-source">${item.source}</span>
+      <span class="nt-title">${item.title}</span>
+    </div>
+  `).join('');
+}
+
+// Auto-hide ticker after 10s inactivity
+let tickerTimer;
+document.addEventListener('click', function(e) {
+  if (e.target.closest('#news-ticker')) {
+    clearTimeout(tickerTimer);
+    tickerTimer = setTimeout(() => {
+      document.getElementById('news-ticker').style.display = 'none';
+    }, 10000);
+  }
+});
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js">
+// === NEWS TICKER ===
+let newsData = [];
+function toggleNewsTicker() {
+  const ticker = document.getElementById('news-ticker');
+  const isVisible = ticker.style.display === 'block';
+  ticker.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible && newsData.length === 0) refreshNewsTicker();
+}
+async function refreshNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = '<div class="nt-loading"><div class="spin"></div>جاري التحميل...</div>';
+  try {
+    const prompt = `أنت راصد أخبار تونسي محترف. استخرج 8 أخبار من آخر 3 ساعات:
+
+**مطلوب JSON فقط:**
+[
+  {"time":"14:32", "title":"وزارة الصحة: انخفاض في معدلات الإصابة", "source":"TAP"},
+  ...
+]
+
+الوقت الحالي: ${new Date().toLocaleTimeString('ar-TN')}
+4 أخبار تونسية + 4 عالمية من TAP, ديوان FM, الجزيرة, Reuters`;
+
+    const response = await gemini(prompt);
+    newsData = JSON.parse(response);
+    renderNewsTicker();
+    toast('تم تحديث الأخبار', 'success');
+  } catch(e) {
+    content.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);">خطأ في تحميل الأخبار</div>';
+    toast('خطأ في الأخبار: ' + e.message, 'error');
+  }
+}
+function renderNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = newsData.slice(0,8).map(item => `
+    <div class="nt-item" onclick="navigator.clipboard.writeText('${item.title.replace(/'/g,"\'")}'); toast('تم نسخ الخبر');">
+      <span class="nt-time">${item.time}</span>
+      <span class="nt-source">${item.source}</span>
+      <span class="nt-title">${item.title}</span>
+    </div>
+  `).join('');
+}
+
+// Auto-hide ticker after 10s inactivity
+let tickerTimer;
+document.addEventListener('click', function(e) {
+  if (e.target.closest('#news-ticker')) {
+    clearTimeout(tickerTimer);
+    tickerTimer = setTimeout(() => {
+      document.getElementById('news-ticker').style.display = 'none';
+    }, 10000);
+  }
+});
+
+</script>
 
 <script>
 // ============================================================
@@ -1362,19 +1581,14 @@ const auth=firebase.auth(), db=firebase.firestore();
 // STATE
 // ============================================================
 let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
-let radioAudio=null, activeRadioIdx=-1;
+let 
 let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
 let dailyRequests=0, isResultRaw=true;
 
 // ============================================================
 // RADIOS
 // ============================================================
-const RADIOS=[
-  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://broadcast.infomaniak.net/diwanfm-high.mp3',color:'#3d7eff'},
-  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#ef4444'},
-  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'https://stream.zeno.fm/4nmjsyatdzzuv',color:'#10c98a'},
-  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#f59e0b'},
-];
+const 
 
 // ============================================================
 // COMMAND PALETTE DATA
@@ -1665,7 +1879,7 @@ auth.onAuthStateChanged(u=>{
     const init=(u.displayName||u.email||'ح').charAt(0).toUpperCase();
     document.getElementById('avatar').textContent=init;
     load_api_key();
-    build_radio_cards();
+    
     update_welcome();
     load_daily_requests();
     setTimeout(init_tilt,800);
@@ -2472,13 +2686,68 @@ function toast_old(msg,type=''){
 
 // Init
 auto_theme();
+
+// === NEWS TICKER ===
+let newsData = [];
+function toggleNewsTicker() {
+  const ticker = document.getElementById('news-ticker');
+  const isVisible = ticker.style.display === 'block';
+  ticker.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible && newsData.length === 0) refreshNewsTicker();
+}
+async function refreshNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = '<div class="nt-loading"><div class="spin"></div>جاري التحميل...</div>';
+  try {
+    const prompt = `أنت راصد أخبار تونسي محترف. استخرج 8 أخبار من آخر 3 ساعات:
+
+**مطلوب JSON فقط:**
+[
+  {"time":"14:32", "title":"وزارة الصحة: انخفاض في معدلات الإصابة", "source":"TAP"},
+  ...
+]
+
+الوقت الحالي: ${new Date().toLocaleTimeString('ar-TN')}
+4 أخبار تونسية + 4 عالمية من TAP, ديوان FM, الجزيرة, Reuters`;
+
+    const response = await gemini(prompt);
+    newsData = JSON.parse(response);
+    renderNewsTicker();
+    toast('تم تحديث الأخبار', 'success');
+  } catch(e) {
+    content.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);">خطأ في تحميل الأخبار</div>';
+    toast('خطأ في الأخبار: ' + e.message, 'error');
+  }
+}
+function renderNewsTicker() {
+  const content = document.getElementById('nt-content');
+  content.innerHTML = newsData.slice(0,8).map(item => `
+    <div class="nt-item" onclick="navigator.clipboard.writeText('${item.title.replace(/'/g,"\'")}'); toast('تم نسخ الخبر');">
+      <span class="nt-time">${item.time}</span>
+      <span class="nt-source">${item.source}</span>
+      <span class="nt-title">${item.title}</span>
+    </div>
+  `).join('');
+}
+
+// Auto-hide ticker after 10s inactivity
+let tickerTimer;
+document.addEventListener('click', function(e) {
+  if (e.target.closest('#news-ticker')) {
+    clearTimeout(tickerTimer);
+    tickerTimer = setTimeout(() => {
+      document.getElementById('news-ticker').style.display = 'none';
+    }, 10000);
+  }
+});
+
 </script>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav" id="bottom-nav">
   <button class="bn-item active" onclick="scroll_to_top()"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
   <button class="bn-item" onclick="open_tool('editor')"><i class="fa-solid fa-pen-nib"></i><span>محرر</span></button>
-  <button class="bn-item" onclick="open_modal('radio-modal')"><i class="fa-solid fa-radio"></i><span>إذاعة</span></button>
+  <button class="bn-item" onclick="toggleNewsTicker()"><i class="fa-solid fa-newspaper"></i><span>إذاعة</span></button>
   <button class="bn-item" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i><span>أرشيف</span></button>
   <button class="bn-item" onclick="open_modal('settings-modal')"><i class="fa-solid fa-gear"></i><span>إعدادات</span></button>
 </nav>
