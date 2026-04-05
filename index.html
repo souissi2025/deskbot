@@ -850,6 +850,112 @@ textarea{min-height:120px;line-height:1.7}
   .t-desc{display:none}
 }
 
+
+/* ─── FILE ATTACH BAR ─── */
+.attach-bar{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;margin-bottom:10px;flex-wrap:wrap;
+}
+.attach-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.05);border:1px dashed var(--border);
+  border-radius:10px;padding:7px 14px;font-size:12px;color:var(--text2);
+  cursor:pointer;transition:all .2s;font-family:'Cairo',sans-serif;
+  font-weight:600;
+}
+.attach-btn:hover{border-color:var(--accent);color:var(--accent)}
+.attach-preview{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;
+}
+.attach-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(61,126,255,.1);border:1px solid rgba(61,126,255,.25);
+  border-radius:8px;padding:4px 10px;font-size:11px;color:var(--accent);
+}
+.attach-chip button{
+  background:none;border:none;color:var(--text3);cursor:pointer;
+  font-size:12px;padding:0 2px;transition:color .2s;
+}
+.attach-chip button:hover{color:var(--danger)}
+.attach-audio{
+  width:100%;margin-top:8px;border-radius:8px;
+  accent-color:var(--accent);
+}
+.attach-image{
+  max-width:120px;max-height:80px;
+  border-radius:8px;object-fit:cover;
+  border:1px solid var(--border);
+}
+
+/* ─── RESULT BOX RICH FORMATTING ─── */
+.result-box.rendered{
+  white-space:normal !important;
+  line-height:1.9;
+  font-family:'Cairo',sans-serif;
+  font-size:14px;
+}
+.result-box.rendered h1{
+  font-family:'Amiri',serif;font-size:22px;font-weight:700;
+  color:var(--gold);margin:0 0 16px;padding-bottom:8px;
+  border-bottom:1px solid var(--border2);
+}
+.result-box.rendered h2{
+  font-family:'Amiri',serif;font-size:18px;font-weight:700;
+  color:var(--accent);margin:18px 0 10px;
+}
+.result-box.rendered h3{
+  font-size:14px;font-weight:700;color:var(--text);
+  margin:14px 0 8px;letter-spacing:.3px;
+}
+.result-box.rendered p{
+  margin:0 0 14px;line-height:2;
+}
+.result-box.rendered p:last-child{margin-bottom:0}
+.result-box.rendered ul,.result-box.rendered ol{
+  padding-right:20px;margin:8px 0 14px;
+}
+.result-box.rendered li{
+  margin-bottom:6px;line-height:1.8;
+}
+.result-box.rendered strong{color:var(--text);font-weight:700}
+.result-box.rendered em{color:var(--text2)}
+.result-box.rendered blockquote{
+  border-right:3px solid var(--gold);
+  padding:8px 14px;margin:12px 0;
+  background:rgba(201,168,76,.06);
+  border-radius:0 8px 8px 0;
+  color:var(--text2);font-style:italic;
+  font-family:'Amiri',serif;font-size:15px;
+}
+.result-box.rendered hr{
+  border:none;border-top:1px solid var(--border);
+  margin:16px 0;
+}
+.result-box.rendered code{
+  background:rgba(61,126,255,.1);color:var(--accent);
+  padding:1px 6px;border-radius:4px;font-size:12px;
+}
+.result-box.rendered table{
+  width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;
+}
+.result-box.rendered th{
+  background:rgba(61,126,255,.12);color:var(--accent);
+  padding:8px 12px;text-align:right;font-weight:700;
+  border:1px solid var(--border);
+}
+.result-box.rendered td{
+  padding:8px 12px;border:1px solid var(--border);
+  vertical-align:top;
+}
+.result-box.rendered tr:hover td{background:rgba(255,255,255,.02)}
+/* Section dividers from ** ** */
+.result-tag-section{
+  display:inline-block;background:linear-gradient(135deg,rgba(61,126,255,.15),rgba(61,126,255,.07));
+  border:1px solid rgba(61,126,255,.25);border-radius:6px;
+  padding:2px 10px;font-size:10px;font-weight:700;color:var(--accent);
+  letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;
+}
+
 </style>
 </head>
 <body>
@@ -1017,9 +1123,12 @@ textarea{min-height:120px;line-height:1.7}
         <div class="t-name">تفريغ وتحرير</div>
       </div>
 
-      <div class="tool-card mini" onclick="open_tool('monitor')">
-        <div class="t-icon ic-teal"><i class="fa-solid fa-satellite-dish"></i></div>
-        <div class="t-name">اقتراحات تحريرية</div>
+      <div class="tool-card mini" onclick="open_qwen_modal()">
+        <div class="t-icon ic-purple"><i class="fa-solid fa-robot"></i></div>
+        <div class="t-name" style="font-size:12px">Qwen AI</div>
+        <div style="font-size:9px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-top:2px">
+          <span id="qwen-card-quota" style="background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:1px 7px;font-weight:700">0/50</span>
+        </div>
       </div>
 
       <div class="tool-card mini" onclick="open_today()">
@@ -1087,9 +1196,17 @@ textarea{min-height:120px;line-height:1.7}
         <label class="label" id="ai-label">أدخل النص</label>
         <textarea id="ai-input" rows="6" placeholder="اكتب هنا..."></textarea>
       </div>
+      <!-- FILE ATTACH BAR -->
+      <div class="attach-bar" id="ai-attach-bar">
+        <label class="attach-btn" title="إرفاق ملف صوتي أو صورة أو فيديو">
+          <i class="fa-solid fa-paperclip"></i> إرفاق ملف
+          <input type="file" id="ai-file" accept="audio/*,image/*,video/*" onchange="handle_attach('ai-file','ai-attach-preview')" style="display:none">
+        </label>
+        <div id="ai-attach-preview" class="attach-preview"></div>
+      </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <button class="btn" onclick="run_ai()" id="ai-run-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل</button>
-        <button class="btn-sec" onclick="document.getElementById('ai-input').value='';hide('ai-result');hide('ai-acts')" style="padding:10px 16px"><i class="fa-solid fa-trash"></i></button>
+        <button class="btn-sec" onclick="document.getElementById('ai-input').value='';document.getElementById('ai-attach-preview').innerHTML='';hide('ai-result');hide('ai-acts')" style="padding:10px 16px"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="ai-load" class="loading" style="display:none">
         <div class="spin"></div>
@@ -1332,6 +1449,64 @@ textarea{min-height:120px;line-height:1.7}
   </div>
 </nav>
 
+
+<!-- =================== QWEN MODAL =================== -->
+<div class="overlay" id="qwen-modal">
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title">
+        <i class="fa-solid fa-robot" style="color:#a78bfa"></i>
+        Qwen 3 — OpenRouter
+        <span id="qwen-modal-quota" style="font-size:10px;background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:2px 10px;font-weight:700;margin-right:8px">0 / 50</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('qwen-modal')" title="وضع التركيز"><i class="fa-solid fa-expand"></i></button>
+        <button class="m-close" onclick="close_modal('qwen-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="m-body">
+      <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2)">
+        <i class="fa-solid fa-circle-info" style="color:#a78bfa"></i>
+        <strong style="color:#a78bfa">qwen/qwen3-235b-a22b:free</strong> — نموذج مجاني عبر OpenRouter · حصة <strong style="color:var(--text)">50 طلب/يوم</strong>
+      </div>
+      <div class="field">
+        <label class="label">موضوع أو نص أو سؤال</label>
+        <textarea id="qwen-input" rows="6" placeholder="أدخل نصاً للتحرير، سؤالاً، تحليلاً، ترجمة..."></textarea>
+      </div>
+      <!-- FILE ATTACH -->
+      <div class="attach-bar" id="qwen-attach-bar">
+        <label class="attach-btn" title="إرفاق ملف صوتي أو صورة أو فيديو">
+          <i class="fa-solid fa-paperclip"></i> إرفاق ملف
+          <input type="file" id="qwen-file" accept="audio/*,image/*,video/*" onchange="handle_attach('qwen-file','qwen-attach-preview')" style="display:none">
+        </label>
+        <div id="qwen-attach-preview" class="attach-preview"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 14px rgba(139,92,246,.35)" onclick="run_qwen()" id="qwen-run-btn">
+          <i class="fa-solid fa-robot"></i> تشغيل Qwen
+        </button>
+        <button class="btn-sec" onclick="document.getElementById('qwen-input').value=''" style="padding:10px 14px"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <div id="qwen-load" class="loading" style="display:none">
+        <div class="spin"></div><span class="loading-dots">Qwen يعالج...</span>
+      </div>
+      <div id="qwen-result-wrap" class="result-wrap" style="display:none">
+        <div class="result-header">
+          <div class="result-tag"><i class="fa-solid fa-robot" style="color:#a78bfa"></i> نتيجة Qwen</div>
+          <button class="btn-sec" style="padding:4px 10px;font-size:11px" onclick="toggle_qwen_format()" id="qwen-fmt-btn"><i class="fa-solid fa-eye"></i></button>
+        </div>
+        <div id="qwen-result" class="result-box rendered"></div>
+        <div class="result-actions">
+          <button class="btn-sec" onclick="copy_el('qwen-result')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="wa_share('qwen-result')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
+          <button class="btn-sec" onclick="email_share('qwen-result')"><i class="fa-solid fa-envelope"></i> إيميل</button>
+          <button class="btn-sec" onclick="arc_save_el('qwen-result')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -1375,7 +1550,7 @@ const CMD_ITEMS=[
   {name:'عناوين احترافية',icon:'fa-heading',cls:'ic-blue',key:'Ctrl+3',action:()=>open_tool('headlines')},
   {name:'فلاش إخباري',icon:'fa-bolt',cls:'ic-red',key:'Ctrl+4',action:()=>open_tool('flash')},
   {name:'تفريغ وتحرير',icon:'fa-microphone',cls:'ic-purple',key:'',action:()=>open_tool('transcribe')},
-  {name:'اقتراحات تحريرية',icon:'fa-satellite-dish',cls:'ic-teal',key:'',action:()=>open_tool('monitor')},
+  {name:'Qwen AI Chat',icon:'fa-robot',cls:'ic-purple',key:'',action:()=>open_qwen_modal()},
   {name:'حدث اليوم',icon:'fa-calendar-day',cls:'ic-amber',key:'',action:()=>open_today()},
   {name:'أرشيف المواجهات',icon:'fa-futbol',cls:'ic-green',key:'',action:()=>open_modal('matches-modal')},
   {name:'ملف الشخصية',icon:'fa-user-tie',cls:'ic-blue',key:'',action:()=>open_modal('profile-modal')},
@@ -1891,9 +2066,9 @@ async function run_ai(){
   try{
     const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
     const box=document.getElementById('ai-result');
-    box.textContent=res;
-    box.className='result-box';
-    isResultRaw=true;
+    box.innerHTML=render_md(res);
+    box.className='result-box rendered';
+    isResultRaw=false;
     document.getElementById('ai-result-wrap').style.display='block';
     document.getElementById('ai-acts').style.display='flex';
     add_activity(cfg.title,res.substring(0,60));
@@ -1916,17 +2091,15 @@ function toggle_result_format(){
   const box=document.getElementById('ai-result');
   const btn=document.getElementById('format-btn');
   if(isResultRaw){
-    const txt=box.textContent;
-    box.innerHTML=simple_md(txt);
+    box.innerHTML=render_md(box.textContent||box.innerText);
     box.className='result-box rendered';
-    btn.innerHTML='<i class="fa-solid fa-code"></i>';
     isResultRaw=false;
-  }else{
+    btn.innerHTML='<i class="fa-solid fa-code"></i>';
+  } else {
+    box.textContent=box.innerText;
     box.className='result-box';
-    box.innerHTML='';
-    box.textContent=box.innerText||box.textContent;
-    btn.innerHTML='<i class="fa-solid fa-eye"></i>';
     isResultRaw=true;
+    btn.innerHTML='<i class="fa-solid fa-eye"></i>';
   }
 }
 
@@ -2012,7 +2185,7 @@ async function run_profile(){
 // ============================================================
 // AGENDA
 // ============================================================
-async function ag_add(){
+async async function ag_add(){
   const date=document.getElementById('ag-add-date').value;
   const ev=document.getElementById('ag-add-ev').value.trim();
   if(!date||!ev)return toast('أدخل التاريخ والحدث','error');
@@ -2028,7 +2201,7 @@ async function ag_add(){
     toast('✅ تم حفظ الحدث في الأجندة','success');
   }catch(e){toast('خطأ: '+e.message,'error')}
 }
-async function ag_search(){
+async async function ag_search(){
   const date=document.getElementById('ag-srch-date').value;
   if(!date)return toast('اختر تاريخاً','error');
   const c=document.getElementById('ag-results');
@@ -2398,6 +2571,223 @@ function init_extras(){
   if(badge) badge.textContent=get_or_q()+' / '+OR_MAX;
   // Mobile
   check_mobile();
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// MARKDOWN RENDERER (no lib needed)
+// ══════════════════════════════════════════════════════════════
+function render_md(txt){
+  if(!txt) return '';
+  let h = txt
+    // Escape HTML
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    // Headers
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    // Bold + italic
+    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    // Horizontal rule
+    .replace(/^---$/gm,'<hr>')
+    // Blockquote
+    .replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>')
+    // Numbered list
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    // Bullet list
+    .replace(/^[\-\*] (.+)$/gm,'<li>$1</li>')
+    // Wrap consecutive <li> in <ul>
+    .replace(/(<li>[\s\S]+?<\/li>)(?!\s*<li>)/g,'<ul>$1</ul>')
+    .replace(/<\/li>\n<li>/g,'</li><li>')
+    // Inline code
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    // Paragraphs (double newline)
+    .replace(/\n\n/g,'</p><p>')
+    // Single newline → <br>
+    .replace(/\n/g,'<br>');
+  // Wrap in <p> if no block elements
+  if(!h.match(/^<(h[1-3]|ul|ol|blockquote|hr)/)) h = '<p>' + h + '</p>';
+  return h;
+}
+
+// ══════════════════════════════════════════════════════════════
+// FILE ATTACH HANDLER
+// ══════════════════════════════════════════════════════════════
+const attachedFiles = {};
+
+function handle_attach(inputId, previewId){
+  const input = document.getElementById(inputId);
+  const preview = document.getElementById(previewId);
+  if(!input || !input.files || !input.files[0]) return;
+  const file = input.files[0];
+  attachedFiles[inputId] = file;
+  const isAudio = file.type.startsWith('audio/');
+  const isImage = file.type.startsWith('image/');
+  const isVideo = file.type.startsWith('video/');
+  const url = URL.createObjectURL(file);
+  let html = `<div class="attach-chip">`;
+  if(isImage) html += `<img src="${url}" class="attach-image">`;
+  else if(isAudio) html += `<i class="fa-solid fa-music"></i>`;
+  else if(isVideo) html += `<i class="fa-solid fa-video"></i>`;
+  else html += `<i class="fa-solid fa-file"></i>`;
+  html += `<span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${file.name}</span>`;
+  html += `<button onclick="remove_attach('${inputId}','${previewId}')" title="حذف">✕</button></div>`;
+  if(isAudio) html += `<audio class="attach-audio" src="${url}" controls></audio>`;
+  preview.innerHTML = html;
+  // Append filename to textarea so AI knows about it
+  const ta = document.getElementById(inputId.replace('-file','-input'));
+  if(ta && !ta.value.includes('[ملف مرفق]')){
+    ta.value += `\n\n[ملف مرفق: ${file.name} — ${isAudio?'صوتي':isImage?'صورة':'فيديو'}]`;
+  }
+}
+
+function remove_attach(inputId, previewId){
+  delete attachedFiles[inputId];
+  const inp = document.getElementById(inputId);
+  if(inp) inp.value = '';
+  const prev = document.getElementById(previewId);
+  if(prev) prev.innerHTML = '';
+  const ta = document.getElementById(inputId.replace('-file','-input'));
+  if(ta) ta.value = ta.value.replace(/\n\n\[ملف مرفق:.*?\]/g,'');
+}
+
+// ══════════════════════════════════════════════════════════════
+// QWEN MODAL LOGIC
+// ══════════════════════════════════════════════════════════════
+function open_qwen_modal(){
+  update_qwen_quota_display();
+  open_modal('qwen-modal');
+}
+function update_qwen_quota_display(){
+  const q = get_or_q();
+  ['qwen-card-quota','qwen-modal-quota','or-quota-badge'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent = q + ' / 50';
+  });
+}
+async function run_qwen(){
+  const inp = document.getElementById('qwen-input').value.trim();
+  if(!inp) return toast('أدخل نصاً أولاً','error');
+  if(get_or_q() >= 50) return toast('استُنفدت الحصة اليومية (50 طلب)','error');
+  show_load('qwen-load');
+  document.getElementById('qwen-run-btn').disabled = true;
+  document.getElementById('qwen-result-wrap').style.display = 'none';
+  try{
+    const prompt = SYS + '\n\n' + inp;
+    const res = await qwen_call(prompt);
+    const box = document.getElementById('qwen-result');
+    box.innerHTML = render_md(res);
+    box.className = 'result-box rendered';
+    document.getElementById('qwen-result-wrap').style.display = 'block';
+    update_qwen_quota_display();
+    await arc_auto('Qwen AI', inp.substring(0,200), res);
+  }catch(e){ toast('خطأ Qwen: '+e.message,'error'); }
+  finally{
+    hide('qwen-load');
+    document.getElementById('qwen-run-btn').disabled = false;
+  }
+}
+let qwenResultRaw = false;
+function toggle_qwen_format(){
+  const box = document.getElementById('qwen-result');
+  const btn = document.getElementById('qwen-fmt-btn');
+  if(qwenResultRaw){
+    box.innerHTML = render_md(box.textContent||box.innerText);
+    box.className = 'result-box rendered';
+    qwenResultRaw = false;
+    btn.innerHTML = '<i class="fa-solid fa-code"></i>';
+  } else {
+    box.textContent = box.innerText;
+    box.className = 'result-box';
+    qwenResultRaw = true;
+    btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// LIVE NEWS TICKER — AUTO REFRESH EVERY MINUTE
+// ══════════════════════════════════════════════════════════════
+let tickerInterval = null;
+let tickerOpen2 = false;
+
+function toggle_ticker(){
+  tickerOpen2 = !tickerOpen2;
+  const wrap = document.getElementById('ticker-wrap');
+  if(tickerOpen2){
+    wrap.style.maxHeight = '400px';
+    wrap.style.opacity = '1';
+    wrap.style.marginBottom = '0';
+    load_ticker();
+    // Auto-refresh every 60 seconds
+    if(tickerInterval) clearInterval(tickerInterval);
+    tickerInterval = setInterval(load_ticker, 60000);
+  } else {
+    wrap.style.maxHeight = '0';
+    wrap.style.opacity = '0';
+    wrap.style.marginBottom = '0';
+    if(tickerInterval){ clearInterval(tickerInterval); tickerInterval=null; }
+  }
+}
+
+async function load_ticker(){
+  const items = document.getElementById('ticker-items');
+  const spin  = document.getElementById('ticker-spin-i');
+  if(spin) spin.style.animation = 'spin .8s linear infinite';
+
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
+
+  // Update last-refresh display
+  let refreshEl = document.getElementById('ticker-last-refresh');
+  if(!refreshEl){
+    const head = document.querySelector('#ticker-wrap [style*="border-bottom"]');
+    if(head){
+      const span = document.createElement('span');
+      span.id = 'ticker-last-refresh';
+      span.style.cssText = 'font-size:10px;color:var(--text3);margin-right:auto';
+      head.appendChild(span);
+      refreshEl = span;
+    }
+  }
+  if(refreshEl) refreshEl.textContent = 'آخر تحديث: ' + timeStr;
+
+  const prompt = `أنت راصد أخبار فوري. الوقت: ${timeStr}. التاريخ: ${now.toLocaleDateString('ar-TN')}.
+
+قدم 15 خبراً من آخر 60 دقيقة بالضبط:
+- 10 أخبار تونسية: TAP، ديوان FM، حقائق أونلاين، الحوار نيوز، تونس نيوز
+- 5 أخبار عالمية: رويترز، AFP، الجزيرة، BBC عربي، العربية
+
+**القاعدة:** JSON فقط، بدون مقدمة أو خاتمة:
+[{"time":"${timeStr}","title":"عنوان الخبر كما نُشر حرفياً","src":"TAP","intl":false},...]
+
+- intl: false=تونسي، true=دولي
+- العناوين دقيقة وواقعية لا مُخترعة`;
+
+  try{
+    let res;
+    try{ res = await gemini(prompt); }
+    catch(e){ res = await qwen_call(prompt); }
+    const match = res.match(/\[[\s\S]*?\]/);
+    if(!match) throw new Error('JSON غير صحيح');
+    const data = JSON.parse(match[0]);
+    items.innerHTML = data.slice(0,15).map(n=>`
+      <div onclick="navigator.clipboard.writeText(\`${(n.title||'').replace(/`/g,"'")}\`);toast('تم نسخ الخبر')"
+           style="display:flex;align-items:flex-start;gap:12px;padding:10px 18px;border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s"
+           onmouseover="this.style.background='rgba(61,126,255,.05)'" onmouseout="this.style.background=''">
+        <span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px">${n.time||timeStr}</span>
+        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;${n.intl?'background:rgba(16,201,138,.12);color:var(--accent2)':'background:rgba(61,126,255,.12);color:var(--accent)'}">${n.src||'وكالات'}</span>
+        <span style="font-size:13px;color:var(--text);line-height:1.55;flex:1">${n.title||''}</span>
+      </div>`).join('');
+    tickerLoaded = true;
+  }catch(e){
+    items.innerHTML = `<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">خطأ: ${e.message}</div>`;
+  }finally{
+    if(spin) spin.style.animation = '';
+  }
 }
 
 </script>
