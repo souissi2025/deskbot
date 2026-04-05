@@ -266,6 +266,22 @@ select.h-btn{
   border-radius:var(--r);padding:12px 18px;
   font-size:13px;color:#fbbf24;
   margin-bottom:24px;display:flex;align-items:center;gap:10px;
+  overflow:hidden;
+  max-height:72px;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1),
+             padding   .4s ease,
+             margin    .4s ease,
+             opacity   .35s ease,
+             border    .4s ease;
+}
+.notice-bar.nb-hide{
+  max-height:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  margin-bottom:0 !important;
+  opacity:0 !important;
+  border-width:0 !important;
+  pointer-events:none;
 }
 .notice-bar button{
   background:none;border:none;color:#fbbf24;
@@ -739,6 +755,101 @@ textarea{min-height:120px;line-height:1.7}
 
 /* ===== TRANSITIONS ===== */
 .tool-card,.btn,.btn-sec,.h-btn,.arc-item,.radio-card{will-change:transform}
+
+/* ─── NOTICE BAR smooth collapse ─── */
+.nb-hide{
+  max-height:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  margin-bottom:0 !important;
+  opacity:0 !important;
+  border-width:0 !important;
+  pointer-events:none;
+  transition:max-height .45s cubic-bezier(.4,0,.2,1),
+             padding .4s ease, margin .4s ease,
+             opacity .35s ease, border .4s ease;
+}
+.notice-bar{
+  transition:max-height .45s cubic-bezier(.4,0,.2,1),
+             padding .4s ease, margin .4s ease,
+             opacity .35s ease, border .4s ease;
+  overflow:hidden; max-height:72px;
+}
+
+/* ─── OR NOTICE ─── */
+#or-notice{
+  background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
+  border-color:rgba(139,92,246,.3);
+  color:#a78bfa;
+}
+#or-notice button{color:#a78bfa}
+
+/* ─── TICKER PANEL ─── */
+#ticker-wrap{
+  transition:max-height .45s cubic-bezier(.4,0,.2,1),
+             opacity .35s ease, margin .4s ease;
+}
+
+/* ─── BOTTOM NAV ─── */
+.bn-i{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:9px;color:var(--text3);cursor:pointer;
+  border:none;background:none;font-family:'Cairo',sans-serif;
+  transition:color .2s; padding:6px 0; width:100%;
+}
+.bn-i i{font-size:19px}
+.bn-i:hover,.bn-i.active{color:var(--accent)}
+
+/* ─── IMPROVED RESULT BOX ─── */
+.result-box.rendered h1,.result-box.rendered h2{
+  color:var(--gold);font-family:'Amiri',serif;
+  margin:16px 0 8px;font-size:19px;
+}
+.result-box.rendered h3{
+  color:var(--accent);margin:12px 0 6px;font-size:15px;
+}
+.result-box.rendered blockquote{
+  border-right:3px solid var(--gold);padding-right:14px;
+  color:var(--text2);font-style:italic;margin:10px 0;
+}
+.result-box.rendered table{
+  width:100%;border-collapse:collapse;font-size:13px;
+  margin:12px 0;
+}
+.result-box.rendered th{
+  background:rgba(61,126,255,.12);color:var(--accent);
+  padding:8px 12px;text-align:right;
+}
+.result-box.rendered td{
+  padding:8px 12px;border-bottom:1px solid var(--border);
+}
+
+/* ─── MOBILE RESPONSIVE ─── */
+@media(max-width:860px){
+  .bento-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .tool-card.featured{grid-column:1/3;grid-row:1}
+  .tools-grid{grid-template-columns:repeat(3,1fr)}
+  .h-center{display:none}
+  .quota-wrap{display:none}
+}
+@media(max-width:600px){
+  .content{padding:16px 12px}
+  .bento-grid{grid-template-columns:1fr}
+  .tool-card.featured{grid-column:1;grid-row:1}
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .h-btn span{display:none}
+  .header{padding:0 12px}
+  .welcome-stats{display:none}
+  .welcome-bar{padding:14px 16px}
+  .overlay{padding:8px}
+  .modal{border-radius:16px}
+  .m-body{padding:16px}
+  .m-head{padding:14px 16px}
+  .result-box{font-size:14px;padding:18px}
+  #ticker-wrap > div{margin-bottom:0}
+  .t-desc{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -785,7 +896,7 @@ textarea{min-height:120px;line-height:1.7}
         <option value="gemini-2.5-flash">Flash ⚡</option>
         <option value="gemini-2.5-flash">Pro 🧠</option>
       </select>
-      <button class="live-pill" onclick="open_modal('radio-modal')">
+      <button class="live-pill" onclick="toggle_ticker()" title="شريط الأخبار الفوري">
         <div class="live-dot"></div>LIVE
       </button>
       <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
@@ -798,10 +909,36 @@ textarea{min-height:120px;line-height:1.7}
   <div class="content">
 
     <!-- NOTICE BAR -->
-    <div id="api-notice" class="notice-bar" style="display:none">
+    <div id="api-notice" class="notice-bar nb-hide">
       <i class="fa-solid fa-triangle-exclamation"></i>
       مفتاح Gemini API غير موجود —
       <button onclick="open_modal('settings-modal')">اضغط هنا لإدخاله</button>
+    </div>
+
+
+    <!-- NEWS TICKER PANEL -->
+    <div id="ticker-wrap" style="overflow:hidden;max-height:0;opacity:0;margin-bottom:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s ease,margin .4s ease">
+      <div style="background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:24px">
+        <div style="padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(61,126,255,.1),transparent)">
+          <i class="fa-solid fa-newspaper" style="color:var(--accent)"></i>
+          <span style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase;flex:1">آخر الأخبار — وطنية وعالمية</span>
+          <button id="ticker-refresh-btn" onclick="load_ticker()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">
+            <i class="fa-solid fa-rotate-right" id="ticker-spin-i"></i> تحديث
+          </button>
+        </div>
+        <div id="ticker-items" style="max-height:260px;overflow-y:auto">
+          <div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">اضغط «تحديث» لتحميل آخر الأخبار</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPENROUTER NOTICE -->
+    <div id="or-notice" class="notice-bar nb-hide" style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));border-color:rgba(139,92,246,.3);color:#a78bfa">
+      <i class="fa-solid fa-robot"></i>
+      مفتاح OpenRouter (Qwen) غير مُدخل —
+      <button onclick="open_modal('settings-modal')" style="color:#a78bfa">أدخله من الإعدادات</button>
+      &nbsp;|&nbsp;
+      <a href="https://openrouter.ai/keys" target="_blank" style="color:#a78bfa;font-weight:700;text-decoration:underline">احصل عليه مجاناً ←</a>
     </div>
 
     <!-- WELCOME BAR -->
@@ -1090,18 +1227,7 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 <!-- =================== RADIO MODAL =================== -->
-<div class="overlay" id="radio-modal">
-  <div class="modal" style="max-width:600px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-radio"></i> الإذاعات التونسية المباشرة</div>
-      <button class="m-close" onclick="close_modal('radio-modal');stop_radio()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="m-body">
-      <div id="radio-cards"></div>
-      <audio id="radio-audio"></audio>
-    </div>
-  </div>
-</div>
+
 
 <!-- =================== SMART RECORD MODAL =================== -->
 <div class="overlay" id="smart-modal">
@@ -1164,10 +1290,47 @@ textarea{min-height:120px;line-height:1.7}
         <i class="fa-solid fa-chart-bar" style="color:var(--accent2)"></i>
         الكوتا المجانية: <strong style="color:var(--accent2)">1500 طلب/يوم</strong> لكل صحفي
       </div>
-      <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
+      <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini</button>
+
+      <!-- ── OpenRouter section ── -->
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(139,92,246,.15);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0"><i class="fa-solid fa-robot"></i></div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700">OpenRouter — Qwen 3</div>
+            <div style="font-size:11px;color:var(--text2)">نموذج بديل مجاني · <strong style="color:#a78bfa">50 طلب/يوم</strong></div>
+          </div>
+          <span id="or-quota-badge" style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(139,92,246,.18);color:#a78bfa;letter-spacing:1px">0 / 50</span>
+        </div>
+        <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.8">
+          <i class="fa-solid fa-circle-check" style="color:#a78bfa"></i>
+          <strong style="color:var(--text)">qwen/qwen3-235b-a22b:free</strong><br>
+          <i class="fa-solid fa-link" style="color:#a78bfa"></i>
+          <a href="https://openrouter.ai/keys" target="_blank" style="color:#a78bfa;font-weight:700">openrouter.ai/keys</a> ← أنشئ مفتاحاً مجانياً
+        </div>
+        <div class="field">
+          <label class="label">OpenRouter API Key</label>
+          <input type="text" id="or-key-inp" placeholder="sk-or-v1-..." style="font-size:12px">
+        </div>
+        <button class="btn" style="width:100%;background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 16px rgba(139,92,246,.35)" onclick="save_or_key()">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter
+        </button>
+      </div>
     </div>
   </div>
 </div>
+
+
+<!-- BOTTOM NAV mobile -->
+<nav id="bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--glass2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:150;padding:6px 0">
+  <div style="display:grid;grid-template-columns:repeat(5,1fr)">
+    <button class="bn-i" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
+    <button class="bn-i" onclick="open_tool('editor')"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
+    <button class="bn-i" onclick="toggle_ticker()"><i class="fa-solid fa-newspaper"></i><span>أخبار</span></button>
+    <button class="bn-i" onclick="open_modal('agenda-modal')"><i class="fa-solid fa-calendar-days"></i><span>الأجندة</span></button>
+    <button class="bn-i" onclick="open_modal('settings-modal')"><i class="fa-solid fa-gear"></i><span>API</span></button>
+  </div>
+</nav>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -1195,21 +1358,13 @@ const auth=firebase.auth(), db=firebase.firestore();
 // STATE
 // ============================================================
 let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
-let radioAudio=null, activeRadioIdx=-1;
+
 let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
 let dailyRequests=0, isResultRaw=true;
 
 // ============================================================
 // RADIOS
 // ============================================================
-const RADIOS=[
-  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABljp1AAAA0uQMVKtqYJC6Jw',color:'#3d7eff'},
-  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#ef4444'},
-  {name:'شمس أف أم',sub:'Shems FM',url:'https://stream.zeno.fm/4d5yvulvp8zuv',color:'#f59e0b'},
-  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'https://stream.zeno.fm/4nmjsyatdzzuv',color:'#10c98a'},
-  {name:'راديو IFM',sub:'IFM Radio',url:'https://stream.zeno.fm/gcasak0wgzzuv',color:'#8b5cf6'},
-  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#ef4444'},
-];
 
 // ============================================================
 // COMMAND PALETTE DATA
@@ -1227,7 +1382,7 @@ const CMD_ITEMS=[
   {name:'الأجندة المشتركة',icon:'fa-calendar-days',cls:'ic-gold',key:'',action:()=>open_modal('agenda-modal')},
   {name:'مدقق المحتوى',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
   {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
-  {name:'الإذاعات المباشرة',icon:'fa-radio',cls:'ic-red',key:'',action:()=>open_modal('radio-modal')},
+  {name:'شريط الأخبار الفوري',icon:'fa-newspaper',cls:'ic-blue',key:'',action:()=>toggle_ticker()},
   {name:'الأرشيف',icon:'fa-clock-rotate-left',cls:'ic-teal',key:'',action:()=>open_archive()},
   {name:'إعدادات API',icon:'fa-gear',cls:'ic-amber',key:'',action:()=>open_modal('settings-modal')},
 ];
@@ -1239,241 +1394,250 @@ let cmdIdx=0, cmdFiltered=[...CMD_ITEMS];
 const SYS=`أنت DESK BOT، نظام غرفة الأخبار الرقمية المتقدم، مصمم خصيصاً للصحفيين والمحررين في المؤسسات الإعلامية التونسية. تعمل وفق أعلى معايير الصحافة المهنية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم وكبرى المؤسسات الإعلامية التونسية. اللغة الحصرية: العربية الفصحى الحديثة الرصينة. الأسلوب: تقريري مباشر خالٍ من الإنشاء والحشو.\n\n`;
 
 const PROMPTS={
-editor:`${SYS}## دورك: محرر أخبار أول (Senior News Editor)
 
-### مهمتك الحصرية:
-تحويل النص الخام إلى مادة إخبارية احترافية منشورة وفق أعلى معايير التحرير الصحفي.
+editor:`${SYS}## دورك: محرر أخبار أول (Senior News Editor) — وكالة تونس إفريقيا للأنباء
 
-### الإخراج الإلزامي بهذا الترتيب الصارم:
+### الإخراج الإلزامي بهذا الترتيب الحرفي:
 
 **أولاً — السطر التعريفي:**
 تحرير مقال جديد (حمدي)
 
 **ثانياً — خمسة عناوين مقترحة:**
 - تقريرية ودقيقة وخالية من الإثارة
-- لا تتجاوز 12 كلمة لكل عنوان
+- لا تتجاوز 12 كلمة
 - تبدأ بفعل مضارع أو اسم الجهة الفاعلة
-- تحمل عنصرين على الأقل: فاعل + حدث أو نتيجة
+- فاعل + حدث أو نتيجة
 
 **ثالثاً — النص الإخباري المهيكل:**
 
-### قواعد الهيكل الصارمة:
+#### الفقرة الأولى (Lead) — قواعد صارمة:
+- تبدأ حصراً بأحد هذه الأفعال: قرّر، أكّد، أعلنت، أفادت، نفى، كشف، طالب، دعا، وجّه، رصد، أوضح
+- محظور تماماً: تقرّر، أُعلن، جرى، انعقد، استقبل، صُودق
+- تجيب على: من؟ ماذا؟ متى؟ أين؟ ولماذا؟ في جملة واحدة
 
-**الفقرة الأولى (Lead):**
-- تبدأ حصراً بفعل مبني للمعلوم متبوعاً مباشرةً بالفاعل
-- أفعال مقبولة: قرّر، أكّد، أعلنت، أفادت، نفى، كشف، طالب، دعا، أوضح
-- أفعال مرفوضة رفضاً باتاً: تقرّر، أُعلن، صُودق على، انعقد، استقبل، جرى
-- تجيب على: ماذا؟ متى؟ أين؟ ولماذا؟ في جملة واحدة مكتملة
+#### الفقرة الثانية (Attribution):
+- الصيغة الوحيدة المقبولة: "وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..." أو "وبيّن [المصدر] في تصريح له أن..."
 
-**الفقرة الثانية (Attribution):**
-- تُخصص حصراً لمرجعية المصدر
-- الصيغة: "وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..." أو "وبيّن [المصدر] في تصريح له أن..."
+#### بقية الفقرات:
+- تفاصيل تنازلياً ثم خلفية وسياق
+- كل فقرة: جملة إلى 3 جمل
+- روابط: "وفي سياق متصل"، "من جهة أخرى"، "وتجدر الإشارة"، "وأضافت"
 
-**الفقرات التالية:**
-- تدرج التفاصيل والسياق والخلفية تنازلياً
-- كل فقرة: جملة إلى 3 جمل كحد أقصى
-- روابط معتمدة: "وفي سياق متصل"، "من جهة أخرى"، "وأضافت"، "وتجدر الإشارة"
-
-### معالجة البيانات:
-- العملات الأجنبية: اذكر المبلغ الأصلي + (ما يعادله بالدينار التونسي)
+#### معالجة البيانات:
 - الأشهر: جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر
+- العملات الأجنبية: المبلغ الأصلي + ما يعادله بالدينار التونسي
 
-### محظورات مطلقة:
-✗ الاستنتاج والتأويل الشخصي
-✗ صفات التضخيم (ضخم، هائل، تاريخي)
-✗ الخواتيم المفتوحة أو الاستفهامية
-✗ العبارات العاطفية والتبريرية
-✗ أي نص خارج المخرجات الثلاث المحددة
+#### محظورات مطلقة:
+✗ استنتاج أو تأويل شخصي
+✗ صفات التضخيم (ضخم، هائل، تاريخي، رائع)
+✗ خاتمة مفتوحة أو استفهامية
+✗ عبارات عاطفية أو تبريرية
+✗ الاستطراد والحشو
 
 ### النص الخام:`,
 
-rewrite:`${SYS}## دورك: محرر إعادة صياغة رقمية (Digital News Rewriter)
-
-### مهمتك:
-إعادة هيكلة وصياغة النص الإخباري ليلائم معايير النشر الرقمي للمواقع الإذاعية مع تحسين محركات البحث.
+rewrite:`${SYS}## دورك: محرر إعادة صياغة رقمية للنشر على المواقع الإذاعية
 
 ### الإخراج الإلزامي:
 
-**أولاً — خمسة عناوين رقمية محسّنة (SEO):**
-- قصيرة ومباشرة (8 إلى 12 كلمة)
-- تتضمن الكلمات المفتاحية الأساسية للخبر
-- لا تبدأ بفعل مبني للمجهول
+**أولاً — خمسة عناوين رقمية محسّنة لـ SEO:**
+- 8 إلى 12 كلمة
+- الكلمات المفتاحية في أول 4 كلمات
+- لا تبدأ بمجهول أو بضمير
+- كل عنوان يختلف في زاوية الطرح
 
-**ثانياً — النص المعاد صياغته:**
-- الهرم المقلوب: الأهم أولاً ثم التفاصيل ثم السياق
-- فقرات قصيرة مستقلة (جملة إلى 3 جمل)
-- لغة رسمية دقيقة تقريرية محايدة
-- كلمات مفتاحية في الاستهلال للـ SEO
+**ثانياً — ليد رقمي (50 كلمة كحد أقصى):**
+- الخبر الأساسي في الجملة الأولى
+- كلمة مفتاحية رئيسية في أول 10 كلمات
 
-### محظورات:
-✗ عناوين فرعية، مجاز، تضخيم، تكرار
+**ثالثاً — النص المهيكل للنشر الرقمي:**
+- فقرات مستقلة (1 إلى 3 جمل)
+- معلومة جوهرية في كل فقرة
+- الهرم المقلوب: الأهم ← التفاصيل ← الخلفية
+
+#### محظورات:
+✗ عناوين فرعية داخل النص
+✗ تكرار الأفكار
+✗ مجاز أو صور شعرية
+✗ تضخيم الوصف
 
 ### النص:`,
 
-headlines:`${SYS}## دورك: رئيس تحرير متخصص في صناعة العناوين
+headlines:`${SYS}## دورك: رئيس تحرير متخصص في صناعة العناوين الإخبارية
 
-### الإخراج: 12 عنواناً في 4 فئات (3 لكل فئة)
+أنتج 12 عنواناً موزعاً على 4 فئات (3 لكل فئة):
 
-**الفئة الأولى — إخبارية تقريرية:**
-دقيقة ومباشرة تركز على الحدث الرسمي
+### الفئة الأولى — إخبارية تقريرية:
+دقيقة ومباشرة، تعكس الحدث الرسمي بأمانة
 
-**الفئة الثانية — إسناد واقتباس مباشر:**
-النقطتان الرأسيتان مع الصفة الكاملة
+### الفئة الثانية — إسناد واقتباس مباشر:
+"[الجهة] لـ [الفعل]: [الاقتباس المختصر]" — النقطتان الرأسيتان إلزاميتان
 
-**الفئة الثالثة — مركبة وسياقية:**
-تربط الحدث بمسبباته (إثر، بسبب، تزامناً)
+### الفئة الثالثة — مركبة وسياقية:
+تربط الحدث بمسبباته أو تداعياته (إثر، بسبب، في خضم، تزامناً مع)
 
-**الفئة الرابعة — تحليلية ومتابعات:**
-للتقارير المعمقة والتداعيات
+### الفئة الرابعة — تحليلية للتقارير المعمقة:
+تُبرز الأثر والتداعيات والمآلات
 
-### القواعد:
+### قواعد غير قابلة للكسر:
 - الطول: 8 إلى 14 كلمة حصراً
-- عنصران على الأقل: حدث/فاعل/مكان/نتيجة
-- مصطلحات تونسية: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي
-✗ Clickbait، تعجب، مبالغة
+- عنصران إلزاميان: (حدث + فاعل) أو (حدث + نتيجة) أو (فاعل + موقع)
+- مصطلحات تونسية دقيقة: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي، قرار اتهامي
+- ممنوع: علامة التعجب، clickbait، كلمات مبالغة، أسئلة استفهامية
 
 ### النص:`,
 
-flash:`${SYS}## دورك: مذيع فلاش إخباري في ديوان أف أم
+flash:`${SYS}## دورك: مذيع فلاش إخباري في إذاعة ديوان أف أم
 
-### الإخراج الإلزامي:
-**أولاً — عنوان ديوان:** (8 كلمات كحد، غير مشكول)
-**ثانياً — نص الفلاش المشكول:** (30-50 كلمة)
+### الإخراج الإلزامي (لا شيء خارجهما):
+
+**أولاً — عنوان ديوان:**
+- 8 كلمات كحد أقصى
+- غير مشكول
+- يصف الحدث لا يعلّق عليه
+
+**ثانياً — نص الفلاش المشكول للإلقاء:**
+- 30 إلى 50 كلمة حصراً
+- مشكول كلياً بما في ذلك الأعداد والأسماء
+- الأعداد كتابةً كاملة: خَمْسَةٌ وَعِشْرُونَ أَلْفَ دِينَارٍ
 
 ### قواعد التشكيل:
-- الأعداد: تشكيل كامل 100% → خَمْسَةُ وَعِشْرُونَ أَلْفَ دِينَارٍ
-- باقي النص: الحرف الأخير فقط → وزارةُ (صح) وِزَارَةُ (خطأ)
-- الأرقام بالحروف دائماً
-✗ تجاوز 50 كلمة، مقدمات، تفاصيل ثانوية
+- الأعداد: مشكولة 100% مع التنوين (خَمْسَةٌ وَعِشْرُونَ)
+- الأفعال: حركة الحرف الأخير من الفعل + الفاعل
+- الأسماء الأعجمية: تُكتب بحركات اقترابية
+- الضمائر والحروف: مشكولة
+
+### محظورات:
+✗ أي نص بدون تشكيل
+✗ تجاوز 50 كلمة
+✗ عناوين فرعية أو تعليق
+✗ الأرقام العربية (0-9) بدون كتابة
+
+### الخبر الخام:`,
+
+transcribe:`${SYS}## دورك: محرر تفريغ وتحرير صوتي متخصص
+
+أمامك نص تفريغ صوتي خام من تسجيل ميداني أو مقابلة. مهمتك:
+
+### الإخراج:
+
+**أولاً — النص المفرّغ المصحح (كما قيل بدقة):**
+- صحّح الأخطاء الإملائية والنحوية فقط
+- لا تحذف أو تضيف معلومات
+- حافظ على الاقتباسات المباشرة داخل علامتي تنصيص «»
+
+**ثانياً — الخلاصة التحريرية:**
+- 3 إلى 5 نقاط رئيسية من التسجيل
+- الأقوال البارزة القابلة للنشر مباشرةً
+- الأسماء والمؤسسات والأرقام الواردة
+
+**ثالثاً — مقترح متابعة (اختياري):**
+- سؤال أو محور لم يُطرح ويستحق المتابعة
+
+### النص الخام:`,
+
+monitor:`${SYS}## دورك: محرر اقتراحات تحريرية ومراجعة محتوى
+
+المهام التي تؤديها حسب النص المُدخل:
+
+**إذا كان النص خبراً أو مقالاً:**
+- 3 ملاحظات تحريرية أساسية (أسلوب، بنية، دقة)
+- مقترح تطوير الليد
+- كلمات مفتاحية للـ SEO (5 كلمات)
+- تقييم قوة النص: ضعيف / متوسط / قوي مع تعليل
+
+**إذا كان النص خاماً أو ملاحظات:**
+- 5 زوايا تحريرية مقترحة لتناول الموضوع
+- المصادر الموصى بالتواصل معها
+- الأسئلة الجوهرية التي يجب الإجابة عنها
+
+### المحتوى:`,
+
+checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص في الإعلام العربي
+
+### الإخراج:
+
+**أولاً — الأخطاء اللغوية:**
+| الخطأ | الصواب | النوع (إملائي/نحوي/تعبيري) |
+
+**ثانياً — المصطلحات المعيارية:**
+استبدالات موصى بها للمصطلحات الأجنبية أو العامية
+
+**ثالثاً — تقييم الأسلوب:**
+- الاتساق في استخدام الأزمنة
+- التوازن في طول الفقرات
+- نسبة الحشو (منخفضة/متوسطة/عالية)
+- نقطة قوة + نقطة تحتاج تطوير
+
+**رابعاً — النص المُصحح كاملاً** (بعد تطبيق جميع التصحيحات)
 
 ### النص:`,
 
-transcribe:`${SYS}## دورك: محرك تفريغ صوتي حرفي متخصص
+today:`${SYS}## دورك: موسوعة تاريخية وثقافية تونسية وعربية
 
-ابدأ التفريغ مباشرة بلا مقدمة.
+في هذا اليوم من التاريخ، اجمع:
 
-**تمييز المتحدثين إلزامي:**
-[مذيع]: نص كلامه
-[ضيف]: نص كلامه
+### أولاً — الأحداث التاريخية البارزة (5 أحداث):
+- تاريخ دقيق + حدث + أهميته الراهنة
 
-**معالجة الغموض:**
-- غير مفهوم: [غير واضح]
-- اسم غير متأكد: [اسم؟]
-- رقم غير واضح: [رقم؟]
+### ثانياً — مواليد ووفيات بارزة (3 شخصيات):
+- الاسم + المجال + السنة + لماذا يستحق الذكر اليوم
 
-✗ إعادة صياغة، حذف كلمة، تلخيص، تعليق
+### ثالثاً — المناسبات والأعياد:
+- الوطنية والدولية الرسمية المعترف بها
 
-**النص:**`,
+### رابعاً — اقتباس اليوم:
+- اقتباس ذو صلة من شخصية عربية أو تونسية أو عالمية بارزة
 
-monitor:`${SYS}## دورك: محرر رصد إخباري متخصص
+### صيغة الإخراج:
+مناسبة للقراءة المباشرة على الهواء أو النشر الرقمي
+اليوم والشهر:`,
 
-ابحث في الإنترنت واستخرج أهم 15 خبراً خلال الـ12 ساعة الماضية.
+matches:`${SYS}## دورك: محلل رياضي متخصص في أرشيف المواجهات الكروية
 
-**الإخراج:**
-🕐 رصد إخباري — آخر 12 ساعة
-📅 [التاريخ والوقت الحالي بدقة]
+عند إدخال اسم فريقين، قدّم:
 
-🇹🇳 **الشأن التونسي — 7 أخبار:**
-1. [العنوان الكامل] — [المصدر]
-   ↳ [سطر واحد: جوهر الخبر]
+### أولاً — ملخص المواجهات التاريخية:
+- إجمالي المباريات + نتائج الفريقين + التعادلات
+- الفترة الزمنية المرصودة
 
-🌍 **الشأن العربي والدولي — 5 أخبار:**
-8. [العنوان] — [المصدر]
-   ↳ [سطر واحد]
+### ثانياً — آخر 5 مواجهات مباشرة:
+التاريخ | المسابقة | النتيجة | الهدافون البارزون
 
-⚡ **يستحق المتابعة العاجلة — 3 أخبار:**
-13. [العنوان] — [سبب الأهمية]
+### ثالثاً — إحصاءات ميدانية:
+- الفريق الأقوى ملعبه
+- الهداف التاريخي في المواجهات
+- المباراة الأكثر تأثيراً
 
-✗ اختلاق أخبار، تجاوز 12 ساعة`,
+### رابعاً — التحليل الفني:
+- نقاط القوة الراهنة لكل فريق
+- العوامل الحاسمة في المواجهة القادمة
 
-checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص
+### خامساً — التوقع المحلل:
+النتيجة الأرجح مع تعليل دقيق`,
 
-ابحث في المواقع الإعلامية التونسية خلال الـ12 ساعة الماضية.
+profile:`${SYS}## دورك: صحفي محقق متخصص في إعداد الملفات الشخصية (Profile Journalism)
 
-**الإخراج:**
-🔍 تقرير مدقق المحتوى | 📅 [التاريخ] | آخر 12 ساعة
+عند إدخال اسم شخصية عامة، قدّم:
 
-📌 الملخص التنفيذي: المقالات / الأخطاء / الأكثر تكراراً
+### أولاً — البطاقة التعريفية:
+الاسم الكامل | المسمى الحالي | المؤسسة | تاريخ التعيين/الولادة
 
-① الأخطاء النحوية: المصدر | ✗ الخطأ | السبب | ✓ التصويب | القاعدة
-② الأخطاء المنهجية: (غياب مصدر / هرم مقلوب / مصدر مجهول)
-③ الأخطاء التحريرية: (عنوان مضلل / إثارة / تكرار)
-④ درس اليوم: الخطأ الأكثر تكراراً + القاعدة + 3 أمثلة صحيحة
-⑤ توصيات تحريرية لليوم (3 توصيات)
-✗ ذكر أسماء الصحفيين — الأسلوب تعليمي دائماً`,
+### ثانياً — المسار المهني والتعليمي:
+- المحطات الرئيسية بالتسلسل الزمني
+- التخصصات والشهادات البارزة
 
-today:`${SYS}## دورك: موسوعة تاريخية متخصصة
+### ثالثاً — الإنجازات والملفات الكبرى:
+- القرارات والتصريحات التي يُعرف بها
+- الملفات التي يتولاها راهناً
 
-ابحث واستخرج كل الأحداث والشخصيات المرتبطة بالتاريخ المُدخل.
+### رابعاً — السياق الراهن:
+- آخر موقف أو تصريح بارز
+- الإشكاليات أو التساؤلات المثارة حوله
 
-**الإخراج:**
-📅 في مثل هذا اليوم — [التاريخ]
+### خامساً — مصادر للمتابعة:
+- الوزارة أو المؤسسة الرسمية للتواصل`
 
-🇹🇳 أحداث تونسية ومحلية: [السنة] — [الحدث]
-🌍 أحداث عربية وعالمية: [السنة] — [الحدث]
-🎂 شخصيات وُلدت: [السنة] — [الاسم] — [الصفة والجنسية]
-🕊️ شخصيات رحلت: [السنة] — [الاسم] — [الصفة والجنسية]
-
-✗ اختلاق أحداث غير موثّقة
-
-**التاريخ المطلوب:**`,
-
-matches:`${SYS}## دورك: محلل رياضي متخصص في أرشيف المواجهات
-
-ابحث في FIFA، UEFA، Transfermarkt، Soccerway واستخرج كامل سجل المواجهات.
-
-**الإخراج:**
-⚽ [الفريق 1] 🆚 [الفريق 2]
-
-📊 ملخص: المباريات / الفوز / التعادل / الأهداف
-
-📅 السجل (من الأحدث):
-[التاريخ] | [المسابقة]
-[النتيجة] — ⚽ [الهدافون والدقائق]
-
-🏆 أبرز الهدافين التاريخيين
-📌 أبرز مواجهة تاريخياً
-✗ اختلاق نتائج أو هدافين
-
-**الفريقان:**`,
-
-profile:`${SYS}## دورك: صحفي محقق متخصص في إعداد الملفات الشخصية
-
-ابحث معمقاً واستخرج ملفاً صحفياً شاملاً.
-
-**الإخراج:**
-👤 ملف الشخصية — [الاسم]
-
-📋 اللمحة التعريفية (5-7 أسطر)
-🏆 أبرز الأعمال والإنجازات (5 عناصر + السنة)
-
-🎤 أهم وأحدث 5 تصريحات إعلامية:
-① [التاريخ] — [المصدر]
-الموضوع: [الموضوع]
-التصريح: "[النص الدقيق]"
-
-❓ 10 أسئلة صحفية احترافية:
-● استفسارية (3): مبنية على التصريحات
-● مواجهة (3): تواجهه بتناقض موثّق
-● استشرافية (2): رؤية مستقبلية
-● شخصية مهنية (2): مسار وتجربة
-✗ اختلاق تصريحات — أسئلة عامة
-
-**الشخصية المطلوبة:**`,
-
-article:`${SYS}## دورك: محرر أول متخصص في تحويل تفريغات المقابلات
-
-حوّل النص المفرّغ إلى مقال إخباري وفق معايير وات وديوان أف أم.
-
-**الإخراج:**
-➊ تحرير مقال جديد (حمدي)
-➋ خمسة عناوين تقريرية
-➌ المقال المهيكل
-
-قواعد: استخرج الحقائق فقط، تجاهل التأتأة والعامية.
-الإسناد: "وأوضح [الضيف]، في تصريح لـ ديوان أف أم، أن..."
-
-**النص المفرّغ:**`
 };
 
 // ============================================================
@@ -1500,9 +1664,9 @@ auth.onAuthStateChanged(u=>{
     const init=(u.displayName||u.email||'ح').charAt(0).toUpperCase();
     document.getElementById('avatar').textContent=init;
     load_api_key();
-    build_radio_cards();
     update_welcome();
     load_daily_requests();
+    init_extras();
   }else{
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('main-app').style.display='none';
@@ -1538,13 +1702,13 @@ async function save_api_key(){
     await db.collection('config').doc('gemini').set({key:k});
     GEMINI_KEY=k;
     document.getElementById('api-notice').style.display='none';
-    close_modal('settings-modal');
+    hide_notice('api-notice'); close_modal('settings-modal');
     toast('✅ تم حفظ المفتاح','success');
   }catch(e){
     localStorage.setItem('gemini_key',k);
     GEMINI_KEY=k;
     document.getElementById('api-notice').style.display='none';
-    close_modal('settings-modal');
+    hide_notice('api-notice'); close_modal('settings-modal');
     toast('✅ تم حفظ المفتاح محلياً','success');
   }
 }
@@ -1977,43 +2141,6 @@ function add_activity(toolName,preview){
 // ============================================================
 // RADIO
 // ============================================================
-function build_radio_cards(){
-  const c=document.getElementById('radio-cards');
-  c.innerHTML=RADIOS.map((r,i)=>`
-    <div class="radio-card" id="rc-${i}" onclick="toggle_radio(${i})">
-      <div class="radio-dot" style="background:${r.color}"></div>
-      <div style="flex:1">
-        <div class="radio-name">${r.name}</div>
-        <div class="radio-sub">${r.sub}</div>
-      </div>
-      <button class="btn-sec" id="play-btn-${i}" style="padding:6px 14px;font-size:12px" onclick="event.stopPropagation();toggle_radio(${i})">
-        <i class="fa-solid fa-play"></i> استماع
-      </button>
-    </div>`).join('');
-}
-function toggle_radio(i){
-  const audio=document.getElementById('radio-audio');
-  if(activeRadioIdx===i&&!audio.paused){
-    audio.pause();activeRadioIdx=-1;
-    document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-play"></i> استماع';
-    document.getElementById('rc-'+i).classList.remove('on');
-    return;
-  }
-  if(activeRadioIdx>=0){
-    document.getElementById('play-btn-'+activeRadioIdx).innerHTML='<i class="fa-solid fa-play"></i> استماع';
-    document.getElementById('rc-'+activeRadioIdx).classList.remove('on');
-  }
-  audio.src=RADIOS[i].url;
-  audio.play().catch(()=>toast('تعذّر التشغيل','error'));
-  activeRadioIdx=i;
-  document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-stop"></i> إيقاف';
-  document.getElementById('rc-'+i).classList.add('on');
-}
-function stop_radio(){
-  const a=document.getElementById('radio-audio');
-  if(a)a.pause();
-  activeRadioIdx=-1;
-}
 
 // ============================================================
 // SMART RECORD
@@ -2134,6 +2261,145 @@ function toast(msg,type=''){
 
 // Init
 auto_theme();
+
+// ────────────────────────────────────────────────────────
+// NOTICE BARS — smooth show/hide
+// ────────────────────────────────────────────────────────
+function hide_notice(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.add('nb-hide');
+}
+function show_notice(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.remove('nb-hide');
+}
+
+// ────────────────────────────────────────────────────────
+// OPENROUTER / QWEN
+// ────────────────────────────────────────────────────────
+let OR_KEY='';
+const OR_MAX=50;
+const OR_Q_KEY='or_q_'+new Date().toDateString();
+function get_or_q(){ return parseInt(localStorage.getItem(OR_Q_KEY)||'0'); }
+function inc_or_q(){
+  localStorage.setItem(OR_Q_KEY, get_or_q()+1);
+  const el=document.getElementById('or-quota-badge');
+  if(el) el.textContent=get_or_q()+' / '+OR_MAX;
+}
+function save_or_key(){
+  const k=(document.getElementById('or-key-inp').value||'').trim();
+  if(!k)return toast('أدخل المفتاح أولاً','error');
+  OR_KEY=k;
+  localStorage.setItem('or_key',k);
+  hide_notice('or-notice');
+  close_modal('settings-modal');
+  toast('تم حفظ مفتاح OpenRouter ✓','success');
+}
+async function qwen_call(prompt){
+  if(!OR_KEY){
+    if(localStorage.getItem('or_key')) OR_KEY=localStorage.getItem('or_key');
+    else{ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter'); }
+  }
+  if(get_or_q()>=OR_MAX) throw new Error('استُنفدت الحصة اليومية (50 طلب)');
+  const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+OR_KEY,'HTTP-Referer':'https://deskbot.tn'},
+    body:JSON.stringify({model:'qwen/qwen3-235b-a22b:free',messages:[{role:'user',content:prompt}],max_tokens:4096})
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.error?.message||'خطأ OpenRouter'); }
+  const d=await r.json();
+  inc_or_q();
+  return d.choices[0].message.content;
+}
+
+// ────────────────────────────────────────────────────────
+// NEWS TICKER
+// ────────────────────────────────────────────────────────
+let tickerOpen=false, tickerLoaded=false;
+function toggle_ticker(){
+  tickerOpen=!tickerOpen;
+  const wrap=document.getElementById('ticker-wrap');
+  if(tickerOpen){
+    wrap.style.maxHeight='360px';
+    wrap.style.opacity='1';
+    wrap.style.marginBottom='0';
+    if(!tickerLoaded) load_ticker();
+  } else {
+    wrap.style.maxHeight='0';
+    wrap.style.opacity='0';
+    wrap.style.marginBottom='0';
+  }
+}
+async function load_ticker(){
+  const items=document.getElementById('ticker-items');
+  const spin=document.getElementById('ticker-spin-i');
+  if(spin) spin.style.animation='spin .8s linear infinite';
+  items.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px"><div class="spin" style="margin:0 auto 10px"></div>جاري التحميل...</div>';
+  const prompt=`أنت راصد أخبار فوري. الوقت الحالي: ${new Date().toLocaleTimeString('ar-TN')}.
+
+قدم 10 أخبار من آخر 4 ساعات: 5 تونسية (TAP، ديوان FM، حقائق أونلاين، الحوار نيوز) + 5 عالمية (رويترز، AFP، الجزيرة، BBC عربي).
+
+الإخراج JSON فقط بدون أي نص إضافي:
+[{"time":"14:30","title":"عنوان الخبر الدقيق كما نُشر","src":"TAP","intl":false},{"time":"13:55","title":"عنوان خبر دولي","src":"Reuters","intl":true}]
+
+intl=false للتونسية، intl=true للدولية. عناوين دقيقة لا ملخصات.`;
+  try{
+    let res;
+    try{ res=await gemini(prompt); }
+    catch(e){ res=await qwen_call(prompt); }
+    const match=res.match(/\[[\s\S]*\]/);
+    if(!match) throw new Error('JSON غير صحيح');
+    const data=JSON.parse(match[0]);
+    items.innerHTML=data.slice(0,10).map(n=>`
+      <div onclick="navigator.clipboard.writeText(\`${n.title.replace(/`/g,'\\`')}\`);toast('تم نسخ الخبر')" style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid rgba(61,126,255,.06);cursor:pointer;transition:background .18s" onmouseover="this.style.background='rgba(61,126,255,.06)'" onmouseout="this.style.background=''">
+        <span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);min-width:44px">${n.time||''}</span>
+        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;${n.intl?'background:rgba(16,201,138,.12);color:var(--accent2)':'background:rgba(61,126,255,.15);color:var(--accent)'}">${n.src||'وكالات'}</span>
+        <span style="font-size:13px;color:var(--text);line-height:1.5;flex:1">${n.title}</span>
+      </div>`).join('');
+    tickerLoaded=true;
+    toast('تم تحديث الأخبار ✓','success');
+  }catch(e){
+    items.innerHTML=`<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">خطأ: ${e.message}</div>`;
+    toast('خطأ في الأخبار','error');
+  }finally{
+    if(spin) spin.style.animation='';
+  }
+}
+
+// ────────────────────────────────────────────────────────
+// OVERRIDE save_api_key to also hide notice
+// ────────────────────────────────────────────────────────
+const _orig_save_api = typeof save_api_key === 'function' ? save_api_key : null;
+
+// ────────────────────────────────────────────────────────
+// MOBILE — bottom nav & responsive
+// ────────────────────────────────────────────────────────
+function check_mobile(){
+  const nav=document.getElementById('bottom-nav');
+  if(!nav) return;
+  nav.style.display = window.innerWidth<=600 ? 'block' : 'none';
+  if(window.innerWidth<=600) document.body.style.paddingBottom='68px';
+  else document.body.style.paddingBottom='';
+}
+window.addEventListener('resize', check_mobile);
+
+// ────────────────────────────────────────────────────────
+// APP INIT — called after Firebase auth
+// ────────────────────────────────────────────────────────
+function init_extras(){
+  // OpenRouter key
+  const ok=localStorage.getItem('or_key');
+  if(ok){ OR_KEY=ok; hide_notice('or-notice'); const inp=document.getElementById('or-key-inp'); if(inp) inp.value=ok; }
+  else { show_notice('or-notice'); }
+  // OR quota badge
+  const badge=document.getElementById('or-quota-badge');
+  if(badge) badge.textContent=get_or_q()+' / '+OR_MAX;
+  // Mobile
+  check_mobile();
+}
+
 </script>
 </body>
 </html>
