@@ -266,22 +266,6 @@ select.h-btn{
   border-radius:var(--r);padding:12px 18px;
   font-size:13px;color:#fbbf24;
   margin-bottom:24px;display:flex;align-items:center;gap:10px;
-  overflow:hidden;
-  max-height:72px;
-  transition:max-height .4s cubic-bezier(.4,0,.2,1),
-             padding   .4s ease,
-             margin    .4s ease,
-             opacity   .35s ease,
-             border    .4s ease;
-}
-.notice-bar.nb-hide{
-  max-height:0 !important;
-  padding-top:0 !important;
-  padding-bottom:0 !important;
-  margin-bottom:0 !important;
-  opacity:0 !important;
-  border-width:0 !important;
-  pointer-events:none;
 }
 .notice-bar button{
   background:none;border:none;color:#fbbf24;
@@ -756,117 +740,34 @@ textarea{min-height:120px;line-height:1.7}
 /* ===== TRANSITIONS ===== */
 .tool-card,.btn,.btn-sec,.h-btn,.arc-item,.radio-card{will-change:transform}
 
-/* ─── NOTICE BAR smooth collapse ─── */
-.nb-hide{
-  max-height:0 !important;
-  padding-top:0 !important;
-  padding-bottom:0 !important;
-  margin-bottom:0 !important;
-  opacity:0 !important;
-  border-width:0 !important;
-  pointer-events:none;
-  transition:max-height .45s cubic-bezier(.4,0,.2,1),
-             padding .4s ease, margin .4s ease,
-             opacity .35s ease, border .4s ease;
-}
+/* ─── NOTICE BAR SMOOTH HIDE ─── */
 .notice-bar{
+  overflow:hidden;max-height:72px;
   transition:max-height .45s cubic-bezier(.4,0,.2,1),
-             padding .4s ease, margin .4s ease,
-             opacity .35s ease, border .4s ease;
-  overflow:hidden; max-height:72px;
+             padding .4s ease,margin .4s ease,
+             opacity .35s ease,border-width .4s ease;
+}
+.notice-bar.nb-hide{
+  max-height:0!important;padding-top:0!important;padding-bottom:0!important;
+  margin-bottom:0!important;opacity:0!important;border-width:0!important;
+  pointer-events:none;overflow:hidden;
 }
 
-/* ─── OR NOTICE ─── */
-#or-notice{
-  background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
-  border-color:rgba(139,92,246,.3);
-  color:#a78bfa;
-}
-#or-notice button{color:#a78bfa}
-
-/* ─── TICKER PANEL ─── */
-#ticker-wrap{
-  transition:max-height .45s cubic-bezier(.4,0,.2,1),
-             opacity .35s ease, margin .4s ease;
-}
-
-/* ─── BOTTOM NAV ─── */
-.bn-i{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  font-size:9px;color:var(--text3);cursor:pointer;
-  border:none;background:none;font-family:'Cairo',sans-serif;
-  transition:color .2s; padding:6px 0; width:100%;
-}
-.bn-i i{font-size:19px}
-.bn-i:hover,.bn-i.active{color:var(--accent)}
-
-/* ─── IMPROVED RESULT BOX ─── */
-.result-box.rendered h1,.result-box.rendered h2{
-  color:var(--gold);font-family:'Amiri',serif;
-  margin:16px 0 8px;font-size:19px;
-}
-.result-box.rendered h3{
-  color:var(--accent);margin:12px 0 6px;font-size:15px;
-}
-.result-box.rendered blockquote{
-  border-right:3px solid var(--gold);padding-right:14px;
-  color:var(--text2);font-style:italic;margin:10px 0;
-}
-.result-box.rendered table{
-  width:100%;border-collapse:collapse;font-size:13px;
-  margin:12px 0;
-}
-.result-box.rendered th{
-  background:rgba(61,126,255,.12);color:var(--accent);
-  padding:8px 12px;text-align:right;
-}
-.result-box.rendered td{
-  padding:8px 12px;border-bottom:1px solid var(--border);
-}
-
-/* ─── MOBILE RESPONSIVE ─── */
-@media(max-width:860px){
-  .bento-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
-  .tool-card.featured{grid-column:1/3;grid-row:1}
-  .tools-grid{grid-template-columns:repeat(3,1fr)}
-  .h-center{display:none}
-  .quota-wrap{display:none}
-}
-@media(max-width:600px){
-  .content{padding:16px 12px}
-  .bento-grid{grid-template-columns:1fr}
-  .tool-card.featured{grid-column:1;grid-row:1}
-  .tools-grid{grid-template-columns:repeat(2,1fr)}
-  .h-btn span{display:none}
-  .header{padding:0 12px}
-  .welcome-stats{display:none}
-  .welcome-bar{padding:14px 16px}
-  .overlay{padding:8px}
-  .modal{border-radius:16px}
-  .m-body{padding:16px}
-  .m-head{padding:14px 16px}
-  .result-box{font-size:14px;padding:18px}
-  #ticker-wrap > div{margin-bottom:0}
-  .t-desc{display:none}
-}
-
-
-/* ─── FILE ATTACH BAR ─── */
+/* ─── ATTACH BAR ─── */
 .attach-bar{
   display:flex;align-items:center;gap:10px;
-  padding:8px 0;margin-bottom:10px;flex-wrap:wrap;
+  padding:6px 0;margin-bottom:10px;flex-wrap:wrap;
 }
 .attach-btn{
   display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.05);border:1px dashed var(--border);
-  border-radius:10px;padding:7px 14px;font-size:12px;color:var(--text2);
-  cursor:pointer;transition:all .2s;font-family:'Cairo',sans-serif;
-  font-weight:600;
+  background:rgba(255,255,255,.05);
+  border:1px dashed var(--border);
+  border-radius:10px;padding:7px 14px;font-size:12px;
+  color:var(--text2);cursor:pointer;
+  transition:all .2s;font-family:'Cairo',sans-serif;font-weight:600;
 }
 .attach-btn:hover{border-color:var(--accent);color:var(--accent)}
-.attach-preview{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;
-}
+.attach-preview{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1}
 .attach-chip{
   display:inline-flex;align-items:center;gap:6px;
   background:rgba(61,126,255,.1);border:1px solid rgba(61,126,255,.25);
@@ -877,83 +778,65 @@ textarea{min-height:120px;line-height:1.7}
   font-size:12px;padding:0 2px;transition:color .2s;
 }
 .attach-chip button:hover{color:var(--danger)}
-.attach-audio{
-  width:100%;margin-top:8px;border-radius:8px;
-  accent-color:var(--accent);
-}
-.attach-image{
-  max-width:120px;max-height:80px;
-  border-radius:8px;object-fit:cover;
-  border:1px solid var(--border);
-}
+.attach-audio{width:100%;margin-top:8px;border-radius:8px;accent-color:var(--accent)}
+.attach-image{max-width:110px;max-height:75px;border-radius:8px;object-fit:cover;border:1px solid var(--border)}
 
-/* ─── RESULT BOX RICH FORMATTING ─── */
-.result-box.rendered{
-  white-space:normal !important;
-  line-height:1.9;
-  font-family:'Cairo',sans-serif;
-  font-size:14px;
-}
+/* ─── RICH TEXT OUTPUT ─── */
+.result-box.rendered{white-space:normal!important;line-height:1.9;font-size:14px}
 .result-box.rendered h1{
   font-family:'Amiri',serif;font-size:22px;font-weight:700;
-  color:var(--gold);margin:0 0 16px;padding-bottom:8px;
+  color:var(--gold);margin:0 0 14px;padding-bottom:8px;
   border-bottom:1px solid var(--border2);
 }
 .result-box.rendered h2{
   font-family:'Amiri',serif;font-size:18px;font-weight:700;
   color:var(--accent);margin:18px 0 10px;
 }
-.result-box.rendered h3{
-  font-size:14px;font-weight:700;color:var(--text);
-  margin:14px 0 8px;letter-spacing:.3px;
-}
-.result-box.rendered p{
-  margin:0 0 14px;line-height:2;
-}
+.result-box.rendered h3{font-size:14px;font-weight:700;color:var(--text);margin:14px 0 8px}
+.result-box.rendered p{margin:0 0 14px;line-height:2}
 .result-box.rendered p:last-child{margin-bottom:0}
-.result-box.rendered ul,.result-box.rendered ol{
-  padding-right:20px;margin:8px 0 14px;
-}
-.result-box.rendered li{
-  margin-bottom:6px;line-height:1.8;
-}
+.result-box.rendered ul,.result-box.rendered ol{padding-right:20px;margin:8px 0 14px}
+.result-box.rendered li{margin-bottom:6px;line-height:1.8}
 .result-box.rendered strong{color:var(--text);font-weight:700}
 .result-box.rendered em{color:var(--text2)}
 .result-box.rendered blockquote{
-  border-right:3px solid var(--gold);
-  padding:8px 14px;margin:12px 0;
-  background:rgba(201,168,76,.06);
-  border-radius:0 8px 8px 0;
-  color:var(--text2);font-style:italic;
-  font-family:'Amiri',serif;font-size:15px;
+  border-right:3px solid var(--gold);padding:8px 14px;margin:12px 0;
+  background:rgba(201,168,76,.06);border-radius:0 8px 8px 0;
+  color:var(--text2);font-style:italic;font-family:'Amiri',serif;font-size:15px;
 }
-.result-box.rendered hr{
-  border:none;border-top:1px solid var(--border);
-  margin:16px 0;
+.result-box.rendered hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.result-box.rendered table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.result-box.rendered th{
+  background:rgba(61,126,255,.12);color:var(--accent);
+  padding:8px 12px;text-align:right;font-weight:700;border:1px solid var(--border);
 }
+.result-box.rendered td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
+.result-box.rendered tr:hover td{background:rgba(255,255,255,.02)}
 .result-box.rendered code{
   background:rgba(61,126,255,.1);color:var(--accent);
   padding:1px 6px;border-radius:4px;font-size:12px;
 }
-.result-box.rendered table{
-  width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;
+
+/* ─── MOBILE BOTTOM NAV ─── */
+#bottom-nav{display:none}
+@media(max-width:600px){
+  body{padding-bottom:68px!important}
+  #bottom-nav{display:block!important}
+  .bento-grid{grid-template-columns:1fr!important}
+  .tool-card.featured{grid-column:1!important;grid-row:1!important}
+  .tools-grid{grid-template-columns:repeat(2,1fr)!important}
+  .h-btn span{display:none!important}
+  .welcome-stats{display:none!important}
+  .content{padding:16px 12px!important}
+  .overlay{padding:8px!important}
+  .m-body{padding:16px!important}
+  .m-head{padding:14px 16px!important}
 }
-.result-box.rendered th{
-  background:rgba(61,126,255,.12);color:var(--accent);
-  padding:8px 12px;text-align:right;font-weight:700;
-  border:1px solid var(--border);
-}
-.result-box.rendered td{
-  padding:8px 12px;border:1px solid var(--border);
-  vertical-align:top;
-}
-.result-box.rendered tr:hover td{background:rgba(255,255,255,.02)}
-/* Section dividers from ** ** */
-.result-tag-section{
-  display:inline-block;background:linear-gradient(135deg,rgba(61,126,255,.15),rgba(61,126,255,.07));
-  border:1px solid rgba(61,126,255,.25);border-radius:6px;
-  padding:2px 10px;font-size:10px;font-weight:700;color:var(--accent);
-  letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;
+@media(max-width:860px) and (min-width:601px){
+  .bento-grid{grid-template-columns:1fr 1fr!important}
+  .tool-card.featured{grid-column:1/3!important;grid-row:1!important}
+  .tools-grid{grid-template-columns:repeat(3,1fr)!important}
+  .h-center{display:none!important}
 }
 
 </style>
@@ -1022,18 +905,19 @@ textarea{min-height:120px;line-height:1.7}
     </div>
 
 
-    <!-- NEWS TICKER PANEL -->
+    <!-- NEWS TICKER -->
     <div id="ticker-wrap" style="overflow:hidden;max-height:0;opacity:0;margin-bottom:0;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s ease,margin .4s ease">
       <div style="background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:24px">
         <div style="padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(61,126,255,.1),transparent)">
-          <i class="fa-solid fa-newspaper" style="color:var(--accent)"></i>
+          <i class="fa-solid fa-newspaper" style="color:var(--accent);flex-shrink:0"></i>
           <span style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase;flex:1">آخر الأخبار — وطنية وعالمية</span>
-          <button id="ticker-refresh-btn" onclick="load_ticker()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">
+          <span id="ticker-refresh-time" style="font-size:10px;color:var(--text3)"></span>
+          <button onclick="load_ticker()" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:5px;transition:all .2s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''">
             <i class="fa-solid fa-rotate-right" id="ticker-spin-i"></i> تحديث
           </button>
         </div>
-        <div id="ticker-items" style="max-height:260px;overflow-y:auto">
-          <div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">اضغط «تحديث» لتحميل آخر الأخبار</div>
+        <div id="ticker-items" style="max-height:280px;overflow-y:auto">
+          <div style="padding:24px;text-align:center;color:var(--text3);font-size:13px">اضغط «تحديث» لتحميل آخر الأخبار</div>
         </div>
       </div>
     </div>
@@ -1126,9 +1010,7 @@ textarea{min-height:120px;line-height:1.7}
       <div class="tool-card mini" onclick="open_qwen_modal()">
         <div class="t-icon ic-purple"><i class="fa-solid fa-robot"></i></div>
         <div class="t-name" style="font-size:12px">Qwen AI</div>
-        <div style="font-size:9px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-top:2px">
-          <span id="qwen-card-quota" style="background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:1px 7px;font-weight:700">0/50</span>
-        </div>
+        <div style="font-size:9px;color:var(--text3);margin-top:2px"><span id="qwen-card-quota" style="background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:1px 7px;font-weight:700">0/50</span></div>
       </div>
 
       <div class="tool-card mini" onclick="open_today()">
@@ -1196,11 +1078,11 @@ textarea{min-height:120px;line-height:1.7}
         <label class="label" id="ai-label">أدخل النص</label>
         <textarea id="ai-input" rows="6" placeholder="اكتب هنا..."></textarea>
       </div>
-      <!-- FILE ATTACH BAR -->
-      <div class="attach-bar" id="ai-attach-bar">
-        <label class="attach-btn" title="إرفاق ملف صوتي أو صورة أو فيديو">
+      <!-- إرفاق ملف -->
+      <div class="attach-bar">
+        <label class="attach-btn">
           <i class="fa-solid fa-paperclip"></i> إرفاق ملف
-          <input type="file" id="ai-file" accept="audio/*,image/*,video/*" onchange="handle_attach('ai-file','ai-attach-preview')" style="display:none">
+          <input type="file" id="ai-file" accept="audio/*,image/*,video/*" onchange="handle_attach('ai-file','ai-attach-preview','ai-input')" style="display:none">
         </label>
         <div id="ai-attach-preview" class="attach-preview"></div>
       </div>
@@ -1409,21 +1291,17 @@ textarea{min-height:120px;line-height:1.7}
       </div>
       <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini</button>
 
-      <!-- ── OpenRouter section ── -->
+      <!-- OpenRouter -->
       <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-          <div style="width:38px;height:38px;border-radius:10px;background:rgba(139,92,246,.15);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0"><i class="fa-solid fa-robot"></i></div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700">OpenRouter — Qwen 3</div>
-            <div style="font-size:11px;color:var(--text2)">نموذج بديل مجاني · <strong style="color:#a78bfa">50 طلب/يوم</strong></div>
-          </div>
-          <span id="or-quota-badge" style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(139,92,246,.18);color:#a78bfa;letter-spacing:1px">0 / 50</span>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(139,92,246,.15);color:#a78bfa;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0"><i class="fa-solid fa-robot"></i></div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700">OpenRouter — Qwen 3</div><div style="font-size:11px;color:var(--text2)">نموذج مجاني · <strong style="color:#a78bfa">50 طلب/يوم</strong></div></div>
+          <span id="or-quota-badge" style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(139,92,246,.18);color:#a78bfa">0 / 50</span>
         </div>
-        <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.8">
+        <div style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2)">
           <i class="fa-solid fa-circle-check" style="color:#a78bfa"></i>
-          <strong style="color:var(--text)">qwen/qwen3-235b-a22b:free</strong><br>
-          <i class="fa-solid fa-link" style="color:#a78bfa"></i>
-          <a href="https://openrouter.ai/keys" target="_blank" style="color:#a78bfa;font-weight:700">openrouter.ai/keys</a> ← أنشئ مفتاحاً مجانياً
+          <strong style="color:var(--text)">qwen/qwen3-235b-a22b:free</strong> —
+          <a href="https://openrouter.ai/keys" target="_blank" style="color:#a78bfa;font-weight:700">openrouter.ai/keys ←</a>
         </div>
         <div class="field">
           <label class="label">OpenRouter API Key</label>
@@ -1438,26 +1316,14 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 
-<!-- BOTTOM NAV mobile -->
-<nav id="bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--glass2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:150;padding:6px 0">
-  <div style="display:grid;grid-template-columns:repeat(5,1fr)">
-    <button class="bn-i" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
-    <button class="bn-i" onclick="open_tool('editor')"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
-    <button class="bn-i" onclick="toggle_ticker()"><i class="fa-solid fa-newspaper"></i><span>أخبار</span></button>
-    <button class="bn-i" onclick="open_modal('agenda-modal')"><i class="fa-solid fa-calendar-days"></i><span>الأجندة</span></button>
-    <button class="bn-i" onclick="open_modal('settings-modal')"><i class="fa-solid fa-gear"></i><span>API</span></button>
-  </div>
-</nav>
-
-
-<!-- =================== QWEN MODAL =================== -->
+<!-- ═══════════ QWEN MODAL ═══════════ -->
 <div class="overlay" id="qwen-modal">
   <div class="modal">
     <div class="m-head">
       <div class="m-title">
         <i class="fa-solid fa-robot" style="color:#a78bfa"></i>
         Qwen 3 — OpenRouter
-        <span id="qwen-modal-quota" style="font-size:10px;background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:2px 10px;font-weight:700;margin-right:8px">0 / 50</span>
+        <span id="qwen-quota-badge" style="font-size:10px;background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:2px 10px;font-weight:700;margin-right:6px">0 / 50</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('qwen-modal')" title="وضع التركيز"><i class="fa-solid fa-expand"></i></button>
@@ -1467,25 +1333,30 @@ textarea{min-height:120px;line-height:1.7}
     <div class="m-body">
       <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2)">
         <i class="fa-solid fa-circle-info" style="color:#a78bfa"></i>
-        <strong style="color:#a78bfa">qwen/qwen3-235b-a22b:free</strong> — نموذج مجاني عبر OpenRouter · حصة <strong style="color:var(--text)">50 طلب/يوم</strong>
+        <strong style="color:#a78bfa">qwen/qwen3-235b-a22b:free</strong> — مجاني عبر OpenRouter
+        · حصة <strong style="color:var(--text)">50 طلب/يوم</strong>
       </div>
       <div class="field">
-        <label class="label">موضوع أو نص أو سؤال</label>
-        <textarea id="qwen-input" rows="6" placeholder="أدخل نصاً للتحرير، سؤالاً، تحليلاً، ترجمة..."></textarea>
+        <label class="label">نص أو سؤال أو مهمة</label>
+        <textarea id="qwen-input" rows="6" placeholder="تحرير، تحليل، ترجمة، سؤال..."></textarea>
       </div>
-      <!-- FILE ATTACH -->
-      <div class="attach-bar" id="qwen-attach-bar">
-        <label class="attach-btn" title="إرفاق ملف صوتي أو صورة أو فيديو">
+      <div class="attach-bar">
+        <label class="attach-btn">
           <i class="fa-solid fa-paperclip"></i> إرفاق ملف
-          <input type="file" id="qwen-file" accept="audio/*,image/*,video/*" onchange="handle_attach('qwen-file','qwen-attach-preview')" style="display:none">
+          <input type="file" id="qwen-file" accept="audio/*,image/*,video/*"
+            onchange="handle_attach('qwen-file','qwen-attach-preview','qwen-input')" style="display:none">
         </label>
         <div id="qwen-attach-preview" class="attach-preview"></div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 14px rgba(139,92,246,.35)" onclick="run_qwen()" id="qwen-run-btn">
+        <button class="btn" style="background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 14px rgba(139,92,246,.35)"
+          onclick="run_qwen()" id="qwen-run-btn">
           <i class="fa-solid fa-robot"></i> تشغيل Qwen
         </button>
-        <button class="btn-sec" onclick="document.getElementById('qwen-input').value=''" style="padding:10px 14px"><i class="fa-solid fa-trash"></i></button>
+        <button class="btn-sec" style="padding:10px 14px"
+          onclick="document.getElementById('qwen-input').value='';document.getElementById('qwen-attach-preview').innerHTML=''">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </div>
       <div id="qwen-load" class="loading" style="display:none">
         <div class="spin"></div><span class="loading-dots">Qwen يعالج...</span>
@@ -1493,7 +1364,8 @@ textarea{min-height:120px;line-height:1.7}
       <div id="qwen-result-wrap" class="result-wrap" style="display:none">
         <div class="result-header">
           <div class="result-tag"><i class="fa-solid fa-robot" style="color:#a78bfa"></i> نتيجة Qwen</div>
-          <button class="btn-sec" style="padding:4px 10px;font-size:11px" onclick="toggle_qwen_format()" id="qwen-fmt-btn"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-sec" style="padding:4px 10px;font-size:11px"
+            onclick="toggle_qwen_fmt()" id="qwen-fmt-btn"><i class="fa-solid fa-eye"></i></button>
         </div>
         <div id="qwen-result" class="result-box rendered"></div>
         <div class="result-actions">
@@ -1506,6 +1378,45 @@ textarea{min-height:120px;line-height:1.7}
     </div>
   </div>
 </div>
+
+
+<!-- BOTTOM NAV (mobile) -->
+<nav id="bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;
+  background:var(--glass2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);z-index:150;
+  padding:6px 0 max(6px,env(safe-area-inset-bottom,6px))">
+  <div style="display:grid;grid-template-columns:repeat(5,1fr)">
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})"
+      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
+        color:var(--text3);cursor:pointer;border:none;background:none;
+        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
+      onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">
+      <i class="fa-solid fa-house" style="font-size:18px"></i>الرئيسية</button>
+    <button onclick="open_tool('editor')"
+      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
+        color:var(--text3);cursor:pointer;border:none;background:none;
+        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
+      onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">
+      <i class="fa-solid fa-pen-nib" style="font-size:18px"></i>المحرر</button>
+    <button onclick="toggle_ticker()"
+      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
+        color:var(--accent);cursor:pointer;border:none;background:none;
+        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s">
+      <i class="fa-solid fa-newspaper" style="font-size:18px"></i>أخبار</button>
+    <button onclick="open_modal('agenda-modal')"
+      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
+        color:var(--text3);cursor:pointer;border:none;background:none;
+        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
+      onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color=''">
+      <i class="fa-solid fa-calendar-days" style="font-size:18px"></i>الأجندة</button>
+    <button onclick="open_modal('settings-modal')"
+      style="display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;
+        color:var(--text3);cursor:pointer;border:none;background:none;
+        font-family:'Cairo',sans-serif;padding:6px 0;transition:color .2s"
+      onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color=''">
+      <i class="fa-solid fa-gear" style="font-size:18px"></i>API</button>
+  </div>
+</nav>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -1533,13 +1444,21 @@ const auth=firebase.auth(), db=firebase.firestore();
 // STATE
 // ============================================================
 let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
-
+let radioAudio=null, activeRadioIdx=-1;
 let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
 let dailyRequests=0, isResultRaw=true;
 
 // ============================================================
 // RADIOS
 // ============================================================
+const RADIOS=[
+  {name:'ديوان أف أم',sub:'Diwan FM',url:'https://n07.radiojar.com/8s5u5tpdtwzuv?rj-ttl=5&rj-tok=AAABljp1AAAA0uQMVKtqYJC6Jw',color:'#3d7eff'},
+  {name:'موزاييك أف أم',sub:'Mosaique FM',url:'https://broadcast.infomaniak.net/mosaiquefm-high.mp3',color:'#ef4444'},
+  {name:'شمس أف أم',sub:'Shems FM',url:'https://stream.zeno.fm/4d5yvulvp8zuv',color:'#f59e0b'},
+  {name:'إذاعة تونس الوطنية',sub:'Radio Nationale',url:'https://stream.zeno.fm/4nmjsyatdzzuv',color:'#10c98a'},
+  {name:'راديو IFM',sub:'IFM Radio',url:'https://stream.zeno.fm/gcasak0wgzzuv',color:'#8b5cf6'},
+  {name:'جوهرة أف أم',sub:'Jawhara FM',url:'https://stream.zeno.fm/2rgndr3n9wzuv',color:'#ef4444'},
+];
 
 // ============================================================
 // COMMAND PALETTE DATA
@@ -1550,14 +1469,14 @@ const CMD_ITEMS=[
   {name:'عناوين احترافية',icon:'fa-heading',cls:'ic-blue',key:'Ctrl+3',action:()=>open_tool('headlines')},
   {name:'فلاش إخباري',icon:'fa-bolt',cls:'ic-red',key:'Ctrl+4',action:()=>open_tool('flash')},
   {name:'تفريغ وتحرير',icon:'fa-microphone',cls:'ic-purple',key:'',action:()=>open_tool('transcribe')},
-  {name:'Qwen AI Chat',icon:'fa-robot',cls:'ic-purple',key:'',action:()=>open_qwen_modal()},
+  {name:'Qwen AI',icon:'fa-robot',cls:'ic-purple',key:'',action:()=>open_qwen_modal()},
   {name:'حدث اليوم',icon:'fa-calendar-day',cls:'ic-amber',key:'',action:()=>open_today()},
   {name:'أرشيف المواجهات',icon:'fa-futbol',cls:'ic-green',key:'',action:()=>open_modal('matches-modal')},
   {name:'ملف الشخصية',icon:'fa-user-tie',cls:'ic-blue',key:'',action:()=>open_modal('profile-modal')},
   {name:'الأجندة المشتركة',icon:'fa-calendar-days',cls:'ic-gold',key:'',action:()=>open_modal('agenda-modal')},
   {name:'مدقق المحتوى',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
   {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
-  {name:'شريط الأخبار الفوري',icon:'fa-newspaper',cls:'ic-blue',key:'',action:()=>toggle_ticker()},
+  {name:'شريط الأخبار',icon:'fa-newspaper',cls:'ic-blue',key:'',action:()=>toggle_ticker()},
   {name:'الأرشيف',icon:'fa-clock-rotate-left',cls:'ic-teal',key:'',action:()=>open_archive()},
   {name:'إعدادات API',icon:'fa-gear',cls:'ic-amber',key:'',action:()=>open_modal('settings-modal')},
 ];
@@ -1569,250 +1488,241 @@ let cmdIdx=0, cmdFiltered=[...CMD_ITEMS];
 const SYS=`أنت DESK BOT، نظام غرفة الأخبار الرقمية المتقدم، مصمم خصيصاً للصحفيين والمحررين في المؤسسات الإعلامية التونسية. تعمل وفق أعلى معايير الصحافة المهنية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم وكبرى المؤسسات الإعلامية التونسية. اللغة الحصرية: العربية الفصحى الحديثة الرصينة. الأسلوب: تقريري مباشر خالٍ من الإنشاء والحشو.\n\n`;
 
 const PROMPTS={
+editor:`${SYS}## دورك: محرر أخبار أول (Senior News Editor)
 
-editor:`${SYS}## دورك: محرر أخبار أول (Senior News Editor) — وكالة تونس إفريقيا للأنباء
+### مهمتك الحصرية:
+تحويل النص الخام إلى مادة إخبارية احترافية منشورة وفق أعلى معايير التحرير الصحفي.
 
-### الإخراج الإلزامي بهذا الترتيب الحرفي:
+### الإخراج الإلزامي بهذا الترتيب الصارم:
 
 **أولاً — السطر التعريفي:**
 تحرير مقال جديد (حمدي)
 
 **ثانياً — خمسة عناوين مقترحة:**
 - تقريرية ودقيقة وخالية من الإثارة
-- لا تتجاوز 12 كلمة
+- لا تتجاوز 12 كلمة لكل عنوان
 - تبدأ بفعل مضارع أو اسم الجهة الفاعلة
-- فاعل + حدث أو نتيجة
+- تحمل عنصرين على الأقل: فاعل + حدث أو نتيجة
 
 **ثالثاً — النص الإخباري المهيكل:**
 
-#### الفقرة الأولى (Lead) — قواعد صارمة:
-- تبدأ حصراً بأحد هذه الأفعال: قرّر، أكّد، أعلنت، أفادت، نفى، كشف، طالب، دعا، وجّه، رصد، أوضح
-- محظور تماماً: تقرّر، أُعلن، جرى، انعقد، استقبل، صُودق
-- تجيب على: من؟ ماذا؟ متى؟ أين؟ ولماذا؟ في جملة واحدة
+### قواعد الهيكل الصارمة:
 
-#### الفقرة الثانية (Attribution):
-- الصيغة الوحيدة المقبولة: "وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..." أو "وبيّن [المصدر] في تصريح له أن..."
+**الفقرة الأولى (Lead):**
+- تبدأ حصراً بفعل مبني للمعلوم متبوعاً مباشرةً بالفاعل
+- أفعال مقبولة: قرّر، أكّد، أعلنت، أفادت، نفى، كشف، طالب، دعا، أوضح
+- أفعال مرفوضة رفضاً باتاً: تقرّر، أُعلن، صُودق على، انعقد، استقبل، جرى
+- تجيب على: ماذا؟ متى؟ أين؟ ولماذا؟ في جملة واحدة مكتملة
 
-#### بقية الفقرات:
-- تفاصيل تنازلياً ثم خلفية وسياق
-- كل فقرة: جملة إلى 3 جمل
-- روابط: "وفي سياق متصل"، "من جهة أخرى"، "وتجدر الإشارة"، "وأضافت"
+**الفقرة الثانية (Attribution):**
+- تُخصص حصراً لمرجعية المصدر
+- الصيغة: "وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..." أو "وبيّن [المصدر] في تصريح له أن..."
 
-#### معالجة البيانات:
+**الفقرات التالية:**
+- تدرج التفاصيل والسياق والخلفية تنازلياً
+- كل فقرة: جملة إلى 3 جمل كحد أقصى
+- روابط معتمدة: "وفي سياق متصل"، "من جهة أخرى"، "وأضافت"، "وتجدر الإشارة"
+
+### معالجة البيانات:
+- العملات الأجنبية: اذكر المبلغ الأصلي + (ما يعادله بالدينار التونسي)
 - الأشهر: جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر
-- العملات الأجنبية: المبلغ الأصلي + ما يعادله بالدينار التونسي
 
-#### محظورات مطلقة:
-✗ استنتاج أو تأويل شخصي
-✗ صفات التضخيم (ضخم، هائل، تاريخي، رائع)
-✗ خاتمة مفتوحة أو استفهامية
-✗ عبارات عاطفية أو تبريرية
-✗ الاستطراد والحشو
+### محظورات مطلقة:
+✗ الاستنتاج والتأويل الشخصي
+✗ صفات التضخيم (ضخم، هائل، تاريخي)
+✗ الخواتيم المفتوحة أو الاستفهامية
+✗ العبارات العاطفية والتبريرية
+✗ أي نص خارج المخرجات الثلاث المحددة
 
 ### النص الخام:`,
 
-rewrite:`${SYS}## دورك: محرر إعادة صياغة رقمية للنشر على المواقع الإذاعية
+rewrite:`${SYS}## دورك: محرر إعادة صياغة رقمية (Digital News Rewriter)
+
+### مهمتك:
+إعادة هيكلة وصياغة النص الإخباري ليلائم معايير النشر الرقمي للمواقع الإذاعية مع تحسين محركات البحث.
 
 ### الإخراج الإلزامي:
 
-**أولاً — خمسة عناوين رقمية محسّنة لـ SEO:**
-- 8 إلى 12 كلمة
-- الكلمات المفتاحية في أول 4 كلمات
-- لا تبدأ بمجهول أو بضمير
-- كل عنوان يختلف في زاوية الطرح
+**أولاً — خمسة عناوين رقمية محسّنة (SEO):**
+- قصيرة ومباشرة (8 إلى 12 كلمة)
+- تتضمن الكلمات المفتاحية الأساسية للخبر
+- لا تبدأ بفعل مبني للمجهول
 
-**ثانياً — ليد رقمي (50 كلمة كحد أقصى):**
-- الخبر الأساسي في الجملة الأولى
-- كلمة مفتاحية رئيسية في أول 10 كلمات
-
-**ثالثاً — النص المهيكل للنشر الرقمي:**
-- فقرات مستقلة (1 إلى 3 جمل)
-- معلومة جوهرية في كل فقرة
-- الهرم المقلوب: الأهم ← التفاصيل ← الخلفية
-
-#### محظورات:
-✗ عناوين فرعية داخل النص
-✗ تكرار الأفكار
-✗ مجاز أو صور شعرية
-✗ تضخيم الوصف
-
-### النص:`,
-
-headlines:`${SYS}## دورك: رئيس تحرير متخصص في صناعة العناوين الإخبارية
-
-أنتج 12 عنواناً موزعاً على 4 فئات (3 لكل فئة):
-
-### الفئة الأولى — إخبارية تقريرية:
-دقيقة ومباشرة، تعكس الحدث الرسمي بأمانة
-
-### الفئة الثانية — إسناد واقتباس مباشر:
-"[الجهة] لـ [الفعل]: [الاقتباس المختصر]" — النقطتان الرأسيتان إلزاميتان
-
-### الفئة الثالثة — مركبة وسياقية:
-تربط الحدث بمسبباته أو تداعياته (إثر، بسبب، في خضم، تزامناً مع)
-
-### الفئة الرابعة — تحليلية للتقارير المعمقة:
-تُبرز الأثر والتداعيات والمآلات
-
-### قواعد غير قابلة للكسر:
-- الطول: 8 إلى 14 كلمة حصراً
-- عنصران إلزاميان: (حدث + فاعل) أو (حدث + نتيجة) أو (فاعل + موقع)
-- مصطلحات تونسية دقيقة: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي، قرار اتهامي
-- ممنوع: علامة التعجب، clickbait، كلمات مبالغة، أسئلة استفهامية
-
-### النص:`,
-
-flash:`${SYS}## دورك: مذيع فلاش إخباري في إذاعة ديوان أف أم
-
-### الإخراج الإلزامي (لا شيء خارجهما):
-
-**أولاً — عنوان ديوان:**
-- 8 كلمات كحد أقصى
-- غير مشكول
-- يصف الحدث لا يعلّق عليه
-
-**ثانياً — نص الفلاش المشكول للإلقاء:**
-- 30 إلى 50 كلمة حصراً
-- مشكول كلياً بما في ذلك الأعداد والأسماء
-- الأعداد كتابةً كاملة: خَمْسَةٌ وَعِشْرُونَ أَلْفَ دِينَارٍ
-
-### قواعد التشكيل:
-- الأعداد: مشكولة 100% مع التنوين (خَمْسَةٌ وَعِشْرُونَ)
-- الأفعال: حركة الحرف الأخير من الفعل + الفاعل
-- الأسماء الأعجمية: تُكتب بحركات اقترابية
-- الضمائر والحروف: مشكولة
+**ثانياً — النص المعاد صياغته:**
+- الهرم المقلوب: الأهم أولاً ثم التفاصيل ثم السياق
+- فقرات قصيرة مستقلة (جملة إلى 3 جمل)
+- لغة رسمية دقيقة تقريرية محايدة
+- كلمات مفتاحية في الاستهلال للـ SEO
 
 ### محظورات:
-✗ أي نص بدون تشكيل
-✗ تجاوز 50 كلمة
-✗ عناوين فرعية أو تعليق
-✗ الأرقام العربية (0-9) بدون كتابة
-
-### الخبر الخام:`,
-
-transcribe:`${SYS}## دورك: محرر تفريغ وتحرير صوتي متخصص
-
-أمامك نص تفريغ صوتي خام من تسجيل ميداني أو مقابلة. مهمتك:
-
-### الإخراج:
-
-**أولاً — النص المفرّغ المصحح (كما قيل بدقة):**
-- صحّح الأخطاء الإملائية والنحوية فقط
-- لا تحذف أو تضيف معلومات
-- حافظ على الاقتباسات المباشرة داخل علامتي تنصيص «»
-
-**ثانياً — الخلاصة التحريرية:**
-- 3 إلى 5 نقاط رئيسية من التسجيل
-- الأقوال البارزة القابلة للنشر مباشرةً
-- الأسماء والمؤسسات والأرقام الواردة
-
-**ثالثاً — مقترح متابعة (اختياري):**
-- سؤال أو محور لم يُطرح ويستحق المتابعة
-
-### النص الخام:`,
-
-monitor:`${SYS}## دورك: محرر اقتراحات تحريرية ومراجعة محتوى
-
-المهام التي تؤديها حسب النص المُدخل:
-
-**إذا كان النص خبراً أو مقالاً:**
-- 3 ملاحظات تحريرية أساسية (أسلوب، بنية، دقة)
-- مقترح تطوير الليد
-- كلمات مفتاحية للـ SEO (5 كلمات)
-- تقييم قوة النص: ضعيف / متوسط / قوي مع تعليل
-
-**إذا كان النص خاماً أو ملاحظات:**
-- 5 زوايا تحريرية مقترحة لتناول الموضوع
-- المصادر الموصى بالتواصل معها
-- الأسئلة الجوهرية التي يجب الإجابة عنها
-
-### المحتوى:`,
-
-checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص في الإعلام العربي
-
-### الإخراج:
-
-**أولاً — الأخطاء اللغوية:**
-| الخطأ | الصواب | النوع (إملائي/نحوي/تعبيري) |
-
-**ثانياً — المصطلحات المعيارية:**
-استبدالات موصى بها للمصطلحات الأجنبية أو العامية
-
-**ثالثاً — تقييم الأسلوب:**
-- الاتساق في استخدام الأزمنة
-- التوازن في طول الفقرات
-- نسبة الحشو (منخفضة/متوسطة/عالية)
-- نقطة قوة + نقطة تحتاج تطوير
-
-**رابعاً — النص المُصحح كاملاً** (بعد تطبيق جميع التصحيحات)
+✗ عناوين فرعية، مجاز، تضخيم، تكرار
 
 ### النص:`,
 
-today:`${SYS}## دورك: موسوعة تاريخية وثقافية تونسية وعربية
+headlines:`${SYS}## دورك: رئيس تحرير متخصص في صناعة العناوين
 
-في هذا اليوم من التاريخ، اجمع:
+### الإخراج: 12 عنواناً في 4 فئات (3 لكل فئة)
 
-### أولاً — الأحداث التاريخية البارزة (5 أحداث):
-- تاريخ دقيق + حدث + أهميته الراهنة
+**الفئة الأولى — إخبارية تقريرية:**
+دقيقة ومباشرة تركز على الحدث الرسمي
 
-### ثانياً — مواليد ووفيات بارزة (3 شخصيات):
-- الاسم + المجال + السنة + لماذا يستحق الذكر اليوم
+**الفئة الثانية — إسناد واقتباس مباشر:**
+النقطتان الرأسيتان مع الصفة الكاملة
 
-### ثالثاً — المناسبات والأعياد:
-- الوطنية والدولية الرسمية المعترف بها
+**الفئة الثالثة — مركبة وسياقية:**
+تربط الحدث بمسبباته (إثر، بسبب، تزامناً)
 
-### رابعاً — اقتباس اليوم:
-- اقتباس ذو صلة من شخصية عربية أو تونسية أو عالمية بارزة
+**الفئة الرابعة — تحليلية ومتابعات:**
+للتقارير المعمقة والتداعيات
 
-### صيغة الإخراج:
-مناسبة للقراءة المباشرة على الهواء أو النشر الرقمي
-اليوم والشهر:`,
+### القواعد:
+- الطول: 8 إلى 14 كلمة حصراً
+- عنصران على الأقل: حدث/فاعل/مكان/نتيجة
+- مصطلحات تونسية: بطاقة إيداع بالسجن، الاحتفاظ بـ، حجز فعلي
+✗ Clickbait، تعجب، مبالغة
 
-matches:`${SYS}## دورك: محلل رياضي متخصص في أرشيف المواجهات الكروية
+### النص:`,
 
-عند إدخال اسم فريقين، قدّم:
+flash:`${SYS}## دورك: مذيع فلاش إخباري في ديوان أف أم
 
-### أولاً — ملخص المواجهات التاريخية:
-- إجمالي المباريات + نتائج الفريقين + التعادلات
-- الفترة الزمنية المرصودة
+### الإخراج الإلزامي:
+**أولاً — عنوان ديوان:** (8 كلمات كحد، غير مشكول)
+**ثانياً — نص الفلاش المشكول:** (30-50 كلمة)
 
-### ثانياً — آخر 5 مواجهات مباشرة:
-التاريخ | المسابقة | النتيجة | الهدافون البارزون
+### قواعد التشكيل:
+- الأعداد: تشكيل كامل 100% → خَمْسَةُ وَعِشْرُونَ أَلْفَ دِينَارٍ
+- باقي النص: الحرف الأخير فقط → وزارةُ (صح) وِزَارَةُ (خطأ)
+- الأرقام بالحروف دائماً
+✗ تجاوز 50 كلمة، مقدمات، تفاصيل ثانوية
 
-### ثالثاً — إحصاءات ميدانية:
-- الفريق الأقوى ملعبه
-- الهداف التاريخي في المواجهات
-- المباراة الأكثر تأثيراً
+### النص:`,
 
-### رابعاً — التحليل الفني:
-- نقاط القوة الراهنة لكل فريق
-- العوامل الحاسمة في المواجهة القادمة
+transcribe:`${SYS}## دورك: محرك تفريغ صوتي حرفي متخصص
 
-### خامساً — التوقع المحلل:
-النتيجة الأرجح مع تعليل دقيق`,
+ابدأ التفريغ مباشرة بلا مقدمة.
 
-profile:`${SYS}## دورك: صحفي محقق متخصص في إعداد الملفات الشخصية (Profile Journalism)
+**تمييز المتحدثين إلزامي:**
+[مذيع]: نص كلامه
+[ضيف]: نص كلامه
 
-عند إدخال اسم شخصية عامة، قدّم:
+**معالجة الغموض:**
+- غير مفهوم: [غير واضح]
+- اسم غير متأكد: [اسم؟]
+- رقم غير واضح: [رقم؟]
 
-### أولاً — البطاقة التعريفية:
-الاسم الكامل | المسمى الحالي | المؤسسة | تاريخ التعيين/الولادة
+✗ إعادة صياغة، حذف كلمة، تلخيص، تعليق
 
-### ثانياً — المسار المهني والتعليمي:
-- المحطات الرئيسية بالتسلسل الزمني
-- التخصصات والشهادات البارزة
+**النص:**`,
 
-### ثالثاً — الإنجازات والملفات الكبرى:
-- القرارات والتصريحات التي يُعرف بها
-- الملفات التي يتولاها راهناً
+monitor:`${SYS}## دورك: محرر رصد إخباري متخصص
 
-### رابعاً — السياق الراهن:
-- آخر موقف أو تصريح بارز
-- الإشكاليات أو التساؤلات المثارة حوله
+ابحث في الإنترنت واستخرج أهم 15 خبراً خلال الـ12 ساعة الماضية.
 
-### خامساً — مصادر للمتابعة:
-- الوزارة أو المؤسسة الرسمية للتواصل`
+**الإخراج:**
+🕐 رصد إخباري — آخر 12 ساعة
+📅 [التاريخ والوقت الحالي بدقة]
 
+🇹🇳 **الشأن التونسي — 7 أخبار:**
+1. [العنوان الكامل] — [المصدر]
+   ↳ [سطر واحد: جوهر الخبر]
+
+🌍 **الشأن العربي والدولي — 5 أخبار:**
+8. [العنوان] — [المصدر]
+   ↳ [سطر واحد]
+
+⚡ **يستحق المتابعة العاجلة — 3 أخبار:**
+13. [العنوان] — [سبب الأهمية]
+
+✗ اختلاق أخبار، تجاوز 12 ساعة`,
+
+checker:`${SYS}## دورك: مدقق لغوي وتحريري متخصص
+
+ابحث في المواقع الإعلامية التونسية خلال الـ12 ساعة الماضية.
+
+**الإخراج:**
+🔍 تقرير مدقق المحتوى | 📅 [التاريخ] | آخر 12 ساعة
+
+📌 الملخص التنفيذي: المقالات / الأخطاء / الأكثر تكراراً
+
+① الأخطاء النحوية: المصدر | ✗ الخطأ | السبب | ✓ التصويب | القاعدة
+② الأخطاء المنهجية: (غياب مصدر / هرم مقلوب / مصدر مجهول)
+③ الأخطاء التحريرية: (عنوان مضلل / إثارة / تكرار)
+④ درس اليوم: الخطأ الأكثر تكراراً + القاعدة + 3 أمثلة صحيحة
+⑤ توصيات تحريرية لليوم (3 توصيات)
+✗ ذكر أسماء الصحفيين — الأسلوب تعليمي دائماً`,
+
+today:`${SYS}## دورك: موسوعة تاريخية متخصصة
+
+ابحث واستخرج كل الأحداث والشخصيات المرتبطة بالتاريخ المُدخل.
+
+**الإخراج:**
+📅 في مثل هذا اليوم — [التاريخ]
+
+🇹🇳 أحداث تونسية ومحلية: [السنة] — [الحدث]
+🌍 أحداث عربية وعالمية: [السنة] — [الحدث]
+🎂 شخصيات وُلدت: [السنة] — [الاسم] — [الصفة والجنسية]
+🕊️ شخصيات رحلت: [السنة] — [الاسم] — [الصفة والجنسية]
+
+✗ اختلاق أحداث غير موثّقة
+
+**التاريخ المطلوب:**`,
+
+matches:`${SYS}## دورك: محلل رياضي متخصص في أرشيف المواجهات
+
+ابحث في FIFA، UEFA، Transfermarkt، Soccerway واستخرج كامل سجل المواجهات.
+
+**الإخراج:**
+⚽ [الفريق 1] 🆚 [الفريق 2]
+
+📊 ملخص: المباريات / الفوز / التعادل / الأهداف
+
+📅 السجل (من الأحدث):
+[التاريخ] | [المسابقة]
+[النتيجة] — ⚽ [الهدافون والدقائق]
+
+🏆 أبرز الهدافين التاريخيين
+📌 أبرز مواجهة تاريخياً
+✗ اختلاق نتائج أو هدافين
+
+**الفريقان:**`,
+
+profile:`${SYS}## دورك: صحفي محقق متخصص في إعداد الملفات الشخصية
+
+ابحث معمقاً واستخرج ملفاً صحفياً شاملاً.
+
+**الإخراج:**
+👤 ملف الشخصية — [الاسم]
+
+📋 اللمحة التعريفية (5-7 أسطر)
+🏆 أبرز الأعمال والإنجازات (5 عناصر + السنة)
+
+🎤 أهم وأحدث 5 تصريحات إعلامية:
+① [التاريخ] — [المصدر]
+الموضوع: [الموضوع]
+التصريح: "[النص الدقيق]"
+
+❓ 10 أسئلة صحفية احترافية:
+● استفسارية (3): مبنية على التصريحات
+● مواجهة (3): تواجهه بتناقض موثّق
+● استشرافية (2): رؤية مستقبلية
+● شخصية مهنية (2): مسار وتجربة
+✗ اختلاق تصريحات — أسئلة عامة
+
+**الشخصية المطلوبة:**`,
+
+article:`${SYS}## دورك: محرر أول متخصص في تحويل تفريغات المقابلات
+
+حوّل النص المفرّغ إلى مقال إخباري وفق معايير وات وديوان أف أم.
+
+**الإخراج:**
+➊ تحرير مقال جديد (حمدي)
+➋ خمسة عناوين تقريرية
+➌ المقال المهيكل
+
+قواعد: استخرج الحقائق فقط، تجاهل التأتأة والعامية.
+الإسناد: "وأوضح [الضيف]، في تصريح لـ ديوان أف أم، أن..."
+
+**النص المفرّغ:**`
 };
 
 // ============================================================
@@ -1841,7 +1751,7 @@ auth.onAuthStateChanged(u=>{
     load_api_key();
     update_welcome();
     load_daily_requests();
-    init_extras();
+    setTimeout(init_extras,400);
   }else{
     document.getElementById('login-screen').style.display='flex';
     document.getElementById('main-app').style.display='none';
@@ -1864,11 +1774,9 @@ async function load_api_key(){
     const d=await db.collection('config').doc('gemini').get();
     if(d.exists&&d.data().key){
       GEMINI_KEY=d.data().key;
-      document.getElementById('api-notice').style.display='none';
-    }else{
-      document.getElementById('api-notice').style.display='flex';
-    }
-  }catch(e){document.getElementById('api-notice').style.display='flex'}
+      hide_nb('api-notice');
+    }else{ show_nb('api-notice'); }
+  }catch(e){ show_nb('api-notice'); }
 }
 async function save_api_key(){
   const k=document.getElementById('api-key-inp').value.trim();
@@ -1876,14 +1784,14 @@ async function save_api_key(){
   try{
     await db.collection('config').doc('gemini').set({key:k});
     GEMINI_KEY=k;
-    document.getElementById('api-notice').style.display='none';
-    hide_notice('api-notice'); close_modal('settings-modal');
+    hide_nb('api-notice');
+    close_modal('settings-modal');
     toast('✅ تم حفظ المفتاح','success');
   }catch(e){
     localStorage.setItem('gemini_key',k);
     GEMINI_KEY=k;
-    document.getElementById('api-notice').style.display='none';
-    hide_notice('api-notice'); close_modal('settings-modal');
+    hide_nb('api-notice');
+    close_modal('settings-modal');
     toast('✅ تم حفظ المفتاح محلياً','success');
   }
 }
@@ -2087,35 +1995,9 @@ function hide_result_ai(){
 }
 
 // Markdown renderer toggle
-function toggle_result_format(){
-  const box=document.getElementById('ai-result');
-  const btn=document.getElementById('format-btn');
-  if(isResultRaw){
-    box.innerHTML=render_md(box.textContent||box.innerText);
-    box.className='result-box rendered';
-    isResultRaw=false;
-    btn.innerHTML='<i class="fa-solid fa-code"></i>';
-  } else {
-    box.textContent=box.innerText;
-    box.className='result-box';
-    isResultRaw=true;
-    btn.innerHTML='<i class="fa-solid fa-eye"></i>';
-  }
-}
 
-function simple_md(txt){
-  return txt
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/^- (.+)$/gm,'<li>$1</li>')
-    .replace(/^(\d+)\. (.+)$/gm,'<li>$2</li>')
-    .replace(/\n\n/g,'</p><p>')
-    .replace(/\n/g,'<br>');
-}
+
+
 
 // Focus mode toggle
 function toggle_focus(id){
@@ -2185,7 +2067,7 @@ async function run_profile(){
 // ============================================================
 // AGENDA
 // ============================================================
-async async function ag_add(){
+async function ag_add(){
   const date=document.getElementById('ag-add-date').value;
   const ev=document.getElementById('ag-add-ev').value.trim();
   if(!date||!ev)return toast('أدخل التاريخ والحدث','error');
@@ -2201,7 +2083,7 @@ async async function ag_add(){
     toast('✅ تم حفظ الحدث في الأجندة','success');
   }catch(e){toast('خطأ: '+e.message,'error')}
 }
-async async function ag_search(){
+async function ag_search(){
   const date=document.getElementById('ag-srch-date').value;
   if(!date)return toast('اختر تاريخاً','error');
   const c=document.getElementById('ag-results');
@@ -2314,6 +2196,43 @@ function add_activity(toolName,preview){
 // ============================================================
 // RADIO
 // ============================================================
+function build_radio_cards(){
+  const c=document.getElementById('radio-cards');
+  c.innerHTML=RADIOS.map((r,i)=>`
+    <div class="radio-card" id="rc-${i}" onclick="toggle_radio(${i})">
+      <div class="radio-dot" style="background:${r.color}"></div>
+      <div style="flex:1">
+        <div class="radio-name">${r.name}</div>
+        <div class="radio-sub">${r.sub}</div>
+      </div>
+      <button class="btn-sec" id="play-btn-${i}" style="padding:6px 14px;font-size:12px" onclick="event.stopPropagation();toggle_radio(${i})">
+        <i class="fa-solid fa-play"></i> استماع
+      </button>
+    </div>`).join('');
+}
+function toggle_radio(i){
+  const audio=document.getElementById('radio-audio');
+  if(activeRadioIdx===i&&!audio.paused){
+    audio.pause();activeRadioIdx=-1;
+    document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-play"></i> استماع';
+    document.getElementById('rc-'+i).classList.remove('on');
+    return;
+  }
+  if(activeRadioIdx>=0){
+    document.getElementById('play-btn-'+activeRadioIdx).innerHTML='<i class="fa-solid fa-play"></i> استماع';
+    document.getElementById('rc-'+activeRadioIdx).classList.remove('on');
+  }
+  audio.src=RADIOS[i].url;
+  audio.play().catch(()=>toast('تعذّر التشغيل','error'));
+  activeRadioIdx=i;
+  document.getElementById('play-btn-'+i).innerHTML='<i class="fa-solid fa-stop"></i> إيقاف';
+  document.getElementById('rc-'+i).classList.add('on');
+}
+function stop_radio(){
+  const a=document.getElementById('radio-audio');
+  if(a)a.pause();
+  activeRadioIdx=-1;
+}
 
 // ============================================================
 // SMART RECORD
@@ -2435,255 +2354,186 @@ function toast(msg,type=''){
 // Init
 auto_theme();
 
-// ────────────────────────────────────────────────────────
-// NOTICE BARS — smooth show/hide
-// ────────────────────────────────────────────────────────
-function hide_notice(id){
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.classList.add('nb-hide');
-}
-function show_notice(id){
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.classList.remove('nb-hide');
-}
+/* ══════════════════════════════════════════════════════
+   NOTICE HELPERS
+══════════════════════════════════════════════════════ */
+function hide_nb(id){ const el=document.getElementById(id); if(el) el.classList.add('nb-hide'); }
+function show_nb(id){ const el=document.getElementById(id); if(el) el.classList.remove('nb-hide'); }
 
-// ────────────────────────────────────────────────────────
-// OPENROUTER / QWEN
-// ────────────────────────────────────────────────────────
-let OR_KEY='';
-const OR_MAX=50;
-const OR_Q_KEY='or_q_'+new Date().toDateString();
-function get_or_q(){ return parseInt(localStorage.getItem(OR_Q_KEY)||'0'); }
-function inc_or_q(){
-  localStorage.setItem(OR_Q_KEY, get_or_q()+1);
-  const el=document.getElementById('or-quota-badge');
-  if(el) el.textContent=get_or_q()+' / '+OR_MAX;
-}
-function save_or_key(){
-  const k=(document.getElementById('or-key-inp').value||'').trim();
-  if(!k)return toast('أدخل المفتاح أولاً','error');
-  OR_KEY=k;
-  localStorage.setItem('or_key',k);
-  hide_notice('or-notice');
-  close_modal('settings-modal');
-  toast('تم حفظ مفتاح OpenRouter ✓','success');
-}
-async function qwen_call(prompt){
-  if(!OR_KEY){
-    if(localStorage.getItem('or_key')) OR_KEY=localStorage.getItem('or_key');
-    else{ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter'); }
-  }
-  if(get_or_q()>=OR_MAX) throw new Error('استُنفدت الحصة اليومية (50 طلب)');
-  const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+OR_KEY,'HTTP-Referer':'https://deskbot.tn'},
-    body:JSON.stringify({model:'qwen/qwen3-235b-a22b:free',messages:[{role:'user',content:prompt}],max_tokens:4096})
-  });
-  if(!r.ok){ const e=await r.json(); throw new Error(e.error?.message||'خطأ OpenRouter'); }
-  const d=await r.json();
-  inc_or_q();
-  return d.choices[0].message.content;
-}
-
-// ────────────────────────────────────────────────────────
-// NEWS TICKER
-// ────────────────────────────────────────────────────────
-let tickerOpen=false, tickerLoaded=false;
-function toggle_ticker(){
-  tickerOpen=!tickerOpen;
-  const wrap=document.getElementById('ticker-wrap');
-  if(tickerOpen){
-    wrap.style.maxHeight='360px';
-    wrap.style.opacity='1';
-    wrap.style.marginBottom='0';
-    if(!tickerLoaded) load_ticker();
-  } else {
-    wrap.style.maxHeight='0';
-    wrap.style.opacity='0';
-    wrap.style.marginBottom='0';
-  }
-}
-async function load_ticker(){
-  const items=document.getElementById('ticker-items');
-  const spin=document.getElementById('ticker-spin-i');
-  if(spin) spin.style.animation='spin .8s linear infinite';
-  items.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px"><div class="spin" style="margin:0 auto 10px"></div>جاري التحميل...</div>';
-  const prompt=`أنت راصد أخبار فوري. الوقت الحالي: ${new Date().toLocaleTimeString('ar-TN')}.
-
-قدم 10 أخبار من آخر 4 ساعات: 5 تونسية (TAP، ديوان FM، حقائق أونلاين، الحوار نيوز) + 5 عالمية (رويترز، AFP، الجزيرة، BBC عربي).
-
-الإخراج JSON فقط بدون أي نص إضافي:
-[{"time":"14:30","title":"عنوان الخبر الدقيق كما نُشر","src":"TAP","intl":false},{"time":"13:55","title":"عنوان خبر دولي","src":"Reuters","intl":true}]
-
-intl=false للتونسية، intl=true للدولية. عناوين دقيقة لا ملخصات.`;
-  try{
-    let res;
-    try{ res=await gemini(prompt); }
-    catch(e){ res=await qwen_call(prompt); }
-    const match=res.match(/\[[\s\S]*\]/);
-    if(!match) throw new Error('JSON غير صحيح');
-    const data=JSON.parse(match[0]);
-    items.innerHTML=data.slice(0,10).map(n=>`
-      <div onclick="navigator.clipboard.writeText(\`${n.title.replace(/`/g,'\\`')}\`);toast('تم نسخ الخبر')" style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid rgba(61,126,255,.06);cursor:pointer;transition:background .18s" onmouseover="this.style.background='rgba(61,126,255,.06)'" onmouseout="this.style.background=''">
-        <span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);min-width:44px">${n.time||''}</span>
-        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;${n.intl?'background:rgba(16,201,138,.12);color:var(--accent2)':'background:rgba(61,126,255,.15);color:var(--accent)'}">${n.src||'وكالات'}</span>
-        <span style="font-size:13px;color:var(--text);line-height:1.5;flex:1">${n.title}</span>
-      </div>`).join('');
-    tickerLoaded=true;
-    toast('تم تحديث الأخبار ✓','success');
-  }catch(e){
-    items.innerHTML=`<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">خطأ: ${e.message}</div>`;
-    toast('خطأ في الأخبار','error');
-  }finally{
-    if(spin) spin.style.animation='';
-  }
-}
-
-// ────────────────────────────────────────────────────────
-// OVERRIDE save_api_key to also hide notice
-// ────────────────────────────────────────────────────────
-const _orig_save_api = typeof save_api_key === 'function' ? save_api_key : null;
-
-// ────────────────────────────────────────────────────────
-// MOBILE — bottom nav & responsive
-// ────────────────────────────────────────────────────────
-function check_mobile(){
-  const nav=document.getElementById('bottom-nav');
-  if(!nav) return;
-  nav.style.display = window.innerWidth<=600 ? 'block' : 'none';
-  if(window.innerWidth<=600) document.body.style.paddingBottom='68px';
-  else document.body.style.paddingBottom='';
-}
-window.addEventListener('resize', check_mobile);
-
-// ────────────────────────────────────────────────────────
-// APP INIT — called after Firebase auth
-// ────────────────────────────────────────────────────────
-function init_extras(){
-  // OpenRouter key
-  const ok=localStorage.getItem('or_key');
-  if(ok){ OR_KEY=ok; hide_notice('or-notice'); const inp=document.getElementById('or-key-inp'); if(inp) inp.value=ok; }
-  else { show_notice('or-notice'); }
-  // OR quota badge
-  const badge=document.getElementById('or-quota-badge');
-  if(badge) badge.textContent=get_or_q()+' / '+OR_MAX;
-  // Mobile
-  check_mobile();
-}
-
-
-// ══════════════════════════════════════════════════════════════
-// MARKDOWN RENDERER (no lib needed)
-// ══════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
+   MARKDOWN RENDERER — NO backticks in regex!
+══════════════════════════════════════════════════════ */
 function render_md(txt){
   if(!txt) return '';
+  // Escape HTML first
   let h = txt
-    // Escape HTML
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    // Headers
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
-    // Bold + italic
-    .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    // Horizontal rule
-    .replace(/^---$/gm,'<hr>')
-    // Blockquote
-    .replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>')
-    // Numbered list
-    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
-    // Bullet list
-    .replace(/^[\-\*] (.+)$/gm,'<li>$1</li>')
-    // Wrap consecutive <li> in <ul>
-    .replace(/(<li>[\s\S]+?<\/li>)(?!\s*<li>)/g,'<ul>$1</ul>')
-    .replace(/<\/li>\n<li>/g,'</li><li>')
-    // Inline code
-    .replace(/`(.+?)`/g,'<code>$1</code>')
-    // Paragraphs (double newline)
-    .replace(/\n\n/g,'</p><p>')
-    // Single newline → <br>
-    .replace(/\n/g,'<br>');
-  // Wrap in <p> if no block elements
-  if(!h.match(/^<(h[1-3]|ul|ol|blockquote|hr)/)) h = '<p>' + h + '</p>';
+    .replace(/>/g,'&gt;');
+  // Headers
+  h = h.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  h = h.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  h = h.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  // Bold/italic
+  h = h.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
+  h = h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  h = h.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  // HR
+  h = h.replace(/^---$/gm,'<hr>');
+  // Blockquote
+  h = h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  // Lists
+  h = h.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
+  h = h.replace(/^[\-\*] (.+)$/gm,'<li>$1</li>');
+  // Wrap consecutive li in ul
+  h = h.replace(/(<li>[\s\S]+?<\/li>)(?=\s*(<li>|$))/g, function(m){ return m; });
+  h = h.replace(/((?:<li>[^<]*<\/li>\s*)+)/g,'<ul>$1</ul>');
+  // Inline code — use char code 96 to avoid raw backtick
+  var BT = String.fromCharCode(96);
+  var re = new RegExp(BT+'(.+?)'+BT,'g');
+  h = h.replace(re,'<code>$1</code>');
+  // Paragraphs
+  h = h.replace(/\n\n/g,'</p><p>');
+  h = h.replace(/\n/g,'<br>');
+  // Wrap if not block
+  if(!/^<(h[1-3]|ul|ol|blockquote|hr|p)/.test(h)) h = '<p>'+h+'</p>';
   return h;
 }
 
-// ══════════════════════════════════════════════════════════════
-// FILE ATTACH HANDLER
-// ══════════════════════════════════════════════════════════════
-const attachedFiles = {};
-
-function handle_attach(inputId, previewId){
-  const input = document.getElementById(inputId);
-  const preview = document.getElementById(previewId);
-  if(!input || !input.files || !input.files[0]) return;
-  const file = input.files[0];
-  attachedFiles[inputId] = file;
-  const isAudio = file.type.startsWith('audio/');
-  const isImage = file.type.startsWith('image/');
-  const isVideo = file.type.startsWith('video/');
-  const url = URL.createObjectURL(file);
-  let html = `<div class="attach-chip">`;
-  if(isImage) html += `<img src="${url}" class="attach-image">`;
-  else if(isAudio) html += `<i class="fa-solid fa-music"></i>`;
-  else if(isVideo) html += `<i class="fa-solid fa-video"></i>`;
-  else html += `<i class="fa-solid fa-file"></i>`;
-  html += `<span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${file.name}</span>`;
-  html += `<button onclick="remove_attach('${inputId}','${previewId}')" title="حذف">✕</button></div>`;
-  if(isAudio) html += `<audio class="attach-audio" src="${url}" controls></audio>`;
-  preview.innerHTML = html;
-  // Append filename to textarea so AI knows about it
-  const ta = document.getElementById(inputId.replace('-file','-input'));
-  if(ta && !ta.value.includes('[ملف مرفق]')){
-    ta.value += `\n\n[ملف مرفق: ${file.name} — ${isAudio?'صوتي':isImage?'صورة':'فيديو'}]`;
+/* ══════════════════════════════════════════════════════
+   PATCH toggle_result_format to use render_md
+══════════════════════════════════════════════════════ */
+function toggle_result_format(){
+  var box=document.getElementById('ai-result');
+  var btn=document.getElementById('format-btn');
+  if(!box) return;
+  if(box.classList.contains('rendered')){
+    box.textContent = box.innerText;
+    box.classList.remove('rendered');
+    if(btn) btn.innerHTML='<i class="fa-solid fa-eye"></i>';
+  } else {
+    box.innerHTML = render_md(box.textContent || box.innerText);
+    box.classList.add('rendered');
+    if(btn) btn.innerHTML='<i class="fa-solid fa-code"></i>';
   }
 }
 
-function remove_attach(inputId, previewId){
-  delete attachedFiles[inputId];
-  const inp = document.getElementById(inputId);
-  if(inp) inp.value = '';
-  const prev = document.getElementById(previewId);
-  if(prev) prev.innerHTML = '';
-  const ta = document.getElementById(inputId.replace('-file','-input'));
-  if(ta) ta.value = ta.value.replace(/\n\n\[ملف مرفق:.*?\]/g,'');
+/* ══════════════════════════════════════════════════════
+   FILE ATTACH — string concat, no backticks
+══════════════════════════════════════════════════════ */
+function handle_attach(inputId, previewId, textareaId){
+  var input   = document.getElementById(inputId);
+  var preview = document.getElementById(previewId);
+  if(!input || !input.files || !input.files[0]) return;
+  var file    = input.files[0];
+  var isAudio = file.type.startsWith('audio/');
+  var isImage = file.type.startsWith('image/');
+  var isVideo = file.type.startsWith('video/');
+  var url     = URL.createObjectURL(file);
+  var label   = isAudio ? 'صوتي' : isImage ? 'صورة' : 'فيديو';
+
+  var chip = '<div class="attach-chip">';
+  if(isImage)      chip += '<img src="'+url+'" class="attach-image">';
+  else if(isAudio) chip += '<i class="fa-solid fa-music"></i>';
+  else             chip += '<i class="fa-solid fa-video"></i>';
+  chip += '<span style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+file.name+'</span>';
+  chip += '<button onclick="remove_attach(''+inputId+'',''+previewId+'',''+textareaId+'')" title="حذف">&#10005;</button>';
+  chip += '</div>';
+  if(isAudio) chip += '<audio class="attach-audio" src="'+url+'" controls></audio>';
+
+  preview.innerHTML = chip;
+
+  var ta = document.getElementById(textareaId);
+  if(ta && ta.value.indexOf('[ملف مرفق]') === -1){
+    ta.value += '\n\n[ملف مرفق: '+file.name+' — '+label+']';
+  }
+}
+function remove_attach(inputId, previewId, textareaId){
+  var inp  = document.getElementById(inputId);  if(inp)  inp.value = '';
+  var prev = document.getElementById(previewId); if(prev) prev.innerHTML = '';
+  var ta   = document.getElementById(textareaId);
+  if(ta) ta.value = ta.value.replace(/\n\n\[ملف مرفق:[^\]]*\]/g,'');
 }
 
-// ══════════════════════════════════════════════════════════════
-// QWEN MODAL LOGIC
-// ══════════════════════════════════════════════════════════════
-function open_qwen_modal(){
-  update_qwen_quota_display();
-  open_modal('qwen-modal');
+/* ══════════════════════════════════════════════════════
+   OPENROUTER / QWEN
+══════════════════════════════════════════════════════ */
+var OR_KEY  = '';
+var OR_MAX  = 50;
+
+function _or_day_key(){ return 'or_q_'+new Date().toDateString(); }
+function get_or_q(){ return parseInt(localStorage.getItem(_or_day_key())||'0',10); }
+function inc_or_q(){ localStorage.setItem(_or_day_key(), get_or_q()+1); refresh_quota_ui(); }
+
+function refresh_quota_ui(){
+  var q = get_or_q();
+  var ids = ['qwen-card-quota','qwen-quota-badge','or-quota-badge'];
+  for(var i=0;i<ids.length;i++){
+    var el = document.getElementById(ids[i]);
+    if(el) el.textContent = q+' / '+OR_MAX;
+  }
 }
-function update_qwen_quota_display(){
-  const q = get_or_q();
-  ['qwen-card-quota','qwen-modal-quota','or-quota-badge'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.textContent = q + ' / 50';
+
+function save_or_key(){
+  var k = (document.getElementById('or-key-inp').value||'').trim();
+  if(!k) return toast('أدخل المفتاح أولاً','error');
+  OR_KEY = k;
+  localStorage.setItem('or_key', k);
+  hide_nb('or-notice');
+  close_modal('settings-modal');
+  toast('تم حفظ مفتاح OpenRouter ✓','success');
+}
+
+async function qwen_call(prompt){
+  if(!OR_KEY){
+    var stored = localStorage.getItem('or_key');
+    if(stored){ OR_KEY = stored; }
+    else{ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter من الإعدادات'); }
+  }
+  if(get_or_q() >= OR_MAX) throw new Error('استُنفدت الحصة اليومية ('+OR_MAX+' طلب)');
+  var resp = await fetch('https://openrouter.ai/api/v1/chat/completions',{
+    method  : 'POST',
+    headers : {
+      'Content-Type' : 'application/json',
+      'Authorization': 'Bearer '+OR_KEY,
+      'HTTP-Referer' : 'https://deskbot-seven.vercel.app'
+    },
+    body: JSON.stringify({
+      model    : 'qwen/qwen3-235b-a22b:free',
+      messages : [{role:'user', content:prompt}],
+      max_tokens: 4096
+    })
   });
+  if(!resp.ok){
+    var err = await resp.json().catch(function(){return{};});
+    throw new Error((err.error && err.error.message) ? err.error.message : 'خطأ OpenRouter '+resp.status);
+  }
+  var data = await resp.json();
+  inc_or_q();
+  return data.choices[0].message.content;
 }
+
+/* ══════════════════════════════════════════════════════
+   QWEN MODAL LOGIC
+══════════════════════════════════════════════════════ */
+function open_qwen_modal(){ refresh_quota_ui(); open_modal('qwen-modal'); }
+
+var _qwen_raw = false;
 async function run_qwen(){
-  const inp = document.getElementById('qwen-input').value.trim();
+  var inp = document.getElementById('qwen-input').value.trim();
   if(!inp) return toast('أدخل نصاً أولاً','error');
-  if(get_or_q() >= 50) return toast('استُنفدت الحصة اليومية (50 طلب)','error');
+  if(get_or_q() >= OR_MAX) return toast('استُنفدت الحصة اليومية','error');
   show_load('qwen-load');
   document.getElementById('qwen-run-btn').disabled = true;
   document.getElementById('qwen-result-wrap').style.display = 'none';
   try{
-    const prompt = SYS + '\n\n' + inp;
-    const res = await qwen_call(prompt);
-    const box = document.getElementById('qwen-result');
-    box.innerHTML = render_md(res);
-    box.className = 'result-box rendered';
+    var res = await qwen_call(SYS+'\n\n'+inp);
+    var box = document.getElementById('qwen-result');
+    box.innerHTML   = render_md(res);
+    box.className   = 'result-box rendered';
+    _qwen_raw       = false;
     document.getElementById('qwen-result-wrap').style.display = 'block';
-    update_qwen_quota_display();
+    refresh_quota_ui();
     await arc_auto('Qwen AI', inp.substring(0,200), res);
   }catch(e){ toast('خطأ Qwen: '+e.message,'error'); }
   finally{
@@ -2691,103 +2541,125 @@ async function run_qwen(){
     document.getElementById('qwen-run-btn').disabled = false;
   }
 }
-let qwenResultRaw = false;
-function toggle_qwen_format(){
-  const box = document.getElementById('qwen-result');
-  const btn = document.getElementById('qwen-fmt-btn');
-  if(qwenResultRaw){
-    box.innerHTML = render_md(box.textContent||box.innerText);
+
+function toggle_qwen_fmt(){
+  var box = document.getElementById('qwen-result');
+  var btn = document.getElementById('qwen-fmt-btn');
+  if(!box) return;
+  if(_qwen_raw){
+    box.innerHTML = render_md(box.textContent || box.innerText);
     box.className = 'result-box rendered';
-    qwenResultRaw = false;
-    btn.innerHTML = '<i class="fa-solid fa-code"></i>';
+    _qwen_raw = false;
+    if(btn) btn.innerHTML = '<i class="fa-solid fa-code"></i>';
   } else {
     box.textContent = box.innerText;
-    box.className = 'result-box';
-    qwenResultRaw = true;
-    btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+    box.className   = 'result-box';
+    _qwen_raw = true;
+    if(btn) btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
   }
 }
 
-// ══════════════════════════════════════════════════════════════
-// LIVE NEWS TICKER — AUTO REFRESH EVERY MINUTE
-// ══════════════════════════════════════════════════════════════
-let tickerInterval = null;
-let tickerOpen2 = false;
+/* ══════════════════════════════════════════════════════
+   NEWS TICKER — LIVE AUTO-REFRESH
+   ⚠ ZERO backticks — all string concatenation
+══════════════════════════════════════════════════════ */
+var _tickerOpen  = false;
+var _tickerTimer = null;
 
 function toggle_ticker(){
-  tickerOpen2 = !tickerOpen2;
-  const wrap = document.getElementById('ticker-wrap');
-  if(tickerOpen2){
-    wrap.style.maxHeight = '400px';
-    wrap.style.opacity = '1';
+  _tickerOpen = !_tickerOpen;
+  var wrap = document.getElementById('ticker-wrap');
+  if(!wrap) return;
+  if(_tickerOpen){
+    wrap.style.maxHeight    = '420px';
+    wrap.style.opacity      = '1';
     wrap.style.marginBottom = '0';
     load_ticker();
-    // Auto-refresh every 60 seconds
-    if(tickerInterval) clearInterval(tickerInterval);
-    tickerInterval = setInterval(load_ticker, 60000);
+    if(_tickerTimer) clearInterval(_tickerTimer);
+    _tickerTimer = setInterval(load_ticker, 60000);
   } else {
-    wrap.style.maxHeight = '0';
-    wrap.style.opacity = '0';
+    wrap.style.maxHeight    = '0';
+    wrap.style.opacity      = '0';
     wrap.style.marginBottom = '0';
-    if(tickerInterval){ clearInterval(tickerInterval); tickerInterval=null; }
+    if(_tickerTimer){ clearInterval(_tickerTimer); _tickerTimer = null; }
   }
 }
 
 async function load_ticker(){
-  const items = document.getElementById('ticker-items');
-  const spin  = document.getElementById('ticker-spin-i');
-  if(spin) spin.style.animation = 'spin .8s linear infinite';
+  var items = document.getElementById('ticker-items');
+  var spin  = document.getElementById('ticker-spin-i');
+  var refEl = document.getElementById('ticker-refresh-time');
+  if(spin)  spin.style.animation = 'spin .8s linear infinite';
 
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
+  var now     = new Date();
+  var timeStr = now.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'});
+  var dateStr = now.toLocaleDateString('ar-TN');
+  if(refEl) refEl.textContent = 'آخر تحديث: '+timeStr;
 
-  // Update last-refresh display
-  let refreshEl = document.getElementById('ticker-last-refresh');
-  if(!refreshEl){
-    const head = document.querySelector('#ticker-wrap [style*="border-bottom"]');
-    if(head){
-      const span = document.createElement('span');
-      span.id = 'ticker-last-refresh';
-      span.style.cssText = 'font-size:10px;color:var(--text3);margin-right:auto';
-      head.appendChild(span);
-      refreshEl = span;
-    }
-  }
-  if(refreshEl) refreshEl.textContent = 'آخر تحديث: ' + timeStr;
-
-  const prompt = `أنت راصد أخبار فوري. الوقت: ${timeStr}. التاريخ: ${now.toLocaleDateString('ar-TN')}.
-
-قدم 15 خبراً من آخر 60 دقيقة بالضبط:
-- 10 أخبار تونسية: TAP، ديوان FM، حقائق أونلاين، الحوار نيوز، تونس نيوز
-- 5 أخبار عالمية: رويترز، AFP، الجزيرة، BBC عربي، العربية
-
-**القاعدة:** JSON فقط، بدون مقدمة أو خاتمة:
-[{"time":"${timeStr}","title":"عنوان الخبر كما نُشر حرفياً","src":"TAP","intl":false},...]
-
-- intl: false=تونسي، true=دولي
-- العناوين دقيقة وواقعية لا مُخترعة`;
+  // Build prompt WITHOUT backtick template literals
+  var prompt  = 'أنت راصد أخبار فوري. الوقت: '+timeStr+'. التاريخ: '+dateStr+'.\n\n';
+      prompt += 'قدّم بالضبط 15 خبراً من آخر 60 دقيقة:\n';
+      prompt += '- 10 أخبار تونسية: TAP، ديوان FM، حقائق أونلاين، الحوار نيوز، تونس نيوز\n';
+      prompt += '- 5 أخبار دولية: رويترز، AFP، الجزيرة، BBC عربي، العربية\n\n';
+      prompt += 'أجب بـ JSON فقط لا شيء خارجه — بهذا الشكل الحرفي:\n';
+      prompt += '[{"time":"'+timeStr+'","title":"عنوان دقيق كما نُشر","src":"TAP","intl":false}]\n\n';
+      prompt += 'intl=false خبر تونسي، intl=true خبر دولي. عناوين واقعية لا مُخترعة.';
 
   try{
-    let res;
-    try{ res = await gemini(prompt); }
+    var res;
+    try { res = await gemini(prompt); }
     catch(e){ res = await qwen_call(prompt); }
-    const match = res.match(/\[[\s\S]*?\]/);
-    if(!match) throw new Error('JSON غير صحيح');
-    const data = JSON.parse(match[0]);
-    items.innerHTML = data.slice(0,15).map(n=>`
-      <div onclick="navigator.clipboard.writeText(\`${(n.title||'').replace(/`/g,"'")}\`);toast('تم نسخ الخبر')"
-           style="display:flex;align-items:flex-start;gap:12px;padding:10px 18px;border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s"
-           onmouseover="this.style.background='rgba(61,126,255,.05)'" onmouseout="this.style.background=''">
-        <span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px">${n.time||timeStr}</span>
-        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;${n.intl?'background:rgba(16,201,138,.12);color:var(--accent2)':'background:rgba(61,126,255,.12);color:var(--accent)'}">${n.src||'وكالات'}</span>
-        <span style="font-size:13px;color:var(--text);line-height:1.55;flex:1">${n.title||''}</span>
-      </div>`).join('');
-    tickerLoaded = true;
+
+    var match = res.match(/\[[\s\S]*?\]/);
+    if(!match) throw new Error('لم يُرجع JSON صحيح');
+    var data = JSON.parse(match[0]);
+    var html = '';
+    var limit = Math.min(data.length, 15);
+    for(var i=0; i<limit; i++){
+      var n       = data[i];
+      var title   = (n.title||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+      var srcName = n.src || 'وكالات';
+      var tStr    = n.time || timeStr;
+      var isIntl  = !!n.intl;
+      var badgeStyle = isIntl
+        ? 'background:rgba(16,201,138,.12);color:var(--accent2)'
+        : 'background:rgba(61,126,255,.12);color:var(--accent)';
+      html += '<div'
+           +  ' title="انقر لنسخ الخبر"'
+           +  ' data-title="'+title+'"'
+           +  ' onclick="navigator.clipboard.writeText(this.dataset.title);toast('تم نسخ الخبر ✓')"'
+           +  ' style="display:flex;align-items:flex-start;gap:12px;padding:10px 18px;'
+           +         'border-bottom:1px solid rgba(61,126,255,.05);cursor:pointer;transition:background .15s"'
+           +  ' onmouseover="this.style.background='rgba(61,126,255,.05)'"'
+           +  ' onmouseout="this.style.background=''">'
+           +  '<span style="font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);min-width:40px;padding-top:2px">'+tStr+'</span>'
+           +  '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px;'+badgeStyle+'">'+srcName+'</span>'
+           +  '<span style="font-size:13px;color:var(--text);line-height:1.6;flex:1">'+n.title+'</span>'
+           +  '</div>';
+    }
+    items.innerHTML = html;
   }catch(e){
-    items.innerHTML = `<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">خطأ: ${e.message}</div>`;
+    if(items) items.innerHTML = '<div style="padding:20px;text-align:center;color:var(--danger);font-size:13px">خطأ: '+e.message+'</div>';
   }finally{
     if(spin) spin.style.animation = '';
   }
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT EXTRAS — called after auth (via setTimeout)
+══════════════════════════════════════════════════════ */
+function init_extras(){
+  // Load OR key
+  var ok = localStorage.getItem('or_key');
+  if(ok){
+    OR_KEY = ok;
+    hide_nb('or-notice');
+    var inp = document.getElementById('or-key-inp');
+    if(inp) inp.value = ok;
+  } else {
+    show_nb('or-notice');
+  }
+  refresh_quota_ui();
 }
 
 </script>
