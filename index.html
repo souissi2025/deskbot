@@ -2229,8 +2229,10 @@ function show_result_ai(){
 }
 
 function hide_result_ai(){
-  document.getElementById('ai-result-wrap').style.display='none';
-  document.getElementById('ai-acts').style.display='none';
+  var _w=document.getElementById('ai-result-wrap');
+  var _a=document.getElementById('ai-acts');
+  if(_w) _w.style.display='none';
+  if(_a) _a.style.display='none';
   hide('ai-load');
 }
 
@@ -2403,6 +2405,7 @@ function arc_copy_full(enc){
 function add_activity(toolName,preview){
   const bar=document.getElementById('activity-bar');
   const scroll=document.getElementById('activity-scroll');
+  if(!bar || !scroll) return;
   bar.style.display='flex';
   const item=document.createElement('div');
   item.className='activity-item';
