@@ -1997,7 +1997,6 @@ function check_quota(type){
 }
 
 // Legacy shim — keep arc/other code working
-var dailyRequests = 0;
 function inc_requests(){
   var type = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
   inc_user_stat(type);
