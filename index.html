@@ -1893,6 +1893,7 @@ auth.onAuthStateChanged(u=>{
     load_api_key();
     update_welcome();
     load_user_stats(); load_daily_requests();
+    var _ok=localStorage.getItem('or_key'); if(_ok){ OR_KEY=_ok; nb_hide('or-notice'); }
     setTimeout(init_extras,500);
   }else{
     document.getElementById('login-screen').style.display='flex';
@@ -2173,7 +2174,7 @@ async function run_ai(){
   if(!inp) return toast('أدخل النص أولاً','error');
 
   /* ── فحص الكوتا الفردية ── */
-  var _qtype = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
+  var _qtype = (CUR_AI_MODEL === 'qwen') ? 'qwen' : (QUOTA_TOOL_MAP[CUR_TOOL] || 'pro');
   if(!check_quota(_qtype)) return;
 
   /* ── بناء البرومبت الكامل ── */
@@ -2196,11 +2197,16 @@ async function run_ai(){
   try{
     var res;
     if(CUR_AI_MODEL === 'qwen'){
+      if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter أولاً'); }
       if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية (50 طلب)','error');
       res = await qwen_call(fullPrompt);
+      inc_or_q();
+      await inc_user_stat('qwen');
       refresh_quota_ui();
     } else {
       res = await gemini(fullPrompt);
+      var _mt = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
+      await inc_user_stat(_mt);
     }
 
     var box = document.getElementById('ai-result');
@@ -2803,6 +2809,12 @@ var CUR_AI_MODEL = 'pro';
 
 function select_ai_model(m){
   CUR_AI_MODEL = m;
+  // Sync header dropdown to match tab selection
+  var dd = document.getElementById('ai-model-select');
+  if(dd){
+    if(m === 'pro')   dd.value = 'gemini-2.5-pro';
+    if(m === 'flash') dd.value = 'gemini-2.5-flash';
+  }
   var tabs = ['pro','flash','qwen'];
   var colors = {pro:'var(--accent)', flash:'var(--gold)', qwen:'#a78bfa'};
   for(var i=0; i<tabs.length; i++){
