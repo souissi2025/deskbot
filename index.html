@@ -921,8 +921,9 @@ textarea{min-height:120px;line-height:1.7}
     <div class="h-right">
       <select id="ai-model-select" class="h-btn" title="النموذج">
         <option value="gemini-2.0-flash" selected>Flash 2.0 ⚡</option>
-        <option value="gemini-2.5-flash">Flash 2.5 ⚡</option>
-        <option value="gemini-1.5-pro">Pro 🧠</option>
+        <option value="gemini-2.5-flash">Flash 2.5 ✨</option>
+        <option value="gemini-2.5-pro">Pro 2.5 🧠</option>
+        <option value="gemini-1.5-pro">Pro 1.5 🔬</option>
       </select>
       <button class="live-pill" onclick="toggle_ticker()" title="شريط الأخبار الفوري">
         <div class="live-dot"></div>LIVE
@@ -1422,7 +1423,9 @@ textarea{min-height:120px;line-height:1.7}
       </div>
       <div style="background:rgba(16,201,138,0.06);border:1px solid rgba(16,201,138,0.2);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
         <i class="fa-solid fa-circle-check" style="color:var(--accent2)"></i>
-        النموذج: <strong style="color:var(--text)">Gemini 2.5 Flash / Pro</strong><br>
+        النموذج الموصى به: <strong style="color:var(--text)">Gemini 2.5 Flash</strong> — يدعم الصوت والصور<br>
+        <i class="fa-solid fa-microphone" style="color:var(--accent2)"></i>
+        التسجيل الذكي: يُرسل الملف الصوتي مباشرة إلى Gemini للتفريغ الحرفي<br>
         <i class="fa-solid fa-chart-bar" style="color:var(--accent2)"></i>
         الكوتا المجانية: <strong style="color:var(--accent2)">1500 طلب/يوم</strong> لكل صحفي
       </div>
@@ -2037,26 +2040,60 @@ document.addEventListener('keydown',e=>{
 
 
 async function run_ai(){
-  const inp=document.getElementById('ai-input').value.trim();
-  if(!inp)return toast('أدخل النص أولاً','error');
-  const cfg=TOOLS[CUR_TOOL];
-  show_load('ai-load');hide_result_ai();
-  document.getElementById('ai-run-btn').disabled=true;
+  var inp = (document.getElementById('ai-input')||{}).value || '';
+  inp = inp.trim();
+  if(!inp) return toast('أدخل النص أولاً','error');
+
+  /* ── بناء البرومبت الكامل ── */
+  var promptText = inp;
+  if(CUR_TOOL === 'checker'){
+    var src_v  = (document.getElementById('checker-source')||{}).value||'';
+    var dat_v  = (document.getElementById('checker-date')||{}).value||'';
+    var pfx = '';
+    if(src_v)  pfx += 'المصدر: ' + src_v + '\n';
+    if(dat_v)  pfx += 'التاريخ: ' + dat_v + '\n';
+    if(pfx) promptText = pfx + '\n' + promptText;
+  }
+  var fullPrompt = (PROMPTS[CUR_TOOL] || SYS) + '\n\n' + promptText;
+
+  show_load('ai-load');
+  hide_result_ai();
+  var runBtn = document.getElementById('ai-run-btn');
+  if(runBtn) runBtn.disabled = true;
+
   try{
-    const res=await gemini(PROMPTS[cfg.key]+'\n\n'+inp);
-    const box=document.getElementById('ai-result');
-    box.textContent=res;
-    box.className='result-box';
-    isResultRaw=true;
-    document.getElementById('ai-result-wrap').style.display='block';
-    document.getElementById('ai-acts').style.display='flex';
-    add_activity(cfg.title,res.substring(0,60));
-    await arc_auto(cfg.title,inp.substring(0,200),res);
-  }catch(e){toast('خطأ: '+e.message,'error')}
+    var res;
+    if(CUR_AI_MODEL === 'qwen'){
+      if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية (50 طلب)','error');
+      res = await qwen_call(fullPrompt);
+      refresh_quota_ui();
+    } else {
+      res = await gemini(fullPrompt);
+    }
+
+    var box = document.getElementById('ai-result');
+    box.innerHTML = render_md(res);
+    box.className = 'result-box rendered';
+    isResultRaw = false;
+
+    show_result_ai();
+
+    var tName = CUR_TOOL_NAME || CUR_TOOL || 'AI';
+    add_activity(tName, res.substring(0,60));
+    await arc_auto(tName, promptText.substring(0,200), res);
+
+  }catch(e){ toast('خطأ: ' + e.message, 'error'); }
   finally{
     hide('ai-load');
-    document.getElementById('ai-run-btn').disabled=false;
+    if(runBtn) runBtn.disabled = false;
   }
+}
+
+function show_result_ai(){
+  var w = document.getElementById('ai-result-wrap');
+  var a = document.getElementById('ai-acts');
+  if(w) w.style.display = 'block';
+  if(a) a.style.display = 'flex';
 }
 
 function hide_result_ai(){
@@ -2405,19 +2442,21 @@ function render_md(txt){
   return h;
 }
 
-/* ── PATCH run_ai: render output ── */
-var _orig_run_ai = window.run_ai;
-/* We patch via result handler — override the format toggle */
+/* ── تبديل تنسيق النتيجة (Markdown ↔ نص خام) ── */
+var _ai_raw_text = '';
 function toggle_result_format(){
   var box = document.getElementById('ai-result');
   var btn = document.getElementById('format-btn');
   if(!box) return;
   if(box.classList.contains('rendered')){
-    box.textContent = box.innerText || box.textContent;
+    /* حفظ النص الخام وعرضه */
+    _ai_raw_text = box.innerText || box.textContent;
+    box.textContent = _ai_raw_text;
     box.classList.remove('rendered');
     if(btn) btn.innerHTML = '<i class="fa-solid fa-eye"></i>';
   } else {
-    box.innerHTML = render_md(box.textContent || box.innerText);
+    /* إعادة الرندر */
+    box.innerHTML = render_md(_ai_raw_text || box.textContent);
     box.classList.add('rendered');
     if(btn) btn.innerHTML = '<i class="fa-solid fa-code"></i>';
   }
@@ -2452,26 +2491,7 @@ function open_tool(name){
   open_modal('ai-modal');
 }
 
-/* Patch run_ai to inject checker source/date into prompt */
-var _run_ai_orig = window.run_ai;
-window.addEventListener('load', function(){
-  var _orig = window.run_ai;
-  window.run_ai = async function(){
-    if(window.CUR_TOOL === 'checker'){
-      var src_val  = (document.getElementById('checker-source') || {}).value || '';
-      var date_val = (document.getElementById('checker-date') || {}).value || '';
-      var inp = document.getElementById('ai-input');
-      if(inp && (src_val || date_val)){
-        var prefix = '';
-        if(src_val)  prefix += 'المصدر: ' + src_val + '\n';
-        if(date_val) prefix += 'التاريخ: ' + date_val + '\n';
-        prefix += '\n';
-        inp.value = prefix + inp.value;
-      }
-    }
-    return _orig.apply(this, arguments);
-  };
-});
+/* v6 checker patch — superseded by new run_ai */
 
 /* ── FILE ATTACH (DOM API — zero quote nesting) ── */
 function handle_attach(inputId, previewId, textareaId){
@@ -2686,47 +2706,7 @@ function select_ai_model(m){
   }
 }
 
-/* ── PATCH run_ai to use CUR_AI_MODEL ── */
-var _run_ai_orig_v7 = null;
-document.addEventListener('DOMContentLoaded', function(){
-  var _orig = window.run_ai;
-  if(!_orig) return;
-  window.run_ai = async function(){
-    if(CUR_AI_MODEL === 'qwen'){
-      var inp = (document.getElementById('ai-input') || {}).value || '';
-      if(!inp.trim()) return toast('أدخل نصاً', 'error');
-      if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية', 'error');
-      show_load('ai-load');
-      var runBtn = document.getElementById('ai-run-btn');
-      if(runBtn) runBtn.disabled = true;
-      hide_result_ai();
-      try{
-        var prompt = (window.PROMPTS && window.CUR_TOOL && window.PROMPTS[window.CUR_TOOL])
-          ? window.PROMPTS[window.CUR_TOOL] + '\n\n' + inp
-          : inp;
-        /* checker: inject source + date */
-        if(window.CUR_TOOL === 'checker'){
-          var sv = (document.getElementById('checker-source') || {}).value || '';
-          var dv = (document.getElementById('checker-date') || {}).value || '';
-          if(sv || dv) prompt = (sv ? 'المصدر: '+sv+'\n' : '') + (dv ? 'التاريخ: '+dv+'\n' : '') + '\n' + prompt;
-        }
-        var res = await qwen_call(prompt);
-        var box = document.getElementById('ai-result');
-        if(box){
-          box.innerHTML = render_md(res);
-          box.className = 'result-box rendered';
-        }
-        show_result_ai();
-        refresh_quota_ui();
-        select_ai_model('qwen');
-        await arc_auto(window.CUR_TOOL_NAME || 'Qwen', inp.substring(0,200), res);
-      }catch(e){ toast('خطأ Qwen: ' + e.message, 'error'); }
-      finally{ hide('ai-load'); if(runBtn) runBtn.disabled = false; }
-    } else {
-      return _orig.apply(this, arguments);
-    }
-  };
-});
+/* v7 Qwen patch — superseded by unified run_ai */
 
 /* ── AG_SEARCH (DOM API, no template literals) ── */
 async function ag_search(){
@@ -2885,16 +2865,58 @@ async function load_ticker(){
 
 
 
-/* ── SMART RECORDING v7 ── */
+/* ── SMART RECORDING v8 — تفريغ صوتي حقيقي عبر Gemini Multimodal ── */
 var _sr_blob = null;
 var _sr_blob_url = null;
+
+/* تحويل Blob إلى Base64 */
+async function blob_to_base64(blob){
+  var ab = await blob.arrayBuffer();
+  var ua = new Uint8Array(ab);
+  var bin = '';
+  var CHUNK = 8192;
+  for(var i=0; i<ua.length; i+=CHUNK){
+    bin += String.fromCharCode.apply(null, ua.subarray(i, Math.min(i+CHUNK, ua.length)));
+  }
+  return btoa(bin);
+}
+
+/* تفريغ صوتي حقيقي بإرسال الملف الصوتي إلى Gemini */
+async function transcribe_audio_gemini(blob){
+  if(!GEMINI_KEY){
+    if(localStorage.getItem('gemini_key')) GEMINI_KEY = localStorage.getItem('gemini_key');
+    else throw new Error('مفتاح Gemini API غير موجود — أدخله من الإعدادات');
+  }
+  var b64 = await blob_to_base64(blob);
+  var model = (document.getElementById('ai-model-select')||{}).value || 'gemini-2.0-flash';
+  var r = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_KEY,
+    {
+      method : 'POST',
+      headers: {'Content-Type':'application/json'},
+      body   : JSON.stringify({
+        contents:[{
+          parts:[
+            { inlineData:{ mimeType:'audio/webm', data:b64 } },
+            { text:'فرّغ هذا التسجيل الصوتي كلمةً بكلمة باللهجة أو اللغة المستخدمة (عربية فصحى أو عامية أو فرنسية). حافظ على التسلسل الطبيعي للكلام. إذا وُجد متحدثان أو أكثر فميّز بينهم. لا تضف تعليقات خارج النص المفرَّغ.' }
+          ]
+        }],
+        generationConfig:{ temperature:0, maxOutputTokens:8192 }
+      })
+    }
+  );
+  if(!r.ok){ var e=await r.json(); throw new Error((e.error&&e.error.message)||'خطأ في التفريغ'); }
+  var d = await r.json();
+  inc_requests();
+  return (d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text) || '';
+}
 
 async function process_smart_rec(){
   var blob = new Blob(smartChunks, {type:'audio/webm'});
   _sr_blob = blob;
   _sr_blob_url = URL.createObjectURL(blob);
 
-  /* Show audio player */
+  /* عرض مشغل الصوت */
   var player = document.getElementById('sr-audio-player');
   if(player){ player.src = _sr_blob_url; player.load(); }
   var wrap = document.getElementById('sr-audio-wrap');
@@ -2904,21 +2926,18 @@ async function process_smart_rec(){
   document.getElementById('sr-timer').style.display = 'none';
   document.getElementById('sr-result').style.display = 'block';
 
-  /* Auto-transcribe */
+  /* تفريغ تلقائي */
   var load = document.getElementById('sr-trans-load');
   if(load) load.style.display = 'flex';
   try{
-    var prompt = 'فرّغ هذا التسجيل الصوتي كلمةً بكلمة باللهجة أو اللغة المستخدمة (عربية فصحى أو عامية أو فرنسية). حافظ على التسلسل الطبيعي للكلام. لا تضف تعليقات خارج النص. التسجيل المرفق: [ملف صوتي webm]\n\nالمحتوى المقدر من سياق التسجيل الصوتي:';
-    var res;
-    try{ res = await gemini(prompt); }
-    catch(e){ res = await qwen_call(prompt); }
+    var res = await transcribe_audio_gemini(blob);
     var ta = document.getElementById('sr-transcription');
     if(ta) ta.value = res;
-    document.getElementById('sr-status').textContent = '✅ اكتمل التفريغ';
+    document.getElementById('sr-status').textContent = res ? '✅ اكتمل التفريغ التلقائي' : '✅ التسجيل محفوظ — يمكنك إدخال النص يدوياً';
   }catch(e){
     var ta = document.getElementById('sr-transcription');
     if(ta) ta.value = '';
-    document.getElementById('sr-status').textContent = '⚠ التسجيل محفوظ — أدخل النص يدوياً';
+    document.getElementById('sr-status').textContent = '⚠ ' + (e.message||'خطأ في التفريغ') + ' — يمكنك إدخال النص يدوياً';
   }finally{
     if(load) load.style.display = 'none';
   }
@@ -2969,11 +2988,11 @@ function sr_save_txt(){
 
 async function convert_to_article(){
   var txt = (document.getElementById('sr-transcription') || {}).value || '';
-  if(!txt.trim()) return toast('أدخل النص أولاً','error');
+  if(!txt.trim()) return toast('أدخل النص أولاً أو فرّغ التسجيل أولاً','error');
   var artWrap = document.getElementById('sr-article');
   var artBox  = document.getElementById('sr-article-content');
   if(artWrap) artWrap.style.display = 'block';
-  if(artBox)  artBox.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري الصياغة...</span></div>';
+  if(artBox)  artBox.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري الصياغة وفق معايير وات...</span></div>';
   try{
     var prompt = PROMPTS.editor + '\n\n---\nنص التسجيل المفرَّغ:\n' + txt;
     var res;
@@ -2981,8 +3000,10 @@ async function convert_to_article(){
     catch(e){ res = await qwen_call(prompt); }
     if(artBox){ artBox.innerHTML = render_md(res); artBox.className = 'result-box rendered'; }
     await arc_auto('تسجيل ذكي', txt.substring(0,200), res);
+    toast('✅ تم تحويل التسجيل إلى مقال وفق معايير وات','success');
   }catch(e){
     if(artBox) artBox.innerHTML = '<p style="color:var(--danger)">خطأ: ' + e.message + '</p>';
+    toast('خطأ: ' + e.message, 'error');
   }
 }
 
