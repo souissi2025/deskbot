@@ -938,8 +938,7 @@ textarea{min-height:120px;line-height:1.7}
     </div>
 
 
-    <div id="ticker-wrap" style="overflow:hidden;max-height:0;opacity:0;margin-bottom:0;
-      transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin .4s ease">
+    <div id="ticker-wrap" style="overflow:hidden;max-height:0;opacity:0;margin-bottom:0;transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease,margin .4s ease">
       <div style="background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
         border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:20px">
         <div style="padding:10px 16px;display:flex;align-items:center;gap:10px;
@@ -989,18 +988,19 @@ textarea{min-height:120px;line-height:1.7}
       </div>
       <div class="welcome-stats">
         <div class="w-stat">
-          <div class="w-stat-val" id="ws-requests">0</div>
-          <div class="w-stat-lbl">طلبات اليوم</div>
+          <div class="w-stat-val" id="ws-pro">0<span style="font-size:10px;color:var(--text3)">/100</span></div>
+          <div class="w-stat-lbl">PRO</div>
         </div>
         <div class="w-stat">
-          <div class="w-stat-val" id="ws-remaining">1500</div>
-          <div class="w-stat-lbl">متبقية</div>
+          <div class="w-stat-val" id="ws-flash">0<span style="font-size:10px;color:var(--text3)">/500</span></div>
+          <div class="w-stat-lbl">Flash</div>
+        </div>
+        <div class="w-stat">
+          <div class="w-stat-val" id="ws-qwen">0<span style="font-size:10px;color:var(--text3)">/50</span></div>
+          <div class="w-stat-lbl">Qwen</div>
         </div>
       </div>
     </div>
-
-    <div class="activity-bar" id="activity-bar" style="display:none">
-      <div class="activity-label">آخر الأنشطة</div>
       <div class="activity-scroll" id="activity-scroll"></div>
     </div>
 
@@ -1044,14 +1044,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_qwen_modal()" style="border-color:rgba(139,92,246,.28);position:relative">
-        <div class="t-shortcut" style="color:#a78bfa;font-size:9px">Qwen 3 Free</div>
-        <div class="t-icon ic-purple"><i class="fa-solid fa-robot"></i></div>
-        <div class="t-content">
-          <div class="t-name" style="font-size:15px">Qwen AI</div>
-          <div class="t-desc">نموذج مجاني · <span id="qwen-card-quota" style="background:rgba(139,92,246,.2);color:#a78bfa;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700">0/50</span></div>
-        </div>
-      </div>
+      
 
     </div>
 
@@ -1857,7 +1850,7 @@ auth.onAuthStateChanged(u=>{
     document.getElementById('avatar').textContent=init;
     load_api_key();
     update_welcome();
-    load_daily_requests();
+    load_user_stats(); load_daily_requests();
     setTimeout(init_extras,500);
   }else{
     document.getElementById('login-screen').style.display='flex';
@@ -1938,37 +1931,99 @@ async function gemini(prompt){
 }
 
 // ============================================================
-// QUOTA COUNTER
+// QUOTA COUNTER — per-user (Firestore) · PRO=100 · Flash=500 · Qwen=50
 // ============================================================
-async function load_daily_requests(){
+var USER_STATS = {pro:0, flash:0, qwen:0};
+var QUOTA_LIMITS = {pro:100, flash:500, qwen:50};
+var QUOTA_TOOL_MAP = {
+  editor:'pro', rewrite:'pro', headlines:'pro',
+  flash:'flash', transcribe:'flash',
+  monitor:'pro', checker:'pro', today:'pro',
+  matches:'pro', profile:'pro', article:'pro'
+};
+
+function _stats_doc_id(){
+  return new Date().toISOString().slice(0,10); // YYYY-MM-DD
+}
+
+async function load_user_stats(){
+  if(!USER) return;
   try{
-    const today=new Date().toDateString();
-    const stored=localStorage.getItem('deskbot_req_'+today);
-    dailyRequests=stored?parseInt(stored):0;
-    update_quota_ui();
-  }catch(e){}
-}
-function inc_requests(){
-  dailyRequests++;
-  const today=new Date().toDateString();
-  localStorage.setItem('deskbot_req_'+today,dailyRequests);
+    var doc = await db.collection('user_stats')
+      .doc(USER.uid)
+      .collection('daily')
+      .doc(_stats_doc_id())
+      .get();
+    if(doc.exists){
+      var d = doc.data();
+      USER_STATS.pro   = d.pro   || 0;
+      USER_STATS.flash = d.flash || 0;
+      USER_STATS.qwen  = d.qwen  || 0;
+    } else {
+      USER_STATS = {pro:0, flash:0, qwen:0};
+    }
+  } catch(e){ console.warn('stats load err', e); }
   update_quota_ui();
-
-  var _ws=document.getElementById('ws-requests');if(_ws)_ws.textContent=dailyRequests;
-  var _wr=document.getElementById('ws-remaining');if(_wr)_wr.textContent=Math.max(0,1500-dailyRequests);
 }
+
+async function inc_user_stat(type){
+  if(!USER) return;
+  USER_STATS[type] = (USER_STATS[type]||0) + 1;
+  update_quota_ui();
+  try{
+    var ref = db.collection('user_stats')
+      .doc(USER.uid)
+      .collection('daily')
+      .doc(_stats_doc_id());
+    var upd = {};
+    upd[type] = firebase.firestore.FieldValue.increment(1);
+    upd['updated'] = firebase.firestore.FieldValue.serverTimestamp();
+    upd['user'] = USER.displayName || USER.email;
+    await ref.set(upd, {merge:true});
+  } catch(e){ console.warn('stats save err', e); }
+}
+
+function check_quota(type){
+  var used  = USER_STATS[type] || 0;
+  var limit = QUOTA_LIMITS[type] || 100;
+  if(used >= limit){
+    toast('⛔ وصلت إلى الحد اليومي لـ ' + type.toUpperCase() + ' (' + limit + ' عملية). حاول غداً.', 'error');
+    return false;
+  }
+  if(used >= limit * 0.9){
+    toast('⚠️ اقتربت من الحد اليومي: ' + used + '/' + limit, 'error');
+  }
+  return true;
+}
+
+// Legacy shim — keep arc/other code working
+var dailyRequests = 0;
+function inc_requests(){
+  var type = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
+  inc_user_stat(type);
+  dailyRequests++;
+}
+
 function update_quota_ui(){
-  const pct=Math.min((dailyRequests/1500)*100,100);
-  document.getElementById('quota-fill').style.width=pct+'%';
-  const fill=document.getElementById('quota-fill');
-  fill.style.background=pct>80?'#ef4444':pct>50?'#f59e0b':'#10c98a';
-  document.getElementById('quota-text').textContent=dailyRequests+' / 1500';
-  document.getElementById('ws-requests').textContent=dailyRequests;
-  document.getElementById('ws-remaining').textContent=Math.max(1500-dailyRequests,0);
-  if(dailyRequests>=1400) toast('⚠️ اقتربت من حد الكوتا اليومية','error');
+  // Header quota bar — based on PRO usage
+  var pPro = Math.min((USER_STATS.pro / QUOTA_LIMITS.pro)*100, 100);
+  var fill = document.getElementById('quota-fill');
+  if(fill){
+    fill.style.width = pPro + '%';
+    fill.style.background = pPro>90?'#ef4444':pPro>70?'#f59e0b':'#10c98a';
+  }
+  var qt = document.getElementById('quota-text');
+  if(qt) qt.textContent = USER_STATS.pro + ' / ' + QUOTA_LIMITS.pro;
+
+  // Welcome stats
+  var wp = document.getElementById('ws-pro');
+  var wf = document.getElementById('ws-flash');
+  var wq = document.getElementById('ws-qwen');
+  if(wp) wp.innerHTML = USER_STATS.pro + '<span style="font-size:10px;color:var(--text3)">/' + QUOTA_LIMITS.pro + '</span>';
+  if(wf) wf.innerHTML = USER_STATS.flash + '<span style="font-size:10px;color:var(--text3)">/' + QUOTA_LIMITS.flash + '</span>';
+  if(wq) wq.innerHTML = USER_STATS.qwen + '<span style="font-size:10px;color:var(--text3)">/' + QUOTA_LIMITS.qwen + '</span>';
 }
 
-// ============================================================
 // LIVE CLOCK
 // ============================================================
 function update_clock(){
@@ -2075,6 +2130,10 @@ async function run_ai(){
   var inp = (document.getElementById('ai-input')||{}).value || '';
   inp = inp.trim();
   if(!inp) return toast('أدخل النص أولاً','error');
+
+  /* ── فحص الكوتا الفردية ── */
+  var _qtype = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
+  if(!check_quota(_qtype)) return;
 
   /* ── بناء البرومبت الكامل ── */
   var promptText = inp;
