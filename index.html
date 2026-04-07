@@ -2485,7 +2485,7 @@ async function run_today(){
     box.innerHTML=render_md(res);
     box.className='result-box rendered';
     document.getElementById('today-result-wrap').style.display='block';
-    await arc_auto('حدث في مثل هذا اليوم',fmt,res);
+    await arc_auto('حدث اليوم',fmt,res);
   }catch(e){toast('خطأ: '+e.message,'error');}
   finally{hide('today-load');}
 }
