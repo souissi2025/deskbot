@@ -2195,6 +2195,12 @@ async function run_ai(){
     if(pfx) promptText = pfx + '\n' + promptText;
   }
 
+  // رسالة تحميل خاصة بمحرر Pro
+  var _aiLoadEl = document.getElementById('ai-load');
+  if(_aiLoadEl && CUR_TOOL === 'editor'){
+    var _lt = _aiLoadEl.querySelector('p,span,.load-text');
+    if(_lt) _lt.textContent = 'جاري إعداد المادة الإخبارية... يرجى الانتظار بضع ثوانٍ.';
+  }
   show_load('ai-load');
   hide_result_ai();
   var runBtn = document.getElementById('ai-run-btn');
@@ -2214,8 +2220,25 @@ async function run_ai(){
     } else {
       /* Pro: system_instruction منفصل + temperature:0.1 */
       var sysPr = PROMPTS[CUR_TOOL] || SYS;
-      res = await gemini(sysPr, promptText);
-      await inc_user_stat('pro');
+      if(CUR_TOOL === 'editor'){
+        // محرر Pro: Gemini أولاً ثم Qwen احتياطياً إذا فشل
+        try{
+          res = await gemini(sysPr, promptText);
+          await inc_user_stat('pro');
+        } catch(geminiErr){
+          toast('تعذر الاتصال بـ Gemini، نحاول مع Qwen...','error');
+          if(!OR_KEY){ var _s2=localStorage.getItem('or_key'); if(_s2) OR_KEY=_s2; }
+          if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter كبديل'); }
+          if(get_or_q() >= OR_MAX) throw new Error('استُنفدت حصة Qwen اليومية (50 طلب)');
+          res = await qwen_call(sysPr + '\n\n' + promptText);
+          res = '🔄 نسخة Qwen (بديل Gemini):\n\n' + res;
+          inc_or_q();
+          await inc_user_stat('qwen');
+        }
+      } else {
+        res = await gemini(sysPr, promptText);
+        await inc_user_stat('pro');
+      }
     }
 
     var box = document.getElementById('ai-result');
@@ -2610,7 +2633,7 @@ function toggle_result_format(){
 /* ── CHECKER: show/hide extra fields + build prompt ── */
 function open_tool(name){
   var TOOLS_LOCAL = {
-    editor   : {title:'المحرر الرقمي Pro',label:'أدخل النص الخام أو معطيات الخبر',ph:'الصق هنا النص الخام أو اكتب معطيات الخبر...'},
+    editor   : {title:'المحرر الرقمي Pro',label:'الصق هنا نص الخبر الخام (تصريح، بلاغ، تقرير مراسل...) بدون تنسيق.',ph:'الصق هنا نص الخبر الخام (تصريح، بلاغ، تقرير مراسل...) بدون تنسيق.'},
     rewrite  : {title:'إعادة صياغة احترافية',label:'أدخل النص المراد إعادة صياغته',ph:'الصق النص هنا...'},
     headlines: {title:'عناوين احترافية',label:'أدخل نص الخبر',ph:'الصق النص هنا...'},
     flash    : {title:'فلاش إخباري',label:'أدخل معطيات الخبر',ph:'اكتب أو الصق الخبر هنا...'},
