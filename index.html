@@ -2252,11 +2252,39 @@ async function run_ai(){
               res = _imgRes;
 
             } else if(_ftype.startsWith('audio/')){
-              // صوت → تفريغ أولاً ثم تمرير النص للبرومبت
+              // صوت → تفريغ مباشر بـ mimeType الصحيح ثم تمرير النص للبرومبت
+              if(!GEMINI_KEY){ var _gka=localStorage.getItem('gemini_key'); if(_gka) GEMINI_KEY=_gka; }
+              if(!GEMINI_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _statusEl2 = document.getElementById('ai-load');
               var _lt2 = _statusEl2 ? _statusEl2.querySelector('p,span,.load-text') : null;
               if(_lt2) _lt2.textContent = 'جاري تفريغ الملف الصوتي...';
-              var _transcript = await transcribe_audio_gemini(_f);
+              // تحويل الملف إلى base64 مع استخدام mimeType الفعلي للملف
+              var _b64aud = await blob_to_base64(_f);
+              var _realMime = _ftype || 'audio/mpeg';
+              var _audModels = ['gemini-2.5-flash','gemini-2.5-pro','gemini-2.5-flash-lite'];
+              var _transcript = null, _audErr = '';
+              for(var _ai=0; _ai<_audModels.length; _ai++){
+                try{
+                  var _ar = await fetch(
+                    'https://generativelanguage.googleapis.com/v1beta/models/'+_audModels[_ai]+':generateContent?key='+GEMINI_KEY,
+                    { method:'POST', headers:{'Content-Type':'application/json'},
+                      body: JSON.stringify({
+                        contents:[{ parts:[
+                          { inlineData:{ mimeType: _realMime, data: _b64aud } },
+                          { text: 'فرّغ هذا التسجيل الصوتي كلمةً بكلمة باللهجة أو اللغة المستخدمة (عربية فصحى أو عامية أو فرنسية). لا تضف تعليقات خارج النص المفرَّغ.' }
+                        ]}],
+                        generationConfig:{ temperature:0, maxOutputTokens:8192 }
+                      })
+                    }
+                  );
+                  if(_ar.ok){
+                    var _ad = await _ar.json();
+                    _transcript = _ad.candidates?.[0]?.content?.parts?.[0]?.text || null;
+                    if(_transcript){ inc_requests(); break; }
+                  } else { var _ae=await _ar.json(); _audErr=(_ae.error&&_ae.error.message)||'خطأ HTTP '+_ar.status; }
+                } catch(_aex){ _audErr=_aex.message; }
+              }
+              if(!_transcript) throw new Error('تعذر تفريغ الصوت: ' + _audErr);
               var _combinedText = (_cleanPrompt ? _cleanPrompt + '\n\n' : '') + 'النص المفرَّغ من التسجيل:\n' + _transcript;
               if(_lt2) _lt2.textContent = 'جاري إعداد المادة الإخبارية... يرجى الانتظار بضع ثوانٍ.';
               res = await gemini(sysPr, _combinedText);
@@ -2318,8 +2346,26 @@ async function run_ai(){
           var _qwenInput = _cleanPrompt || promptText;
           if(_liveFile && _liveFile.type.startsWith('audio/')){
             try{
-              var _qt = await transcribe_audio_gemini(_liveFile);
-              _qwenInput = (_qwenInput ? _qwenInput + '\n\n' : '') + 'النص المفرَّغ:\n' + _qt;
+              // تفريغ الصوت بـ mimeType الفعلي قبل إرساله لـ Qwen
+              var _b64qaud = await blob_to_base64(_liveFile);
+              var _qaudMime = _liveFile.type || 'audio/mpeg';
+              var _qar = await fetch(
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+GEMINI_KEY,
+                { method:'POST', headers:{'Content-Type':'application/json'},
+                  body: JSON.stringify({
+                    contents:[{ parts:[
+                      { inlineData:{ mimeType: _qaudMime, data: _b64qaud } },
+                      { text: 'فرّغ هذا التسجيل الصوتي كلمةً بكلمة. لا تضف تعليقات.' }
+                    ]}],
+                    generationConfig:{ temperature:0, maxOutputTokens:8192 }
+                  })
+                }
+              );
+              if(_qar.ok){
+                var _qad = await _qar.json();
+                var _qt = _qad.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                if(_qt) _qwenInput = (_qwenInput ? _qwenInput + '\n\n' : '') + 'النص المفرَّغ:\n' + _qt;
+              }
             } catch(_){ }
           }
           res = await qwen_call(sysPr + '\n\n' + _qwenInput);
