@@ -1049,7 +1049,7 @@ textarea{min-height:120px;line-height:1.7}
 
 
 
-      <div class="tool-card mini" onclick="open_today()">
+      <div class="tool-card mini" onclick="document.querySelectorAll('.overlay.open').forEach(function(o){o.classList.remove('open')});open_today();">
         <div class="t-icon ic-amber"><i class="fa-solid fa-calendar-day"></i></div>
         <div class="t-name">حدث في مثل هذا اليوم</div>
       </div>
@@ -2463,8 +2463,6 @@ function toggle_focus(id){
 // ============================================================
 
 function open_today(){
-  // إغلاق كل الـ overlays المفتوحة أولاً
-  document.querySelectorAll('.overlay.open').forEach(function(o){o.classList.remove('open');});
   var d=new Date();
   var di=document.getElementById('today-day');
   var mi=document.getElementById('today-month');
