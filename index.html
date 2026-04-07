@@ -1147,7 +1147,7 @@ textarea{min-height:120px;line-height:1.7}
       <div class="attach-bar">
         <label class="attach-btn">
           <i class="fa-solid fa-paperclip"></i> إرفاق ملف
-          <input type="file" id="ai-file" accept="audio/*,image/*,video/*"
+          <input type="file" id="ai-file" accept="audio/*,image/*,video/*,application/pdf,text/*,.pdf,.doc,.docx,.txt"
             onchange="handle_attach('ai-file','ai-attach-preview','ai-input')" style="display:none">
         </label>
         <div id="ai-attach-preview" class="attach-preview"></div>
@@ -2221,20 +2221,114 @@ async function run_ai(){
       /* Pro: system_instruction منفصل + temperature:0.1 */
       var sysPr = PROMPTS[CUR_TOOL] || SYS;
       if(CUR_TOOL === 'editor'){
-        // محرر Pro: Gemini أولاً ثم Qwen احتياطياً إذا فشل
+        // ── محرر Pro: معالجة المرفقات + Gemini أولاً ثم Qwen احتياطياً ──
         try{
-          res = await gemini(sysPr, promptText);
-          await inc_user_stat('pro');
+          if(AI_ATTACHED_FILE){
+            var _f = AI_ATTACHED_FILE;
+            var _ftype = _f.type || '';
+
+            if(_ftype.startsWith('image/')){
+              // صورة → base64 → Gemini Vision
+              var _b64img = await blob_to_base64(_f);
+              var _imgBody = {
+                system_instruction: { parts:[{ text: sysPr }] },
+                contents:[{ role:'user', parts:[
+                  { inlineData:{ mimeType: _ftype, data: _b64img } },
+                  { text: promptText || 'حوّل محتوى هذه الصورة إلى مادة إخبارية وفق التعليمات.' }
+                ]}],
+                generationConfig:{ temperature:0.15, topP:0.95, maxOutputTokens:4096 }
+              };
+              var _models = ['gemini-2.5-pro','gemini-2.5-flash','gemini-2.5-flash-lite'];
+              var _imgRes = null, _imgErr = '';
+              for(var _mi=0;_mi<_models.length;_mi++){
+                try{
+                  var _r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+_models[_mi]+':generateContent?key='+GEMINI_KEY,
+                    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_imgBody)});
+                  if(_r.ok){
+                    var _d = await _r.json();
+                    _imgRes = _d.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if(_imgRes){ inc_requests(); break; }
+                  }
+                } catch(_e){ _imgErr = _e.message; }
+              }
+              if(!_imgRes) throw new Error(_imgErr || 'فشل معالجة الصورة');
+              res = _imgRes;
+
+            } else if(_ftype.startsWith('audio/')){
+              // صوت → تفريغ أولاً ثم تمرير النص للبرومبت
+              var _statusEl2 = document.getElementById('ai-load');
+              var _lt2 = _statusEl2 ? _statusEl2.querySelector('p,span,.load-text') : null;
+              if(_lt2) _lt2.textContent = 'جاري تفريغ الملف الصوتي...';
+              var _transcript = await transcribe_audio_gemini(_f);
+              var _combinedText = (promptText ? promptText + '\n\n' : '') + 'النص المفرَّغ من التسجيل:\n' + _transcript;
+              if(_lt2) _lt2.textContent = 'جاري إعداد المادة الإخبارية... يرجى الانتظار بضع ثوانٍ.';
+              res = await gemini(sysPr, _combinedText);
+
+            } else if(_ftype.startsWith('video/')){
+              // فيديو → base64 → Gemini
+              var _b64vid = await blob_to_base64(_f);
+              var _vidBody = {
+                system_instruction: { parts:[{ text: sysPr }] },
+                contents:[{ role:'user', parts:[
+                  { inlineData:{ mimeType: _ftype, data: _b64vid } },
+                  { text: promptText || 'حوّل محتوى هذا الفيديو إلى مادة إخبارية وفق التعليمات.' }
+                ]}],
+                generationConfig:{ temperature:0.15, topP:0.95, maxOutputTokens:4096 }
+              };
+              var _vidRes = null;
+              var _vmodels = ['gemini-2.5-pro','gemini-2.5-flash'];
+              for(var _vi=0;_vi<_vmodels.length;_vi++){
+                try{
+                  var _vr = await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+_vmodels[_vi]+':generateContent?key='+GEMINI_KEY,
+                    {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(_vidBody)});
+                  if(_vr.ok){
+                    var _vd = await _vr.json();
+                    _vidRes = _vd.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if(_vidRes){ inc_requests(); break; }
+                  }
+                } catch(_ve){}
+              }
+              if(!_vidRes) throw new Error('فشل معالجة الفيديو');
+              res = _vidRes;
+
+            } else {
+              // PDF / نص / مستند → قراءة كنص ثم تمريره للبرومبت
+              var _textContent = await new Promise(function(resolve, reject){
+                var _fr = new FileReader();
+                _fr.onload = function(e){ resolve(e.target.result || ''); };
+                _fr.onerror = function(){ reject(new Error('تعذر قراءة الملف')); };
+                _fr.readAsText(_f, 'UTF-8');
+              });
+              var _docText = (promptText ? promptText + '\n\n' : '') + 'محتوى الملف المرفق:\n' + _textContent;
+              res = await gemini(sysPr, _docText);
+            }
+            await inc_user_stat('pro');
+
+          } else {
+            // لا يوجد مرفق → النص فقط كما كان
+            res = await gemini(sysPr, promptText);
+            await inc_user_stat('pro');
+          }
+
         } catch(geminiErr){
           toast('تعذر الاتصال بـ Gemini، نحاول مع Qwen...','error');
           if(!OR_KEY){ var _s2=localStorage.getItem('or_key'); if(_s2) OR_KEY=_s2; }
           if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter كبديل'); }
           if(get_or_q() >= OR_MAX) throw new Error('استُنفدت حصة Qwen اليومية (50 طلب)');
-          res = await qwen_call(sysPr + '\n\n' + promptText);
+          // Qwen لا يدعم الملفات مباشرة - نمرر النص المتاح فقط
+          var _qwenInput = promptText;
+          if(AI_ATTACHED_FILE && AI_ATTACHED_FILE.type.startsWith('audio/')){
+            try{
+              var _qt = await transcribe_audio_gemini(AI_ATTACHED_FILE);
+              _qwenInput = (_qwenInput ? _qwenInput + '\n\n' : '') + 'النص المفرَّغ:\n' + _qt;
+            } catch(_){ }
+          }
+          res = await qwen_call(sysPr + '\n\n' + _qwenInput);
           res = '🔄 نسخة Qwen (بديل Gemini):\n\n' + res;
           inc_or_q();
           await inc_user_stat('qwen');
         }
+
       } else {
         res = await gemini(sysPr, promptText);
         await inc_user_stat('pro');
@@ -2662,7 +2756,15 @@ function open_tool(name){
 /* v6 checker patch — superseded by new run_ai */
 
 /* ── FILE ATTACH (DOM API — zero quote nesting) ── */
+// متغير عالمي لحفظ الملف المرفق الفعلي في محرر Pro
+var AI_ATTACHED_FILE = null;
+
 function handle_attach(inputId, previewId, textareaId){
+  // حفظ الملف الفعلي عند إرفاقه في الأداة الرئيسية
+  if(inputId === 'ai-file'){
+    var _inp0 = document.getElementById(inputId);
+    AI_ATTACHED_FILE = (_inp0 && _inp0.files && _inp0.files[0]) ? _inp0.files[0] : null;
+  }
   var input = document.getElementById(inputId);
   var wrap  = document.getElementById(previewId);
   if(!input || !input.files || !input.files[0]) return;
@@ -2703,6 +2805,7 @@ function handle_attach(inputId, previewId, textareaId){
 }
 
 function remove_attach(inputId, previewId, textareaId){
+  if(inputId === 'ai-file') AI_ATTACHED_FILE = null;
   var i = document.getElementById(inputId); if(i) i.value = '';
   var p = document.getElementById(previewId); if(p) p.innerHTML = '';
   var t = document.getElementById(textareaId);
