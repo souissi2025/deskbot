@@ -826,7 +826,6 @@ textarea{min-height:120px;line-height:1.7}
 @media(max-width:600px){
   body{padding-bottom:68px!important}
   #bottom-nav{display:block!important}
-  .tools-grid{padding-bottom:80px!important}
   .bento-grid{grid-template-columns:1fr!important}
   .tool-card.featured{grid-column:1!important;grid-row:1!important}
   .tools-grid{grid-template-columns:repeat(2,1fr)!important}
@@ -878,6 +877,7 @@ textarea{min-height:120px;line-height:1.7}
 }
 
 </style>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📰</text></svg>">
 </head>
 <body>
 
@@ -1880,7 +1880,7 @@ auth.onAuthStateChanged(u=>{
     document.getElementById('avatar').textContent=init;
     load_api_key();
     update_welcome();
-    load_user_stats(); load_daily_requests();
+    load_user_stats();
     var _ok=localStorage.getItem('or_key'); if(_ok){ OR_KEY=_ok; nb_hide('or-notice'); }
     setTimeout(init_extras,500);
   }else{
