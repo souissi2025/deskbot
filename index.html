@@ -915,10 +915,7 @@ textarea{min-height:120px;line-height:1.7}
     </div>
 
     <div class="h-right">
-      <select id="ai-model-select" class="h-btn" title="النموذج">
-        <option value="gemini-2.5-flash" selected>Flash 2.5 ✨</option>
-        <option value="gemini-2.5-pro">Pro 2.5 🧠</option>
-      </select>
+      <select id="ai-model-select" style="display:none"><option value="gemini-2.5-pro" selected>Pro 2.5</option></select>
       <button class="live-pill" onclick="toggle_ticker()" title="شريط الأخبار الفوري">
         <div class="live-dot"></div>LIVE
       </button>
@@ -991,10 +988,7 @@ textarea{min-height:120px;line-height:1.7}
           <div class="w-stat-val" id="ws-pro">0<span style="font-size:10px;color:var(--text3)">/100</span></div>
           <div class="w-stat-lbl">PRO</div>
         </div>
-        <div class="w-stat">
-          <div class="w-stat-val" id="ws-flash">0<span style="font-size:10px;color:var(--text3)">/500</span></div>
-          <div class="w-stat-lbl">Flash</div>
-        </div>
+
         <div class="w-stat">
           <div class="w-stat-val" id="ws-qwen">0<span style="font-size:10px;color:var(--text3)">/50</span></div>
           <div class="w-stat-lbl">Qwen</div>
@@ -1121,23 +1115,18 @@ textarea{min-height:120px;line-height:1.7}
           border:none;cursor:pointer;border-bottom:2px solid var(--accent);
           background:transparent;color:var(--accent);transition:all .2s">
           <i class="fa-solid fa-star"></i> PRO
-        </button>
-        <button id="model-tab-flash" onclick="select_ai_model('flash')"
-          style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
-          border:none;cursor:pointer;border-bottom:2px solid transparent;
-          background:transparent;color:var(--text3);transition:all .2s">
-          <i class="fa-solid fa-bolt"></i> Flash
+          <span id="ai-pro-quota" style="font-size:9px;background:rgba(99,102,241,.2);
+          color:var(--accent);border-radius:20px;padding:1px 6px;margin-right:3px">0/100</span>
         </button>
         <button id="model-tab-qwen" onclick="select_ai_model('qwen')"
           style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
           border:none;cursor:pointer;border-bottom:2px solid transparent;
           background:transparent;color:var(--text3);transition:all .2s">
           <i class="fa-solid fa-robot"></i> Qwen
-          <span id="ai-qwen-quota" style="display:none;font-size:9px;background:rgba(139,92,246,.2);
+          <span id="ai-qwen-quota" style="font-size:9px;background:rgba(139,92,246,.2);
           color:#a78bfa;border-radius:20px;padding:1px 6px;margin-right:3px">0/50</span>
         </button>
       </div>
-    </div>
     <div class="m-body">
       <div id="checker-extra" style="display:none;margin-bottom:12px">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -1934,37 +1923,48 @@ async function save_api_key(){
 // ============================================================
 // GEMINI API
 // ============================================================
-async function gemini(prompt){
+async function gemini(systemOrFull, userText){
   if(!GEMINI_KEY){
     if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
-    else{open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً')}
+    else{open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً');}
   }
-  const selectedModel=document.getElementById('ai-model-select').value;
-  const r=await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${GEMINI_KEY}`,
+  // If called with two args: system_instruction + user content (editorial tools)
+  // If called with one arg: legacy full-prompt mode (other tools)
+  var body;
+  if(userText !== undefined){
+    body = {
+      system_instruction: { parts: [{ text: systemOrFull }] },
+      contents: [{ role: 'user', parts: [{ text: userText }] }],
+      generationConfig: { temperature: 0.1, topP: 0.1, topK: 10, maxOutputTokens: 2048 }
+    };
+  } else {
+    body = {
+      contents: [{ parts: [{ text: systemOrFull }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 4096, topP: 0.9 }
+    };
+  }
+  const r = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=' + GEMINI_KEY,
     {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts:[{text:prompt}]}],
-        generationConfig:{temperature:0.7,maxOutputTokens:4096,topP:0.9}
-      })
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
     }
   );
-  if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'خطأ في الاتصال')}
-  const d=await r.json();
+  if(!r.ok){ const e = await r.json(); throw new Error(e.error?.message || 'خطأ في الاتصال'); }
+  const d = await r.json();
   inc_requests();
-  return d.candidates?.[0]?.content?.parts?.[0]?.text||'لم تُعد نتيجة';
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || 'لم تُعد نتيجة';
 }
 
 // ============================================================
 // QUOTA COUNTER — per-user (Firestore) · PRO=100 · Flash=500 · Qwen=50
 // ============================================================
-var USER_STATS = {pro:0, flash:0, qwen:0};
-var QUOTA_LIMITS = {pro:100, flash:500, qwen:50};
+var USER_STATS = {pro:0, qwen:0};
+var QUOTA_LIMITS = {pro:100, qwen:50};
 var QUOTA_TOOL_MAP = {
   editor:'pro', rewrite:'pro', headlines:'pro',
-  flash:'flash', transcribe:'flash',
+  flash:'pro', transcribe:'pro',
   monitor:'pro', checker:'pro', today:'pro',
   matches:'pro', profile:'pro', article:'pro'
 };
@@ -1983,11 +1983,10 @@ async function load_user_stats(){
       .get();
     if(doc.exists){
       var d = doc.data();
-      USER_STATS.pro   = d.pro   || 0;
-      USER_STATS.flash = d.flash || 0;
-      USER_STATS.qwen  = d.qwen  || 0;
+      USER_STATS.pro  = d.pro  || 0;
+      USER_STATS.qwen = d.qwen || 0;
     } else {
-      USER_STATS = {pro:0, flash:0, qwen:0};
+      USER_STATS = {pro:0, qwen:0};
     }
   } catch(e){ console.warn('stats load err', e); }
   update_quota_ui();
@@ -2014,7 +2013,7 @@ function check_quota(type){
   var used  = USER_STATS[type] || 0;
   var limit = QUOTA_LIMITS[type] || 100;
   if(used >= limit){
-    toast('⛔ وصلت إلى الحد اليومي لـ ' + type.toUpperCase() + ' (' + limit + ' عملية). حاول غداً.', 'error');
+    toast('⛔ وصلت إلى الحد اليومي (' + limit + ' عملية). حاول غداً.', 'error');
     return false;
   }
   if(used >= limit * 0.9){
@@ -2025,29 +2024,44 @@ function check_quota(type){
 
 // Legacy shim — keep arc/other code working
 function inc_requests(){
-  var type = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
+  var type = 'pro';
   inc_user_stat(type);
   dailyRequests++;
 }
 
 function update_quota_ui(){
-  // Header quota bar — based on PRO usage
-  var pPro = Math.min((USER_STATS.pro / QUOTA_LIMITS.pro)*100, 100);
+  var used_pro  = USER_STATS.pro  || 0;
+  var used_qwen = USER_STATS.qwen || 0;
+  var lim_pro   = QUOTA_LIMITS.pro  || 100;
+  var lim_qwen  = QUOTA_LIMITS.qwen || 50;
+
+  // Header quota bar (PRO)
+  var pPro = Math.min((used_pro / lim_pro) * 100, 100);
   var fill = document.getElementById('quota-fill');
   if(fill){
     fill.style.width = pPro + '%';
     fill.style.background = pPro>90?'#ef4444':pPro>70?'#f59e0b':'#10c98a';
   }
   var qt = document.getElementById('quota-text');
-  if(qt) qt.textContent = USER_STATS.pro + ' / ' + QUOTA_LIMITS.pro;
+  if(qt) qt.textContent = used_pro + ' / ' + lim_pro;
+
+  // Modal tab badges
+  var badge_pro  = document.getElementById('ai-pro-quota');
+  var badge_qwen = document.getElementById('ai-qwen-quota');
+  if(badge_pro)  badge_pro.textContent  = used_pro  + '/' + lim_pro;
+  if(badge_qwen) badge_qwen.textContent = used_qwen + '/' + lim_qwen;
+
+  // Qwen standalone modal badge
+  var qb = document.getElementById('qwen-quota-badge');
+  if(qb) qb.textContent = used_qwen + ' / ' + lim_qwen;
+  var qob = document.getElementById('or-quota-badge');
+  if(qob) qob.textContent = used_qwen + ' / ' + lim_qwen;
 
   // Welcome stats
   var wp = document.getElementById('ws-pro');
-  var wf = document.getElementById('ws-flash');
   var wq = document.getElementById('ws-qwen');
-  if(wp) wp.innerHTML = USER_STATS.pro + '<span style="font-size:10px;color:var(--text3)">/' + QUOTA_LIMITS.pro + '</span>';
-  if(wf) wf.innerHTML = USER_STATS.flash + '<span style="font-size:10px;color:var(--text3)">/' + QUOTA_LIMITS.flash + '</span>';
-  if(wq) wq.innerHTML = USER_STATS.qwen + '<span style="font-size:10px;color:var(--text3)">/' + QUOTA_LIMITS.qwen + '</span>';
+  if(wp) wp.innerHTML = used_pro  + '<span style="font-size:10px;color:var(--text3)">/' + lim_pro  + '</span>';
+  if(wq) wq.innerHTML = used_qwen + '<span style="font-size:10px;color:var(--text3)">/' + lim_qwen + '</span>';
 }
 
 // LIVE CLOCK
@@ -2158,10 +2172,10 @@ async function run_ai(){
   if(!inp) return toast('أدخل النص أولاً','error');
 
   /* ── فحص الكوتا الفردية ── */
-  var _qtype = (CUR_AI_MODEL === 'qwen') ? 'qwen' : (QUOTA_TOOL_MAP[CUR_TOOL] || 'pro');
+  var _qtype = (CUR_AI_MODEL === 'qwen') ? 'qwen' : 'pro';
   if(!check_quota(_qtype)) return;
 
-  /* ── بناء البرومبت الكامل ── */
+  /* ── بناء النص للمستخدم فقط (checker يُضيف مصدر+تاريخ) ── */
   var promptText = inp;
   if(CUR_TOOL === 'checker'){
     var src_v  = (document.getElementById('checker-source')||{}).value||'';
@@ -2171,7 +2185,6 @@ async function run_ai(){
     if(dat_v)  pfx += 'التاريخ: ' + dat_v + '\n';
     if(pfx) promptText = pfx + '\n' + promptText;
   }
-  var fullPrompt = (PROMPTS[CUR_TOOL] || SYS) + '\n\n' + promptText;
 
   show_load('ai-load');
   hide_result_ai();
@@ -2181,24 +2194,29 @@ async function run_ai(){
   try{
     var res;
     if(CUR_AI_MODEL === 'qwen'){
+      if(!OR_KEY){ var _ok2=localStorage.getItem('or_key'); if(_ok2) OR_KEY=_ok2; }
       if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter أولاً'); }
       if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية (50 طلب)','error');
-      res = await qwen_call(fullPrompt);
+      /* Qwen: إرسال system + user منفصلَين */
+      var systemPr = PROMPTS[CUR_TOOL] || SYS;
+      res = await qwen_call(systemPr + '\n\n' + promptText);
       inc_or_q();
       await inc_user_stat('qwen');
-      refresh_quota_ui();
     } else {
-      res = await gemini(fullPrompt);
-      var _mt = QUOTA_TOOL_MAP[CUR_TOOL] || 'pro';
-      await inc_user_stat(_mt);
+      /* Pro: system_instruction منفصل + temperature:0.1 */
+      var sysPr = PROMPTS[CUR_TOOL] || SYS;
+      res = await gemini(sysPr, promptText);
+      await inc_user_stat('pro');
     }
 
     var box = document.getElementById('ai-result');
+    if(!box){ throw new Error('عنصر النتيجة غير موجود'); }
     box.innerHTML = render_md(res);
     box.className = 'result-box rendered';
     isResultRaw = false;
 
     show_result_ai();
+    update_quota_ui();
 
     var tName = CUR_TOOL_NAME || CUR_TOOL || 'AI';
     add_activity(tName, res.substring(0,60));
@@ -2695,16 +2713,20 @@ async function qwen_call(prompt){
     method  : 'POST',
     headers : { 'Content-Type':'application/json',
                 'Authorization':'Bearer ' + OR_KEY,
-                'HTTP-Referer':'https://deskbot-seven.vercel.app' },
-    body: JSON.stringify({ model:'qwen/qwen3-235b-a22b:free',
-      messages:[{role:'user',content:prompt}], max_tokens:4096 })
+                'HTTP-Referer':'https://deskbot-seven.vercel.app',
+                'X-Title':'DeskBot' },
+    body: JSON.stringify({
+      model: 'qwen/qwen3-235b-a22b:free',
+      messages: [{role:'user', content:prompt}],
+      max_tokens: 4096,
+      temperature: 0.3
+    })
   });
   if(!resp.ok){
     var err = await resp.json().catch(function(){ return {}; });
     throw new Error((err.error && err.error.message) ? err.error.message : 'خطأ OpenRouter ' + resp.status);
   }
   var data = await resp.json();
-  inc_or_q();
   return data.choices[0].message.content;
 }
 
@@ -2714,18 +2736,23 @@ var _qwen_raw = false;
 async function run_qwen(){
   var inp = document.getElementById('qwen-input').value.trim();
   if(!inp) return toast('أدخل نصاً أولاً','error');
-  if(get_or_q() >= OR_MAX) return toast('استُنفدت الحصة اليومية','error');
+  // تحقق من المفتاح أولاً
+  if(!OR_KEY){ var _s=localStorage.getItem('or_key'); if(_s) OR_KEY=_s; }
+  if(!OR_KEY){ open_modal('settings-modal'); return toast('أدخل مفتاح OpenRouter أولاً','error'); }
+  if(get_or_q() >= OR_MAX) return toast('استُنفدت الحصة اليومية (50 طلب)','error');
   show_load('qwen-load');
   document.getElementById('qwen-run-btn').disabled = true;
   document.getElementById('qwen-result-wrap').style.display = 'none';
   try{
     var res = await qwen_call(SYS + '\n\n' + inp);
+    inc_or_q();
+    await inc_user_stat('qwen');
     var box = document.getElementById('qwen-result');
     box.innerHTML = render_md(res);
     box.className = 'result-box rendered';
     _qwen_raw = false;
     document.getElementById('qwen-result-wrap').style.display = 'block';
-    refresh_quota_ui();
+    update_quota_ui();
     await arc_auto('Qwen AI', inp.substring(0,200), res);
   }catch(e){ toast('خطأ Qwen: ' + e.message, 'error'); }
   finally{
@@ -2793,14 +2820,11 @@ var CUR_AI_MODEL = 'pro';
 
 function select_ai_model(m){
   CUR_AI_MODEL = m;
-  // Sync header dropdown to match tab selection
+  // Always Pro for gemini
   var dd = document.getElementById('ai-model-select');
-  if(dd){
-    if(m === 'pro')   dd.value = 'gemini-2.5-pro';
-    if(m === 'flash') dd.value = 'gemini-2.5-flash';
-  }
-  var tabs = ['pro','flash','qwen'];
-  var colors = {pro:'var(--accent)', flash:'var(--gold)', qwen:'#a78bfa'};
+  if(dd){ dd.value = 'gemini-2.5-pro'; }
+  var tabs = ['pro','qwen'];
+  var colors = {pro:'var(--accent)', qwen:'#a78bfa'};
   for(var i=0; i<tabs.length; i++){
     var t = document.getElementById('model-tab-' + tabs[i]);
     if(!t) continue;
