@@ -1944,7 +1944,7 @@ async function gemini(systemOrFull, userText){
     };
   }
   // نجرب gemini-2.5-pro-preview أولاً ثم نرجع لـ 1.5-pro
-  var models = ['gemini-2.5-flash-preview-04-17','gemini-1.5-flash-latest','gemini-1.5-flash'];
+  var models = ['gemini-2.5-flash-preview-04-17','gemini-2.0-flash','gemini-1.5-flash-001'];
   var lastErr = '';
   for(var mi=0; mi<models.length; mi++){
     try{
