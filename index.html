@@ -2211,9 +2211,14 @@ async function run_ai(){
       var sysPr = PROMPTS[CUR_TOOL] || SYS;
       if(CUR_TOOL === 'editor'){
         // ── محرر Pro: معالجة المرفقات + Gemini أولاً ثم Qwen احتياطياً ──
+        // قراءة الملف مباشرة من DOM عند الضغط على تشغيل (أضمن من المتغير العالمي)
+        var _aiFileInput = document.getElementById('ai-file');
+        var _liveFile = (_aiFileInput && _aiFileInput.files && _aiFileInput.files[0]) ? _aiFileInput.files[0] : AI_ATTACHED_FILE;
+        // تنظيف promptText من نص "[ملف مرفق...]" التلقائي
+        var _cleanPrompt = promptText.replace(/\n\n\[ملف مرفق:[^\]]*\]/g,'').replace(/\[ملف مرفق:[^\]]*\]/g,'').trim();
         try{
-          if(AI_ATTACHED_FILE){
-            var _f = AI_ATTACHED_FILE;
+          if(_liveFile){
+            var _f = _liveFile;
             var _ftype = _f.type || '';
 
             if(_ftype.startsWith('image/')){
@@ -2226,7 +2231,7 @@ async function run_ai(){
                 system_instruction: { parts:[{ text: sysPr }] },
                 contents:[{ role:'user', parts:[
                   { inlineData:{ mimeType: _ftype, data: _b64img } },
-                  { text: promptText || 'حوّل محتوى هذه الصورة إلى مادة إخبارية وفق التعليمات.' }
+                  { text: _cleanPrompt || 'حوّل محتوى هذه الصورة إلى مادة إخبارية وفق التعليمات.' }
                 ]}],
                 generationConfig:{ temperature:0.15, topP:0.95, maxOutputTokens:4096 }
               };
@@ -2252,7 +2257,7 @@ async function run_ai(){
               var _lt2 = _statusEl2 ? _statusEl2.querySelector('p,span,.load-text') : null;
               if(_lt2) _lt2.textContent = 'جاري تفريغ الملف الصوتي...';
               var _transcript = await transcribe_audio_gemini(_f);
-              var _combinedText = (promptText ? promptText + '\n\n' : '') + 'النص المفرَّغ من التسجيل:\n' + _transcript;
+              var _combinedText = (_cleanPrompt ? _cleanPrompt + '\n\n' : '') + 'النص المفرَّغ من التسجيل:\n' + _transcript;
               if(_lt2) _lt2.textContent = 'جاري إعداد المادة الإخبارية... يرجى الانتظار بضع ثوانٍ.';
               res = await gemini(sysPr, _combinedText);
 
@@ -2265,7 +2270,7 @@ async function run_ai(){
                 system_instruction: { parts:[{ text: sysPr }] },
                 contents:[{ role:'user', parts:[
                   { inlineData:{ mimeType: _ftype, data: _b64vid } },
-                  { text: promptText || 'حوّل محتوى هذا الفيديو إلى مادة إخبارية وفق التعليمات.' }
+                  { text: _cleanPrompt || 'حوّل محتوى هذا الفيديو إلى مادة إخبارية وفق التعليمات.' }
                 ]}],
                 generationConfig:{ temperature:0.15, topP:0.95, maxOutputTokens:4096 }
               };
@@ -2293,14 +2298,14 @@ async function run_ai(){
                 _fr.onerror = function(){ reject(new Error('تعذر قراءة الملف')); };
                 _fr.readAsText(_f, 'UTF-8');
               });
-              var _docText = (promptText ? promptText + '\n\n' : '') + 'محتوى الملف المرفق:\n' + _textContent;
+              var _docText = (_cleanPrompt ? _cleanPrompt + '\n\n' : '') + 'محتوى الملف المرفق:\n' + _textContent;
               res = await gemini(sysPr, _docText);
             }
             await inc_user_stat('pro');
 
           } else {
             // لا يوجد مرفق → النص فقط كما كان
-            res = await gemini(sysPr, promptText);
+            res = await gemini(sysPr, _cleanPrompt || promptText);
             await inc_user_stat('pro');
           }
 
@@ -2310,10 +2315,10 @@ async function run_ai(){
           if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter كبديل'); }
           if(get_or_q() >= OR_MAX) throw new Error('استُنفدت حصة Qwen اليومية (50 طلب)');
           // Qwen لا يدعم الملفات مباشرة - نمرر النص المتاح فقط
-          var _qwenInput = promptText;
-          if(AI_ATTACHED_FILE && AI_ATTACHED_FILE.type.startsWith('audio/')){
+          var _qwenInput = _cleanPrompt || promptText;
+          if(_liveFile && _liveFile.type.startsWith('audio/')){
             try{
-              var _qt = await transcribe_audio_gemini(AI_ATTACHED_FILE);
+              var _qt = await transcribe_audio_gemini(_liveFile);
               _qwenInput = (_qwenInput ? _qwenInput + '\n\n' : '') + 'النص المفرَّغ:\n' + _qt;
             } catch(_){ }
           }
