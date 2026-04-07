@@ -1928,33 +1928,42 @@ async function gemini(systemOrFull, userText){
     if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
     else{open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً');}
   }
-  // If called with two args: system_instruction + user content (editorial tools)
-  // If called with one arg: legacy full-prompt mode (other tools)
   var body;
   if(userText !== undefined){
+    // system_instruction منفصل + temperature صارمة للأدوات التحريرية
     body = {
       system_instruction: { parts: [{ text: systemOrFull }] },
       contents: [{ role: 'user', parts: [{ text: userText }] }],
-      generationConfig: { temperature: 0.1, topP: 0.1, topK: 10, maxOutputTokens: 2048 }
+      generationConfig: { temperature: 0.15, topP: 0.95, maxOutputTokens: 4096 }
     };
   } else {
+    // legacy: prompt كامل للأدوات الأخرى
     body = {
       contents: [{ parts: [{ text: systemOrFull }] }],
       generationConfig: { temperature: 0.7, maxOutputTokens: 4096, topP: 0.9 }
     };
   }
-  const r = await fetch(
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=' + GEMINI_KEY,
-    {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
-    }
-  );
-  if(!r.ok){ const e = await r.json(); throw new Error(e.error?.message || 'خطأ في الاتصال'); }
-  const d = await r.json();
-  inc_requests();
-  return d.candidates?.[0]?.content?.parts?.[0]?.text || 'لم تُعد نتيجة';
+  // نجرب gemini-2.5-pro-preview أولاً ثم نرجع لـ 1.5-pro
+  var models = ['gemini-2.5-pro-preview-03-25','gemini-2.0-flash','gemini-2.0-flash-lite'];
+  var lastErr = '';
+  for(var mi=0; mi<models.length; mi++){
+    try{
+      var r = await fetch(
+        'https://generativelanguage.googleapis.com/v1beta/models/' + models[mi] + ':generateContent?key=' + GEMINI_KEY,
+        { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) }
+      );
+      if(!r.ok){
+        var eBody = await r.json();
+        lastErr = eBody.error?.message || 'HTTP ' + r.status;
+        continue;
+      }
+      var d = await r.json();
+      var txt = d.candidates?.[0]?.content?.parts?.[0]?.text;
+      if(txt){ inc_requests(); return txt; }
+      lastErr = 'رد فارغ من ' + models[mi];
+    } catch(ex){ lastErr = ex.message; }
+  }
+  throw new Error(lastErr || 'فشل الاتصال بجميع النماذج');
 }
 
 // ============================================================
