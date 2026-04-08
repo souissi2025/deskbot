@@ -926,7 +926,7 @@ textarea{min-height:120px;line-height:1.7}
     </div>
 
     <div class="h-right">
-      <select id="ai-model-select" style="display:none"><option value="gemini-3.1-flash-lite-preview" selected>Pro 2.5</option></select>
+      <select id="ai-model-select" style="display:none"><option value="gemini-2.5-pro" selected>Pro 2.5</option></select>
       <button class="live-pill" onclick="toggle_ticker()" title="شريط الأخبار الفوري">
         <div class="live-dot"></div>LIVE
       </button>
@@ -1012,7 +1012,7 @@ textarea{min-height:120px;line-height:1.7}
     <div class="sec-label"><i class="fa-solid fa-wand-magic-sparkles"></i> مركز المعالجة الذكية</div>
     <div class="bento-grid">
 
-      <div class="tool-card featured" onclick="open_tool('editor')" ontouchend="open_tool('editor')">
+      <div class="tool-card featured" onclick="open_tool('editor')">
         <div class="t-badge">PRO</div>
         <div class="t-shortcut">Ctrl+1</div>
         <div class="t-icon ic-gold" style="width:60px;height:60px;font-size:26px"><i class="fa-solid fa-pen-nib"></i></div>
@@ -1022,7 +1022,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('rewrite')" ontouchend="open_tool('rewrite')">
+      <div class="tool-card" onclick="open_tool('rewrite')">
         <div class="t-shortcut">Ctrl+2</div>
         <div class="t-icon ic-orange"><i class="fa-solid fa-pen-to-square"></i></div>
         <div class="t-content">
@@ -1031,7 +1031,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('headlines')" ontouchend="open_tool('headlines')">
+      <div class="tool-card" onclick="open_tool('headlines')">
         <div class="t-shortcut">Ctrl+3</div>
         <div class="t-icon ic-blue"><i class="fa-solid fa-heading"></i></div>
         <div class="t-content">
@@ -1040,7 +1040,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('flash')" ontouchend="open_tool('flash')">
+      <div class="tool-card" onclick="open_tool('flash')">
         <div class="t-shortcut">Ctrl+4</div>
         <div class="t-icon ic-red"><i class="fa-solid fa-bolt"></i></div>
         <div class="t-content">
@@ -1503,7 +1503,7 @@ textarea{min-height:120px;line-height:1.7}
   <div style="display:grid;grid-template-columns:repeat(5,1fr);text-align:center">
     <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="bnav-btn">
       <i class="fa-solid fa-house" style="font-size:19px"></i><span>الرئيسية</span></button>
-    <button onclick="open_tool('editor')" ontouchend="open_tool('editor')" class="bnav-btn">
+    <button onclick="open_tool('editor')" class="bnav-btn">
       <i class="fa-solid fa-pen-nib" style="font-size:19px;color:var(--gold)"></i><span>المحرر</span></button>
     <button onclick="toggle_ticker()" class="bnav-btn">
       <i class="fa-solid fa-newspaper" style="font-size:19px;color:var(--accent)"></i><span>أخبار</span></button>
@@ -1519,17 +1519,35 @@ textarea{min-height:120px;line-height:1.7}
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
 // DEBUG: نضيف event listeners مباشرة على الأزرار
 document.addEventListener('DOMContentLoaded', function(){
+  var _tStartX=0, _tStartY=0, _tScrolled=false;
+
+  document.addEventListener('touchstart', function(e){
+    _tStartX = e.touches[0].clientX;
+    _tStartY = e.touches[0].clientY;
+    _tScrolled = false;
+  }, {passive:true});
+
+  document.addEventListener('touchmove', function(e){
+    if(!_tScrolled){
+      var dx = Math.abs(e.touches[0].clientX - _tStartX);
+      var dy = Math.abs(e.touches[0].clientY - _tStartY);
+      if(dx > 8 || dy > 8) _tScrolled = true;
+    }
+  }, {passive:true});
+
   document.querySelectorAll('.tool-card').forEach(function(card){
     card.addEventListener('click', function(e){
       e.stopPropagation();
-      var onclick_attr = card.getAttribute('onclick');
-      if(onclick_attr) eval(onclick_attr);
+      var fn = card.getAttribute('onclick');
+      if(fn) eval(fn);
     }, {capture:true});
+
     card.addEventListener('touchend', function(e){
+      if(_tScrolled) return;
       e.preventDefault();
       e.stopPropagation();
-      var onclick_attr = card.getAttribute('onclick');
-      if(onclick_attr) eval(onclick_attr);
+      var fn = card.getAttribute('onclick');
+      if(fn) eval(fn);
     }, {capture:true, passive:false});
   });
 });
@@ -1950,8 +1968,8 @@ async function gemini(systemOrFull, userText){
       generationConfig: { temperature: 0.7, maxOutputTokens: 4096, topP: 0.9 }
     };
   }
-  // نجرب gemini-3.1-flash-lite-preview أولاً ثم نرجع لـ 1.5-pro
-  var models = ['gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview'];
+  // نجرب gemini-2.5-pro-preview أولاً ثم نرجع لـ 1.5-pro
+  var models = ['gemini-2.5-pro','gemini-2.5-flash','gemini-2.5-flash-lite'];
   var lastErr = '';
   for(var mi=0; mi<models.length; mi++){
     try{
@@ -2259,7 +2277,7 @@ async function run_ai(){
                 ]}],
                 generationConfig:{ temperature:0.15, topP:0.95, maxOutputTokens:4096 }
               };
-              var _models = ['gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview'];
+              var _models = ['gemini-2.5-pro','gemini-2.5-flash','gemini-2.5-flash-lite'];
               var _imgRes = null, _imgErr = '';
               for(var _mi=0;_mi<_models.length;_mi++){
                 try{
@@ -2285,7 +2303,7 @@ async function run_ai(){
               // تحويل الملف إلى base64 مع استخدام mimeType الفعلي للملف
               var _b64aud = await blob_to_base64(_f);
               var _realMime = _ftype || 'audio/mpeg';
-              var _audModels = ['gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview'];
+              var _audModels = ['gemini-2.5-flash','gemini-2.5-pro','gemini-2.5-flash-lite'];
               var _transcript = null, _audErr = '';
               for(var _ai=0; _ai<_audModels.length; _ai++){
                 try{
@@ -2327,7 +2345,7 @@ async function run_ai(){
                 generationConfig:{ temperature:0.15, topP:0.95, maxOutputTokens:4096 }
               };
               var _vidRes = null;
-              var _vmodels = ['gemini-3.1-flash-lite-preview','gemini-3.1-flash-lite-preview'];
+              var _vmodels = ['gemini-2.5-pro','gemini-2.5-flash'];
               for(var _vi=0;_vi<_vmodels.length;_vi++){
                 try{
                   var _vr = await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+_vmodels[_vi]+':generateContent?key='+GEMINI_KEY,
@@ -2374,7 +2392,7 @@ async function run_ai(){
               var _b64qaud = await blob_to_base64(_liveFile);
               var _qaudMime = _liveFile.type || 'audio/mpeg';
               var _qar = await fetch(
-                'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key='+GEMINI_KEY,
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+GEMINI_KEY,
                 { method:'POST', headers:{'Content-Type':'application/json'},
                   body: JSON.stringify({
                     contents:[{ parts:[
@@ -3027,7 +3045,7 @@ function select_ai_model(m){
   CUR_AI_MODEL = m;
   // Always Pro for gemini
   var dd = document.getElementById('ai-model-select');
-  if(dd){ dd.value = 'gemini-3.1-flash-lite-preview'; }
+  if(dd){ dd.value = 'gemini-2.5-pro'; }
   var tabs = ['pro','qwen'];
   var colors = {pro:'var(--accent)', qwen:'#a78bfa'};
   for(var i=0; i<tabs.length; i++){
@@ -3270,7 +3288,7 @@ async function studio_transcribe(blob,mimeType){
   if(load)load.style.display='flex';if(status)status.textContent='⏳ جاري التفريغ...';
   try{
     var b64=await blob_to_base64(blob);
-    var model=(document.getElementById('ai-model-select')||{}).value||'gemini-3.1-flash-lite-preview';
+    var model=(document.getElementById('ai-model-select')||{}).value||'gemini-2.5-flash';
     var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+GEMINI_KEY,{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({contents:[{parts:[{inlineData:{mimeType:mimeType||'audio/webm',data:b64}},{text:STUDIO_PROMPT}]}],generationConfig:{temperature:0,maxOutputTokens:8192}})
