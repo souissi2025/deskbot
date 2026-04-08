@@ -292,6 +292,7 @@ select.h-btn{
   grid-template-rows:auto auto;
   gap:14px;
   margin-bottom:28px;
+  scroll-margin-top:8px;
 }
 .tool-card{
   background:var(--glass);
@@ -305,9 +306,6 @@ select.h-btn{
   display:flex;flex-direction:column;
   gap:12px;
   position:relative;overflow:hidden;
-  pointer-events:auto;
-  touch-action:manipulation;
-  -webkit-tap-highlight-color:rgba(61,126,255,0.2);
 }
 .tool-card::before{
   content:'';
@@ -316,7 +314,6 @@ select.h-btn{
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   opacity:0;transition:opacity .25s;
   border-radius:var(--r2);
-  pointer-events:none;
 }
 .tool-card:hover{
   border-color:var(--accent);
@@ -333,7 +330,6 @@ select.h-btn{
   content:'';
   position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--gold),transparent);
-  pointer-events:none;
 }
 .tool-card.featured:hover{border-color:var(--gold)}
 .t-icon{
@@ -395,7 +391,7 @@ select.h-btn{
   overflow:hidden;margin-bottom:24px;
 }
 .activity-label{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:2px;white-space:nowrap;flex-shrink:0}
-.activity-scroll{display:flex;gap:16px;overflow:hidden;flex:1;pointer-events:none;}
+.activity-scroll{display:flex;gap:16px;overflow:hidden;flex:1}
 .activity-item{
   display:flex;align-items:center;gap:8px;
   background:rgba(255,255,255,0.04);
@@ -841,6 +837,10 @@ textarea{min-height:120px;line-height:1.7}
   .overlay{padding:8px!important}
   .m-body{padding:16px!important}
   .m-head{padding:14px 16px!important}
+  .activity-bar{display:none!important}
+  #ticker-wrap{display:none!important}
+  .welcome-bar{padding:10px 14px!important;margin-bottom:12px!important}
+  .sec-label{margin-bottom:8px!important;font-size:11px!important}
 }
 @media(max-width:860px) and (min-width:601px){
   .bento-grid{grid-template-columns:1fr 1fr!important}
