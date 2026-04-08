@@ -1997,7 +1997,7 @@ function _stats_doc_id(){
   return new Date().toISOString().slice(0,10); // YYYY-MM-DD
 }
 
-async function load_user_stats(){
+async async function load_user_stats(){
   if(!USER) return;
   try{
     var doc = await db.collection('user_stats')
