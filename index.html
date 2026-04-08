@@ -1061,11 +1061,81 @@ textarea{min-height:120px;line-height:1.7}
         <div class="t-name">رصد إعلامي</div>
       </div>
 
-      <div class="tool-card mini" onclick="open_modal('smart-modal')">
-        <div class="t-icon ic-indigo"><i class="fa-solid fa-microphone-lines"></i></div>
-        <div class="t-name">التسجيل الذكي</div>
+      <div class="tool-card mini" onclick="open_modal('studio-modal')">
+        <div class="t-icon ic-indigo"><i class="fa-solid fa-waveform-lines"></i></div>
+        <div class="t-name">التفريغ الصوتي</div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="studio-modal">
+  <div class="modal" style="max-width:720px">
+    <div class="m-head" style="flex-direction:column;align-items:stretch;gap:0;padding:0">
+      <div style="display:flex;align-items:center;padding:16px 20px 12px;gap:10px">
+        <div class="m-title" style="flex:1"><i class="fa-solid fa-waveform-lines" style="color:var(--accent2)"></i> التفريغ الصوتي الذكي</div>
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('studio-modal')"><i class="fa-solid fa-expand"></i></button>
+        <button class="m-close" onclick="close_modal('studio-modal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="display:flex;border-top:1px solid var(--border);background:var(--bg2)">
+        <button id="studio-tab-rec" onclick="studio_switch('rec')" style="flex:1;padding:10px 6px;font-size:12px;font-family:Cairo,sans-serif;font-weight:700;border:none;cursor:pointer;border-bottom:2px solid var(--accent2);background:transparent;color:var(--accent2);transition:all .2s"><i class="fa-solid fa-microphone"></i> تسجيل مباشر</button>
+        <button id="studio-tab-file" onclick="studio_switch('file')" style="flex:1;padding:10px 6px;font-size:12px;font-family:Cairo,sans-serif;font-weight:700;border:none;cursor:pointer;border-bottom:2px solid transparent;background:transparent;color:var(--text3);transition:all .2s"><i class="fa-solid fa-file-audio"></i> رفع ملف</button>
+      </div>
+    </div>
+    <div class="m-body">
+      <div id="studio-panel-rec">
+        <div class="rec-center" style="margin-bottom:16px">
+          <div class="rec-status" id="studio-rec-status">اضغط للبدء بالتسجيل</div>
+          <div class="rec-timer" id="studio-rec-timer" style="display:none">00:00</div>
+          <button class="btn rec-main-btn" id="studio-rec-btn" onclick="studio_toggle_rec()"><i class="fa-solid fa-microphone"></i> بدء التسجيل</button>
+        </div>
+        <div id="studio-audio-wrap" style="display:none;margin-bottom:16px">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">الصوت المسجل</div>
+          <audio id="studio-audio-player" controls style="width:100%;border-radius:10px;accent-color:var(--accent)"></audio>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <button class="btn-sec" onclick="studio_download_audio()" style="gap:6px"><i class="fa-solid fa-download"></i> تحميل</button>
+            <button class="btn-sec" onclick="studio_share_wa()" style="gap:6px"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> واتساب</button>
+            <button class="btn-sec" onclick="studio_share_tg()" style="gap:6px"><i class="fa-brands fa-telegram" style="color:#2aabee"></i> تيليغرام</button>
+            <button class="btn-sec" onclick="studio_share_email()" style="gap:6px"><i class="fa-solid fa-envelope"></i> إيميل</button>
+          </div>
+        </div>
+      </div>
+      <div id="studio-panel-file" style="display:none">
+        <div class="field">
+          <label class="label"><i class="fa-solid fa-file-audio"></i> ارفع ملفاً صوتياً أو مرئياً</label>
+          <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:2px dashed var(--border);border-radius:12px;padding:28px;cursor:pointer;transition:all .2s;color:var(--text2)" id="studio-drop-label" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size:32px;color:var(--accent)"></i>
+            <span id="studio-file-name" style="font-size:13px">MP3 · MP4 · WAV · OGG · M4A · WebM</span>
+            <input type="file" id="studio-file-inp" accept="audio/*,video/*" style="display:none" onchange="studio_file_selected(this)">
+          </label>
+        </div>
+      </div>
+      <div id="studio-transcribe-area" style="margin-top:16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-weight:700;font-family:Amiri,serif;font-size:16px;flex:1">النص المفرَّغ</span>
+          <div id="studio-trans-load" class="loading" style="display:none"><div class="spin"></div><span style="font-size:12px">جاري التفريغ...</span></div>
+        </div>
+        <div id="studio-status" style="font-size:12px;color:var(--text3);margin-bottom:8px"></div>
+        <textarea id="studio-transcription" class="result-box" style="width:100%;min-height:140px;resize:vertical;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;font-family:Cairo,sans-serif;font-size:13px;color:var(--text);line-height:1.8" placeholder="سيظهر النص المفرَّغ هنا..."></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          <button class="btn-sec" onclick="studio_copy_text()"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="studio_save_txt()"><i class="fa-solid fa-file-lines"></i> .txt</button>
+          <button class="btn-sec" onclick="wa_share('studio-transcription')"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></button>
+          <button class="btn-sec" onclick="email_share('studio-transcription')"><i class="fa-solid fa-envelope"></i></button>
+          <button class="btn" onclick="studio_to_article()"><i class="fa-solid fa-newspaper"></i> تحويل لمقال</button>
+        </div>
+      </div>
+      <div id="studio-article" style="display:none;margin-top:24px">
+        <div style="font-weight:700;margin-bottom:10px;font-family:Amiri,serif;font-size:16px;color:var(--gold)"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</div>
+        <div id="studio-article-content" class="result-box rendered"></div>
+        <div class="result-actions" style="margin-top:10px">
+          <button class="btn-sec" onclick="copy_el('studio-article-content')"><i class="fa-solid fa-clipboard"></i></button>
+          <button class="btn-sec" onclick="wa_share('studio-article-content')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn-sec" onclick="email_share('studio-article-content')"><i class="fa-solid fa-envelope"></i></button>
+          <button class="btn-sec" onclick="arc_save_el('studio-article-content','تفريغ صوتي')"><i class="fa-solid fa-clock-rotate-left"></i></button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1278,65 +1348,7 @@ textarea{min-height:120px;line-height:1.7}
   </div>
 </div>
 
-<div class="overlay" id="smart-modal">
-  <div class="modal" style="max-width:700px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-microphone-lines" style="color:var(--accent2)"></i> التسجيل الذكي</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-sec" style="padding:5px 10px;font-size:11px" onclick="toggle_focus('smart-modal')"><i class="fa-solid fa-expand"></i></button>
-        <button class="m-close" onclick="close_modal('smart-modal')"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
-    <div class="m-body">
-      <div class="rec-center">
-        <div class="rec-status" id="sr-status">جاهز للتسجيل</div>
-        <div class="rec-timer" id="sr-timer" style="display:none">00:00</div>
-        <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()">
-          <i class="fa-solid fa-microphone"></i> بدء تسجيل جديد
-        </button>
-      </div>
-      <div id="sr-audio-wrap" style="display:none;margin-top:16px">
-        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">ملف التسجيل</div>
-        <audio id="sr-audio-player" controls style="width:100%;border-radius:10px;accent-color:var(--accent)"></audio>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-          <button class="btn-sec" onclick="sr_download_audio()" style="gap:6px"><i class="fa-solid fa-download"></i> تحميل الصوت</button>
-          <button class="btn-sec" onclick="sr_share_audio_wa()" style="gap:6px"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> واتساب</button>
-          <button class="btn-sec" onclick="sr_share_audio_tg()" style="gap:6px"><i class="fa-brands fa-telegram" style="color:#2aabee"></i> تيليغرام</button>
-          <button class="btn-sec" onclick="sr_share_audio_email()" style="gap:6px"><i class="fa-solid fa-envelope"></i> إيميل</button>
-          <button class="btn-sec" onclick="sr_share_native()" style="gap:6px"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </div>
-      <div id="sr-result" style="display:none;margin-top:20px">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <span style="font-weight:700;font-family:'Amiri',serif;font-size:16px;flex:1">التفريغ الحرفي</span>
-          <div id="sr-trans-load" class="loading" style="display:none"><div class="spin"></div><span style="font-size:12px">جاري التفريغ...</span></div>
-        </div>
-        <textarea id="sr-transcription" class="result-box"
-          style="width:100%;min-height:140px;resize:vertical;background:var(--bg3);
-          border:1px solid var(--border);border-radius:10px;padding:14px;
-          font-family:'Cairo',sans-serif;font-size:13px;color:var(--text);line-height:1.8"
-          placeholder="سيظهر هنا النص المفرَّغ تلقائياً..."></textarea>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-          <button class="btn-sec" onclick="sr_copy_text()"><i class="fa-solid fa-clipboard"></i> نسخ النص</button>
-          <button class="btn-sec" onclick="sr_save_txt()"><i class="fa-solid fa-file-lines"></i> حفظ .txt</button>
-          <button class="btn-sec" onclick="wa_share('sr-transcription')"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> واتساب</button>
-          <button class="btn-sec" onclick="email_share('sr-transcription')"><i class="fa-solid fa-envelope"></i> إيميل</button>
-          <button class="btn" onclick="convert_to_article()"><i class="fa-solid fa-newspaper"></i> تحويل لمقال</button>
-        </div>
-        <div id="sr-article" style="display:none;margin-top:24px">
-          <div style="font-weight:700;margin-bottom:10px;font-family:'Amiri',serif;font-size:16px;color:var(--gold)">المقال الإخباري</div>
-          <div id="sr-article-content" class="result-box rendered"></div>
-          <div class="result-actions" style="margin-top:10px">
-            <button class="btn-sec" onclick="copy_el('sr-article-content')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-            <button class="btn-sec" onclick="wa_share('sr-article-content')"><i class="fa-brands fa-whatsapp"></i> واتساب</button>
-            <button class="btn-sec" onclick="email_share('sr-article-content')"><i class="fa-solid fa-envelope"></i> إيميل</button>
-            <button class="btn-sec" onclick="arc_save_el('sr-article-content','تسجيل ذكي')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <div class="overlay" id="settings-modal">
   <div class="modal" style="max-width:480px">
@@ -3199,148 +3211,100 @@ async function load_ticker(){
 }
 
 /* ── SMART RECORDING v8 — تفريغ صوتي حقيقي عبر Gemini Multimodal ── */
-var _sr_blob = null;
-var _sr_blob_url = null;
 
-/* تحويل Blob إلى Base64 */
-async function blob_to_base64(blob){
-  var ab = await blob.arrayBuffer();
-  var ua = new Uint8Array(ab);
-  var bin = '';
-  var CHUNK = 8192;
-  for(var i=0; i<ua.length; i+=CHUNK){
-    bin += String.fromCharCode.apply(null, ua.subarray(i, Math.min(i+CHUNK, ua.length)));
-  }
-  return btoa(bin);
+/* ===== STUDIO: التفريغ الصوتي الذكي ===== */
+var _studio_blob=null,_studio_blob_url=null;
+var _studio_rec=null,_studio_chunks=[],_studio_timer_id=null,_studio_secs=0,_studio_is_rec=false;
+var STUDIO_PROMPT='أنت أداة نسخ صوتي حرفي. مهمتك تحويل المحتوى الصوتي إلى نص مكتوب بدقة 100% دون أي تدخل تحريري. البروتوكولات: 1. اكتب كل كلمة كما هي تماما بما في ذلك الأخطاء النحوية والتأتأة والكلمات العامية، يمنع إعادة الصياغة أو التلخيص. 2. قسّم النص إلى فقرات منطقية متباعدة بناء على التغير في الأفكار أو الوقفات الطويلة. 3. ابدأ كتابة النص فورا بدون مقدمات أو خاتمات. 4. إذا كانت الكلمة غير مفهومة ضعها بين قوسين [غير واضح].';
+
+function studio_switch(tab){
+  ['rec','file'].forEach(function(t){
+    var b=document.getElementById('studio-tab-'+t),p=document.getElementById('studio-panel-'+t);
+    if(b){b.style.borderBottomColor=t===tab?'var(--accent2)':'transparent';b.style.color=t===tab?'var(--accent2)':'var(--text3)';}
+    if(p) p.style.display=t===tab?'block':'none';
+  });
 }
-
-/* تفريغ صوتي حقيقي بإرسال الملف الصوتي إلى Gemini */
-async function transcribe_audio_gemini(blob){
-  if(!GEMINI_KEY){
-    if(localStorage.getItem('gemini_key')) GEMINI_KEY = localStorage.getItem('gemini_key');
-    else throw new Error('مفتاح Gemini API غير موجود — أدخله من الإعدادات');
-  }
-  var b64 = await blob_to_base64(blob);
-  var model = (document.getElementById('ai-model-select')||{}).value || 'gemini-2.5-flash';
-  var TRANSCRIBE_PROMPT = 'أنت أداة نسخ صوتي حرفي. مهمتك تحويل المحتوى الصوتي إلى نص مكتوب بدقة 100% دون أي تدخل تحريري. البروتوكولات: 1. اكتب كل كلمة كما هي تماما بما في ذلك الأخطاء النحوية والتأتأة والكلمات العامية، يمنع إعادة الصياغة أو التلخيص. 2. قسّم النص إلى فقرات منطقية متباعدة بناء على التغير في الأفكار أو الوقفات الطويلة. 3. ابدأ كتابة النص فورا بدون مقدمات أو خاتمات. 4. إذا كانت الكلمة غير مفهومة ضعها بين قوسين [غير واضح].';
-  var r = await fetch(
-    'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_KEY,
-    {
-      method : 'POST',
-      headers: {'Content-Type':'application/json'},
-      body   : JSON.stringify({
-        contents:[{
-          parts:[
-            { inlineData:{ mimeType:'audio/webm', data:b64 } },
-            { text: TRANSCRIBE_PROMPT }
-          ]
-        }],
-        generationConfig:{ temperature:0, maxOutputTokens:8192 }
-      })
-    }
-  );
-  if(!r.ok){ var e=await r.json(); throw new Error((e.error&&e.error.message)||'خطأ في التفريغ'); }
-  var d = await r.json();
-  inc_requests();
-  return (d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text) || '';
-}
-
-
-async function process_smart_rec(){
-  var blob = new Blob(smartChunks, {type:'audio/webm'});
-  _sr_blob = blob;
-  _sr_blob_url = URL.createObjectURL(blob);
-
-  /* عرض مشغل الصوت */
-  var player = document.getElementById('sr-audio-player');
-  if(player){ player.src = _sr_blob_url; player.load(); }
-  var wrap = document.getElementById('sr-audio-wrap');
-  if(wrap) wrap.style.display = 'block';
-
-  document.getElementById('sr-status').textContent = '✅ انتهى التسجيل — جاري التفريغ التلقائي...';
-  document.getElementById('sr-timer').style.display = 'none';
-  document.getElementById('sr-result').style.display = 'block';
-
-  /* تفريغ تلقائي */
-  var load = document.getElementById('sr-trans-load');
-  if(load) load.style.display = 'flex';
+function studio_toggle_rec(){if(_studio_is_rec)studio_stop_rec();else studio_start_rec();}
+async function studio_start_rec(){
   try{
-    var res = await transcribe_audio_gemini(blob);
-    var ta = document.getElementById('sr-transcription');
-    if(ta) ta.value = res;
-    document.getElementById('sr-status').textContent = res ? '✅ اكتمل التفريغ التلقائي' : '✅ التسجيل محفوظ — يمكنك إدخال النص يدوياً';
-  }catch(e){
-    var ta = document.getElementById('sr-transcription');
-    if(ta) ta.value = '';
-    document.getElementById('sr-status').textContent = '⚠ ' + (e.message||'خطأ في التفريغ') + ' — يمكنك إدخال النص يدوياً';
-  }finally{
-    if(load) load.style.display = 'none';
-  }
+    var stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    _studio_chunks=[];_studio_rec=new MediaRecorder(stream);
+    _studio_rec.ondataavailable=function(e){_studio_chunks.push(e.data);};
+    _studio_rec.onstop=studio_process_rec;_studio_rec.start();
+    _studio_is_rec=true;_studio_secs=0;
+    document.getElementById('studio-rec-status').textContent='🔴 جاري التسجيل... تحدث بوضوح';
+    var t=document.getElementById('studio-rec-timer');t.style.display='block';t.classList.add('recording');
+    document.getElementById('studio-rec-btn').innerHTML='<i class="fa-solid fa-stop"></i> إيقاف وتفريغ';
+    document.getElementById('studio-rec-btn').style.background='#ef4444';
+    _studio_timer_id=setInterval(function(){_studio_secs++;document.getElementById('studio-rec-timer').textContent=fmt_time(_studio_secs);},1000);
+  }catch(e){toast('لا يمكن الوصول للميكروفون','error');}
 }
-
-function sr_download_audio(){
-  if(!_sr_blob_url) return toast('لا يوجد تسجيل','error');
-  var a = document.createElement('a');
-  a.href = _sr_blob_url;
-  var ts = new Date().toISOString().slice(0,19).replace(/:/g,'-');
-  a.download = 'تسجيل_' + ts + '.webm';
-  a.click();
+function studio_stop_rec(){
+  if(_studio_rec){_studio_rec.stop();_studio_rec=null;}
+  if(_studio_timer_id){clearInterval(_studio_timer_id);_studio_timer_id=null;}
+  _studio_is_rec=false;
+  document.getElementById('studio-rec-status').textContent='⏳ جاري المعالجة...';
+  var btn=document.getElementById('studio-rec-btn');
+  btn.innerHTML='<i class="fa-solid fa-microphone"></i> بدء تسجيل جديد';btn.style.background='';
+  document.getElementById('studio-rec-timer').classList.remove('recording');
 }
-function sr_share_audio_wa(){
-  if(!_sr_blob_url){ toast('لا يوجد تسجيل','error'); return; }
-  var msg = 'تسجيل صوتي من DESK BOT — ' + new Date().toLocaleString('ar-TN');
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-  toast('شارك رابط التسجيل عبر واتساب (يجب تحميله أولاً)');
+async function studio_process_rec(){
+  var blob=new Blob(_studio_chunks,{type:'audio/webm'});
+  _studio_blob=blob;_studio_blob_url=URL.createObjectURL(blob);
+  var player=document.getElementById('studio-audio-player');
+  if(player){player.src=_studio_blob_url;player.load();}
+  document.getElementById('studio-audio-wrap').style.display='block';
+  document.getElementById('studio-rec-status').textContent='✅ انتهى التسجيل — جاري التفريغ...';
+  document.getElementById('studio-rec-timer').style.display='none';
+  await studio_transcribe(blob,'audio/webm');
 }
-function sr_share_audio_tg(){
-  if(!_sr_blob_url){ toast('لا يوجد تسجيل','error'); return; }
-  window.open('https://t.me/share/url?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent('تسجيل صوتي - DESK BOT'), '_blank');
+function studio_file_selected(input){
+  var file=input.files[0];if(!file)return;
+  document.getElementById('studio-file-name').textContent=file.name;
+  document.getElementById('studio-status').textContent='⏳ جاري تحليل الملف وتفريغه...';
+  studio_transcribe(file,file.type);
 }
-function sr_share_audio_email(){
-  if(!_sr_blob_url){ toast('لا يوجد تسجيل','error'); return; }
-  window.location.href = 'mailto:?subject=' + encodeURIComponent('تسجيل صوتي - DESK BOT') + '&body=' + encodeURIComponent('مرفق تسجيل صوتي. التاريخ: ' + new Date().toLocaleString('ar-TN') + '\n\nيمكن تحميل التسجيل من الجهاز.');
-}
-function sr_share_native(){
-  if(!_sr_blob || !navigator.share) return sr_download_audio();
-  var file = new File([_sr_blob], 'recording.webm', {type:'audio/webm'});
-  navigator.share({ files:[file], title:'تسجيل صوتي', text:'تسجيل من DESK BOT' })
-    .catch(function(){ sr_download_audio(); });
-}
-function sr_copy_text(){
-  var ta = document.getElementById('sr-transcription');
-  if(!ta || !ta.value.trim()) return toast('لا يوجد نص','error');
-  navigator.clipboard.writeText(ta.value).then(function(){ toast('تم نسخ النص ✓'); }).catch(function(){});
-}
-function sr_save_txt(){
-  var ta = document.getElementById('sr-transcription');
-  if(!ta || !ta.value.trim()) return toast('لا يوجد نص','error');
-  var blob = new Blob([ta.value], {type:'text/plain;charset=utf-8'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'تفريغ_' + new Date().toISOString().slice(0,10) + '.txt';
-  a.click();
-}
-
-async function convert_to_article(){
-  var txt = (document.getElementById('sr-transcription') || {}).value || '';
-  if(!txt.trim()) return toast('أدخل النص أولاً أو فرّغ التسجيل أولاً','error');
-  var artWrap = document.getElementById('sr-article');
-  var artBox  = document.getElementById('sr-article-content');
-  if(artWrap) artWrap.style.display = 'block';
-  if(artBox)  artBox.innerHTML = '<div class="loading"><div class="spin"></div><span>جاري الصياغة وفق معايير وات...</span></div>';
+async function studio_transcribe(blob,mimeType){
+  if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{open_modal('settings-modal');return;}}
+  var load=document.getElementById('studio-trans-load'),status=document.getElementById('studio-status');
+  if(load)load.style.display='flex';if(status)status.textContent='⏳ جاري التفريغ...';
   try{
-    var prompt = PROMPTS.article + '\n\n---\nنص التسجيل المفرَّغ:\n' + txt;
-    var res;
-    try{ res = await gemini(prompt); }
-    catch(e){ res = await qwen_call(prompt); }
-    if(artBox){ artBox.innerHTML = render_md(res); artBox.className = 'result-box rendered'; }
-    await arc_auto('تسجيل ذكي', txt.substring(0,200), res);
-    toast('✅ تم تحويل التسجيل إلى مقال وفق معايير وات','success');
-  }catch(e){
-    if(artBox) artBox.innerHTML = '<p style="color:var(--danger)">خطأ: ' + e.message + '</p>';
-    toast('خطأ: ' + e.message, 'error');
-  }
+    var b64=await blob_to_base64(blob);
+    var model=(document.getElementById('ai-model-select')||{}).value||'gemini-2.5-flash';
+    var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+GEMINI_KEY,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{inlineData:{mimeType:mimeType||'audio/webm',data:b64}},{text:STUDIO_PROMPT}]}],generationConfig:{temperature:0,maxOutputTokens:8192}})
+    });
+    if(!r.ok){var er=await r.json();throw new Error((er.error&&er.error.message)||'خطأ');}
+    var d=await r.json();inc_requests();
+    var txt=(d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text)||'';
+    var ta=document.getElementById('studio-transcription');if(ta)ta.value=txt;
+    if(status)status.textContent=txt?'✅ اكتمل التفريغ':'⚠ لم يُعثر على نص';
+  }catch(e){if(status)status.textContent='⚠ '+e.message;toast(e.message,'error');}
+  finally{if(load)load.style.display='none';}
 }
+async function studio_to_article(){
+  var txt=(document.getElementById('studio-transcription')||{}).value||'';
+  if(!txt.trim())return toast('فرّغ الصوت أولاً','error');
+  var aw=document.getElementById('studio-article'),ab=document.getElementById('studio-article-content');
+  if(aw)aw.style.display='block';
+  if(ab)ab.innerHTML='<div class="loading"><div class="spin"></div><span>جاري التحويل...</span></div>';
+  try{
+    var res=await gemini(PROMPTS.editor,txt);
+    if(ab){ab.innerHTML=render_md(res);ab.className='result-box rendered';}
+    await arc_auto('تفريغ صوتي - مقال','',res);
+  }catch(e){if(ab)ab.innerHTML='<p style="color:var(--text3)">خطأ: '+e.message+'</p>';toast('خطأ: '+e.message,'error');}
+}
+function studio_copy_text(){var ta=document.getElementById('studio-transcription');if(!ta||!ta.value.trim())return toast('لا يوجد نص','error');navigator.clipboard.writeText(ta.value).then(function(){toast('تم النسخ ✓','success');});}
+function studio_save_txt(){
+  var ta=document.getElementById('studio-transcription');if(!ta||!ta.value.trim())return toast('لا يوجد نص','error');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ta.value],{type:'text/plain;charset=utf-8'}));
+  a.download='transcription-'+new Date().toISOString().slice(0,10)+'.txt';a.click();
+}
+function studio_download_audio(){if(!_studio_blob_url)return toast('لا يوجد تسجيل','error');var a=document.createElement('a');a.href=_studio_blob_url;a.download='recording-'+new Date().toISOString().slice(0,19).replace(/:/g,'-')+'.webm';a.click();}
+function studio_share_wa(){if(!_studio_blob_url){toast('لا يوجد تسجيل','error');return;}window.open('https://wa.me/?text='+encodeURIComponent('تسجيل صوتي - DESK BOT - '+new Date().toLocaleString('ar-TN')),'_blank');toast('تم فتح واتساب','success');}
+function studio_share_tg(){window.open('https://t.me/share/url?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('تسجيل صوتي - DESK BOT'),'_blank');}
+function studio_share_email(){window.location.href='mailto:?subject='+encodeURIComponent('تسجيل صوتي - DESK BOT')+'&body='+encodeURIComponent('تسجيل صوتي.\n'+new Date().toLocaleString('ar-TN'));}
 
 </script>
 </body>
