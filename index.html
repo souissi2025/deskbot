@@ -292,7 +292,6 @@ select.h-btn{
   grid-template-rows:auto auto;
   gap:14px;
   margin-bottom:28px;
-  scroll-margin-top:8px;
 }
 .tool-card{
   background:var(--glass);
@@ -837,10 +836,6 @@ textarea{min-height:120px;line-height:1.7}
   .overlay{padding:8px!important}
   .m-body{padding:16px!important}
   .m-head{padding:14px 16px!important}
-  .activity-bar{display:none!important}
-  #ticker-wrap{display:none!important}
-  .welcome-bar{padding:10px 14px!important;margin-bottom:12px!important}
-  .sec-label{margin-bottom:8px!important;font-size:11px!important}
 }
 @media(max-width:860px) and (min-width:601px){
   .bento-grid{grid-template-columns:1fr 1fr!important}
@@ -882,6 +877,16 @@ textarea{min-height:120px;line-height:1.7}
   .rec-main-btn{width:100%!important;padding:14px!important}
 }
 
+
+@media(max-width:768px){
+  .activity-bar{display:none!important}
+  #ticker-wrap{display:none!important}
+  .welcome-bar{padding:10px 14px!important;margin-bottom:10px!important}
+  .welcome-text .wt-greeting{font-size:16px!important}
+  .welcome-text .wt-sub{font-size:12px!important}
+  .sec-label{margin:8px 0 6px!important;font-size:11px!important}
+  .bento-grid{margin-bottom:16px!important;gap:10px!important}
+}
 </style>
 </head>
 <body>
@@ -1874,6 +1879,7 @@ auth.onAuthStateChanged(u=>{
     USER=u;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('main-app').style.display='block';
+    window.scrollTo(0,0);
     const init=(u.displayName||u.email||'ح').charAt(0).toUpperCase();
     document.getElementById('avatar').textContent=init;
     load_api_key();
