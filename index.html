@@ -739,6 +739,7 @@ textarea{min-height:120px;line-height:1.7}
 
 /* ===== TRANSITIONS ===== */
 .tool-card,.btn,.btn-sec,.h-btn,.arc-item,.radio-card{will-change:transform}
+.tool-card{touch-action:manipulation;-webkit-tap-highlight-color:rgba(61,126,255,0.2);cursor:pointer;}
 
 /* ─── AMOLED THEME ─── */
 [data-theme="amoled"]{
@@ -1001,7 +1002,7 @@ textarea{min-height:120px;line-height:1.7}
     <div class="sec-label"><i class="fa-solid fa-wand-magic-sparkles"></i> مركز المعالجة الذكية</div>
     <div class="bento-grid">
 
-      <div class="tool-card featured" onclick="open_tool('editor')">
+      <div class="tool-card featured" onclick="open_tool('editor')" ontouchend="open_tool('editor')">
         <div class="t-badge">PRO</div>
         <div class="t-shortcut">Ctrl+1</div>
         <div class="t-icon ic-gold" style="width:60px;height:60px;font-size:26px"><i class="fa-solid fa-pen-nib"></i></div>
@@ -1011,7 +1012,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('rewrite')">
+      <div class="tool-card" onclick="open_tool('rewrite')" ontouchend="open_tool('rewrite')">
         <div class="t-shortcut">Ctrl+2</div>
         <div class="t-icon ic-orange"><i class="fa-solid fa-pen-to-square"></i></div>
         <div class="t-content">
@@ -1020,7 +1021,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('headlines')">
+      <div class="tool-card" onclick="open_tool('headlines')" ontouchend="open_tool('headlines')">
         <div class="t-shortcut">Ctrl+3</div>
         <div class="t-icon ic-blue"><i class="fa-solid fa-heading"></i></div>
         <div class="t-content">
@@ -1029,7 +1030,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('flash')">
+      <div class="tool-card" onclick="open_tool('flash')" ontouchend="open_tool('flash')">
         <div class="t-shortcut">Ctrl+4</div>
         <div class="t-icon ic-red"><i class="fa-solid fa-bolt"></i></div>
         <div class="t-content">
@@ -1504,7 +1505,7 @@ textarea{min-height:120px;line-height:1.7}
   <div style="display:grid;grid-template-columns:repeat(5,1fr);text-align:center">
     <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="bnav-btn">
       <i class="fa-solid fa-house" style="font-size:19px"></i><span>الرئيسية</span></button>
-    <button onclick="open_tool('editor')" class="bnav-btn">
+    <button onclick="open_tool('editor')" ontouchend="open_tool('editor')" class="bnav-btn">
       <i class="fa-solid fa-pen-nib" style="font-size:19px;color:var(--gold)"></i><span>المحرر</span></button>
     <button onclick="toggle_ticker()" class="bnav-btn">
       <i class="fa-solid fa-newspaper" style="font-size:19px;color:var(--accent)"></i><span>أخبار</span></button>
