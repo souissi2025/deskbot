@@ -3222,6 +3222,7 @@ async function transcribe_audio_gemini(blob){
   }
   var b64 = await blob_to_base64(blob);
   var model = (document.getElementById('ai-model-select')||{}).value || 'gemini-2.5-flash';
+  var TRANSCRIBE_PROMPT = 'أنت أداة نسخ صوتي حرفي. مهمتك تحويل المحتوى الصوتي إلى نص مكتوب بدقة 100% دون أي تدخل تحريري. البروتوكولات: 1. اكتب كل كلمة كما هي تماما بما في ذلك الأخطاء النحوية والتأتأة والكلمات العامية، يمنع إعادة الصياغة أو التلخيص. 2. قسّم النص إلى فقرات منطقية متباعدة بناء على التغير في الأفكار أو الوقفات الطويلة. 3. ابدأ كتابة النص فورا بدون مقدمات أو خاتمات. 4. إذا كانت الكلمة غير مفهومة ضعها بين قوسين [غير واضح].';
   var r = await fetch(
     'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + GEMINI_KEY,
     {
@@ -3231,7 +3232,22 @@ async function transcribe_audio_gemini(blob){
         contents:[{
           parts:[
             { inlineData:{ mimeType:'audio/webm', data:b64 } },
-            { text:'أنت أداة نسخ صوتي حرفي (Strict Verbatim Transcriber).\n\nمهمتك الأساسية:\nتحويل المحتوى الصوتي المدخل إلى نص مكتوب بدقة 100% دون أي تدخل تحريري.\n\nالبروتوكولات الصارمة:\n1. الدقة الحرفية: اكتب كل كلمة تسمعها كما هي تمامًا، بما في ذلك الأخطاء النحوية والتأتأة والكلمات العامية. يمنع منعًا باتًا إعادة الصياغة أو التلخيص أو تنظيف النص.\n2. الهيكلة: لا تنتج النص ككتلة واحدة. يجب تقسيم النص إلى فقرات منطقية ومتباعدة بناءً على التغير في الأفكار أو الوقفات الطويلة للمتحدث.\n3. الإخراج المباشر: ابدأ في كتابة النص المفرغ فورًا. لا تقدم مقدمات ولا خاتمات.\n4. التعامل مع الغموض: إذا كانت الكلمة غير مفهومة، ضعها بين قوسين [غير واضح] واستمر.\n\nالتنسيق المطلوب:\n[فقرة 1]\n\n[فقرة 2]\n\n[فقرة 3]' });
+            { text: TRANSCRIBE_PROMPT }
+          ]
+        }],
+        generationConfig:{ temperature:0, maxOutputTokens:8192 }
+      })
+    }
+  );
+  if(!r.ok){ var e=await r.json(); throw new Error((e.error&&e.error.message)||'خطأ في التفريغ'); }
+  var d = await r.json();
+  inc_requests();
+  return (d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0]&&d.candidates[0].content.parts[0].text) || '';
+}
+
+
+async function process_smart_rec(){
+  var blob = new Blob(smartChunks, {type:'audio/webm'});
   _sr_blob = blob;
   _sr_blob_url = URL.createObjectURL(blob);
 
