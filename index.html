@@ -305,6 +305,11 @@ select.h-btn{
   display:flex;flex-direction:column;
   gap:12px;
   position:relative;overflow:hidden;
+  pointer-events:auto;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:rgba(61,126,255,0.15);
+  user-select:none;
+  -webkit-user-select:none;
 }
 .tool-card::before{
   content:'';
@@ -313,6 +318,7 @@ select.h-btn{
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   opacity:0;transition:opacity .25s;
   border-radius:var(--r2);
+  pointer-events:none;
 }
 .tool-card:hover{
   border-color:var(--accent);
@@ -329,6 +335,7 @@ select.h-btn{
   content:'';
   position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--gold),transparent);
+  pointer-events:none;
 }
 .tool-card.featured:hover{border-color:var(--gold)}
 .t-icon{
@@ -390,9 +397,9 @@ select.h-btn{
   overflow:hidden;margin-bottom:24px;
 }
 .activity-label{font-size:10px;color:var(--gold);font-weight:700;letter-spacing:2px;white-space:nowrap;flex-shrink:0}
-.activity-scroll{display:flex;gap:16px;overflow:hidden;flex:1}
+.activity-scroll{display:flex;gap:16px;overflow:hidden;flex:1;pointer-events:none;}
 .activity-item{
-  display:flex;align-items:center;gap:8px;
+ .activity-item{pointer-events:auto;
   background:rgba(255,255,255,0.04);
   border:1px solid var(--border);
   border-radius:8px;padding:5px 12px;
