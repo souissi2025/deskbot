@@ -240,7 +240,7 @@ select.h-btn{
 .kbd-hint:hover{color:var(--accent);border-color:var(--accent)}
 
 /* ===== CONTENT ===== */
-.content{max-width:1100px;margin:0 auto;padding:28px 24px}
+.content{max-width:1100px;margin:0 auto;padding:28px 24px;position:relative;z-index:10}
 
 /* ===== WELCOME BAR ===== */
 .welcome-bar{
@@ -1518,7 +1518,25 @@ textarea{min-height:120px;line-height:1.7}
 
 <div class="toast" id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
+// DEBUG: نضيف event listeners مباشرة على الأزرار
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.tool-card').forEach(function(card){
+    card.addEventListener('click', function(e){
+      e.stopPropagation();
+      var onclick_attr = card.getAttribute('onclick');
+      if(onclick_attr) eval(onclick_attr);
+    }, {capture:true});
+    card.addEventListener('touchend', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      var onclick_attr = card.getAttribute('onclick');
+      if(onclick_attr) eval(onclick_attr);
+    }, {capture:true, passive:false});
+  });
+});
+
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
