@@ -3191,36 +3191,31 @@ async function load_ticker(){
     }catch(ex){return[];}
   }
   async function fetchFeed(feed){
-    var proxies=[
-      'https://api.allorigins.win/get?url='+encodeURIComponent(feed.u)+'&_='+Date.now(),
-      'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feed.u)+'&count=6',
-      'https://corsproxy.io/?'+encodeURIComponent(feed.u),
-      'https://thingproxy.freeboard.io/fetch/'+feed.u
-    ];
-    // وسيط 1: allorigins
-    try{var r1=await fetch(proxies[0],{signal:AbortSignal.timeout(8000)});
+    var u=feed.u, s=feed.s, ii=feed.i, ts=Date.now();
+    // وسيط 1: rss2json - الأكثر موثوقية
+    try{var r1=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(u)+'&count=6&api_key=',{signal:AbortSignal.timeout(8000)});
       if(r1.ok){var d1=await r1.json();
-        if(d1&&d1.contents){var a=parseXML(d1.contents,feed.s,feed.i);if(a.length)return a;}
-        // rss2json format
-        if(d1&&d1.items){return d1.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:feed.s,intl:feed.i,pd:it.pubDate};});}
-      }
-    }catch(e1){}
-    // وسيط 2: rss2json مباشرة
-    try{var r2=await fetch(proxies[1],{signal:AbortSignal.timeout(8000)});
-      if(r2.ok){var d2=await r2.json();
-        if(d2&&d2.items&&d2.items.length){
-          return d2.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:feed.s,intl:feed.i,pd:it.pubDate};});
+        if(d1&&d1.status==='ok'&&d1.items&&d1.items.length){
+          return d1.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:s,intl:ii,pd:it.pubDate};});
         }
       }
+    }catch(e1){}
+    // وسيط 2: allorigins مع cache busting
+    try{var r2=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(u)+'&_='+ts,{signal:AbortSignal.timeout(8000)});
+      if(r2.ok){var d2=await r2.json();if(d2&&d2.contents){var a=parseXML(d2.contents,s,ii);if(a.length)return a;}}
     }catch(e2){}
-    // وسيط 3: corsproxy
-    try{var r3=await fetch(proxies[2],{signal:AbortSignal.timeout(8000)});
-      if(r3.ok){var x3=await r3.text();var c=parseXML(x3,feed.s,feed.i);if(c.length)return c;}
+    // وسيط 3: codetabs
+    try{var r3=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)});
+      if(r3.ok){var x3=await r3.text();var b=parseXML(x3,s,ii);if(b.length)return b;}
     }catch(e3){}
-    // وسيط 4: thingproxy
-    try{var r4=await fetch(proxies[3],{signal:AbortSignal.timeout(8000)});
-      if(r4.ok){var x4=await r4.text();var d=parseXML(x4,feed.s,feed.i);if(d.length)return d;}
+    // وسيط 4: corsproxy.io
+    try{var r4=await fetch('https://corsproxy.io/?'+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)});
+      if(r4.ok){var x4=await r4.text();var c=parseXML(x4,s,ii);if(c.length)return c;}
     }catch(e4){}
+    // وسيط 5: thingproxy
+    try{var r5=await fetch('https://thingproxy.freeboard.io/fetch/'+u,{signal:AbortSignal.timeout(8000)});
+      if(r5.ok){var x5=await r5.text();var d=parseXML(x5,s,ii);if(d.length)return d;}
+    }catch(e5){}
     return[];
   }
 
