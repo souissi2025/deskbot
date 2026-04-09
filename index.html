@@ -941,7 +941,7 @@ textarea{min-height:120px;line-height:1.7}
 
 <div id="main-app">
   <!-- ⚙️ زر الإعدادات العائم -->
-  <button id="api-fab" onclick="open_modal('settings-modal')" title="إعدادات API">
+  <button id="api-fab" onclick="stt_open_settings()" title="إعدادات API">
     <i class="fa-solid fa-gear"></i>
   </button>
 
@@ -976,7 +976,7 @@ textarea{min-height:120px;line-height:1.7}
 
   <div class="content">
 
-    <div id="api-notice" class="notice-bar nb-hide" onclick="open_modal('settings-modal')" style="cursor:pointer">
+    <div id="api-notice" class="notice-bar nb-hide" onclick="stt_open_settings()" style="cursor:pointer">
       <i class="fa-solid fa-triangle-exclamation"></i>
       مفتاح Gemini API غير موجود — اضغط هنا لإدخاله
     </div>
@@ -1381,7 +1381,7 @@ textarea{min-height:120px;line-height:1.7}
   <div class="modal" style="max-width:460px">
     <div class="m-head">
       <div class="m-title"><i class="fa-solid fa-gear" style="color:var(--gold)"></i> إعدادات DESK BOT</div>
-      <button class="m-close" onclick="close_modal('settings-modal')"><i class="fa-solid fa-xmark"></i></button>
+      <button class="m-close" onclick="stt_close_settings()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body" style="display:flex;flex-direction:column;gap:16px">
 
@@ -3534,6 +3534,47 @@ open_modal = function(id){
   _orig_open_modal(id);
 };
 
+
+// ═══════════════════════════════════════
+// فتح نافذة الإعدادات — مضمون 100%
+// ═══════════════════════════════════════
+function stt_open_settings(){
+  var el = document.getElementById('settings-modal');
+  if(!el){ alert('settings-modal غير موجود'); return; }
+  // ملء بيانات المستخدم
+  if(USER){
+    var av = document.getElementById('stt-avatar');
+    var nm = document.getElementById('stt-name');
+    var em = document.getElementById('stt-email');
+    if(av) av.textContent = (USER.displayName||USER.email||'م').charAt(0).toUpperCase();
+    if(nm) nm.textContent = USER.displayName || '';
+    if(em) em.textContent = USER.email || '';
+  }
+  // ملء حقل المفتاح
+  var inp = document.getElementById('api-key-inp');
+  var lk = localStorage.getItem('gemini_key') || GEMINI_KEY || '';
+  if(inp && lk) inp.value = lk;
+  // مسح رسالة الحفظ
+  var msg = document.getElementById('api-save-msg');
+  if(msg) msg.innerHTML = '';
+  // إظهار النافذة مباشرة
+  el.style.cssText = 'display:flex!important;position:fixed!important;inset:0!important;' +
+    'background:rgba(0,0,0,.65)!important;z-index:9999!important;' +
+    'align-items:center!important;justify-content:center!important;' +
+    'padding:16px!important;backdrop-filter:blur(6px)!important;';
+  el.classList.add('open');
+  // إغلاق عند النقر خارجاً
+  el.onclick = function(e){
+    if(e.target === el) stt_close_settings();
+  };
+}
+function stt_close_settings(){
+  var el = document.getElementById('settings-modal');
+  if(!el) return;
+  el.style.cssText = 'display:none!important;';
+  el.classList.remove('open');
+  el.onclick = null;
+}
 </script>
 
 </body>
