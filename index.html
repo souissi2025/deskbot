@@ -931,6 +931,7 @@ textarea{min-height:120px;line-height:1.7}
         <div class="live-dot"></div>LIVE
       </button>
       <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
+      <button class="h-btn gold" id="stt-btn-header" onclick="stt_open()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
       
       <button class="h-btn" onclick="toggle_theme()" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
       <div class="avatar" id="avatar" title="تسجيل الخروج" onclick="do_signout()">ح</div>
@@ -1450,6 +1451,7 @@ textarea{min-height:120px;line-height:1.7}
     <button onclick="open_modal('agenda-modal')" class="bnav-btn">
       <i class="fa-solid fa-calendar-days" style="font-size:19px"></i><span>الأجندة</span></button>
     
+    <button class="bnav-btn" id="stt-btn-bnav" onclick="stt_open()"><i class="fa-solid fa-gear" style="font-size:19px"></i><span>API</span></button>
   </div>
 </nav>
 
@@ -1888,53 +1890,35 @@ function googleLogin(){
 }
 function do_signout(){
   if(confirm('تسجيل الخروج؟')){
-    GEMINI_KEY='';
+    GEMINI_KEY = '';
     localStorage.removeItem('gemini_key');
     localStorage.removeItem('or_key');
-    OR_KEY='';
+    OR_KEY = '';
     auth.signOut();
   }
-}
-// ============================================================
+}// ============================================================
 // API KEY
 // ============================================================
 async function load_api_key(){
-  GEMINI_KEY='';
+  GEMINI_KEY = '';
   try{
     if(!USER) return;
-    var d=await db.collection('users').doc(USER.uid).collection('config').doc('gemini').get();
-    if(d.exists&&d.data()&&d.data().key){
-      GEMINI_KEY=d.data().key;
-      localStorage.setItem('gemini_key',GEMINI_KEY);
+    var d = await db.collection('users').doc(USER.uid).collection('config').doc('gemini').get();
+    if(d.exists && d.data() && d.data().key){
+      GEMINI_KEY = d.data().key;
+      localStorage.setItem('gemini_key', GEMINI_KEY);
       nb_hide('api-notice');
-    }else{
-      var lk=localStorage.getItem('gemini_key');
-      if(lk){GEMINI_KEY=lk;nb_hide('api-notice');}
-      else{nb_show('api-notice');}
+    } else {
+      var lk = localStorage.getItem('gemini_key');
+      if(lk){ GEMINI_KEY = lk; nb_hide('api-notice'); }
+      else { nb_show('api-notice'); }
     }
   }catch(e){
-    var lk=localStorage.getItem('gemini_key');
-    if(lk){GEMINI_KEY=lk;nb_hide('api-notice');}
-    else{nb_show('api-notice');}
-  }
-}async function save_api_key(){
-  const k=document.getElementById('api-key-inp').value.trim();
-  if(!k) return toast('أدخل المفتاح أولاً','error');
-  try{
-    await db.collection('config').doc('gemini').set({key:k});
-    GEMINI_KEY=k;
-    document.getElementById('api-notice').classList.add('nb-hide');
-    close_modal('settings-modal');
-    toast('✅ تم حفظ المفتاح','success');
-  }catch(e){
-    localStorage.setItem('gemini_key',k);
-    GEMINI_KEY=k;
-    document.getElementById('api-notice').classList.add('nb-hide');
-    close_modal('settings-modal');
-    toast('✅ تم حفظ المفتاح محلياً','success');
+    var lk = localStorage.getItem('gemini_key');
+    if(lk){ GEMINI_KEY = lk; nb_hide('api-notice'); }
+    else { nb_show('api-notice'); }
   }
 }
-
 // ============================================================
 // GEMINI API
 // ============================================================
@@ -3414,10 +3398,201 @@ async function studio_file_run(){
 
 
 async 
+
+// ════════════════════════════════
+// SETTINGS — بُني من الصفر
+// ════════════════════════════════
+function stt_open(){
+  var gk = localStorage.getItem('gemini_key') || '';
+  var ok = localStorage.getItem('or_key') || '';
+  var gi = document.getElementById('stt-gemini-inp');
+  var oi = document.getElementById('stt-or-inp');
+  if(gi) gi.value = gk;
+  if(oi) oi.value = ok;
+  if(USER){
+    var av = document.getElementById('stt-avatar');
+    var nm = document.getElementById('stt-name');
+    var em = document.getElementById('stt-email');
+    if(av) av.textContent = (USER.displayName||USER.email||'م').charAt(0).toUpperCase();
+    if(nm) nm.textContent = USER.displayName || '';
+    if(em) em.textContent = USER.email || '';
+  }
+  document.getElementById('stt-gemini-msg').innerHTML = '';
+  document.getElementById('stt-or-msg').innerHTML = '';
+  open_modal('settings-modal');
+}
+
+function stt_eye(inputId, btnId){
+  var inp = document.getElementById(inputId);
+  var btn = document.getElementById(btnId);
+  if(!inp) return;
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  if(btn) btn.innerHTML = show
+    ? '<i class="fa-solid fa-eye-slash"></i>'
+    : '<i class="fa-solid fa-eye"></i>';
+}
+
+async function stt_save_gemini(){
+  var k = (document.getElementById('stt-gemini-inp').value || '').trim();
+  var msg = document.getElementById('stt-gemini-msg');
+  var btn = document.getElementById('stt-gemini-save');
+  if(!k){ toast('أدخل المفتاح أولاً','error'); return; }
+  if(!k.startsWith('AIza')){ toast('المفتاح غير صحيح — يجب أن يبدأ بـ AIza','error'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
+  GEMINI_KEY = k;
+  localStorage.setItem('gemini_key', k);
+  try{
+    if(USER) await db.collection('users').doc(USER.uid).collection('config').doc('gemini').set({key:k, updated: new Date().toISOString()},{merge:true});
+    if(msg) msg.innerHTML = '<span style="color:#4ade80">✅ تم الحفظ بنجاح</span>';
+    toast('تم حفظ مفتاح Gemini', 'success');
+    nb_hide('api-notice');
+  }catch(e){
+    if(msg) msg.innerHTML = '<span style="color:#4ade80">✅ محفوظ محلياً</span>';
+    toast('محفوظ محلياً', 'success');
+    nb_hide('api-notice');
+  }finally{
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini';
+  }
+}
+
+function stt_save_or(){
+  var k = (document.getElementById('stt-or-inp').value || '').trim();
+  var msg = document.getElementById('stt-or-msg');
+  if(!k){ toast('أدخل المفتاح أولاً','error'); return; }
+  OR_KEY = k;
+  localStorage.setItem('or_key', k);
+  if(msg) msg.innerHTML = '<span style="color:#4ade80">✅ تم الحفظ</span>';
+  toast('تم حفظ مفتاح OpenRouter', 'success');
+  nb_hide('or-notice');
+}
+
 </script>
 
 
 
+
+
+<div class="overlay" id="settings-modal">
+  <div class="modal" style="max-width:500px">
+    <div class="m-head">
+      <div class="m-title"><i class="fa-solid fa-gear" style="color:var(--gold)"></i> إعدادات DESK BOT</div>
+      <button class="m-close" onclick="close_modal('settings-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="m-body" style="display:flex;flex-direction:column;gap:18px">
+
+      <!-- Gemini -->
+      <div style="background:var(--bg2);border-radius:14px;padding:16px;border:1px solid var(--border)">
+        <div style="font-weight:700;font-size:14px;margin-bottom:12px;color:var(--gold);display:flex;align-items:center;gap:8px">
+          <i class="fa-solid fa-key"></i> مفتاح Gemini API
+          <span style="font-size:10px;background:#1a3a1a;color:#4ade80;padding:2px 8px;border-radius:20px;font-weight:600">مجاني</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <input id="stt-gemini-inp" type="password" placeholder="AIzaSy..."
+            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:monospace;font-size:13px;outline:none">
+          <button id="stt-gemini-eye" type="button"
+            style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0 12px;cursor:pointer;color:var(--text2);min-width:42px"
+            onclick="stt_eye('stt-gemini-inp','stt-gemini-eye')">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px">
+            <i class="fa-solid fa-circle-info" style="color:var(--accent)"></i> كيف تحصل على مفتاحك؟
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+            <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)">
+              <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
+              <span>افتح الرابط وسجّل دخولك بحساب Google</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)">
+              <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
+              <span>اضغط على <b style="color:var(--text)">Create API Key</b></span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)">
+              <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
+              <span>انسخ المفتاح والصقه في الحقل أعلاه</span>
+            </div>
+          </div>
+          <a href="https://aistudio.google.com/apikey" target="_blank"
+            style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700">
+            <i class="fa-brands fa-google"></i> فتح Google AI Studio
+            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i>
+          </a>
+        </div>
+        <button type="button" class="btn" id="stt-gemini-save"
+          style="width:100%;justify-content:center;gap:8px"
+          onclick="stt_save_gemini()">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini
+        </button>
+        <div id="stt-gemini-msg" style="font-size:12px;margin-top:8px;text-align:center;min-height:18px"></div>
+      </div>
+
+      <!-- OpenRouter -->
+      <div style="background:var(--bg2);border-radius:14px;padding:16px;border:1px solid var(--border)">
+        <div style="font-weight:700;font-size:14px;margin-bottom:12px;color:#a78bfa;display:flex;align-items:center;gap:8px">
+          <i class="fa-solid fa-robot"></i> مفتاح OpenRouter
+          <span style="font-size:10px;background:#1a1a3a;color:#a78bfa;padding:2px 8px;border-radius:20px;font-weight:600">Qwen AI</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <input id="stt-or-inp" type="password" placeholder="sk-or-v1-..."
+            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:monospace;font-size:13px;outline:none">
+          <button id="stt-or-eye" type="button"
+            style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0 12px;cursor:pointer;color:var(--text2);min-width:42px"
+            onclick="stt_eye('stt-or-inp','stt-or-eye')">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+        <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px">
+            <i class="fa-solid fa-circle-info" style="color:#a78bfa"></i> كيف تحصل على مفتاحك؟
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
+            <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)">
+              <span style="background:#7c3aed;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
+              <span>افتح الرابط وأنشئ حساباً مجانياً</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)">
+              <span style="background:#7c3aed;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
+              <span>اذهب إلى <b style="color:var(--text)">Settings → API Keys</b></span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)">
+              <span style="background:#7c3aed;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
+              <span>اضغط <b style="color:var(--text)">Create Key</b> وانسخ المفتاح</span>
+            </div>
+          </div>
+          <a href="https://openrouter.ai/keys" target="_blank"
+            style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700">
+            <i class="fa-solid fa-robot"></i> فتح OpenRouter
+            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i>
+          </a>
+        </div>
+        <button type="button" class="btn" id="stt-or-save"
+          style="width:100%;justify-content:center;gap:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5)"
+          onclick="stt_save_or()">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter
+        </button>
+        <div id="stt-or-msg" style="font-size:12px;margin-top:8px;text-align:center;min-height:18px"></div>
+      </div>
+
+      <!-- معلومات الحساب -->
+      <div style="background:var(--bg2);border-radius:14px;padding:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px">
+        <div id="stt-avatar" style="width:42px;height:42px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#fff;flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <div id="stt-name" style="font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+          <div id="stt-email" style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+        </div>
+        <button type="button" class="btn-sec" onclick="do_signout()"
+          style="gap:6px;color:#ef4444;border-color:#ef4444;flex-shrink:0">
+          <i class="fa-solid fa-right-from-bracket"></i> خروج
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
