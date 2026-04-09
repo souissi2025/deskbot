@@ -1085,14 +1085,13 @@ textarea{min-height:120px;line-height:1.7}
     </div>
     <div class="m-body">
 
-      <!-- ══ تبويب 1: التسجيل المباشر ══ -->
+      <!-- تبويب 1: التسجيل المباشر -->
       <div id="studio-panel-rec">
         <div class="rec-center" style="margin-bottom:16px">
           <div class="rec-status" id="studio-rec-status">اضغط للبدء بالتسجيل</div>
           <div class="rec-timer" id="studio-rec-timer" style="display:none">00:00</div>
           <button class="btn rec-main-btn" id="studio-rec-btn" onclick="studio_toggle_rec()"><i class="fa-solid fa-microphone"></i> بدء التسجيل</button>
         </div>
-        <!-- مشغل الصوت + مشاركة -->
         <div id="studio-audio-wrap" style="display:none;margin-bottom:16px">
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">الصوت المسجل</div>
           <audio id="studio-audio-player" controls style="width:100%;border-radius:10px;accent-color:var(--accent)"></audio>
@@ -1102,34 +1101,32 @@ textarea{min-height:120px;line-height:1.7}
             <button class="btn-sec" onclick="studio_share_tg()" style="gap:6px"><i class="fa-brands fa-telegram" style="color:#2aabee"></i> تيليغرام</button>
             <button class="btn-sec" onclick="studio_share_email()" style="gap:6px"><i class="fa-solid fa-envelope"></i> إيميل</button>
           </div>
-          <!-- زر إرسال للتفريغ (يستدعي الدالة الموجودة) -->
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-            <button id="studio-send-btn" class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_send_transcribe()">
+            <button id="studio-send-btn" class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_rec_transcribe()">
               <i class="fa-solid fa-waveform-lines"></i> إرسال للتفريغ الذكي
             </button>
           </div>
         </div>
       </div>
 
-      <!-- ══ تبويب 2: رفع ملف ══ -->
+      <!-- تبويب 2: رفع ملف -->
       <div id="studio-panel-file" style="display:none">
         <div class="field">
           <label class="label"><i class="fa-solid fa-file-audio"></i> ارفع ملفاً صوتياً أو مرئياً</label>
           <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:2px dashed var(--border);border-radius:12px;padding:28px;cursor:pointer;transition:all .2s;color:var(--text2)" id="studio-drop-label" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
             <i class="fa-solid fa-cloud-arrow-up" style="font-size:32px;color:var(--accent)"></i>
             <span id="studio-file-name" style="font-size:13px">MP3 · MP4 · WAV · OGG · M4A · WebM</span>
-            <input type="file" id="studio-file-inp" accept="audio/*,video/*" style="display:none" onchange="studio_file_selected(this)">
+            <input type="file" id="studio-file-inp" accept="audio/*,video/*" style="display:none" onchange="studio_file_pick(this)">
           </label>
         </div>
-        <!-- زر بدء التفريغ يظهر بعد اختيار الملف -->
         <div id="studio-file-btn-wrap" style="display:none;margin-top:10px">
-          <button id="studio-file-btn" class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_file_transcribe()">
+          <button id="studio-file-btn" class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_file_run()">
             <i class="fa-solid fa-waveform-lines"></i> بدء التفريغ الذكي
           </button>
         </div>
       </div>
 
-      <!-- ══ منطقة التفريغ المشتركة ══ -->
+      <!-- منطقة التفريغ المشتركة -->
       <div id="studio-transcribe-area" style="margin-top:16px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
           <span style="font-weight:700;font-family:Amiri,serif;font-size:16px;flex:1">النص المفرَّغ</span>
@@ -1142,14 +1139,13 @@ textarea{min-height:120px;line-height:1.7}
           <button class="btn-sec" onclick="studio_save_txt()"><i class="fa-solid fa-file-lines"></i> .txt</button>
           <button class="btn-sec" onclick="wa_share('studio-transcription')"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></button>
           <button class="btn-sec" onclick="email_share('studio-transcription')"><i class="fa-solid fa-envelope"></i></button>
-          <!-- زر تحويل لمقال Pro (يستدعي الدالة الموجودة) -->
           <button class="btn" style="gap:6px;background:linear-gradient(135deg,var(--gold),#c0392b)" onclick="studio_to_article()">
             <i class="fa-solid fa-newspaper"></i> تحويل لمقال Pro
           </button>
         </div>
       </div>
 
-      <!-- ══ المقال الناتج ══ -->
+      <!-- المقال الناتج -->
       <div id="studio-article" style="display:none;margin-top:24px">
         <div style="font-weight:700;margin-bottom:10px;font-family:Amiri,serif;font-size:16px;color:var(--gold)"><i class="fa-solid fa-newspaper"></i> المقال الإخباري Pro</div>
         <div id="studio-article-content" class="result-box rendered"></div>
@@ -3355,14 +3351,15 @@ async function studio_process_rec(){
   var player=document.getElementById('studio-audio-player');
   if(player){player.src=_studio_blob_url;player.load();}
   document.getElementById('studio-audio-wrap').style.display='block';
-  document.getElementById('studio-rec-status').textContent='✅ انتهى التسجيل — استمع أو أرسل للتفريغ';
+  document.getElementById('studio-rec-status').textContent='✅ انتهى التسجيل — جاري التفريغ...';
   document.getElementById('studio-rec-timer').style.display='none';
+  await studio_transcribe(blob,'audio/webm');
 }
 function studio_file_selected(input){
   var file=input.files[0];if(!file)return;
-  document.getElementById('studio-file-name').textContent='✅ '+file.name;
-  var wrap=document.getElementById('studio-file-btn-wrap');
-  if(wrap)wrap.style.display='block';
+  document.getElementById('studio-file-name').textContent=file.name;
+  document.getElementById('studio-status').textContent='⏳ جاري تحليل الملف وتفريغه...';
+  studio_transcribe(file,file.type);
 }
 async function studio_transcribe(blob,mimeType){
   if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{open_modal('settings-modal');return;}}
@@ -3407,8 +3404,18 @@ function studio_share_tg(){window.open('https://t.me/share/url?url='+encodeURICo
 function studio_share_email(){window.location.href='mailto:?subject='+encodeURIComponent('تسجيل صوتي - DESK BOT')+'&body='+encodeURIComponent('تسجيل صوتي.\n'+new Date().toLocaleString('ar-TN'));}
 
 
-// ── زر إرسال للتفريغ (بعد التسجيل) ──
-async function studio_send_transcribe(){
+// ── blob to base64 helper ──
+function blob_to_base64(blob){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(){resolve(reader.result.split(',')[1]);};
+    reader.onerror=reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+// ── studio: إرسال التسجيل للتفريغ ──
+async function studio_rec_transcribe(){
   if(!_studio_blob){toast('سجّل شيئاً أولاً','error');return;}
   var btn=document.getElementById('studio-send-btn');
   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري التفريغ...';}
@@ -3419,19 +3426,28 @@ async function studio_send_transcribe(){
   }
 }
 
-// ── زر بدء التفريغ (بعد رفع ملف) ──
-async function studio_file_transcribe(){
+// ── studio: اختيار ملف (يُظهر زر التفريغ) ──
+function studio_file_pick(input){
+  var file=input.files[0];if(!file)return;
+  document.getElementById('studio-file-name').textContent='✅ '+file.name;
+  var wrap=document.getElementById('studio-file-btn-wrap');
+  if(wrap)wrap.style.display='block';
+}
+
+// ── studio: تشغيل التفريغ على الملف ──
+async function studio_file_run(){
   var inp=document.getElementById('studio-file-inp');
   if(!inp||!inp.files||!inp.files[0]){toast('اختر ملفاً أولاً','error');return;}
   var btn=document.getElementById('studio-file-btn');
   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري التفريغ...';}
   try{
     var file=inp.files[0];
-    await studio_transcribe(file, file.type);
+    await studio_transcribe(file,file.type);
   }finally{
     if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-waveform-lines"></i> بدء التفريغ الذكي';}
   }
 }
+
 </script>
 </body>
 </html>
