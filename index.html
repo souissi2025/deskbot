@@ -2073,8 +2073,9 @@ async function save_api_key(){
 // ============================================================
 async function gemini(systemOrFull, userText, temp){
   if(!GEMINI_KEY){
-    if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
-    else{open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً');}
+    var _gk0 = USER ? localStorage.getItem('gemini_key_'+USER.uid) : null;
+    if(_gk0){ GEMINI_KEY=_gk0; }
+    else{ stt_open_settings(); throw new Error('أدخل مفتاح Gemini API أولاً'); }
   }
   var body;
   if(userText !== undefined){
@@ -2391,7 +2392,7 @@ async function run_ai(){
             if(_ftype.startsWith('image/')){
               // صورة → base64 → Gemini Vision
               // تحميل المفتاح أولاً كما تفعل دالة gemini()
-              if(!GEMINI_KEY){ var _gk=localStorage.getItem('gemini_key'); if(_gk) GEMINI_KEY=_gk; }
+              if(!GEMINI_KEY){ var _uk=USER?localStorage.getItem('gemini_key_'+USER.uid):null; if(_uk) GEMINI_KEY=_uk; }
               if(!GEMINI_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _b64img = await blob_to_base64(_f);
               var _imgBody = {
@@ -2420,7 +2421,7 @@ async function run_ai(){
 
             } else if(_ftype.startsWith('audio/')){
               // صوت → تفريغ مباشر بـ mimeType الصحيح ثم تمرير النص للبرومبت
-              if(!GEMINI_KEY){ var _gka=localStorage.getItem('gemini_key'); if(_gka) GEMINI_KEY=_gka; }
+              if(!GEMINI_KEY){ var _uk=USER?localStorage.getItem('gemini_key_'+USER.uid):null; if(_uk) GEMINI_KEY=_uk; }
               if(!GEMINI_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _statusEl2 = document.getElementById('ai-load');
               var _lt2 = _statusEl2 ? _statusEl2.querySelector('p,span,.load-text') : null;
@@ -2458,7 +2459,7 @@ async function run_ai(){
 
             } else if(_ftype.startsWith('video/')){
               // فيديو → base64 → Gemini
-              if(!GEMINI_KEY){ var _gk2=localStorage.getItem('gemini_key'); if(_gk2) GEMINI_KEY=_gk2; }
+              if(!GEMINI_KEY){ var _uk=USER?localStorage.getItem('gemini_key_'+USER.uid):null; if(_uk) GEMINI_KEY=_uk; }
               if(!GEMINI_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _b64vid = await blob_to_base64(_f);
               var _vidBody = {
@@ -2828,7 +2829,7 @@ function email_share_id(id){email_share(id)}
 (()=>{
   const t=localStorage.getItem('deskbot-theme')||'dark';
   document.documentElement.setAttribute('data-theme',t);
-  if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
+  // مفتاح API يُحمَّل بعد تسجيل الدخول عبر load_api_key()
 })();
 
 // ============================================================
@@ -3443,7 +3444,7 @@ function studio_file_selected(input){
   studio_transcribe(file,file.type);
 }
 async function studio_transcribe(blob,mimeType){
-  if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{open_modal('settings-modal');return;}}
+  if(!GEMINI_KEY){ var _gks=USER?localStorage.getItem('gemini_key_'+USER.uid):null; if(_gks) GEMINI_KEY=_gks; else{stt_open_settings();return;} }
   var load=document.getElementById('studio-trans-load'),status=document.getElementById('studio-status');
   if(load)load.style.display='flex';if(status)status.textContent='⏳ جاري التفريغ...';
   try{
@@ -3594,7 +3595,7 @@ function stt_open_settings(){
   }
   // ملء حقل المفتاح
   var inp = document.getElementById('api-key-inp');
-  var lk = localStorage.getItem('gemini_key') || GEMINI_KEY || '';
+  var lk = (USER&&localStorage.getItem('gemini_key_'+USER.uid)) || GEMINI_KEY || '';
   if(inp && lk) inp.value = lk;
   // مسح رسالة الحفظ
   var msg = document.getElementById('api-save-msg');
