@@ -893,16 +893,16 @@ textarea{min-height:120px;line-height:1.7}
     position:fixed;
     bottom:24px;
     left:24px;
-    z-index:9000;
-    width:52px;
-    height:52px;
+    z-index:99999;
+    width:54px;
+    height:54px;
     border-radius:50%;
     background:#f0c040;
-    border:2px solid rgba(0,0,0,.15);
+    border:2px solid rgba(0,0,0,.2);
     color:#1a1a1a;
-    font-size:21px;
+    font-size:22px;
     cursor:pointer;
-    display:flex;
+    display:none;
     align-items:center;
     justify-content:center;
     box-shadow:0 4px 20px rgba(0,0,0,.5);
@@ -940,10 +940,6 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 <div id="main-app">
-  <!-- ⚙️ زر الإعدادات العائم -->
-  <button id="api-fab" onclick="stt_open_settings()" title="إعدادات API">
-    <i class="fa-solid fa-gear"></i>
-  </button>
 
   <header class="header">
     <div class="h-logo">
@@ -1181,6 +1177,11 @@ textarea{min-height:120px;line-height:1.7}
 </div>
 
 </div>
+<!-- ⚙️ زر الإعدادات العائم - خارج main-app -->
+<button id="api-fab" onclick="stt_open_settings()" title="إعدادات API" style="display:none">
+  <i class="fa-solid fa-gear"></i>
+</button>
+
 </div>
 
 <div class="overlay" id="studio-modal">
@@ -1962,6 +1963,7 @@ auth.onAuthStateChanged(u=>{
     USER=u;
     document.getElementById('login-screen').style.display='none';
     document.getElementById('main-app').style.display='block';
+    document.getElementById('api-fab').style.display='flex';
     window.scrollTo(0,0);
     const init=(u.displayName||u.email||'ح').charAt(0).toUpperCase();
     document.getElementById('avatar').textContent=init;
@@ -1972,6 +1974,7 @@ auth.onAuthStateChanged(u=>{
     setTimeout(init_extras,500);
   }else{
     document.getElementById('login-screen').style.display='flex';
+    var fabEl=document.getElementById('api-fab'); if(fabEl) fabEl.style.display='none';
     document.getElementById('main-app').style.display='none';
   }
 });
