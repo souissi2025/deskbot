@@ -3349,7 +3349,7 @@ function studio_stop_rec(){
   btn.innerHTML='<i class="fa-solid fa-microphone"></i> بدء تسجيل جديد';btn.style.background='';
   document.getElementById('studio-rec-timer').classList.remove('recording');
 }
-async async function studio_process_rec(){
+async function studio_process_rec(){
   var blob=new Blob(_studio_chunks,{type:'audio/webm'});
   _studio_blob=blob;_studio_blob_url=URL.createObjectURL(blob);
   var player=document.getElementById('studio-audio-player');
