@@ -3671,32 +3671,37 @@ open_modal = function(id){
 function stt_open_settings(){
   var el = document.getElementById('settings-modal');
   if(!el){ alert('settings-modal غير موجود'); return; }
-  // ملء بيانات المستخدم
   if(USER){
-    var av = document.getElementById('stt-avatar');
-    var nm = document.getElementById('stt-name');
-    var em = document.getElementById('stt-email');
-    if(av) av.textContent = (USER.displayName||USER.email||'م').charAt(0).toUpperCase();
-    if(nm) nm.textContent = USER.displayName || '';
-    if(em) em.textContent = USER.email || '';
+    var av=document.getElementById('stt-avatar');
+    var nm=document.getElementById('stt-name');
+    var em=document.getElementById('stt-email');
+    if(av) av.textContent=(USER.displayName||USER.email||'م').charAt(0).toUpperCase();
+    if(nm) nm.textContent=USER.displayName||'';
+    if(em) em.textContent=USER.email||'';
   }
-  // ملء حقل المفتاح
-  var inp = document.getElementById('api-key-inp');
-  var lk = (USER&&localStorage.getItem('gemini_key_'+USER.uid)) || GEMINI_KEY || '';
-  if(inp && lk) inp.value = lk;
-  // مسح رسالة الحفظ
-  var msg = document.getElementById('api-save-msg');
-  if(msg) msg.innerHTML = '';
-  // إظهار النافذة مباشرة
-  el.style.cssText = 'display:flex!important;position:fixed!important;inset:0!important;' +
-    'background:rgba(0,0,0,.65)!important;z-index:9999!important;' +
-    'align-items:center!important;justify-content:center!important;' +
-    'padding:16px!important;backdrop-filter:blur(6px)!important;';
-  el.classList.add('open');
-  // إغلاق عند النقر خارجاً
-  el.onclick = function(e){
-    if(e.target === el) stt_close_settings();
-  };
+  var inp=document.getElementById('api-key-inp');
+  var lk=(USER&&localStorage.getItem('gemini_key_'+USER.uid))||GEMINI_KEY||'';
+  if(inp){ inp.value=lk; inp.type='password'; }
+  var eyeBtn=document.getElementById('api-eye-btn');
+  if(eyeBtn) eyeBtn.innerHTML='<i class="fa-solid fa-eye"></i>';
+  var msg=document.getElementById('api-save-msg');
+  if(msg) msg.innerHTML='';
+  // إظهار الـ overlay
+  el.style.cssText='display:flex!important;position:fixed!important;'+
+    'top:0!important;left:0!important;right:0!important;bottom:0!important;'+
+    'background:rgba(0,0,0,.7)!important;z-index:99999!important;'+
+    'align-items:flex-start!important;justify-content:center!important;'+
+    'padding:16px!important;overflow-y:auto!important;'+
+    'backdrop-filter:blur(6px)!important;-webkit-backdrop-filter:blur(6px)!important;';
+  // الـ modal الداخلي
+  var modal=el.querySelector('.modal');
+  if(modal){
+    modal.style.cssText='background:var(--bg2)!important;border-radius:16px!important;'+
+      'width:100%!important;max-width:480px!important;'+
+      'margin:auto!important;position:relative!important;'+
+      'border:1px solid var(--border)!important;';
+  }
+  el.onclick=function(e){ if(e.target===el) stt_close_settings(); };
 }
 function stt_close_settings(){
   var el = document.getElementById('settings-modal');
