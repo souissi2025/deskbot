@@ -1104,7 +1104,7 @@ textarea{min-height:120px;line-height:1.7}
           </div>
           <!-- زر إرسال للتفريغ (يستدعي الدالة الموجودة) -->
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-            <button class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_process_rec()">
+            <button id="studio-send-btn" class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_send_transcribe()">
               <i class="fa-solid fa-waveform-lines"></i> إرسال للتفريغ الذكي
             </button>
           </div>
@@ -1120,6 +1120,12 @@ textarea{min-height:120px;line-height:1.7}
             <span id="studio-file-name" style="font-size:13px">MP3 · MP4 · WAV · OGG · M4A · WebM</span>
             <input type="file" id="studio-file-inp" accept="audio/*,video/*" style="display:none" onchange="studio_file_selected(this)">
           </label>
+        </div>
+        <!-- زر بدء التفريغ يظهر بعد اختيار الملف -->
+        <div id="studio-file-btn-wrap" style="display:none;margin-top:10px">
+          <button id="studio-file-btn" class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_file_transcribe()">
+            <i class="fa-solid fa-waveform-lines"></i> بدء التفريغ الذكي
+          </button>
         </div>
       </div>
 
@@ -3343,21 +3349,20 @@ function studio_stop_rec(){
   btn.innerHTML='<i class="fa-solid fa-microphone"></i> بدء تسجيل جديد';btn.style.background='';
   document.getElementById('studio-rec-timer').classList.remove('recording');
 }
-async function studio_process_rec(){
+async async function studio_process_rec(){
   var blob=new Blob(_studio_chunks,{type:'audio/webm'});
   _studio_blob=blob;_studio_blob_url=URL.createObjectURL(blob);
   var player=document.getElementById('studio-audio-player');
   if(player){player.src=_studio_blob_url;player.load();}
   document.getElementById('studio-audio-wrap').style.display='block';
-  document.getElementById('studio-rec-status').textContent='✅ انتهى التسجيل — جاري التفريغ...';
+  document.getElementById('studio-rec-status').textContent='✅ انتهى التسجيل — استمع أو أرسل للتفريغ';
   document.getElementById('studio-rec-timer').style.display='none';
-  await studio_transcribe(blob,'audio/webm');
 }
 function studio_file_selected(input){
   var file=input.files[0];if(!file)return;
-  document.getElementById('studio-file-name').textContent=file.name;
-  document.getElementById('studio-status').textContent='⏳ جاري تحليل الملف وتفريغه...';
-  studio_transcribe(file,file.type);
+  document.getElementById('studio-file-name').textContent='✅ '+file.name;
+  var wrap=document.getElementById('studio-file-btn-wrap');
+  if(wrap)wrap.style.display='block';
 }
 async function studio_transcribe(blob,mimeType){
   if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{open_modal('settings-modal');return;}}
@@ -3401,6 +3406,32 @@ function studio_share_wa(){if(!_studio_blob_url){toast('لا يوجد تسجيل
 function studio_share_tg(){window.open('https://t.me/share/url?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent('تسجيل صوتي - DESK BOT'),'_blank');}
 function studio_share_email(){window.location.href='mailto:?subject='+encodeURIComponent('تسجيل صوتي - DESK BOT')+'&body='+encodeURIComponent('تسجيل صوتي.\n'+new Date().toLocaleString('ar-TN'));}
 
+
+// ── زر إرسال للتفريغ (بعد التسجيل) ──
+async function studio_send_transcribe(){
+  if(!_studio_blob){toast('سجّل شيئاً أولاً','error');return;}
+  var btn=document.getElementById('studio-send-btn');
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري التفريغ...';}
+  try{
+    await studio_transcribe(_studio_blob,'audio/webm');
+  }finally{
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-waveform-lines"></i> إرسال للتفريغ الذكي';}
+  }
+}
+
+// ── زر بدء التفريغ (بعد رفع ملف) ──
+async function studio_file_transcribe(){
+  var inp=document.getElementById('studio-file-inp');
+  if(!inp||!inp.files||!inp.files[0]){toast('اختر ملفاً أولاً','error');return;}
+  var btn=document.getElementById('studio-file-btn');
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري التفريغ...';}
+  try{
+    var file=inp.files[0];
+    await studio_transcribe(file, file.type);
+  }finally{
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-waveform-lines"></i> بدء التفريغ الذكي';}
+  }
+}
 </script>
 </body>
 </html>
