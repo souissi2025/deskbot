@@ -1967,6 +1967,7 @@ auth.onAuthStateChanged(u=>{
     window.scrollTo(0,0);
     const init=(u.displayName||u.email||'ح').charAt(0).toUpperCase();
     document.getElementById('avatar').textContent=init;
+    localStorage.removeItem('gemini_key');
     load_api_key();
     update_welcome();
     load_user_stats(); load_daily_requests();
@@ -1990,22 +1991,51 @@ function googleLogin(){
   });
 }
 function do_signout(){
-  if(confirm('تسجيل الخروج؟')) auth.signOut();
+  if(confirm('تسجيل الخروج؟')){
+    GEMINI_KEY = '';
+    auth.signOut();
+  }
 }
 
 // ============================================================
 // API KEY
 // ============================================================
 async function load_api_key(){
+  GEMINI_KEY = '';
+  localStorage.removeItem('gemini_key');
+  if(!USER){ show_api_notice(); return; }
+  var uid = USER.uid;
+  var lsKey = 'gemini_key_' + uid;
   try{
-    const d=await db.collection('config').doc('gemini').get();
-    if(d.exists&&d.data().key){
-      GEMINI_KEY=d.data().key;
-      document.getElementById('api-notice').classList.add('nb-hide');
-    }else{
-      document.getElementById('api-notice').classList.remove('nb-hide');
+    var d = await db.collection('users').doc(uid).collection('config').doc('gemini').get();
+    if(d.exists && d.data().key){
+      GEMINI_KEY = d.data().key;
+      localStorage.setItem(lsKey, GEMINI_KEY);
+      hide_api_notice();
+    } else {
+      var lk = localStorage.getItem(lsKey);
+      if(lk){ GEMINI_KEY = lk; hide_api_notice(); }
+      else { show_api_notice(); }
     }
-  }catch(e){document.getElementById('api-notice').style.display='flex'}
+  } catch(e){
+    var lk = localStorage.getItem(lsKey);
+    if(lk){ GEMINI_KEY = lk; hide_api_notice(); }
+    else { show_api_notice(); }
+  }
+}
+function show_api_notice(){
+  var n = document.getElementById('api-notice');
+  if(n){ n.classList.remove('nb-hide'); n.style.display='flex'; }
+  // نُظهر نافذة الإعدادات تلقائياً بعد ثانية
+  setTimeout(function(){
+    stt_open_settings();
+    var msg = document.getElementById('api-save-msg');
+    if(msg) msg.innerHTML = '<span style="color:#fbbf24">⚠️ أدخل مفتاح Gemini API للاستفادة من خدمات الموقع</span>';
+  }, 1200);
+}
+function hide_api_notice(){
+  var n = document.getElementById('api-notice');
+  if(n){ n.classList.add('nb-hide'); n.style.display='none'; }
 }
 async function save_api_key(){
   var k = (document.getElementById('api-key-inp').value || '').trim();
@@ -2016,21 +2046,24 @@ async function save_api_key(){
     if(msg) msg.innerHTML='<span style="color:#f87171">❌ مفتاح غير صحيح — يجب أن يبدأ بـ AIza</span>';
     return;
   }
+  if(!USER){ toast('يجب تسجيل الدخول أولاً','error'); return; }
   if(btn){ btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...'; }
   GEMINI_KEY = k;
-  localStorage.setItem('gemini_key', k);
+  var uid = USER.uid;
+  var lsKey = 'gemini_key_' + uid;
+  localStorage.setItem(lsKey, k);
   try{
-    await db.collection('config').doc('gemini').set({key:k},{merge:true});
+    await db.collection('users').doc(uid).collection('config').doc('gemini').set({key:k, updated: new Date().toISOString()});
     if(msg) msg.innerHTML='<span style="color:#4ade80">✅ تم الحفظ بنجاح</span>';
     toast('تم حفظ مفتاح Gemini ✅','success');
-    document.getElementById('api-notice').classList.add('nb-hide');
-    setTimeout(function(){ close_modal('settings-modal'); },900);
-  }catch(e){
+    hide_api_notice();
+    setTimeout(function(){ stt_close_settings(); }, 900);
+  } catch(e){
     if(msg) msg.innerHTML='<span style="color:#4ade80">✅ محفوظ محلياً</span>';
     toast('تم الحفظ ✅','success');
-    document.getElementById('api-notice').classList.add('nb-hide');
-    setTimeout(function(){ close_modal('settings-modal'); },900);
-  }finally{
+    hide_api_notice();
+    setTimeout(function(){ stt_close_settings(); }, 900);
+  } finally{
     if(btn){ btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح'; }
   }
 }
@@ -3523,8 +3556,15 @@ function stt_fill_user(){
     if(em) em.textContent = USER.email || '';
   }
   var inp = document.getElementById('api-key-inp');
-  var lk  = localStorage.getItem('gemini_key') || GEMINI_KEY || '';
-  if(inp && lk) inp.value = lk;
+  if(inp){
+    var lk = '';
+    if(USER) lk = localStorage.getItem('gemini_key_'+USER.uid) || GEMINI_KEY || '';
+    inp.value = lk;
+    // إعادة نوع الحقل لـ password
+    inp.type = 'password';
+    var eyeBtn = document.getElementById('api-eye-btn');
+    if(eyeBtn) eyeBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+  }
   var msg = document.getElementById('api-save-msg');
   if(msg) msg.innerHTML = '';
 }
