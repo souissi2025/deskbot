@@ -1084,12 +1084,15 @@ textarea{min-height:120px;line-height:1.7}
       </div>
     </div>
     <div class="m-body">
+
+      <!-- ══ تبويب 1: التسجيل المباشر ══ -->
       <div id="studio-panel-rec">
         <div class="rec-center" style="margin-bottom:16px">
           <div class="rec-status" id="studio-rec-status">اضغط للبدء بالتسجيل</div>
           <div class="rec-timer" id="studio-rec-timer" style="display:none">00:00</div>
           <button class="btn rec-main-btn" id="studio-rec-btn" onclick="studio_toggle_rec()"><i class="fa-solid fa-microphone"></i> بدء التسجيل</button>
         </div>
+        <!-- مشغل الصوت + مشاركة -->
         <div id="studio-audio-wrap" style="display:none;margin-bottom:16px">
           <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">الصوت المسجل</div>
           <audio id="studio-audio-player" controls style="width:100%;border-radius:10px;accent-color:var(--accent)"></audio>
@@ -1099,8 +1102,16 @@ textarea{min-height:120px;line-height:1.7}
             <button class="btn-sec" onclick="studio_share_tg()" style="gap:6px"><i class="fa-brands fa-telegram" style="color:#2aabee"></i> تيليغرام</button>
             <button class="btn-sec" onclick="studio_share_email()" style="gap:6px"><i class="fa-solid fa-envelope"></i> إيميل</button>
           </div>
+          <!-- زر إرسال للتفريغ (يستدعي الدالة الموجودة) -->
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+            <button class="btn" style="width:100%;justify-content:center;gap:8px" onclick="studio_process_rec()">
+              <i class="fa-solid fa-waveform-lines"></i> إرسال للتفريغ الذكي
+            </button>
+          </div>
         </div>
       </div>
+
+      <!-- ══ تبويب 2: رفع ملف ══ -->
       <div id="studio-panel-file" style="display:none">
         <div class="field">
           <label class="label"><i class="fa-solid fa-file-audio"></i> ارفع ملفاً صوتياً أو مرئياً</label>
@@ -1111,6 +1122,8 @@ textarea{min-height:120px;line-height:1.7}
           </label>
         </div>
       </div>
+
+      <!-- ══ منطقة التفريغ المشتركة ══ -->
       <div id="studio-transcribe-area" style="margin-top:16px">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
           <span style="font-weight:700;font-family:Amiri,serif;font-size:16px;flex:1">النص المفرَّغ</span>
@@ -1123,34 +1136,25 @@ textarea{min-height:120px;line-height:1.7}
           <button class="btn-sec" onclick="studio_save_txt()"><i class="fa-solid fa-file-lines"></i> .txt</button>
           <button class="btn-sec" onclick="wa_share('studio-transcription')"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></button>
           <button class="btn-sec" onclick="email_share('studio-transcription')"><i class="fa-solid fa-envelope"></i></button>
-          <button class="btn" onclick="studio_to_article()"><i class="fa-solid fa-newspaper"></i> تحويل لمقال</button>
+          <!-- زر تحويل لمقال Pro (يستدعي الدالة الموجودة) -->
+          <button class="btn" style="gap:6px;background:linear-gradient(135deg,var(--gold),#c0392b)" onclick="studio_to_article()">
+            <i class="fa-solid fa-newspaper"></i> تحويل لمقال Pro
+          </button>
         </div>
       </div>
+
+      <!-- ══ المقال الناتج ══ -->
       <div id="studio-article" style="display:none;margin-top:24px">
-        <div style="font-weight:700;margin-bottom:10px;font-family:Amiri,serif;font-size:16px;color:var(--gold)"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</div>
+        <div style="font-weight:700;margin-bottom:10px;font-family:Amiri,serif;font-size:16px;color:var(--gold)"><i class="fa-solid fa-newspaper"></i> المقال الإخباري Pro</div>
         <div id="studio-article-content" class="result-box rendered"></div>
         <div class="result-actions" style="margin-top:10px">
           <button class="btn-sec" onclick="copy_el('studio-article-content')"><i class="fa-solid fa-clipboard"></i></button>
           <button class="btn-sec" onclick="wa_share('studio-article-content')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn-sec" onclick="email_share('studio-article-content')"><i class="fa-solid fa-envelope"></i></button>
-          <button class="btn-sec" onclick="arc_save_el('studio-article-content','تفريغ صوتي')"><i class="fa-solid fa-clock-rotate-left"></i></button>
+          <button class="btn-sec" onclick="arc_save_el('studio-article-content','مقال صوتي')"><i class="fa-solid fa-clock-rotate-left"></i></button>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<div id="cmd-overlay" onclick="if(event.target===this) close_cmd()">
-  <div class="cmd-box">
-    <div class="cmd-input-wrap">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input id="cmd-input" placeholder="ابحث عن أداة أو اكتب أمراً..." autocomplete="off" oninput="cmd_filter()" onkeydown="cmd_key(event)">
-    </div>
-    <div class="cmd-list" id="cmd-list"></div>
-    <div class="cmd-footer">
-      <div class="cmd-hint"><kbd>↑↓</kbd> للتنقل</div>
-      <div class="cmd-hint"><kbd>Enter</kbd> للفتح</div>
-      <div class="cmd-hint"><kbd>Esc</kbd> للإغلاق</div>
     </div>
   </div>
 </div>
