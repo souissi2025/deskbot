@@ -1022,7 +1022,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('rewrite')" ontouchend="open_tool('rewrite')">
+      <div class="tool-card" onclick="open_tool('rewrite')">
         <div class="t-shortcut">Ctrl+2</div>
         <div class="t-icon ic-orange"><i class="fa-solid fa-pen-to-square"></i></div>
         <div class="t-content">
@@ -1031,7 +1031,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('headlines')" ontouchend="open_tool('headlines')">
+      <div class="tool-card" onclick="open_tool('headlines')">
         <div class="t-shortcut">Ctrl+3</div>
         <div class="t-icon ic-blue"><i class="fa-solid fa-heading"></i></div>
         <div class="t-content">
@@ -1040,7 +1040,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('flash')" ontouchend="open_tool('flash')">
+      <div class="tool-card" onclick="open_tool('flash')">
         <div class="t-shortcut">Ctrl+4</div>
         <div class="t-icon ic-red"><i class="fa-solid fa-bolt"></i></div>
         <div class="t-content">
@@ -1525,7 +1525,22 @@ document.addEventListener('DOMContentLoaded', function(){
       var onclick_attr = card.getAttribute('onclick');
       if(onclick_attr) eval(onclick_attr);
     }, {capture:true});
+
+    var _tx=0, _ty=0, _moved=false;
+
+    card.addEventListener('touchstart', function(e){
+      _tx=e.touches[0].clientX;
+      _ty=e.touches[0].clientY;
+      _moved=false;
+    }, {passive:true});
+
+    card.addEventListener('touchmove', function(e){
+      if(Math.abs(e.touches[0].clientX-_tx)>8 || Math.abs(e.touches[0].clientY-_ty)>8)
+        _moved=true;
+    }, {passive:true});
+
     card.addEventListener('touchend', function(e){
+      if(_moved) return;
       e.preventDefault();
       e.stopPropagation();
       var onclick_attr = card.getAttribute('onclick');
