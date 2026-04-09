@@ -3191,14 +3191,39 @@ async function load_ticker(){
     }catch(ex){return[];}
   }
   async function fetchFeed(feed){
-    try{var r1=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(feed.u)+'&_='+Date.now(),{signal:AbortSignal.timeout(12000)});
-      if(r1.ok){var d1=await r1.json();if(d1&&d1.contents){var a=parseXML(d1.contents,feed.s,feed.i);if(a.length)return a;}}
+    var proxies=[
+      'https://api.allorigins.win/get?url='+encodeURIComponent(feed.u)+'&_='+Date.now(),
+      'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feed.u)+'&count=6',
+      'https://corsproxy.io/?'+encodeURIComponent(feed.u),
+      'https://thingproxy.freeboard.io/fetch/'+feed.u
+    ];
+    // وسيط 1: allorigins
+    try{var r1=await fetch(proxies[0],{signal:AbortSignal.timeout(8000)});
+      if(r1.ok){var d1=await r1.json();
+        if(d1&&d1.contents){var a=parseXML(d1.contents,feed.s,feed.i);if(a.length)return a;}
+        // rss2json format
+        if(d1&&d1.items){return d1.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:feed.s,intl:feed.i,pd:it.pubDate};});}
+      }
     }catch(e1){}
-    try{var r2=await fetch('https://corsproxy.io/?'+encodeURIComponent(feed.u),{signal:AbortSignal.timeout(9000)});
-      if(r2.ok){var x2=await r2.text();var b=parseXML(x2,feed.s,feed.i);if(b.length)return b;}
+    // وسيط 2: rss2json مباشرة
+    try{var r2=await fetch(proxies[1],{signal:AbortSignal.timeout(8000)});
+      if(r2.ok){var d2=await r2.json();
+        if(d2&&d2.items&&d2.items.length){
+          return d2.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:feed.s,intl:feed.i,pd:it.pubDate};});
+        }
+      }
     }catch(e2){}
+    // وسيط 3: corsproxy
+    try{var r3=await fetch(proxies[2],{signal:AbortSignal.timeout(8000)});
+      if(r3.ok){var x3=await r3.text();var c=parseXML(x3,feed.s,feed.i);if(c.length)return c;}
+    }catch(e3){}
+    // وسيط 4: thingproxy
+    try{var r4=await fetch(proxies[3],{signal:AbortSignal.timeout(8000)});
+      if(r4.ok){var x4=await r4.text();var d=parseXML(x4,feed.s,feed.i);if(d.length)return d;}
+    }catch(e4){}
     return[];
   }
+
   var news=[];
   await Promise.allSettled(RSS.map(function(f){return fetchFeed(f).then(function(a){a.forEach(function(n){news.push(n);});});}));
   news.sort(function(a,b){return(b.pd?new Date(b.pd):0)-(a.pd?new Date(a.pd):0);});
