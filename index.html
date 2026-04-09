@@ -1600,8 +1600,7 @@ firebase.initializeApp({
   projectId:"deskbot-bfc98",
   storageBucket:"deskbot-bfc98.firebasestorage.app",
   messagingSenderId:"154416885085",
-  appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"
-});
+appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"});
 const auth=firebase.auth(), db=firebase.firestore();
 auth.getRedirectResult().then(function(r){if(r&&r.user)console.log('✅ redirect:',r.user.email);}).catch(function(e){if(e.code&&e.code!=='auth/no-auth-event')console.warn(e.code);});
 
