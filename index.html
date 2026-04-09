@@ -3192,30 +3192,43 @@ async function load_ticker(){
   }
   async function fetchFeed(feed){
     var u=feed.u, s=feed.s, ii=feed.i, ts=Date.now();
-    // وسيط 1: rss2json - الأكثر موثوقية
-    try{var r1=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(u)+'&count=6&api_key=',{signal:AbortSignal.timeout(8000)});
-      if(r1.ok){var d1=await r1.json();
-        if(d1&&d1.status==='ok'&&d1.items&&d1.items.length){
-          return d1.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:s,intl:ii,pd:it.pubDate};});
-        }
-      }
-    }catch(e1){}
-    // وسيط 2: allorigins مع cache busting
-    try{var r2=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(u)+'&_='+ts,{signal:AbortSignal.timeout(8000)});
-      if(r2.ok){var d2=await r2.json();if(d2&&d2.contents){var a=parseXML(d2.contents,s,ii);if(a.length)return a;}}
-    }catch(e2){}
-    // وسيط 3: codetabs
-    try{var r3=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)});
-      if(r3.ok){var x3=await r3.text();var b=parseXML(x3,s,ii);if(b.length)return b;}
-    }catch(e3){}
-    // وسيط 4: corsproxy.io
-    try{var r4=await fetch('https://corsproxy.io/?'+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)});
-      if(r4.ok){var x4=await r4.text();var c=parseXML(x4,s,ii);if(c.length)return c;}
-    }catch(e4){}
-    // وسيط 5: thingproxy
-    try{var r5=await fetch('https://thingproxy.freeboard.io/fetch/'+u,{signal:AbortSignal.timeout(8000)});
-      if(r5.ok){var x5=await r5.text();var d=parseXML(x5,s,ii);if(d.length)return d;}
-    }catch(e5){}
+
+    function tryRss2json(){
+      return fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(u)+'&count=6',{signal:AbortSignal.timeout(8000)})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(d){
+          if(d&&d.status==='ok'&&d.items&&d.items.length)
+            return d.items.slice(0,6).map(function(it){return{title:it.title,link:it.link,src:s,intl:ii,pd:it.pubDate};});
+          return null;
+        }).catch(function(){return null;});
+    }
+
+    function tryAllorigins(){
+      return fetch('https://api.allorigins.win/get?url='+encodeURIComponent(u)+'&_='+ts,{signal:AbortSignal.timeout(8000)})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(d){return d&&d.contents?parseXML(d.contents,s,ii):null;})
+        .catch(function(){return null;});
+    }
+
+    function tryCodetabs(){
+      return fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)})
+        .then(function(r){return r.ok?r.text():null;})
+        .then(function(x){return x?parseXML(x,s,ii):null;})
+        .catch(function(){return null;});
+    }
+
+    function tryCorsproxy(){
+      return fetch('https://corsproxy.io/?'+encodeURIComponent(u),{signal:AbortSignal.timeout(8000)})
+        .then(function(r){return r.ok?r.text():null;})
+        .then(function(x){return x?parseXML(x,s,ii):null;})
+        .catch(function(){return null;});
+    }
+
+    // نشغّل الكل بالتوازي ونأخذ أول نتيجة ناجحة
+    var results = await Promise.all([tryRss2json(), tryAllorigins(), tryCodetabs(), tryCorsproxy()]);
+    for(var i=0;i<results.length;i++){
+      if(results[i]&&results[i].length) return results[i];
+    }
     return[];
   }
 
