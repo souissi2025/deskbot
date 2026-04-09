@@ -2804,10 +2804,22 @@ function email_share_id(id){email_share(id)}
 // ============================================================
 // MODAL HELPERS
 // ============================================================
-function open_modal(id){document.getElementById(id).classList.add('open')}
-function close_modal(id){document.getElementById(id).classList.remove('open')}
-document.querySelectorAll('.overlay').forEach(o=>{
-  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')})
+function open_modal(id){
+  var el=document.getElementById(id);
+  if(!el){console.error('modal not found:',id);return;}
+  el.style.display='flex';
+  el.classList.add('open');
+}
+function close_modal(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.classList.remove('open');
+  el.style.display='none';
+}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.overlay').forEach(function(o){
+    o.addEventListener('click',function(e){if(e.target===o){o.classList.remove('open');o.style.display='none';}});
+  });
 });
 
 // ============================================================
