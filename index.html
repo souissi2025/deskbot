@@ -931,7 +931,6 @@ textarea{min-height:120px;line-height:1.7}
         <div class="live-dot"></div>LIVE
       </button>
       <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
-      <button class="h-btn gold" id="stt-btn-header" onclick="stt_open()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
       
       <button class="h-btn" onclick="toggle_theme()" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
       <div class="avatar" id="avatar" title="تسجيل الخروج" onclick="do_signout()">ح</div>
@@ -1451,8 +1450,7 @@ textarea{min-height:120px;line-height:1.7}
     <button onclick="open_modal('agenda-modal')" class="bnav-btn">
       <i class="fa-solid fa-calendar-days" style="font-size:19px"></i><span>الأجندة</span></button>
     
-    <button class="bnav-btn" id="stt-btn-bnav" onclick="stt_open()"><i class="fa-solid fa-gear" style="font-size:19px"></i><span>API</span></button>
-  </div>
+    </div>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -3604,5 +3602,28 @@ function stt_save_or(){
 
 
 
+
+<!-- زر الإعدادات العائم -->
+<button id="settings-fab" onclick="stt_open()" title="الإعدادات"
+  style="
+    position:fixed;
+    bottom:76px;
+    left:16px;
+    z-index:999;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:var(--bg2,#1e1e2e);
+    border:1px solid var(--border,#333);
+    color:var(--text2,#aaa);
+    font-size:16px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 12px rgba(0,0,0,.4);
+    transition:all .2s;
+  "
+  onmouseover="this.style.color='var(--gold,#f0c040)';this.style.borderColor='var(--gold,#f0c040)'"
+  onmouseout="this.style.color='var(--text2,#aaa)';this.style.borderColor='var(--border,#333)'">
+  <i class="fa-solid fa-gear"></i>
+</button>
 </body>
 </html>
