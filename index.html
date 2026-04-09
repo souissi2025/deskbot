@@ -1600,7 +1600,8 @@ firebase.initializeApp({
   projectId:"deskbot-bfc98",
   storageBucket:"deskbot-bfc98.firebasestorage.app",
   messagingSenderId:"154416885085",
-appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"});
+  appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"
+});
 const auth=firebase.auth(), db=firebase.firestore();
 auth.getRedirectResult().then(function(r){if(r&&r.user)console.log('✅ redirect:',r.user.email);}).catch(function(e){if(e.code&&e.code!=='auth/no-auth-event')console.warn(e.code);});
 
@@ -3364,6 +3365,12 @@ async function studio_process_rec(){
   document.getElementById('studio-rec-timer').style.display='none';
   await studio_transcribe(blob,'audio/webm');
 }
+function studio_file_selected(input){
+  var file=input.files[0];if(!file)return;
+  document.getElementById('studio-file-name').textContent=file.name;
+  document.getElementById('studio-status').textContent='⏳ جاري تحليل الملف وتفريغه...';
+  studio_transcribe(file,file.type);
+}
 async function studio_transcribe(blob,mimeType){
   if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{open_modal('settings-modal');return;}}
   var load=document.getElementById('studio-trans-load'),status=document.getElementById('studio-status');
@@ -3383,7 +3390,19 @@ async function studio_transcribe(blob,mimeType){
   }catch(e){if(status)status.textContent='⚠ '+e.message;toast(e.message,'error');}
   finally{if(load)load.style.display='none';}
 }
-async function studio_copy_text(){var ta=document.getElementById('studio-transcription');if(!ta||!ta.value.trim())return toast('لا يوجد نص','error');navigator.clipboard.writeText(ta.value).then(function(){toast('تم النسخ ✓','success');});}
+async function studio_to_article(){
+  var txt=(document.getElementById('studio-transcription')||{}).value||'';
+  if(!txt.trim())return toast('فرّغ الصوت أولاً','error');
+  var aw=document.getElementById('studio-article'),ab=document.getElementById('studio-article-content');
+  if(aw)aw.style.display='block';
+  if(ab)ab.innerHTML='<div class="loading"><div class="spin"></div><span>جاري التحويل...</span></div>';
+  try{
+    var res=await gemini(PROMPTS.editor,txt);
+    if(ab){ab.innerHTML=render_md(res);ab.className='result-box rendered';}
+    await arc_auto('تفريغ صوتي - مقال','',res);
+  }catch(e){if(ab)ab.innerHTML='<p style="color:var(--text3)">خطأ: '+e.message+'</p>';toast('خطأ: '+e.message,'error');}
+}
+function studio_copy_text(){var ta=document.getElementById('studio-transcription');if(!ta||!ta.value.trim())return toast('لا يوجد نص','error');navigator.clipboard.writeText(ta.value).then(function(){toast('تم النسخ ✓','success');});}
 function studio_save_txt(){
   var ta=document.getElementById('studio-transcription');if(!ta||!ta.value.trim())return toast('لا يوجد نص','error');
   var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ta.value],{type:'text/plain;charset=utf-8'}));
