@@ -1012,7 +1012,7 @@ textarea{min-height:120px;line-height:1.7}
     <div class="sec-label"><i class="fa-solid fa-wand-magic-sparkles"></i> مركز المعالجة الذكية</div>
     <div class="bento-grid">
 
-      <div class="tool-card featured" onclick="open_tool('editor')">
+      <div class="tool-card featured" onclick="open_tool('editor')" ontouchend="open_tool('editor')">
         <div class="t-badge">PRO</div>
         <div class="t-shortcut">Ctrl+1</div>
         <div class="t-icon ic-gold" style="width:60px;height:60px;font-size:26px"><i class="fa-solid fa-pen-nib"></i></div>
@@ -1022,7 +1022,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('rewrite')">
+      <div class="tool-card" onclick="open_tool('rewrite')" ontouchend="open_tool('rewrite')">
         <div class="t-shortcut">Ctrl+2</div>
         <div class="t-icon ic-orange"><i class="fa-solid fa-pen-to-square"></i></div>
         <div class="t-content">
@@ -1031,7 +1031,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('headlines')">
+      <div class="tool-card" onclick="open_tool('headlines')" ontouchend="open_tool('headlines')">
         <div class="t-shortcut">Ctrl+3</div>
         <div class="t-icon ic-blue"><i class="fa-solid fa-heading"></i></div>
         <div class="t-content">
@@ -1040,7 +1040,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
-      <div class="tool-card" onclick="open_tool('flash')">
+      <div class="tool-card" onclick="open_tool('flash')" ontouchend="open_tool('flash')">
         <div class="t-shortcut">Ctrl+4</div>
         <div class="t-icon ic-red"><i class="fa-solid fa-bolt"></i></div>
         <div class="t-content">
@@ -1503,7 +1503,7 @@ textarea{min-height:120px;line-height:1.7}
   <div style="display:grid;grid-template-columns:repeat(5,1fr);text-align:center">
     <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="bnav-btn">
       <i class="fa-solid fa-house" style="font-size:19px"></i><span>الرئيسية</span></button>
-    <button onclick="open_tool('editor')" class="bnav-btn">
+    <button onclick="open_tool('editor')" ontouchend="open_tool('editor')" class="bnav-btn">
       <i class="fa-solid fa-pen-nib" style="font-size:19px;color:var(--gold)"></i><span>المحرر</span></button>
     <button onclick="toggle_ticker()" class="bnav-btn">
       <i class="fa-solid fa-newspaper" style="font-size:19px;color:var(--accent)"></i><span>أخبار</span></button>
@@ -1519,35 +1519,17 @@ textarea{min-height:120px;line-height:1.7}
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
 // DEBUG: نضيف event listeners مباشرة على الأزرار
 document.addEventListener('DOMContentLoaded', function(){
-  var _tStartX=0, _tStartY=0, _tScrolled=false;
-
-  document.addEventListener('touchstart', function(e){
-    _tStartX = e.touches[0].clientX;
-    _tStartY = e.touches[0].clientY;
-    _tScrolled = false;
-  }, {passive:true});
-
-  document.addEventListener('touchmove', function(e){
-    if(!_tScrolled){
-      var dx = Math.abs(e.touches[0].clientX - _tStartX);
-      var dy = Math.abs(e.touches[0].clientY - _tStartY);
-      if(dx > 8 || dy > 8) _tScrolled = true;
-    }
-  }, {passive:true});
-
   document.querySelectorAll('.tool-card').forEach(function(card){
     card.addEventListener('click', function(e){
       e.stopPropagation();
-      var fn = card.getAttribute('onclick');
-      if(fn) eval(fn);
+      var onclick_attr = card.getAttribute('onclick');
+      if(onclick_attr) eval(onclick_attr);
     }, {capture:true});
-
     card.addEventListener('touchend', function(e){
-      if(_tScrolled) return;
       e.preventDefault();
       e.stopPropagation();
-      var fn = card.getAttribute('onclick');
-      if(fn) eval(fn);
+      var onclick_attr = card.getAttribute('onclick');
+      if(onclick_attr) eval(onclick_attr);
     }, {capture:true, passive:false});
   });
 });
@@ -1948,7 +1930,7 @@ async function save_api_key(){
 // ============================================================
 // GEMINI API
 // ============================================================
-async function gemini(systemOrFull, userText){
+async function gemini(systemOrFull, userText, temp){
   if(!GEMINI_KEY){
     if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
     else{open_modal('settings-modal');throw new Error('أدخل مفتاح API أولاً');}
@@ -1959,7 +1941,7 @@ async function gemini(systemOrFull, userText){
     body = {
       system_instruction: { parts: [{ text: systemOrFull }] },
       contents: [{ role: 'user', parts: [{ text: userText }] }],
-      generationConfig: { temperature: 0.15, topP: 0.95, maxOutputTokens: 4096 }
+      generationConfig: { temperature: (temp !== undefined ? temp : 0.5), topP: 0.95, maxOutputTokens: 4096 }
     };
   } else {
     // legacy: prompt كامل للأدوات الأخرى
@@ -2245,6 +2227,8 @@ async function run_ai(){
     } else {
       /* Pro: system_instruction منفصل + temperature:0.1 */
       var sysPr = PROMPTS[CUR_TOOL] || SYS;
+      var toolTemp = {editor:0.5, rewrite:0.5, headlines:0.6, flash:0.4, monitor:0.5, checker:0.4}[CUR_TOOL];
+      if(toolTemp === undefined) toolTemp = 0.5;
       if(CUR_TOOL === 'editor'){
         // ── محرر Pro: معالجة المرفقات + Gemini أولاً ثم Qwen احتياطياً ──
         var _aiFileInput = document.getElementById('ai-file');
@@ -2329,7 +2313,7 @@ async function run_ai(){
               if(!_transcript) throw new Error('تعذر تفريغ الصوت: ' + _audErr);
               var _combinedText = (_cleanPrompt ? _cleanPrompt + '\n\n' : '') + 'النص المفرَّغ من التسجيل:\n' + _transcript;
               if(_lt2) _lt2.textContent = 'جاري إعداد المادة الإخبارية... يرجى الانتظار بضع ثوانٍ.';
-              res = await gemini(sysPr, _combinedText);
+              res = await gemini(sysPr, _combinedText, toolTemp);
 
             } else if(_ftype.startsWith('video/')){
               // فيديو → base64 → Gemini
@@ -2369,13 +2353,13 @@ async function run_ai(){
                 _fr.readAsText(_f, 'UTF-8');
               });
               var _docText = (_cleanPrompt ? _cleanPrompt + '\n\n' : '') + 'محتوى الملف المرفق:\n' + _textContent;
-              res = await gemini(sysPr, _docText);
+              res = await gemini(sysPr, _docText, toolTemp);
             }
             await inc_user_stat('pro');
 
           } else {
             // لا يوجد مرفق → النص فقط كما كان
-            res = await gemini(sysPr, _cleanPrompt || promptText);
+            res = await gemini(sysPr, _cleanPrompt || promptText, toolTemp);
             await inc_user_stat('pro');
           }
 
@@ -2417,7 +2401,7 @@ async function run_ai(){
         }
 
       } else {
-        res = await gemini(sysPr, promptText);
+        res = await gemini(sysPr, promptText, toolTemp);
         await inc_user_stat('pro');
       }
     }
