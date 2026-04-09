@@ -931,7 +931,6 @@ textarea{min-height:120px;line-height:1.7}
         <div class="live-dot"></div>LIVE
       </button>
       <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
-      <button class="h-btn gold" onclick="open_modal('settings-modal')"><i class="fa-solid fa-gear"></i> <span>API</span></button>
       <button class="h-btn" onclick="toggle_theme()" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
       <div class="avatar" id="avatar" title="تسجيل الخروج" onclick="do_signout()">ح</div>
     </div>
@@ -1515,8 +1514,7 @@ textarea{min-height:120px;line-height:1.7}
       <i class="fa-solid fa-newspaper" style="font-size:19px;color:var(--accent)"></i><span>أخبار</span></button>
     <button onclick="open_modal('agenda-modal')" class="bnav-btn">
       <i class="fa-solid fa-calendar-days" style="font-size:19px"></i><span>الأجندة</span></button>
-    <button onclick="open_modal('settings-modal')" class="bnav-btn">
-      <i class="fa-solid fa-gear" style="font-size:19px"></i><span>API</span></button>
+    
   </div>
 </nav>
 
@@ -3387,18 +3385,7 @@ async function studio_to_article(){
   if(aw)aw.style.display='block';
   if(ab)ab.innerHTML='<div class="loading"><div class="spin"></div><span>جاري التحويل...</span></div>';
   try{
-    var STUDIO_ARTICLE_INSTRUCTION = `## تعليمات صارمة — نص مفرَّغ من تسجيل صوتي
-
-⚠️ القواعد الذهبية غير القابلة للكسر:
-1. اعتمد حصراً على المعلومات الواردة في النص المفرَّغ أدناه — لا تضف أي معلومة من خارجه.
-2. إذا كانت معلومة غير موجودة في النص، لا تختلقها ولا تستنتجها — أغفلها تماماً.
-3. لا تذكر أشخاصاً أو أرقاماً أو تواريخ أو مواقع لم يرد ذكرها صراحةً في التفريغ.
-4. إذا كان التفريغ ناقصاً أو غير واضح في نقطة ما، اكتب فقط ما هو واضح وأغفل الباقي.
-5. الهدف: تحرير صحفي أمين لا إبداعي — الدقة فوق كل اعتبار.
-
-## النص المفرَّغ المصدر:
-` + txt;
-    var res=await gemini(PROMPTS.editor, STUDIO_ARTICLE_INSTRUCTION);
+    var res=await gemini(PROMPTS.editor,txt);
     if(ab){ab.innerHTML=render_md(res);ab.className='result-box rendered';}
     await arc_auto('تفريغ صوتي - مقال','',res);
   }catch(e){if(ab)ab.innerHTML='<p style="color:var(--text3)">خطأ: '+e.message+'</p>';toast('خطأ: '+e.message,'error');}
