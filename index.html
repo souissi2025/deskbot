@@ -931,7 +931,7 @@ textarea{min-height:120px;line-height:1.7}
         <div class="live-dot"></div>LIVE
       </button>
       <button class="h-btn" onclick="open_archive()"><i class="fa-solid fa-clock-rotate-left"></i> <span>الأرشيف</span></button>
-      <button class="h-btn gold" onclick="open_settings()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
+      
       <button class="h-btn" onclick="toggle_theme()" id="theme-btn"><i class="fa-solid fa-moon"></i></button>
       <div class="avatar" id="avatar" title="تسجيل الخروج" onclick="do_signout()">ح</div>
     </div>
@@ -942,7 +942,7 @@ textarea{min-height:120px;line-height:1.7}
     <div id="api-notice" class="notice-bar nb-hide">
       <i class="fa-solid fa-triangle-exclamation"></i>
       مفتاح Gemini API غير موجود —
-      <button onclick="open_settings()">اضغط هنا لإدخاله</button>
+      <button >اضغط هنا لإدخاله</button>
     </div>
 
 
@@ -979,7 +979,7 @@ textarea{min-height:120px;line-height:1.7}
         border-color:rgba(139,92,246,.3);color:#a78bfa">
       <i class="fa-solid fa-robot"></i>
       مفتاح OpenRouter (Qwen) غير مُدخل —
-      <button onclick="open_settings()" style="color:#a78bfa">
+      <button  style="color:#a78bfa">
         أدخله من الإعدادات
       </button>
       &nbsp;|&nbsp;
@@ -1449,8 +1449,7 @@ textarea{min-height:120px;line-height:1.7}
       <i class="fa-solid fa-newspaper" style="font-size:19px;color:var(--accent)"></i><span>أخبار</span></button>
     <button onclick="open_modal('agenda-modal')" class="bnav-btn">
       <i class="fa-solid fa-calendar-days" style="font-size:19px"></i><span>الأجندة</span></button>
-    <button onclick="open_settings()" class="bnav-btn">
-      <i class="fa-solid fa-gear" style="font-size:19px"></i><span>API</span></button>
+    
   </div>
 </nav>
 
@@ -1509,23 +1508,6 @@ document.addEventListener('DOMContentLoaded', function(){
     }, {capture:true, passive:false});
   });
 
-// ── h-btn touch fix ──
-document.querySelectorAll('.h-btn, .live-pill').forEach(function(btn){
-  var _hx=0,_hy=0,_hm=false;
-  btn.addEventListener('touchstart',function(e){
-    _hx=e.touches[0].clientX;_hy=e.touches[0].clientY;_hm=false;
-  },{passive:true});
-  btn.addEventListener('touchmove',function(e){
-    if(Math.abs(e.touches[0].clientX-_hx)>8||Math.abs(e.touches[0].clientY-_hy)>8)_hm=true;
-  },{passive:true});
-  btn.addEventListener('touchend',function(e){
-    if(_hm)return;
-    e.preventDefault();
-    var oc=btn.getAttribute('onclick');
-    if(oc)eval(oc);
-  },{passive:false});
-});
-
 
 });
 
@@ -1576,7 +1558,7 @@ const CMD_ITEMS=[
   {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
   {name:'شريط الأخبار',icon:'fa-newspaper',cls:'ic-blue',key:'',action:()=>toggle_ticker()},
   {name:'الأرشيف',icon:'fa-clock-rotate-left',cls:'ic-teal',key:'',action:()=>open_archive()},
-  {name:'إعدادات API',icon:'fa-gear',cls:'ic-amber',key:'',action:()=>open_settings()},
+  
 ];
 let cmdIdx=0, cmdFiltered=[...CMD_ITEMS];
 
@@ -1959,7 +1941,7 @@ async function load_api_key(){
 async function gemini(systemOrFull, userText, temp){
   if(!GEMINI_KEY){
     if(localStorage.getItem('gemini_key')) GEMINI_KEY=localStorage.getItem('gemini_key');
-    else{open_settings();throw new Error('أدخل مفتاح API أولاً');}
+    else{throw new Error('أدخل مفتاح API أولاً');}
   }
   var body;
   if(userText !== undefined){
@@ -2243,7 +2225,7 @@ async function run_ai(){
     var res;
     if(CUR_AI_MODEL === 'qwen'){
       if(!OR_KEY){ var _ok2=localStorage.getItem('or_key'); if(_ok2) OR_KEY=_ok2; }
-      if(!OR_KEY){ open_settings(); throw new Error('أدخل مفتاح OpenRouter أولاً'); }
+      if(!OR_KEY){  throw new Error('أدخل مفتاح OpenRouter أولاً'); }
       if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية (50 طلب)','error');
       /* Qwen: إرسال system + user منفصلَين */
       var systemPr = PROMPTS[CUR_TOOL] || SYS;
@@ -2277,7 +2259,7 @@ async function run_ai(){
               // صورة → base64 → Gemini Vision
               // تحميل المفتاح أولاً كما تفعل دالة gemini()
               if(!GEMINI_KEY){ var _gk=localStorage.getItem('gemini_key'); if(_gk) GEMINI_KEY=_gk; }
-              if(!GEMINI_KEY){ open_settings(); throw new Error('أدخل مفتاح Gemini API أولاً'); }
+              if(!GEMINI_KEY){  throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _b64img = await blob_to_base64(_f);
               var _imgBody = {
                 system_instruction: { parts:[{ text: sysPr }] },
@@ -2306,7 +2288,7 @@ async function run_ai(){
             } else if(_ftype.startsWith('audio/')){
               // صوت → تفريغ مباشر بـ mimeType الصحيح ثم تمرير النص للبرومبت
               if(!GEMINI_KEY){ var _gka=localStorage.getItem('gemini_key'); if(_gka) GEMINI_KEY=_gka; }
-              if(!GEMINI_KEY){ open_settings(); throw new Error('أدخل مفتاح Gemini API أولاً'); }
+              if(!GEMINI_KEY){  throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _statusEl2 = document.getElementById('ai-load');
               var _lt2 = _statusEl2 ? _statusEl2.querySelector('p,span,.load-text') : null;
               if(_lt2) _lt2.textContent = 'جاري تفريغ الملف الصوتي...';
@@ -2344,7 +2326,7 @@ async function run_ai(){
             } else if(_ftype.startsWith('video/')){
               // فيديو → base64 → Gemini
               if(!GEMINI_KEY){ var _gk2=localStorage.getItem('gemini_key'); if(_gk2) GEMINI_KEY=_gk2; }
-              if(!GEMINI_KEY){ open_settings(); throw new Error('أدخل مفتاح Gemini API أولاً'); }
+              if(!GEMINI_KEY){  throw new Error('أدخل مفتاح Gemini API أولاً'); }
               var _b64vid = await blob_to_base64(_f);
               var _vidBody = {
                 system_instruction: { parts:[{ text: sysPr }] },
@@ -2392,7 +2374,7 @@ async function run_ai(){
         } catch(geminiErr){
           toast('تعذر الاتصال بـ Gemini، نحاول مع Qwen...','error');
           if(!OR_KEY){ var _s2=localStorage.getItem('or_key'); if(_s2) OR_KEY=_s2; }
-          if(!OR_KEY){ open_settings(); throw new Error('أدخل مفتاح OpenRouter كبديل'); }
+          if(!OR_KEY){  throw new Error('أدخل مفتاح OpenRouter كبديل'); }
           if(get_or_q() >= OR_MAX) throw new Error('استُنفدت حصة Qwen اليومية (50 طلب)');
           // Qwen لا يدعم الملفات مباشرة - نمرر النص المتاح فقط
           var _qwenInput = _cleanPrompt || promptText;
@@ -2939,7 +2921,7 @@ function save_or_key(){
 async function qwen_call(prompt){
   if(!OR_KEY){
     var s = localStorage.getItem('or_key');
-    if(s){ OR_KEY = s; } else { open_settings(); throw new Error('أدخل مفتاح OpenRouter'); }
+    if(s){ OR_KEY = s; } else {  throw new Error('أدخل مفتاح OpenRouter'); }
   }
   if(get_or_q() >= OR_MAX) throw new Error('استُنفدت الحصة اليومية (50 طلب)');
   var resp = await fetch('https://openrouter.ai/api/v1/chat/completions',{
@@ -2971,7 +2953,7 @@ async function run_qwen(){
   if(!inp) return toast('أدخل نصاً أولاً','error');
   // تحقق من المفتاح أولاً
   if(!OR_KEY){ var _s=localStorage.getItem('or_key'); if(_s) OR_KEY=_s; }
-  if(!OR_KEY){ open_settings(); return toast('أدخل مفتاح OpenRouter أولاً','error'); }
+  if(!OR_KEY){  return toast('أدخل مفتاح OpenRouter أولاً','error'); }
   if(get_or_q() >= OR_MAX) return toast('استُنفدت الحصة اليومية (50 طلب)','error');
   show_load('qwen-load');
   document.getElementById('qwen-run-btn').disabled = true;
@@ -3328,7 +3310,7 @@ function studio_file_selected(input){
   studio_transcribe(file,file.type);
 }
 async function studio_transcribe(blob,mimeType){
-  if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{open_settings();return;}}
+  if(!GEMINI_KEY){if(localStorage.getItem('gemini_key'))GEMINI_KEY=localStorage.getItem('gemini_key');else{return;}}
   var load=document.getElementById('studio-trans-load'),status=document.getElementById('studio-status');
   if(load)load.style.display='flex';if(status)status.textContent='⏳ جاري التفريغ...';
   try{
@@ -3429,129 +3411,13 @@ async function studio_file_run(){
 // ════════════════════════════════════════
 // SETTINGS — نظيف من الصفر
 // ════════════════════════════════════════
-function open_settings(){
-  var gk=localStorage.getItem('gemini_key')||'';
-  var ork=localStorage.getItem('or_key')||'';
-  var inp=document.getElementById('api-key-inp');
-  var oi=document.getElementById('or-key-inp');
-  if(inp) inp.value=gk;
-  if(oi) oi.value=ork;
-  if(USER){
-    var av=document.getElementById('settings-avatar');
-    var nm=document.getElementById('settings-name');
-    var em=document.getElementById('settings-email');
-    if(av) av.textContent=(USER.displayName||USER.email||'م').charAt(0).toUpperCase();
-    if(nm) nm.textContent=USER.displayName||'';
-    if(em) em.textContent=USER.email||'';
-  }
-  open_modal('settings-modal');
-}
 
-function settings_toggle_eye(inputId, btn){
-  var inp=document.getElementById(inputId);
-  if(!inp) return;
-  var isPass=inp.type==='password';
-  inp.type=isPass?'text':'password';
-  btn.innerHTML=isPass?'<i class="fa-solid fa-eye-slash"></i>':'<i class="fa-solid fa-eye"></i>';
-}
 
-async function settings_save_gemini(){
-  var k=(document.getElementById('api-key-inp').value||'').trim();
-  if(!k){toast('أدخل المفتاح أولاً','error');return;}
-  if(!k.startsWith('AIza')){toast('المفتاح غير صحيح — يجب أن يبدأ بـ AIza','error');return;}
-  var st=document.getElementById('settings-gemini-status');
-  if(st) st.innerHTML='<span style="color:var(--text3)">⏳ جاري الحفظ...</span>';
-  GEMINI_KEY=k;
-  localStorage.setItem('gemini_key',k);
-  try{
-    if(USER) await db.collection('users').doc(USER.uid).collection('config').doc('gemini').set({key:k,updated:new Date().toISOString()},{merge:true});
-    if(st) st.innerHTML='<span style="color:#4ade80">✅ تم الحفظ بنجاح</span>';
-    toast('تم حفظ مفتاح Gemini','success');
-    nb_hide('api-notice');
-  }catch(e){
-    if(st) st.innerHTML='<span style="color:#4ade80">✅ محفوظ محلياً</span>';
-    toast('محفوظ محلياً','success');
-    nb_hide('api-notice');
-  }
-}
-function settings_save_or(){
-  var k=(document.getElementById('or-key-inp').value||'').trim();
-  if(!k){toast('أدخل المفتاح أولاً','error');return;}
-  localStorage.setItem('or_key',k);
-  OR_KEY=k;
-  var st=document.getElementById('settings-or-status');
-  if(st) st.innerHTML='<span style="color:var(--green)">✅ تم الحفظ</span>';
-  toast('تم حفظ مفتاح OpenRouter','success');
-  nb_hide('or-notice');
-}
-
+async 
 </script>
 
 
-<div class="overlay" id="settings-modal" onclick="if(event.target===this)close_modal('settings-modal')">
-  <div class="modal" style="max-width:460px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-gear" style="color:var(--gold)"></i> إعدادات DESK BOT</div>
-      <button class="m-close" onclick="close_modal('settings-modal')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="m-body" style="display:flex;flex-direction:column;gap:18px">
 
-      <!-- Gemini API Key -->
-      <div style="background:var(--bg2);border-radius:12px;padding:16px;border:1px solid var(--border)">
-        <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:var(--gold)">
-          <i class="fa-solid fa-key"></i> مفتاح Gemini API
-        </div>
-        <div style="display:flex;gap:8px">
-          <input id="api-key-inp" type="password" placeholder="AIzaSy..."
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:monospace;font-size:13px"
-            value="">
-          <button onclick="settings_toggle_eye('api-key-inp',this)" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0 12px;cursor:pointer;color:var(--text2)">
-            <i class="fa-solid fa-eye"></i>
-          </button>
-        </div>
-        <div style="font-size:11px;color:var(--text3);margin-top:6px">
-          احصل على مفتاحك من <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent)">Google AI Studio</a>
-        </div>
-        <button class="btn" style="width:100%;justify-content:center;margin-top:10px;gap:8px" onclick="settings_save_gemini()">
-          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini
-        </button>
-        <div id="settings-gemini-status" style="font-size:12px;margin-top:8px;text-align:center"></div>
-      </div>
-
-      <!-- OpenRouter Key -->
-      <div style="background:var(--bg2);border-radius:12px;padding:16px;border:1px solid var(--border)">
-        <div style="font-weight:700;font-size:13px;margin-bottom:10px;color:#8b5cf6">
-          <i class="fa-solid fa-robot"></i> مفتاح OpenRouter (Qwen)
-        </div>
-        <div style="display:flex;gap:8px">
-          <input id="or-key-inp" type="password" placeholder="sk-or-..."
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:monospace;font-size:13px"
-            value="">
-          <button onclick="settings_toggle_eye('or-key-inp',this)" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0 12px;cursor:pointer;color:var(--text2)">
-            <i class="fa-solid fa-eye"></i>
-          </button>
-        </div>
-        <button class="btn" style="width:100%;justify-content:center;margin-top:10px;gap:8px;background:linear-gradient(135deg,#7c3aed,#4f46e5)" onclick="settings_save_or()">
-          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter
-        </button>
-        <div id="settings-or-status" style="font-size:12px;margin-top:8px;text-align:center"></div>
-      </div>
-
-      <!-- معلومات الحساب -->
-      <div style="background:var(--bg2);border-radius:12px;padding:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px">
-        <div id="settings-avatar" style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#fff"></div>
-        <div style="flex:1">
-          <div id="settings-name" style="font-weight:700;font-size:14px"></div>
-          <div id="settings-email" style="font-size:12px;color:var(--text3)"></div>
-        </div>
-        <button class="btn-sec" onclick="do_signout()" style="gap:6px;color:#ef4444;border-color:#ef4444">
-          <i class="fa-solid fa-right-from-bracket"></i> خروج
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
