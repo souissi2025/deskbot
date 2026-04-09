@@ -938,9 +938,10 @@ textarea{min-height:120px;line-height:1.7}
 
   <div class="content">
 
-    <div id="api-notice" class="notice-bar nb-hide" onclick="open_modal('settings-modal')" style="cursor:pointer">
+    <div id="api-notice" class="notice-bar nb-hide">
       <i class="fa-solid fa-triangle-exclamation"></i>
-      مفتاح Gemini API غير موجود — اضغط هنا لإدخاله
+      مفتاح Gemini API غير موجود —
+      <button onclick="open_modal('settings-modal')">اضغط هنا لإدخاله</button>
     </div>
 
 
@@ -972,7 +973,22 @@ textarea{min-height:120px;line-height:1.7}
       </div>
     </div>
 
-        <div class="welcome-bar">
+    <div id="or-notice" class="notice-bar nb-hide"
+      style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));
+        border-color:rgba(139,92,246,.3);color:#a78bfa">
+      <i class="fa-solid fa-robot"></i>
+      مفتاح OpenRouter (Qwen) غير مُدخل —
+      <button onclick="open_modal('settings-modal')" style="color:#a78bfa">
+        أدخله من الإعدادات
+      </button>
+      &nbsp;|&nbsp;
+      <a href="https://openrouter.ai/keys" target="_blank"
+        style="color:#a78bfa;font-weight:700;text-decoration:underline">
+        openrouter.ai/keys ←
+      </a>
+    </div>
+
+    <div class="welcome-bar">
       <div class="welcome-text">
         <div class="wt-greeting" id="welcome-greeting">مرحباً 👋</div>
         <div class="wt-sub" id="welcome-sub">جاهز لبدء العمل التحريري</div>
@@ -984,6 +1000,7 @@ textarea{min-height:120px;line-height:1.7}
         </div>
 
         <div class="w-stat">
+          <div class="w-stat-val" id="ws-qwen">0<span style="font-size:10px;color:var(--text3)">/50</span></div>
           <div class="w-stat-lbl">Qwen</div>
         </div>
       </div>
@@ -1152,6 +1169,7 @@ textarea{min-height:120px;line-height:1.7}
         <button class="m-close" onclick="close_modal('ai-modal')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div style="display:flex;border-top:1px solid var(--border);background:var(--bg2)">
+        <button id="model-tab-pro" onclick="select_ai_model('pro')"
           style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
           border:none;cursor:pointer;border-bottom:2px solid var(--accent);
           background:transparent;color:var(--accent);transition:all .2s">
@@ -1159,9 +1177,12 @@ textarea{min-height:120px;line-height:1.7}
           <span id="ai-pro-quota" style="font-size:9px;background:rgba(99,102,241,.2);
           color:var(--accent);border-radius:20px;padding:1px 6px;margin-right:3px">0/100</span>
         </button>
+        <button id="model-tab-qwen" onclick="select_ai_model('qwen')"
           style="flex:1;padding:9px 6px;font-size:12px;font-family:'Cairo',sans-serif;font-weight:700;
           border:none;cursor:pointer;border-bottom:2px solid transparent;
           background:transparent;color:var(--text3);transition:all .2s">
+          <i class="fa-solid fa-robot"></i> Qwen
+          <span id="ai-qwen-quota" style="font-size:9px;background:rgba(139,92,246,.2);
           color:#a78bfa;border-radius:20px;padding:1px 6px;margin-right:3px">0/50</span>
         </button>
       </div>
@@ -1335,84 +1356,146 @@ textarea{min-height:120px;line-height:1.7}
 
 
 <div class="overlay" id="settings-modal">
-  <div class="modal" style="max-width:460px">
+  <div class="modal" style="max-width:480px">
     <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-gear" style="color:var(--gold)"></i> إعدادات DESK BOT</div>
+      <div class="m-title"><i class="fa-solid fa-gear"></i> إعدادات DESK BOT</div>
       <button class="m-close" onclick="close_modal('settings-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div class="m-body" style="display:flex;flex-direction:column;gap:16px">
-
-      <!-- مفتاح Gemini -->
-      <div style="background:rgba(61,126,255,.07);border:1px solid rgba(61,126,255,.22);border-radius:14px;padding:16px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <i class="fa-brands fa-google" style="color:var(--accent);font-size:18px"></i>
-          <strong style="color:var(--text);font-size:14px">مفتاح Google Gemini API</strong>
-          <span style="font-size:10px;background:rgba(16,201,138,.15);color:var(--accent2);padding:2px 8px;border-radius:20px;font-weight:700">مجاني</span>
+    <div class="m-body">
+      <div style="background:rgba(61,126,255,.07);border:1px solid rgba(61,126,255,.22);
+        border-radius:12px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--text2)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <i class="fa-brands fa-google" style="color:var(--accent)"></i>
+          <strong style="color:var(--text)">Google Gemini API</strong>
         </div>
-        <div style="display:flex;gap:8px;margin-bottom:12px">
-          <input id="api-key-inp" type="password" placeholder="AIzaSy..."
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:monospace;font-size:13px;outline:none">
-          <button type="button" id="api-eye-btn"
-            onclick="(function(){var i=document.getElementById('api-key-inp');var b=document.getElementById('api-eye-btn');if(i.type==='password'){i.type='text';b.innerHTML='<i class=&quot;fa-solid fa-eye-slash&quot;></i>'}else{i.type='password';b.innerHTML='<i class=&quot;fa-solid fa-eye&quot;></i>'}})()"
-            style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0 12px;cursor:pointer;color:var(--text2);min-width:42px;font-size:14px">
+        <div style="margin-bottom:6px">احصل على مفتاحك المجاني من:</div>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank"
+          style="display:inline-flex;align-items:center;gap:6px;color:var(--accent);
+          font-weight:700;text-decoration:none;background:rgba(61,126,255,.1);
+          padding:5px 12px;border-radius:8px;font-size:12px;border:1px solid rgba(61,126,255,.3)">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          aistudio.google.com/app/apikey ←
+        </a>
+      </div>
+      <div class="field">
+        <label class="label">مفتاح Google Gemini API</label>
+        <input type="text" id="api-key-inp" placeholder="AIzaSy...">
+      </div>
+      <div style="background:rgba(16,201,138,0.06);border:1px solid rgba(16,201,138,0.2);border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--text2)">
+        <i class="fa-solid fa-circle-check" style="color:var(--accent2)"></i>
+        النماذج: <strong style="color:var(--text)">Flash 2.5 ✨</strong> و <strong style="color:var(--text)">Pro 2.5 🧠</strong> — يدعمان الصوت والصور والنصوص<br>
+        <i class="fa-solid fa-microphone" style="color:var(--accent2)"></i>
+        التسجيل الذكي: يُرسل الصوت مباشرة لـ Gemini للتفريغ الحرفي الحقيقي<br>
+        <i class="fa-solid fa-chart-bar" style="color:var(--accent2)"></i>
+        الكوتا المجانية: <strong style="color:var(--accent2)">1500 طلب/يوم</strong> لكل صحفي
+      </div>
+      <button class="btn" onclick="save_api_key()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini</button>
+
+      <div style="margin-top:22px;padding-top:20px;border-top:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(139,92,246,.15);
+            color:#a78bfa;display:flex;align-items:center;justify-content:center;
+            font-size:16px;flex-shrink:0"><i class="fa-solid fa-robot"></i></div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700">OpenRouter — Qwen 3</div>
+            <div style="font-size:11px;color:var(--text2)">مجاني ·
+              <strong style="color:#a78bfa">50 طلب/يوم</strong> ·
+              <a href="https://openrouter.ai/keys" target="_blank"
+                style="color:#a78bfa;font-weight:700">احصل على مفتاح مجاني ←</a>
+            </div>
+          </div>
+          <span id="or-quota-badge"
+            style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;
+            background:rgba(139,92,246,.18);color:#a78bfa">0 / 50</span>
+        </div>
+        <div class="field">
+          <label class="label">OpenRouter API Key</label>
+          <input type="text" id="or-key-inp" placeholder="sk-or-v1-..." style="font-size:12px">
+        </div>
+        <button class="btn"
+          style="width:100%;background:linear-gradient(135deg,#7c3aed,#a78bfa);
+          box-shadow:0 4px 16px rgba(139,92,246,.35)" onclick="save_or_key()">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="overlay" id="qwen-modal">
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title">
+        <i class="fa-solid fa-robot" style="color:#a78bfa"></i>
+        Qwen 3 — OpenRouter
+        <span id="qwen-quota-badge"
+          style="font-size:10px;background:rgba(139,92,246,.2);color:#a78bfa;
+          border-radius:20px;padding:2px 10px;font-weight:700;margin-right:6px">0 / 50</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-sec" style="padding:5px 10px;font-size:11px"
+          onclick="toggle_focus('qwen-modal')"><i class="fa-solid fa-expand"></i></button>
+        <button class="m-close" onclick="close_modal('qwen-modal')">
+          <i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="m-body">
+      <div style="background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.2);
+        border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text2)">
+        <i class="fa-solid fa-circle-info" style="color:#a78bfa"></i>
+        <strong style="color:#a78bfa">qwen/qwen3-235b-a22b:free</strong>
+        — مجاني عبر OpenRouter · <strong style="color:var(--text)">50 طلب/يوم</strong>
+      </div>
+      <div class="field">
+        <label class="label">نص أو سؤال أو مهمة</label>
+        <textarea id="qwen-input" rows="6" placeholder="تحرير، تحليل، ترجمة، أسئلة مهنية..."></textarea>
+      </div>
+      <div class="attach-bar">
+        <label class="attach-btn">
+          <i class="fa-solid fa-paperclip"></i> إرفاق ملف
+          <input type="file" id="qwen-file" accept="audio/*,image/*,video/*"
+            onchange="handle_attach('qwen-file','qwen-attach-preview','qwen-input')"
+            style="display:none">
+        </label>
+        <div id="qwen-attach-preview" class="attach-preview"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <button class="btn"
+          style="background:linear-gradient(135deg,#7c3aed,#a78bfa);box-shadow:0 4px 14px rgba(139,92,246,.35)"
+          onclick="run_qwen()" id="qwen-run-btn">
+          <i class="fa-solid fa-robot"></i> تشغيل Qwen
+        </button>
+        <button class="btn-sec" style="padding:10px 14px"
+          onclick="document.getElementById('qwen-input').value='';document.getElementById('qwen-attach-preview').innerHTML=''">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      <div id="qwen-load" class="loading" style="display:none">
+        <div class="spin"></div><span class="loading-dots">Qwen يعالج...</span>
+      </div>
+      <div id="qwen-result-wrap" class="result-wrap" style="display:none">
+        <div class="result-header">
+          <div class="result-tag">
+            <i class="fa-solid fa-robot" style="color:#a78bfa"></i> نتيجة Qwen
+          </div>
+          <button class="btn-sec" style="padding:4px 10px;font-size:11px"
+            onclick="toggle_qwen_fmt()" id="qwen-fmt-btn">
             <i class="fa-solid fa-eye"></i>
           </button>
         </div>
-        <div style="background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:12px;border:1px solid var(--border)">
-          <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px">
-            <i class="fa-solid fa-circle-info" style="color:var(--accent)"></i> كيف تحصل على مفتاحك المجاني؟
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
-            <div style="font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:7px">
-              <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
-              افتح الرابط وسجّل دخولك بحساب Google
-            </div>
-            <div style="font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:7px">
-              <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
-              اضغط على <b style="color:var(--text)">Create API Key</b>
-            </div>
-            <div style="font-size:12px;color:var(--text2);display:flex;align-items:flex-start;gap:7px">
-              <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
-              انسخ المفتاح والصقه في الحقل أعلاه ثم اضغط حفظ
-            </div>
-          </div>
-          <a href="https://aistudio.google.com/app/apikey" target="_blank"
-            style="display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;text-decoration:none;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700">
-            <i class="fa-brands fa-google"></i> فتح Google AI Studio
-            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px"></i>
-          </a>
-        </div>
-        <button class="btn" id="api-save-btn" onclick="save_api_key()" style="width:100%;justify-content:center;gap:8px">
-          <i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح
-        </button>
-        <div id="api-save-msg" style="font-size:12px;margin-top:8px;text-align:center;min-height:16px"></div>
-      </div>
-
-      <!-- معلومات الحساب -->
-      <div style="background:var(--bg2);border-radius:12px;padding:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px">
-        <div id="stt-avatar" style="width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#fff;flex-shrink:0"></div>
-        <div style="flex:1;min-width:0">
-          <div id="stt-name" style="font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-          <div id="stt-email" style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-        </div>
-        <button type="button" onclick="do_signout()"
-          style="background:none;border:1px solid #ef4444;border-radius:8px;color:#ef4444;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;display:flex;align-items:center;gap:6px;flex-shrink:0">
-          <i class="fa-solid fa-right-from-bracket"></i> خروج
-        </button>
-      </div>
-
-      <!-- رسالة التقني -->
-      <div style="background:rgba(240,192,64,.06);border:1px solid rgba(240,192,64,.25);border-radius:12px;padding:14px;display:flex;align-items:flex-start;gap:10px">
-        <i class="fa-solid fa-headset" style="color:var(--gold);font-size:18px;flex-shrink:0;margin-top:2px"></i>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px">هل تواجه مشكلة في الربط؟</div>
-          <div style="font-size:12px;color:var(--text2);line-height:1.7">
-            إذا فشلت في إدخال المفتاح أو ظهرت رسالة خطأ،<br>
-            <strong style="color:var(--text)">تواصل مع تقني الموقع</strong> للحصول على المساعدة الفورية.
-          </div>
+        <div id="qwen-result" class="result-box rendered"></div>
+        <div class="result-actions">
+          <button class="btn-sec" onclick="copy_el('qwen-result')">
+            <i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn-sec" onclick="wa_share('qwen-result')">
+            <i class="fa-brands fa-whatsapp"></i> واتساب</button>
+          <button class="btn-sec" onclick="email_share('qwen-result')">
+            <i class="fa-solid fa-envelope"></i> إيميل</button>
+          <button class="btn-sec" onclick="arc_save_el('qwen-result')">
+            <i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
         </div>
       </div>
-
     </div>
   </div>
 </div>
@@ -1529,6 +1612,7 @@ const CMD_ITEMS=[
   {name:'إعادة صياغة محترفة',icon:'fa-pen-to-square',cls:'ic-orange',key:'Ctrl+2',action:()=>open_tool('rewrite')},
   {name:'عناوين احترافية',icon:'fa-heading',cls:'ic-blue',key:'Ctrl+3',action:()=>open_tool('headlines')},
   {name:'فلاش إخباري',icon:'fa-bolt',cls:'ic-red',key:'Ctrl+4',action:()=>open_tool('flash')},
+  {name:'Qwen AI',icon:'fa-robot',cls:'ic-purple',key:'',action:()=>open_qwen_modal()},
   {name:'حدث اليوم',icon:'fa-calendar-day',cls:'ic-amber',key:'',action:()=>open_today()},
   {name:'أرشيف المواجهات',icon:'fa-futbol',cls:'ic-green',key:'',action:()=>open_modal('matches-modal')},
   {name:'ملف الشخصية',icon:'fa-user-tie',cls:'ic-blue',key:'',action:()=>open_modal('profile-modal')},
@@ -1847,6 +1931,7 @@ auth.onAuthStateChanged(u=>{
     load_api_key();
     update_welcome();
     load_user_stats(); load_daily_requests();
+    var _ok=localStorage.getItem('or_key'); if(_ok){ OR_KEY=_ok; nb_hide('or-notice'); }
     setTimeout(init_extras,500);
   }else{
     document.getElementById('login-screen').style.display='flex';
@@ -1872,63 +1957,31 @@ function do_signout(){
 // API KEY
 // ============================================================
 async function load_api_key(){
-  GEMINI_KEY = '';
   try{
-    const d = await db.collection('config').doc('gemini').get();
-    if(d.exists && d.data().key){
-      GEMINI_KEY = d.data().key;
-      localStorage.setItem('gemini_key', GEMINI_KEY);
+    const d=await db.collection('config').doc('gemini').get();
+    if(d.exists&&d.data().key){
+      GEMINI_KEY=d.data().key;
       document.getElementById('api-notice').classList.add('nb-hide');
-    } else {
-      var lk = localStorage.getItem('gemini_key');
-      if(lk){ GEMINI_KEY = lk; document.getElementById('api-notice').classList.add('nb-hide'); }
-      else { document.getElementById('api-notice').classList.remove('nb-hide'); }
+    }else{
+      document.getElementById('api-notice').classList.remove('nb-hide');
     }
-  }catch(e){
-    var lk = localStorage.getItem('gemini_key');
-    if(lk){ GEMINI_KEY = lk; document.getElementById('api-notice').classList.add('nb-hide'); }
-    else { document.getElementById('api-notice').classList.remove('nb-hide'); }
-  }
-  // ملء حقل الإدخال في نافذة الإعدادات
-  var inp = document.getElementById('api-key-inp');
-  if(inp && GEMINI_KEY) inp.value = GEMINI_KEY;
-  // بيانات المستخدم في نافذة الإعدادات
-  if(USER){
-    var av = document.getElementById('stt-avatar');
-    var nm = document.getElementById('stt-name');
-    var em = document.getElementById('stt-email');
-    if(av) av.textContent = (USER.displayName||USER.email||'م').charAt(0).toUpperCase();
-    if(nm) nm.textContent = USER.displayName || '';
-    if(em) em.textContent = USER.email || '';
-  }
+  }catch(e){document.getElementById('api-notice').style.display='flex'}
 }
 async function save_api_key(){
-  var k = (document.getElementById('api-key-inp').value || '').trim();
-  var msg = document.getElementById('api-save-msg');
-  var btn = document.getElementById('api-save-btn');
-  if(!k){ toast('أدخل المفتاح أولاً','error'); return; }
-  if(!k.startsWith('AIza')){
-    if(msg) msg.innerHTML='<span style="color:#f87171">❌ مفتاح غير صحيح — يجب أن يبدأ بـ AIza</span>';
-    return;
-  }
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
-  GEMINI_KEY = k;
-  localStorage.setItem('gemini_key', k);
+  const k=document.getElementById('api-key-inp').value.trim();
+  if(!k) return toast('أدخل المفتاح أولاً','error');
   try{
-    await db.collection('config').doc('gemini').set({key:k},{merge:true});
-    if(msg) msg.innerHTML='<span style="color:#4ade80">✅ تم الحفظ بنجاح</span>';
-    toast('تم حفظ مفتاح Gemini ✅','success');
+    await db.collection('config').doc('gemini').set({key:k});
+    GEMINI_KEY=k;
     document.getElementById('api-notice').classList.add('nb-hide');
-    setTimeout(function(){ close_modal('settings-modal'); }, 900);
+    close_modal('settings-modal');
+    toast('✅ تم حفظ المفتاح','success');
   }catch(e){
-    if(msg) msg.innerHTML='<span style="color:#4ade80">✅ محفوظ محلياً</span>';
-    toast('تم الحفظ ✅','success');
+    localStorage.setItem('gemini_key',k);
+    GEMINI_KEY=k;
     document.getElementById('api-notice').classList.add('nb-hide');
-    setTimeout(function(){ close_modal('settings-modal'); }, 900);
-  }finally{
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح';
+    close_modal('settings-modal');
+    toast('✅ تم حفظ المفتاح محلياً','success');
   }
 }
 
@@ -1981,8 +2034,8 @@ async function gemini(systemOrFull, userText, temp){
 // ============================================================
 // QUOTA COUNTER — per-user (Firestore) · PRO=100 · Flash=500 · Qwen=50
 // ============================================================
-var USER_STATS = {pro:0};
-var QUOTA_LIMITS = {pro:100};
+var USER_STATS = {pro:0, qwen:0};
+var QUOTA_LIMITS = {pro:100, qwen:50};
 var QUOTA_TOOL_MAP = {
   editor:'pro', rewrite:'pro', headlines:'pro',
   flash:'pro',
@@ -2005,7 +2058,9 @@ async function load_user_stats(){
     if(doc.exists){
       var d = doc.data();
       USER_STATS.pro  = d.pro  || 0;
+      USER_STATS.qwen = d.qwen || 0;
     } else {
+      USER_STATS = {pro:0, qwen:0};
     }
   } catch(e){ console.warn('stats load err', e); }
   update_quota_ui();
@@ -2050,7 +2105,9 @@ function inc_requests(){
 
 function update_quota_ui(){
   var used_pro  = USER_STATS.pro  || 0;
+  var used_qwen = USER_STATS.qwen || 0;
   var lim_pro   = QUOTA_LIMITS.pro  || 100;
+  var lim_qwen  = QUOTA_LIMITS.qwen || 50;
 
   // Header quota bar (PRO)
   var pPro = Math.min((used_pro / lim_pro) * 100, 100);
@@ -2064,12 +2121,21 @@ function update_quota_ui(){
 
   // Modal tab badges
   var badge_pro  = document.getElementById('ai-pro-quota');
+  var badge_qwen = document.getElementById('ai-qwen-quota');
   if(badge_pro)  badge_pro.textContent  = used_pro  + '/' + lim_pro;
+  if(badge_qwen) badge_qwen.textContent = used_qwen + '/' + lim_qwen;
 
+  // Qwen standalone modal badge
+  var qb = document.getElementById('qwen-quota-badge');
+  if(qb) qb.textContent = used_qwen + ' / ' + lim_qwen;
+  var qob = document.getElementById('or-quota-badge');
+  if(qob) qob.textContent = used_qwen + ' / ' + lim_qwen;
 
   // Welcome stats
   var wp = document.getElementById('ws-pro');
+  var wq = document.getElementById('ws-qwen');
   if(wp) wp.innerHTML = used_pro  + '<span style="font-size:10px;color:var(--text3)">/' + lim_pro  + '</span>';
+  if(wq) wq.innerHTML = used_qwen + '<span style="font-size:10px;color:var(--text3)">/' + lim_qwen + '</span>';
 }
 
 // LIVE CLOCK
@@ -2180,6 +2246,7 @@ async function run_ai(){
   if(!inp) return toast('أدخل النص أولاً','error');
 
   /* ── فحص الكوتا الفردية ── */
+  var _qtype = (CUR_AI_MODEL === 'qwen') ? 'qwen' : 'pro';
   if(!check_quota(_qtype)) return;
 
   /* ── بناء النص للمستخدم فقط (checker يُضيف مصدر+تاريخ) ── */
@@ -2206,13 +2273,22 @@ async function run_ai(){
 
   try{
     var res;
+    if(CUR_AI_MODEL === 'qwen'){
+      if(!OR_KEY){ var _ok2=localStorage.getItem('or_key'); if(_ok2) OR_KEY=_ok2; }
+      if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter أولاً'); }
+      if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية (50 طلب)','error');
+      /* Qwen: إرسال system + user منفصلَين */
       var systemPr = PROMPTS[CUR_TOOL] || SYS;
+      res = await qwen_call(systemPr + '\n\n' + promptText);
+      inc_or_q();
+      await inc_user_stat('qwen');
     } else {
       /* Pro: system_instruction منفصل + temperature:0.1 */
       var sysPr = PROMPTS[CUR_TOOL] || SYS;
       var toolTemp = {editor:0.5, rewrite:0.5, headlines:0.6, flash:0.4, monitor:0.5, checker:0.4}[CUR_TOOL];
       if(toolTemp === undefined) toolTemp = 0.5;
       if(CUR_TOOL === 'editor'){
+        // ── محرر Pro: معالجة المرفقات + Gemini أولاً ثم Qwen احتياطياً ──
         var _aiFileInput = document.getElementById('ai-file');
         var _liveFile = (_aiFileInput && _aiFileInput.files && _aiFileInput.files[0]) ? _aiFileInput.files[0] : AI_ATTACHED_FILE;
         var _cleanPrompt = promptText.replace(/\n\n\[ملف مرفق:[^\]]*\]/g,'').replace(/\[ملف مرفق:[^\]]*\]/g,'').trim();
@@ -2347,6 +2423,9 @@ async function run_ai(){
 
         } catch(geminiErr){
           toast('تعذر الاتصال بـ Gemini، نحاول مع Qwen...','error');
+          if(!OR_KEY){ var _s2=localStorage.getItem('or_key'); if(_s2) OR_KEY=_s2; }
+          if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter كبديل'); }
+          if(get_or_q() >= OR_MAX) throw new Error('استُنفدت حصة Qwen اليومية (50 طلب)');
           // Qwen لا يدعم الملفات مباشرة - نمرر النص المتاح فقط
           var _qwenInput = _cleanPrompt || promptText;
           if(_liveFile && _liveFile.type.startsWith('audio/')){
@@ -2373,7 +2452,10 @@ async function run_ai(){
               }
             } catch(_){ }
           }
+          res = await qwen_call(sysPr + '\n\n' + _qwenInput);
           res = '🔄 نسخة Qwen (بديل Gemini):\n\n' + res;
+          inc_or_q();
+          await inc_user_stat('qwen');
         }
 
       } else {
@@ -2861,6 +2943,90 @@ function remove_attach(inputId, previewId, textareaId){
 }
 
 /* ── OPENROUTER / QWEN ── */
+var OR_KEY = '';
+var OR_MAX = 50;
+function _or_day(){ return 'or_q_' + new Date().toDateString(); }
+function get_or_q(){ return parseInt(localStorage.getItem(_or_day()) || '0', 10); }
+function inc_or_q(){ localStorage.setItem(_or_day(), get_or_q() + 1); refresh_quota_ui(); }
+
+function refresh_quota_ui(){
+  var q = get_or_q();
+  var ids = ['qwen-card-quota','qwen-quota-badge','or-quota-badge'];
+  for(var i=0;i<ids.length;i++){
+    var el = document.getElementById(ids[i]);
+    if(el) el.textContent = q + '/50';
+  }
+}
+
+function save_or_key(){
+  var k = (document.getElementById('or-key-inp').value || '').trim();
+  if(!k) return toast('أدخل المفتاح أولاً','error');
+  OR_KEY = k;
+  localStorage.setItem('or_key', k);
+  nb_hide('or-notice');
+  close_modal('settings-modal');
+  toast('تم حفظ مفتاح OpenRouter ✓','success');
+}
+
+async function qwen_call(prompt){
+  if(!OR_KEY){
+    var s = localStorage.getItem('or_key');
+    if(s){ OR_KEY = s; } else { open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter'); }
+  }
+  if(get_or_q() >= OR_MAX) throw new Error('استُنفدت الحصة اليومية (50 طلب)');
+  var resp = await fetch('https://openrouter.ai/api/v1/chat/completions',{
+    method  : 'POST',
+    headers : { 'Content-Type':'application/json',
+                'Authorization':'Bearer ' + OR_KEY,
+                'HTTP-Referer':'https://deskbot-seven.vercel.app',
+                'X-Title':'DeskBot' },
+    body: JSON.stringify({
+      model: 'qwen/qwen3-235b-a22b:free',
+      messages: [{role:'user', content:prompt}],
+      max_tokens: 4096,
+      temperature: 0.3
+    })
+  });
+  if(!resp.ok){
+    var err = await resp.json().catch(function(){ return {}; });
+    throw new Error((err.error && err.error.message) ? err.error.message : 'خطأ OpenRouter ' + resp.status);
+  }
+  var data = await resp.json();
+  return data.choices[0].message.content;
+}
+
+function open_qwen_modal(){ refresh_quota_ui(); open_modal('qwen-modal'); }
+var _qwen_raw = false;
+
+async function run_qwen(){
+  var inp = document.getElementById('qwen-input').value.trim();
+  if(!inp) return toast('أدخل نصاً أولاً','error');
+  // تحقق من المفتاح أولاً
+  if(!OR_KEY){ var _s=localStorage.getItem('or_key'); if(_s) OR_KEY=_s; }
+  if(!OR_KEY){ open_modal('settings-modal'); return toast('أدخل مفتاح OpenRouter أولاً','error'); }
+  if(get_or_q() >= OR_MAX) return toast('استُنفدت الحصة اليومية (50 طلب)','error');
+  show_load('qwen-load');
+  document.getElementById('qwen-run-btn').disabled = true;
+  document.getElementById('qwen-result-wrap').style.display = 'none';
+  try{
+    var res = await qwen_call(SYS + '\n\n' + inp);
+    inc_or_q();
+    await inc_user_stat('qwen');
+    var box = document.getElementById('qwen-result');
+    box.innerHTML = render_md(res);
+    box.className = 'result-box rendered';
+    _qwen_raw = false;
+    document.getElementById('qwen-result-wrap').style.display = 'block';
+    update_quota_ui();
+    await arc_auto('Qwen AI', inp.substring(0,200), res);
+  }catch(e){ toast('خطأ Qwen: ' + e.message, 'error'); }
+  finally{
+    hide('qwen-load');
+    document.getElementById('qwen-run-btn').disabled = false;
+  }
+}
+
+function toggle_qwen_fmt(){
   var box = document.getElementById('qwen-result');
   var btn = document.getElementById('qwen-fmt-btn');
   if(!box) return;
@@ -2894,7 +3060,11 @@ var RSS2JSON = 'https://api.rss2json.com/v1/api.json?count=4&rss_url=';
 /* ── INIT EXTRAS — called 500ms after auth ── */
 function init_extras(){
   apply_saved_theme();
+  var ok = localStorage.getItem('or_key');
+  if(ok){ OR_KEY = ok; nb_hide('or-notice');
+    var inp = document.getElementById('or-key-inp'); if(inp) inp.value = ok;
   } else { nb_show('or-notice'); }
+  refresh_quota_ui();
   /* Mobile bottom nav */
   function chk_mob(){
     var nav = document.getElementById('bottom-nav');
@@ -2913,6 +3083,7 @@ function init_extras(){
 /* ── MODEL SELECTOR (PRO / Flash / Qwen) ── */
 var CUR_AI_MODEL = 'pro';
 
+function select_ai_model(m){
   CUR_AI_MODEL = m;
   // Always Pro for gemini
   var dd = document.getElementById('ai-model-select');
@@ -2930,8 +3101,13 @@ var CUR_AI_MODEL = 'pro';
       t.style.color = 'var(--text3)';
     }
   }
+  var qb = document.getElementById('ai-qwen-quota');
+  if(qb){
+    qb.style.display = (m === 'qwen') ? 'inline' : 'none';
+    qb.textContent = get_or_q() + '/50';
   }
   var runBtn = document.getElementById('ai-run-btn');
+  if(runBtn && m === 'qwen'){
     runBtn.style.background = 'linear-gradient(135deg,#7c3aed,#a78bfa)';
   } else if(runBtn){
     runBtn.style.background = '';
@@ -3271,38 +3447,5 @@ async function studio_file_run(){
 }
 
 </script>
-
-<!-- ⚙️ زر الإعدادات العائم -->
-<style>
-#api-fab{
-  position:fixed!important;
-  bottom:84px!important;
-  left:16px!important;
-  z-index:99999!important;
-  width:50px!important;
-  height:50px!important;
-  border-radius:50%!important;
-  background:#f0c040!important;
-  border:none!important;
-  color:#111827!important;
-  font-size:20px!important;
-  cursor:pointer!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  box-shadow:0 4px 20px rgba(0,0,0,.5),0 2px 8px rgba(240,192,64,.3)!important;
-  transition:transform .25s ease,box-shadow .25s ease!important;
-  outline:none!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-#api-fab:hover,#api-fab:focus{
-  transform:scale(1.15) rotate(45deg)!important;
-  box-shadow:0 8px 30px rgba(240,192,64,.6)!important;
-}
-#api-fab:active{ transform:scale(0.92)!important; }
-</style>
-<button id="api-fab" onclick="open_modal('settings-modal')" title="إعدادات API — Gemini">
-  <i class="fa-solid fa-gear"></i>
-</button>
 </body>
 </html>
