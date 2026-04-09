@@ -1508,6 +1508,25 @@ document.addEventListener('DOMContentLoaded', function(){
       if(oc) eval(oc);
     }, {capture:true, passive:false});
   });
+
+// ── h-btn touch fix ──
+document.querySelectorAll('.h-btn, .live-pill').forEach(function(btn){
+  var _hx=0,_hy=0,_hm=false;
+  btn.addEventListener('touchstart',function(e){
+    _hx=e.touches[0].clientX;_hy=e.touches[0].clientY;_hm=false;
+  },{passive:true});
+  btn.addEventListener('touchmove',function(e){
+    if(Math.abs(e.touches[0].clientX-_hx)>8||Math.abs(e.touches[0].clientY-_hy)>8)_hm=true;
+  },{passive:true});
+  btn.addEventListener('touchend',function(e){
+    if(_hm)return;
+    e.preventDefault();
+    var oc=btn.getAttribute('onclick');
+    if(oc)eval(oc);
+  },{passive:false});
+});
+
+
 });
 
 </script>
