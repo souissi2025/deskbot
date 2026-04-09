@@ -3411,14 +3411,12 @@ async function studio_file_run(){
 // SETTINGS — نظيف من الصفر
 // ════════════════════════════════════════
 function open_settings(){
-  // تحميل القيم الحالية
   var gk=localStorage.getItem('gemini_key')||'';
   var ork=localStorage.getItem('or_key')||'';
   var inp=document.getElementById('api-key-inp');
   var oi=document.getElementById('or-key-inp');
   if(inp) inp.value=gk;
   if(oi) oi.value=ork;
-  // معلومات المستخدم
   if(USER){
     var av=document.getElementById('settings-avatar');
     var nm=document.getElementById('settings-name');
@@ -3427,7 +3425,7 @@ function open_settings(){
     if(nm) nm.textContent=USER.displayName||'';
     if(em) em.textContent=USER.email||'';
   }
-  open_settings();
+  open_modal('settings-modal');
 }
 
 function settings_toggle_eye(inputId, btn){
