@@ -1073,6 +1073,14 @@ textarea{min-height:120px;line-height:1.7}
         </div>
       </div>
 
+      <div class="tool-card" onclick="openProfileModal()">
+        <div class="t-icon ic-blue"><i class="fa-solid fa-user-tie"></i></div>
+        <div class="t-content">
+          <div class="t-name">تسمية الشخصية</div>
+          <div class="t-desc">ملف صحفي استقصائي — تعريف، تصريحات موثقة، 10 أسئلة احترافية</div>
+        </div>
+      </div>
+
       
 
     </div>
@@ -1089,11 +1097,6 @@ textarea{min-height:120px;line-height:1.7}
         <div class="t-icon ic-indigo"><i class="fa-solid fa-waveform-lines"></i></div>
         <div class="t-name">التفريغ الصوتي</div>
       </div>
-
-      <button class="tool-card mini" onclick="open_modal('profile-modal')" style="border:none;cursor:pointer;text-align:center;font-family:inherit">
-        <div class="t-icon ic-blue"><i class="fa-solid fa-user-tie"></i></div>
-        <div class="t-name">تسمية الشخصية</div>
-      </button>
 
     </div>
   
@@ -2681,6 +2684,10 @@ function toggle_focus(id){
 // ============================================================
 // MATCHES
 // ============================================================
+
+function openProfileModal(){
+  document.getElementById('profile-modal').classList.add('open');
+}
 
 function open_today(){
   var d=new Date();
