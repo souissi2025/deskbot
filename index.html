@@ -2452,7 +2452,16 @@ async function run_ai(){
 
   try{
     var res;
-    {
+    if(CUR_AI_MODEL === 'qwen'){
+      if(!OR_KEY){ var _ok2=localStorage.getItem('or_key'); if(_ok2) OR_KEY=_ok2; }
+      if(!OR_KEY){ open_modal('settings-modal'); throw new Error('أدخل مفتاح OpenRouter أولاً'); }
+      if(get_or_q() >= OR_MAX) return toast('استُنفدت حصة Qwen اليومية (50 طلب)','error');
+      /* Qwen: إرسال system + user منفصلَين */
+      var systemPr = PROMPTS[CUR_TOOL] || SYS;
+      res = await qwen_call(systemPr + '\n\n' + promptText);
+      inc_or_q();
+      await inc_user_stat('qwen');
+    } else {
       /* Pro: system_instruction منفصل + temperature:0.1 */
       var sysPr = PROMPTS[CUR_TOOL] || SYS;
       var toolTemp = {editor:0.5, rewrite:0.5, headlines:0.6, flash:0.4, monitor:0.5, checker:0.4}[CUR_TOOL];
