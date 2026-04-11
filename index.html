@@ -1653,61 +1653,7 @@ textarea{min-height:120px;line-height:1.7}
 
 <div class="toast" id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
-// DEBUG: نضيف event listeners مباشرة على الأزرار
-document.addEventListener('DOMContentLoaded', function(){
-  document.querySelectorAll('.tool-card').forEach(function(card){
-    card.addEventListener('click', function(e){
-      e.stopPropagation();
-      var onclick_attr = card.getAttribute('onclick');
-      if(onclick_attr) eval(onclick_attr);
-    }, {capture:true});
-
-    var _tx=0, _ty=0, _moved=false;
-
-    card.addEventListener('touchstart', function(e){
-      _tx=e.touches[0].clientX;
-      _ty=e.touches[0].clientY;
-      _moved=false;
-    }, {passive:true});
-
-    card.addEventListener('touchmove', function(e){
-      if(Math.abs(e.touches[0].clientX-_tx)>8 || Math.abs(e.touches[0].clientY-_ty)>8)
-        _moved=true;
-    }, {passive:true});
-
-    card.addEventListener('touchend', function(e){
-      if(_moved) return;
-      e.preventDefault();
-      e.stopPropagation();
-      var onclick_attr = card.getAttribute('onclick');
-      if(onclick_attr) eval(onclick_attr);
-    }, {capture:true, passive:false});
-  });
-
-  // ── إصلاح bottom-nav buttons ──
-  document.querySelectorAll('.bnav-btn').forEach(function(btn){
-    var _bx=0, _by=0, _bmoved=false;
-    btn.addEventListener('touchstart', function(e){
-      _bx=e.touches[0].clientX;
-      _by=e.touches[0].clientY;
-      _bmoved=false;
-    }, {passive:true});
-    btn.addEventListener('touchmove', function(e){
-      if(Math.abs(e.touches[0].clientX-_bx)>8 || Math.abs(e.touches[0].clientY-_by)>8)
-        _bmoved=true;
-    }, {passive:true});
-    btn.addEventListener('touchend', function(e){
-      if(_bmoved) return;
-      e.preventDefault();
-      e.stopPropagation();
-      var oc=btn.getAttribute('onclick');
-      if(oc) eval(oc);
-    }, {capture:true, passive:false});
-  });
-});
-
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
@@ -2686,7 +2632,7 @@ function toggle_focus(id){
 // ============================================================
 
 function openProfileModal(){
-  document.getElementById('profile-modal').classList.add('open');
+  open_modal('profile-modal');
 }
 
 function open_today(){
@@ -2925,7 +2871,12 @@ function email_share_id(id){email_share(id)}
 // ============================================================
 // MODAL HELPERS
 // ============================================================
-function open_modal(id){document.getElementById(id).classList.add('open')}
+function open_modal(id){
+  // إغلاق أي نافذة مفتوحة حالياً لمنع التداخل
+  document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
+  const modal = document.getElementById(id);
+  if(modal) modal.classList.add('open');
+}
 function close_modal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.overlay').forEach(o=>{
   o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')})
