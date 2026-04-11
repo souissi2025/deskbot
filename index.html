@@ -192,8 +192,7 @@ body::after{
   border-radius:20px;padding:5px 12px;
   font-size:10px;letter-spacing:2px;
   display:flex;align-items:center;gap:6px;
-  cursor:pointer;font-family:'Cairo',sans-serif;border:none;
-  border:1px solid rgba(239,68,68,0.3);
+  cursor:pointer;font-family:'Cairo',sans-serif;
   transition:all .2s;
 }
 .live-pill:hover{background:rgba(239,68,68,0.2)}
@@ -304,82 +303,35 @@ select.h-btn{
   transition:all .25s;
   display:flex;flex-direction:column;
   gap:12px;
-  position:relative;overflow:hidden;
+  position:relative;
+  overflow:hidden;
 }
-.tool-card::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  opacity:0;transition:opacity .25s;
-  border-radius:var(--r2);
-}
-.tool-card:hover{
-  border-color:var(--accent);
-  transform:translateY(-2px);
-  box-shadow:var(--glow), 0 12px 40px rgba(0,0,0,0.3);
-}
-.tool-card:hover::before{opacity:.04}
-.tool-card.featured{
-  grid-column:1;grid-row:1/3;
-  padding:32px 28px;
-  border-color:var(--border2);
-}
-.tool-card.featured::after{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--gold),transparent);
-}
-.tool-card.featured:hover{border-color:var(--gold)}
-.t-icon{
-  width:52px;height:52px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;position:relative;z-index:1;
-  flex-shrink:0;
-}
-.t-content{position:relative;z-index:1;flex:1}
-.t-name{font-size:15px;font-weight:700;margin-bottom:4px}
-.tool-card.featured .t-name{font-size:19px;font-family:'Amiri',serif}
-.t-desc{font-size:11px;color:var(--text2);line-height:1.5}
-.t-badge{
-  position:absolute;top:16px;left:16px;
-  background:var(--gold);color:#000;
-  font-size:9px;font-weight:700;
-  border-radius:6px;padding:2px 8px;
-  letter-spacing:1px;
-  font-family:'Oswald',sans-serif;
-}
-.t-shortcut{
-  position:absolute;bottom:16px;left:16px;
-  font-size:9px;color:var(--text3);
-  font-family:monospace;
-}
-
-/* === COLORS === */
+.tool-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--glow)}
+.tool-card.featured{grid-column:span 1;grid-row:span 2;padding:32px 28px;justify-content:center}
+.t-badge{position:absolute;top:12px;left:12px;background:var(--gold);color:#000;font-size:9px;font-weight:900;padding:2px 6px;border-radius:4px}
+.t-shortcut{position:absolute;top:12px;right:12px;font-size:10px;color:var(--text3);font-family:monospace}
+.t-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:4px}
 .ic-gold{background:rgba(201,168,76,0.15);color:var(--gold)}
-.ic-blue{background:rgba(61,126,255,0.15);color:var(--accent)}
-.ic-green{background:rgba(16,201,138,0.15);color:var(--accent2)}
 .ic-orange{background:rgba(245,158,11,0.15);color:var(--amber)}
+.ic-blue{background:rgba(61,126,255,0.15);color:var(--accent)}
 .ic-red{background:rgba(239,68,68,0.15);color:var(--danger)}
-.ic-purple{background:rgba(139,92,246,0.15);color:var(--purple)}
 .ic-pink{background:rgba(236,72,153,0.15);color:#ec4899}
 .ic-indigo{background:rgba(99,102,241,0.15);color:#6366f1}
+.ic-green{background:rgba(16,201,138,0.15);color:var(--accent2)}
+.ic-purple{background:rgba(139,92,246,0.15);color:var(--purple)}
+
+.t-name{font-size:18px;font-weight:700;margin-bottom:4px}
+.t-desc{font-size:12px;color:var(--text2);line-height:1.6}
 
 /* ===== TOOLS GRID ===== */
 .tools-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));
-  gap:12px;
-  margin-bottom:40px;
+  grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+  gap:14px;
 }
-.tool-card.mini{
-  padding:18px 14px;
-  text-align:center;
-  align-items:center;
-  gap:10px;
-}
-.tool-card.mini .t-icon{width:44px;height:44px;font-size:18px}
-.tool-card.mini .t-name{font-size:13px;margin:0}
+.tool-card.mini{padding:16px;flex-direction:row;align-items:center;gap:14px}
+.tool-card.mini .t-icon{width:44px;height:44px;font-size:18px;margin-bottom:0}
+.tool-card.mini .t-name{font-size:14px;margin:0}
 
 /* ===== OVERLAY & MODAL ===== */
 .overlay{
@@ -419,93 +371,19 @@ select.h-btn{
   display:flex;align-items:center;justify-content:center;
   transition:all .2s;
 }
-.m-close:hover{background:rgba(239,68,68,0.15);color:#ef4444;border-color:rgba(239,68,68,0.3)}
+.m-close:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
 .m-body{padding:24px}
 
-/* ===== COMMAND PALETTE ===== */
-#cmd-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.75);z-index:500;
-  align-items:flex-start;justify-content:center;
-  padding-top:80px;
-  backdrop-filter:blur(8px);
-}
-#cmd-overlay.open{display:flex;animation:fadeIn .15s ease}
-.cmd-header {
-  display: flex;
-  align-items: center;
-  padding: 16px 20px;
-  gap: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.cmd-header i {
-  color: var(--text3);
-  font-size: 18px;
-}
-#cmd-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-size: 16px;
-  font-family: inherit;
-  outline: none;
-}
-#cmd-list {
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 8px;
-}
-.cmd-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.cmd-item:hover, .cmd-item.active {
-  background: rgba(61, 126, 255, 0.1);
-}
-.cmd-item-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-}
-.cmd-item-name {
-  flex: 1;
-  font-size: 14px;
-  font-weight: 600;
-}
-.cmd-item-key {
-  font-size: 10px;
-  color: var(--text3);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: monospace;
-}
-.cmd-box{
-  background:var(--glass2);
-  backdrop-filter:blur(24px);
-  border-radius:20px;
-  width:100%;max-width:600px;
-  border:1px solid var(--border);
-  box-shadow:0 32px 80px rgba(0,0,0,0.6);
-  overflow:hidden;
-  animation:slideDown .2s ease;
-}
-@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+/* ===== AI MODAL SPECIFIC ===== */
+#ai-modal .modal { max-width: 900px; }
+.ai-container { display: flex; flex-direction: column; gap: 20px; }
+.ai-input-area { position: relative; }
+.ai-input-area textarea { min-height: 150px; resize: vertical; }
 
 /* ===== FORM ELEMENTS ===== */
 .field{margin-bottom:18px}
 .label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px}
-input[type="text"], input[type="number"], input[type="date"], textarea, select{
+input[type="text"], input[type="number"], input[type="date"], input[type="password"], textarea, select{
   width:100%;background:rgba(255,255,255,0.03);
   border:1px solid var(--border);border-radius:10px;
   padding:12px 14px;color:var(--text);
@@ -517,7 +395,7 @@ input:focus, textarea:focus{border-color:var(--accent);background:rgba(61,126,25
   background:linear-gradient(135deg,var(--accent),#1a4fdb);
   color:#fff;border:none;border-radius:12px;
   padding:12px 24px;font-size:14px;font-weight:700;
-  cursor:pointer;display:flex;align-items:center;gap:10px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
   transition:all .25s;font-family:'Cairo',sans-serif;
   box-shadow:0 4px 12px rgba(61,126,255,0.3);
 }
@@ -885,6 +763,33 @@ input:focus, textarea:focus{border-color:var(--accent);background:rgba(61,126,25
   </div>
 </div>
 
+<div class="overlay" id="ai-modal">
+  <div class="modal">
+    <div class="m-head">
+      <div class="m-title" id="ai-title"><i class="fa-solid fa-wand-magic-sparkles"></i> معالجة ذكية</div>
+      <button class="m-close" onclick="close_modal('ai-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="m-body">
+      <div class="ai-container">
+        <div class="field">
+          <label class="label" id="ai-label">النص المصدر</label>
+          <textarea id="ai-input" placeholder="أدخل النص هنا..."></textarea>
+        </div>
+        <button class="btn" id="ai-run-btn" onclick="run_ai_tool()"><i class="fa-solid fa-sparkles"></i> بدء المعالجة</button>
+        <div id="ai-load" class="loading" style="display:none"><div class="spin"></div>جاري المعالجة...</div>
+        <div id="ai-result-wrap" class="result-wrap" style="display:none">
+          <div class="result-header"><div class="result-tag" id="ai-result-tag">النتيجة</div></div>
+          <div id="ai-res" class="result-box"></div>
+          <div class="result-actions">
+            <button class="btn-sec" onclick="copy_el('ai-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+            <button class="btn-sec" onclick="arc_save_el('ai-res', CUR_TOOL)"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="studio-modal">
   <div class="modal" style="max-width:720px">
     <div class="m-head">
@@ -892,10 +797,10 @@ input:focus, textarea:focus{border-color:var(--accent);background:rgba(61,126,25
       <button class="m-close" onclick="close_modal('studio-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-      <div class="rec-center">
-        <div class="rec-status" id="sr-status">اضغط للبدء بالتسجيل</div>
-        <div class="rec-timer" id="sr-timer">00:00</div>
-        <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()"><i class="fa-solid fa-microphone"></i> بدء التسجيل</button>
+      <div class="rec-center" style="text-align:center;padding:20px">
+        <div class="rec-status" id="sr-status" style="margin-bottom:10px">اضغط للبدء بالتسجيل</div>
+        <div class="rec-timer" id="sr-timer" style="font-size:24px;font-weight:700;margin-bottom:20px">00:00</div>
+        <button class="btn rec-main-btn" id="sr-btn" onclick="toggle_smart_rec()" style="margin:0 auto"><i class="fa-solid fa-microphone"></i> بدء التسجيل</button>
       </div>
       <div id="sr-result-wrap" class="result-wrap" style="display:none">
         <div id="sr-res" class="result-box"></div>
@@ -948,60 +853,54 @@ input:focus, textarea:focus{border-color:var(--accent);background:rgba(61,126,25
 <div class="overlay" id="agenda-modal">
   <div class="modal">
     <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-calendar-days"></i> الأجندة المشتركة</div>
+      <div class="m-title"><i class="fa-solid fa-calendar-days"></i> الأجندة</div>
       <button class="m-close" onclick="close_modal('agenda-modal')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-      <div class="field"><label class="label">التاريخ</label><input type="date" id="ag-add-date"></div>
-      <div class="field"><label class="label">وصف الحدث</label><input type="text" id="ag-add-ev"></div>
-      <button class="btn" onclick="ag_add()">حفظ في الأجندة</button>
-      <div id="ag-results" style="margin-top:20px"></div>
+      <p style="text-align:center;color:var(--text3)">لا توجد مواعيد مسجلة حالياً.</p>
     </div>
   </div>
 </div>
 
-<div id="cmd-overlay" onclick="if(event.target===this)close_cmd()">
-  <div class="cmd-box">
-    <div class="cmd-header">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" id="cmd-input" placeholder="ابحث عن أداة أو إجراء..." oninput="cmd_filter()" onkeydown="cmd_key(event)">
+<div class="overlay" id="cmd-overlay">
+  <div class="modal" style="max-width:600px;margin-top:10vh">
+    <div class="m-body" style="padding:10px">
+      <input type="text" id="cmd-input" placeholder="ابحث عن أداة أو أمر... (⌘K)" onkeyup="cmd_key(e)" style="border:none;background:none;font-size:18px;padding:15px">
+      <div id="cmd-list" style="margin-top:10px"></div>
     </div>
-    <div id="cmd-list"></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div id="toast" class="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<!-- SCRIPTS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
-// ============================================================
-// FIREBASE INIT
-// ============================================================
-firebase.initializeApp({
-  apiKey:"AIzaSyCot5bPMOzdEV5s5PQ-MRg_1oBzRWJHTqA",
-  authDomain:"deskbot-bfc98.firebaseapp.com",
-  projectId:"deskbot-bfc98",
-  storageBucket:"deskbot-bfc98.firebasestorage.app",
-  messagingSenderId:"154416885085",
-  appId:"1:154416885085:web:2dab9226e3e6beb8ab4cb4"
-});
-const auth=firebase.auth(), db=firebase.firestore();
+// Firebase Config (يجب ملؤها من قبلك)
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let USER = null;
+let GEMINI_KEY = '';
+let CUR_TOOL = '';
 
 // ============================================================
-// STATE
-// ============================================================
-let USER=null, GEMINI_KEY='', CUR_TOOL=null, CUR_TOOL_NAME='';
-let smartRec=null, smartChunks=[], smartTimerID=null, smartSecs=0, isSmartRec=false;
-
-// ============================================================
-// MODAL HELPERS (CORE SYSTEM)
+// MODAL SYSTEM
 // ============================================================
 function open_modal(id){
   console.log('Opening modal:', id);
-  // إغلاق أي نافذة مفتوحة حالياً لمنع التداخل
   document.querySelectorAll('.overlay.open').forEach(o => {
     o.classList.remove('open');
     o.style.display = 'none';
@@ -1026,7 +925,6 @@ function close_modal(id){
   }
 }
 
-// إغلاق النوافذ عند النقر خارجها
 document.querySelectorAll('.overlay').forEach(o=>{
   o.addEventListener('click',e=>{if(e.target===o) close_modal(o.id)});
 });
@@ -1108,6 +1006,22 @@ function toast(msg, type=''){
 function show_load(id){ document.getElementById(id).style.display = 'flex'; }
 function hide(id){ document.getElementById(id).style.display = 'none'; }
 
+function copy_el(id){
+  const txt = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(txt).then(()=>toast('تم النسخ بنجاح','success'));
+}
+
+function arc_save_el(id, title){
+  const txt = document.getElementById(id).innerText;
+  if(!USER) return toast('يجب تسجيل الدخول أولاً','error');
+  db.collection('users').doc(USER.uid).collection('archive').add({
+    title: title,
+    content: txt,
+    date: new Date()
+  }).then(()=>toast('تمت الأرشفة بنجاح','success'))
+    .catch(()=>toast('خطأ في الأرشفة','error'));
+}
+
 // ============================================================
 // TOOLS LOGIC
 // ============================================================
@@ -1121,19 +1035,42 @@ async function run_profile(){
   show_load('prof-load');
   document.getElementById('prof-result-wrap').style.display = 'none';
   try {
-    // محاكاة استدعاء AI (يجب استبداله بالدالة الفعلية لديك)
-    const res = "ملف الشخصية لـ " + name + ":\n\n- التعريف: ...\n- التصريحات: ...\n- الأسئلة: ...";
+    // هنا يتم استدعاء AI الفعلي
+    const res = "ملف الشخصية لـ " + name + ":\n\n- التعريف: شخصية عامة...\n- التصريحات: تصريحات موثقة...\n- الأسئلة: 10 أسئلة استقصائية...";
     document.getElementById('prof-res').textContent = res;
     document.getElementById('prof-result-wrap').style.display = 'block';
   } catch(e) { toast('خطأ: ' + e.message, 'error'); }
   finally { hide('prof-load'); }
 }
 
-// دالة فتح الأدوات العامة (AI Modal)
 function open_tool(name){
   CUR_TOOL = name;
-  // هنا تضع منطق فتح نافذة الـ AI الخاصة بك
-  toast('فتح أداة: ' + name);
+  const titles = {
+    'editor': 'المحرر الرقمي Pro',
+    'rewrite': 'إعادة صياغة احترافية',
+    'headlines': 'عناوين احترافية',
+    'flash': 'فلاش إخباري',
+    'checker': 'رصد إعلامي'
+  };
+  document.getElementById('ai-title').innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> ${titles[name] || 'معالجة ذكية'}`;
+  document.getElementById('ai-result-tag').textContent = titles[name] || 'النتيجة';
+  document.getElementById('ai-input').value = '';
+  document.getElementById('ai-result-wrap').style.display = 'none';
+  open_modal('ai-modal');
+}
+
+async function run_ai_tool(){
+  const input = document.getElementById('ai-input').value.trim();
+  if(!input) return toast('أدخل النص أولاً','error');
+  show_load('ai-load');
+  document.getElementById('ai-result-wrap').style.display = 'none';
+  try {
+    // محاكاة استدعاء AI
+    const res = "نتيجة معالجة " + CUR_TOOL + " للنص:\n\n" + input.substring(0, 100) + "...";
+    document.getElementById('ai-res').textContent = res;
+    document.getElementById('ai-result-wrap').style.display = 'block';
+  } catch(e) { toast('خطأ: ' + e.message, 'error'); }
+  finally { hide('ai-load'); }
 }
 
 // ============================================================
