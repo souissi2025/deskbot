@@ -457,6 +457,65 @@ select.h-btn{
   backdrop-filter:blur(8px);
 }
 #cmd-overlay.open{display:flex;animation:fadeIn .15s ease}
+.cmd-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cmd-header i {
+  color: var(--text3);
+  font-size: 18px;
+}
+#cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+#cmd-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 8px;
+}
+.cmd-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cmd-item:hover, .cmd-item.active {
+  background: rgba(61, 126, 255, 0.1);
+}
+.cmd-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.cmd-item-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+}
+.cmd-item-key {
+  font-size: 10px;
+  color: var(--text3);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
 .cmd-box{
   background:var(--glass2);
   backdrop-filter:blur(24px);
@@ -1653,6 +1712,17 @@ textarea{min-height:120px;line-height:1.7}
 
 <div class="toast" id="toast"></div>
 
+<!-- Command Palette HTML -->
+<div id="cmd-overlay" onclick="if(event.target===this)close_cmd()">
+  <div class="cmd-box">
+    <div class="cmd-header">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="cmd-input" placeholder="ابحث عن أداة أو إجراء..." oninput="cmd_filter()" onkeydown="cmd_key(event)">
+    </div>
+    <div id="cmd-list"></div>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
@@ -2324,22 +2394,30 @@ function update_welcome(){
 // COMMAND PALETTE
 // ============================================================
 function open_cmd(){
-  document.getElementById('cmd-overlay').classList.add('open');
-  setTimeout(()=>document.getElementById('cmd-input').focus(),50);
+  const el = document.getElementById('cmd-overlay');
+  if(!el) return console.warn('Command palette HTML missing');
+  el.classList.add('open');
+  const inp = document.getElementById('cmd-input');
+  if(inp) setTimeout(()=>inp.focus(),50);
   cmdIdx=0;cmdFiltered=[...CMD_ITEMS];
   render_cmd();
 }
 function close_cmd(){
-  document.getElementById('cmd-overlay').classList.remove('open');
-  document.getElementById('cmd-input').value='';
+  const el = document.getElementById('cmd-overlay');
+  if(el) el.classList.remove('open');
+  const inp = document.getElementById('cmd-input');
+  if(inp) inp.value='';
 }
 function cmd_filter(){
-  const q=document.getElementById('cmd-input').value.toLowerCase();
+  const inp = document.getElementById('cmd-input');
+  if(!inp) return;
+  const q=inp.value.toLowerCase();
   cmdFiltered=CMD_ITEMS.filter(i=>i.name.toLowerCase().includes(q)||i.name.includes(q));
   cmdIdx=0;render_cmd();
 }
 function render_cmd(){
   const c=document.getElementById('cmd-list');
+  if(!c) return;
   c.innerHTML=cmdFiltered.map((item,i)=>`
     <div class="cmd-item ${i===cmdIdx?'active':''}" onclick="cmd_exec(${i})">
       <div class="cmd-item-icon ${item.cls}"><i class="fa-solid ${item.icon}"></i></div>
@@ -2872,12 +2950,32 @@ function email_share_id(id){email_share(id)}
 // MODAL HELPERS
 // ============================================================
 function open_modal(id){
+  console.log('Opening modal:', id);
   // إغلاق أي نافذة مفتوحة حالياً لمنع التداخل
-  document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
+  document.querySelectorAll('.overlay.open').forEach(o => {
+    o.classList.remove('open');
+    o.style.display = 'none'; // التأكد من الإخفاء التام
+  });
+  
   const modal = document.getElementById(id);
-  if(modal) modal.classList.add('open');
+  if(modal) {
+    modal.style.display = 'flex';
+    // استخدام setTimeout لضمان تطبيق الـ transition/animation بعد تغيير display
+    setTimeout(() => modal.classList.add('open'), 10);
+  } else {
+    console.error('Modal not found:', id);
+  }
 }
-function close_modal(id){document.getElementById(id).classList.remove('open')}
+function close_modal(id){
+  const modal = document.getElementById(id);
+  if(modal) {
+    modal.classList.remove('open');
+    // إخفاء العنصر بعد انتهاء الأنميشن (تقريباً 200ms)
+    setTimeout(() => {
+      if(!modal.classList.contains('open')) modal.style.display = 'none';
+    }, 250);
+  }
+}
 document.querySelectorAll('.overlay').forEach(o=>{
   o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')})
 });
