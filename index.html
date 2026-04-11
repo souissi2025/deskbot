@@ -1072,13 +1072,6 @@ textarea{min-height:120px;line-height:1.7}
           <div class="t-desc">موجز إذاعي مشكول للإلقاء المباشر</div>
         </div>
       </div>
-
-      <div class="tool-card" onclick="event.stopPropagation(); open_modal('profile-modal')">
-        <div class="t-icon ic-blue"><i class="fa-solid fa-user-tie"></i></div>
-        <div class="t-content">
-          <div class="t-name">تسمية الشخصية</div>
-          <div class="t-desc">ملف صحفي استقصائي — تعريف، تصريحات موثقة، 10 أسئلة احترافية</div>
-        </div>
       </div>
 
       
@@ -1496,26 +1489,6 @@ textarea{min-height:120px;line-height:1.7}
     </div>
   </div>
 </div>
-
-<div class="overlay" id="profile-modal">
-  <div class="modal" style="max-width:700px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-user-tie"></i> تسمية الشخصية</div>
-      <button class="m-close" onclick="close_modal('profile-modal')"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="m-body">
-      <div class="field"><label class="label">اسم الشخصية</label><input type="text" id="prof-name" placeholder="مثال: راشد الغنوشي، إيلون ماسك..."></div>
-      <button class="btn" onclick="run_profile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج ملف الشخصية</button>
-      <div id="prof-load" class="loading" style="display:none"><div class="spin"></div>جاري رصد البيانات الصحفية...</div>
-      <div id="prof-result-wrap" class="result-wrap" style="display:none">
-        <div class="result-header"><div class="result-tag">تسمية الشخصية</div></div>
-        <div id="prof-res" class="result-box"></div>
-        <div class="result-actions">
-          <button class="btn-sec" onclick="copy_el('prof-res')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-          <button class="btn-sec" onclick="arc_save_el('prof-res','ملف الشخصية')"><i class="fa-solid fa-clock-rotate-left"></i> أرشفة</button>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1653,7 +1626,61 @@ textarea{min-height:120px;line-height:1.7}
 
 <div class="toast" id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
+// DEBUG: نضيف event listeners مباشرة على الأزرار
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.tool-card').forEach(function(card){
+    card.addEventListener('click', function(e){
+      e.stopPropagation();
+      var onclick_attr = card.getAttribute('onclick');
+      if(onclick_attr) eval(onclick_attr);
+    }, {capture:true});
+
+    var _tx=0, _ty=0, _moved=false;
+
+    card.addEventListener('touchstart', function(e){
+      _tx=e.touches[0].clientX;
+      _ty=e.touches[0].clientY;
+      _moved=false;
+    }, {passive:true});
+
+    card.addEventListener('touchmove', function(e){
+      if(Math.abs(e.touches[0].clientX-_tx)>8 || Math.abs(e.touches[0].clientY-_ty)>8)
+        _moved=true;
+    }, {passive:true});
+
+    card.addEventListener('touchend', function(e){
+      if(_moved) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var onclick_attr = card.getAttribute('onclick');
+      if(onclick_attr) eval(onclick_attr);
+    }, {capture:true, passive:false});
+  });
+
+  // ── إصلاح bottom-nav buttons ──
+  document.querySelectorAll('.bnav-btn').forEach(function(btn){
+    var _bx=0, _by=0, _bmoved=false;
+    btn.addEventListener('touchstart', function(e){
+      _bx=e.touches[0].clientX;
+      _by=e.touches[0].clientY;
+      _bmoved=false;
+    }, {passive:true});
+    btn.addEventListener('touchmove', function(e){
+      if(Math.abs(e.touches[0].clientX-_bx)>8 || Math.abs(e.touches[0].clientY-_by)>8)
+        _bmoved=true;
+    }, {passive:true});
+    btn.addEventListener('touchend', function(e){
+      if(_bmoved) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var oc=btn.getAttribute('onclick');
+      if(oc) eval(oc);
+    }, {capture:true, passive:false});
+  });
+});
+
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 
@@ -1694,7 +1721,6 @@ const CMD_ITEMS=[
   {name:'Qwen AI',icon:'fa-robot',cls:'ic-purple',key:'',action:()=>open_qwen_modal()},
   {name:'حدث اليوم',icon:'fa-calendar-day',cls:'ic-amber',key:'',action:()=>open_today()},
   {name:'أرشيف المواجهات',icon:'fa-futbol',cls:'ic-green',key:'',action:()=>open_modal('matches-modal')},
-  {name:'ملف الشخصية',icon:'fa-user-tie',cls:'ic-blue',key:'',action:()=>open_modal('profile-modal')},
   {name:'الأجندة المشتركة',icon:'fa-calendar-days',cls:'ic-gold',key:'',action:()=>open_modal('agenda-modal')},
   {name:'رصد إعلامي',icon:'fa-spell-check',cls:'ic-pink',key:'',action:()=>open_tool('checker')},
   {name:'التسجيل الذكي',icon:'fa-microphone-lines',cls:'ic-indigo',key:'',action:()=>open_modal('smart-modal')},
@@ -2631,9 +2657,6 @@ function toggle_focus(id){
 // MATCHES
 // ============================================================
 
-function openProfileModal(){
-  open_modal('profile-modal');
-}
 
 function open_today(){
   var d=new Date();
