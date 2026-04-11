@@ -1653,8 +1653,9 @@ textarea{min-height:120px;line-height:1.7}
 
 <div class="toast" id="toast"></div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js">
-// DEBUG: نضيف event listeners مباشرة على الأزرار
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script>
+// إصلاح event listeners
 document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.tool-card').forEach(function(card){
     card.addEventListener('click', function(e){
@@ -2686,7 +2687,7 @@ function toggle_focus(id){
 // ============================================================
 
 function openProfileModal(){
-  open_modal('profile-modal');
+  document.getElementById('profile-modal').classList.add('open');
 }
 
 function open_today(){
