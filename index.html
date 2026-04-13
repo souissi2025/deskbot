@@ -1,509 +1,1839 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DESK BOT — Digital Newsroom System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #1a1512; --surface: #261f18; --surface2: #332a20;
-            --border: #4a3d30; --text: #f5e6d3; --text2: #b8a088;
-            --primary: #d4956a; --primary-hover: #e8b08a;
-            --success: #6db87a; --danger: #d46a5a;
-        }
-        /* الوضع الليلي */
-        [data-theme="dark"] {
-            --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
-            --border: #475569; --text: #f8fafc; --text2: #94a3b8;
-            --primary: #3b82f6; --primary-hover: #60a5fa;
-        }
-        /* الوضع النهاري */
-        [data-theme="light"] {
-            --bg: #f8fafc; --surface: #ffffff; --surface2: #f1f5f9;
-            --border: #e2e8f0; --text: #0f172a; --text2: #64748b;
-            --primary: #2563eb; --primary-hover: #3b82f6;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DESK BOT — غرفة الأخبار الرقمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ═══════════════════════════════════════════════
+   DESK BOT v10 — PREMIUM EDITORIAL NEWSROOM
+   Aesthetic: Luxury Arabic Press · Amber + Slate
+═══════════════════════════════════════════════ */
+:root {
+  --ink:       #0b0f1a;
+  --ink2:      #111827;
+  --ink3:      #1c2535;
+  --ink4:      #253047;
+  --glass:     rgba(17,24,39,0.85);
+  --glass2:    rgba(28,37,53,0.92);
+  --line:      rgba(180,140,80,0.15);
+  --line2:     rgba(180,140,80,0.28);
+  --gold:      #c9943a;
+  --gold2:     #e8b96a;
+  --gold3:     rgba(201,148,58,0.12);
+  --amber:     #f59e0b;
+  --copper:    #b87333;
+  --text:      #f0e6d3;
+  --text2:     #a89070;
+  --text3:     #5a4a38;
+  --green:     #22c55e;
+  --red:       #ef4444;
+  --blue:      #60a5fa;
+  --purple:    #a78bfa;
+  --r:         14px;
+  --r2:        20px;
+  --shadow:    0 8px 32px rgba(0,0,0,0.5);
+  --shadow2:   0 20px 60px rgba(0,0,0,0.7);
+  --glow-gold: 0 0 24px rgba(201,148,58,0.25);
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: 0.3s; }
-        
-        /* الهيدر */
-        header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-        
-        /* القائمة الجانبية */
-        .layout { display: flex; }
-        .sidebar { width: 250px; background: var(--surface); border-left: 1px solid var(--border); height: calc(100vh - 65px); position: sticky; top: 65px; overflow-y: auto; padding: 1rem; }
-        .nav-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem; margin-bottom: 0.5rem; border-radius: 8px; color: var(--text2); cursor: pointer; transition: 0.2s; font-weight: 600; }
-        .nav-item:hover, .nav-item.active { background: var(--surface2); color: var(--primary); }
-        
-        /* المحتوى */
-        .main { flex: 1; padding: 2rem; max-width: 1000px; margin: 0 auto; }
-        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-        
-        /* العناصر */
-        textarea, input, select { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.8rem; border-radius: 8px; font-family: 'Cairo', sans-serif; font-size: 0.95rem; margin-bottom: 1rem; }
-        textarea:focus, input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(212, 149, 106, 0.2); }
-        textarea { min-height: 150px; resize: vertical; }
-        
-        button { background: var(--surface2); color: var(--text); border: none; padding: 0.7rem 1.5rem; border-radius: 8px; cursor: pointer; font-family: 'Cairo', sans-serif; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
-        button:hover { background: var(--border); }
-        .btn-primary { background: var(--primary); color: #fff; }
-        .btn-primary:hover { background: var(--primary-hover); }
-        .btn-success { background: var(--success); color: #fff; }
-        
-        .status { margin-top: 0.5rem; padding: 0.5rem; border-radius: 6px; font-size: 0.9rem; text-align: center; display: none; }
-        .status.error { background: rgba(212, 106, 90, 0.2); color: var(--danger); display: block; }
-        .status.success { background: rgba(109, 184, 122, 0.2); color: var(--success); display: block; }
-        .status.loading { background: rgba(212, 149, 106, 0.2); color: var(--primary); display: block; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--ink);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-        .hidden { display: none; }
-        .settings-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; display: none; justify-content: center; align-items: center; }
-        .settings-content { background: var(--surface); padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; border: 1px solid var(--border); }
+/* ── BACKGROUND GRAIN + GLOW ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 20%, rgba(201,148,58,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(96,165,250,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(11,15,26,0) 0%, rgba(11,15,26,0.8) 100%);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size:200px;
+}
 
-        /* استجابة للجوال */
-        @media (max-width: 768px) {
-            .sidebar { display: none; } 
-            .layout { flex-direction: column; }
-        }
-    </style>
+/* ── API WARNING BANNER ── */
+#api-banner{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:linear-gradient(90deg,rgba(239,68,68,0.15),rgba(239,68,68,0.08));
+  border-bottom:1px solid rgba(239,68,68,0.4);
+  padding:10px 24px;
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;color:#fca5a5;
+  transition:all .4s;
+}
+#api-banner.hidden{transform:translateY(-100%);pointer-events:none;opacity:0}
+#api-banner i{color:#ef4444;flex-shrink:0}
+#api-banner button{
+  margin-right:auto;background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);
+  color:#fca5a5;padding:5px 14px;border-radius:8px;font-size:12px;cursor:pointer;
+  font-family:'Cairo',sans-serif;transition:all .2s;
+}
+#api-banner button:hover{background:rgba(239,68,68,0.3)}
+
+/* ── HEADER ── */
+.header{
+  position:sticky;top:0;z-index:100;
+  background:var(--glass);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line2);
+  height:62px;
+  display:flex;align-items:center;
+  padding:0 20px;
+  gap:14px;
+  position:relative;z-index:100;
+}
+.header::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.logo{
+  font-family:'Oswald',sans-serif;
+  font-size:22px;font-weight:700;
+  letter-spacing:2px;
+  color:var(--text);
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+}
+.logo-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#c9943a,#e8b96a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#000;font-weight:900;
+  box-shadow:0 4px 12px rgba(201,148,58,0.4);
+}
+.logo span{color:var(--gold2)}
+
+/* MODEL SELECTOR PILLS */
+.model-bar{
+  display:flex;align-items:center;gap:6px;
+  background:var(--ink3);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:5px;
+  flex-shrink:0;
+}
+.model-pill{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:8px;
+  font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+  color:var(--text2);border:none;background:none;
+  font-family:'Cairo',sans-serif;
+  white-space:nowrap;
+}
+.model-pill:hover{color:var(--text);background:var(--ink4)}
+.model-pill.active{background:var(--gold3);color:var(--gold2);border:1px solid var(--line2)}
+.model-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--text3);flex-shrink:0}
+.model-pill.active .dot{background:var(--green);box-shadow:0 0 6px var(--green)}
+.model-pill.no-key .dot{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,0.5)}
+.model-pill .badge{
+  font-size:9px;padding:1px 5px;border-radius:4px;
+  font-family:'Oswald',sans-serif;letter-spacing:.5px;
+}
+.badge-free{background:rgba(34,197,94,0.15);color:var(--green)}
+.badge-gemini{background:rgba(96,165,250,0.15);color:var(--blue)}
+.badge-qwen{background:rgba(167,139,250,0.15);color:var(--purple)}
+
+.h-spacer{flex:1}
+.h-clock{
+  font-family:'Oswald',sans-serif;font-size:14px;
+  color:var(--text2);letter-spacing:1px;
+  text-align:center;flex-shrink:0;
+}
+.h-clock-date{font-size:10px;color:var(--text3)}
+
+.h-btn{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.04);border:1px solid var(--line);
+  border-radius:10px;padding:7px 12px;
+  font-size:12px;color:var(--text2);cursor:pointer;
+  font-family:'Cairo',sans-serif;font-weight:600;
+  transition:all .2s;white-space:nowrap;
+}
+.h-btn:hover{border-color:var(--gold);color:var(--gold2);background:var(--gold3)}
+.h-btn.gold{border-color:var(--line2);color:var(--gold)}
+
+/* ── LAYOUT ── */
+.layout{display:flex;position:relative;z-index:1;min-height:calc(100vh - 62px)}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:230px;flex-shrink:0;
+  background:var(--glass);
+  backdrop-filter:blur(16px);
+  border-left:1px solid var(--line);
+  position:sticky;top:62px;height:calc(100vh - 62px);
+  overflow-y:auto;
+  padding:16px 10px;
+}
+.sidebar-section{
+  font-family:'Oswald',sans-serif;
+  font-size:9px;letter-spacing:3px;color:var(--text3);
+  padding:8px 12px 6px;text-transform:uppercase;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;margin-bottom:2px;
+  border-radius:10px;
+  color:var(--text2);cursor:pointer;
+  transition:all .2s;font-weight:600;font-size:13px;
+  border:1px solid transparent;
+}
+.nav-item:hover{background:var(--ink3);color:var(--text)}
+.nav-item.active{
+  background:var(--gold3);
+  border-color:var(--line2);
+  color:var(--gold2);
+}
+.nav-item i{width:16px;text-align:center;font-size:13px}
+.nav-divider{height:1px;background:var(--line);margin:8px 10px}
+
+/* ── MAIN CONTENT ── */
+.main{
+  flex:1;padding:24px;
+  max-width:1100px;
+  animation:fadeIn .3s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL ── */
+.panel{display:none}
+.panel.active{display:block;animation:fadeIn .25s ease}
+
+/* ── CARDS ── */
+.card{
+  background:var(--glass2);
+  backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+  border-radius:var(--r2);
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:.4;
+}
+.card-title{
+  font-family:'Amiri',serif;
+  font-size:18px;font-weight:700;
+  color:var(--gold2);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.card-title i{font-size:16px;color:var(--gold)}
+.card-sub{
+  font-size:12px;color:var(--text3);
+  margin-bottom:16px;line-height:1.7;
+}
+
+/* ── FORM ELEMENTS ── */
+textarea,input[type=text],input[type=number],input[type=date],input[type=password],input[type=email],select{
+  width:100%;
+  background:rgba(0,0,0,0.3);
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:11px 14px;
+  border-radius:12px;
+  font-family:'Cairo',sans-serif;font-size:13px;
+  transition:border-color .2s;outline:none;
+  margin-bottom:12px;
+  direction:rtl;
+}
+textarea:focus,input:focus,select:focus{
+  border-color:var(--gold);
+  background:rgba(201,148,58,0.05);
+  box-shadow:0 0 0 3px rgba(201,148,58,0.08);
+}
+textarea{min-height:130px;resize:vertical;line-height:1.8}
+select{cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a89070'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:left 12px center;
+  padding-left:32px;
+}
+label{
+  font-size:11px;font-weight:700;color:var(--text2);
+  display:block;margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;
+}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:12px;
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:13px;
+  cursor:pointer;transition:all .2s;border:none;
+}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#000;
+  box-shadow:0 4px 16px rgba(201,148,58,0.35);
+}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,148,58,0.5)}
+.btn-ghost{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--line);
+  color:var(--text2);
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold2);background:var(--gold3)}
+.btn-danger{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#fca5a5}
+.btn-success{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:#86efac}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.btn-full{width:100%;justify-content:center}
+
+/* ── STATUS ── */
+.status-wrap{
+  border-radius:10px;padding:10px 14px;
+  font-size:12px;margin:8px 0;
+  display:none;align-items:center;gap:8px;
+  animation:fadeIn .2s ease;
+}
+.status-wrap.loading{display:flex;background:rgba(201,148,58,0.1);color:var(--gold2);border:1px solid var(--line2)}
+.status-wrap.success{display:flex;background:rgba(34,197,94,0.1);color:#86efac;border:1px solid rgba(34,197,94,0.2)}
+.status-wrap.error{display:flex;background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.2)}
+.spin{width:14px;height:14px;border:2px solid rgba(201,148,58,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── OUTPUT BOX ── */
+.output-box{
+  background:rgba(0,0,0,0.4);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px;min-height:120px;
+  font-size:13px;line-height:2;
+  color:var(--text);
+  direction:rtl;
+  white-space:pre-wrap;
+  word-break:break-word;
+  margin:12px 0;
+  font-family:'Cairo',sans-serif;
+}
+.output-box.rendered{white-space:normal}
+.output-box.rendered h1,.output-box.rendered h2{font-family:'Amiri',serif;color:var(--gold2);margin:12px 0 8px}
+.output-box.rendered h3{color:var(--text);font-size:14px;margin:10px 0 6px}
+.output-box.rendered p{margin-bottom:10px}
+.output-box.rendered strong{color:var(--gold);font-weight:700}
+.output-box.rendered blockquote{border-right:3px solid var(--gold);padding-right:14px;margin:10px 0;color:var(--text2);font-family:'Amiri',serif;font-size:15px}
+.output-box.rendered table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.output-box.rendered th{background:var(--gold3);color:var(--gold2);padding:8px 10px;text-align:right;border:1px solid var(--line)}
+.output-box.rendered td{padding:7px 10px;border:1px solid var(--line);vertical-align:top}
+.output-box.rendered hr{border:none;border-top:1px solid var(--line);margin:14px 0}
+
+/* ── ACTION ROW ── */
+.act-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+
+/* ── HOME CARDS ── */
+.home-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.home-stat{
+  background:var(--gold3);
+  border:1px solid var(--line2);
+  border-radius:var(--r);padding:16px;
+  text-align:center;
+}
+.home-stat-val{font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;color:var(--gold2)}
+.home-stat-lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.model-status-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.model-card{
+  background:rgba(0,0,0,0.3);border:1px solid var(--line);
+  border-radius:var(--r);padding:14px;
+  display:flex;align-items:flex-start;gap:10px;
+  cursor:pointer;transition:all .2s;
+}
+.model-card:hover{border-color:var(--gold);background:var(--gold3)}
+.model-card.active-model{border-color:var(--gold);background:var(--gold3)}
+.model-card-icon{
+  width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.mc-gemini{background:rgba(96,165,250,0.15);color:var(--blue)}
+.mc-qwen{background:rgba(167,139,250,0.15);color:var(--purple)}
+.model-card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.model-card-info{font-size:11px;color:var(--text2);line-height:1.5}
+.model-card-quota{
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;
+  display:inline-block;margin-top:4px;
+}
+.quota-green{background:rgba(34,197,94,0.12);color:var(--green)}
+.quota-amber{background:rgba(245,158,11,0.12);color:var(--amber)}
+.quota-red{background:rgba(239,68,68,0.12);color:#fca5a5}
+.model-indicator{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.ind-ok{background:var(--green);box-shadow:0 0 6px var(--green)}
+.ind-err{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,0.5)}
+.ind-off{background:var(--text3)}
+
+/* ── NEWS ITEMS ── */
+.news-item{
+  background:rgba(0,0,0,0.25);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.news-item:hover{border-color:var(--gold);background:var(--gold3)}
+.news-src{
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;
+  white-space:nowrap;flex-shrink:0;margin-top:2px;
+}
+.src-local{background:rgba(96,165,250,0.12);color:var(--blue)}
+.src-intl{background:rgba(167,139,250,0.12);color:var(--purple)}
+.news-title{font-size:13px;color:var(--text);flex:1;line-height:1.6}
+.news-time{font-size:10px;color:var(--text3);white-space:nowrap}
+
+/* ── ARCHIVE ITEMS ── */
+.arc-item{
+  background:rgba(0,0,0,0.25);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;margin-bottom:8px;
+}
+.arc-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.arc-type{
+  font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;
+  background:var(--gold3);color:var(--gold2);border:1px solid var(--line2);
+}
+.arc-date{font-size:10px;color:var(--text3);margin-right:auto}
+.arc-preview{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* ── AGENDA ── */
+.ag-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 14px;border-bottom:1px solid var(--line);
+}
+.ag-date-badge{
+  background:var(--gold3);border:1px solid var(--line2);
+  color:var(--gold);border-radius:10px;
+  padding:4px 10px;font-size:11px;font-weight:700;
+  white-space:nowrap;flex-shrink:0;
+  font-family:'Oswald',sans-serif;
+}
+
+/* ── SETTINGS MODAL ── */
+.overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;
+  padding:16px;
+}
+.overlay.open{display:flex;animation:fadeIn .2s ease}
+.modal{
+  background:var(--glass2);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--line2);
+  border-radius:var(--r2);
+  width:100%;max-width:560px;
+  max-height:92vh;overflow-y:auto;
+  box-shadow:var(--shadow2);
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-head{
+  padding:20px 24px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--glass2);z-index:1;
+  border-radius:var(--r2) var(--r2) 0 0;
+}
+.modal-head::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4;
+}
+.modal-title{font-family:'Amiri',serif;font-size:18px;color:var(--gold2);display:flex;align-items:center;gap:8px}
+.modal-close{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;transition:color .2s;padding:4px}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:22px 24px}
+
+/* MODEL SECTION IN SETTINGS */
+.model-section{
+  background:rgba(0,0,0,0.3);border:1px solid var(--line);
+  border-radius:var(--r);padding:16px;margin-bottom:16px;
+}
+.model-section-head{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.model-section-icon{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+}
+.msi-gemini{background:rgba(96,165,250,0.15);color:var(--blue)}
+.msi-qwen{background:rgba(167,139,250,0.15);color:var(--purple)}
+.model-section-title{font-size:13px;font-weight:700;color:var(--text)}
+.model-section-sub{font-size:11px;color:var(--text2);margin-top:1px}
+.key-status{
+  font-size:11px;margin-top:-6px;margin-bottom:10px;
+  display:flex;align-items:center;gap:5px;
+}
+.ks-ok{color:var(--green)} .ks-err{color:#fca5a5}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--glass2);border:1px solid var(--line2);
+  padding:11px 20px;border-radius:12px;
+  font-size:12px;font-weight:600;color:var(--text);
+  z-index:9999;opacity:0;transition:all .3s;
+  pointer-events:none;white-space:nowrap;
+  box-shadow:var(--shadow);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.s{color:var(--green);border-color:rgba(34,197,94,0.3)}
+.toast.e{color:#fca5a5;border-color:rgba(239,68,68,0.3)}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{padding:14px}
+  .home-grid{grid-template-columns:1fr 1fr}
+  .model-status-grid{grid-template-columns:1fr}
+  .act-row .btn span{display:none}
+}
+@media(max-width:480px){
+  .home-grid{grid-template-columns:1fr}
+  .model-bar{display:none}
+}
+</style>
 </head>
-<body data-theme="warm">
+<body>
 
-    <header>
-        <div class="logo"><i class="fas fa-robot"></i> DESK BOT</div>
-        <div style="display:flex; gap:1rem; align-items:center;">
-            <div style="display:flex; gap:0.5rem;">
-                <button onclick="setTheme('light')" style="width:30px;height:30px;padding:0;border-radius:50%;background:#f8fafc;"></button>
-                <button onclick="setTheme('warm')" style="width:30px;height:30px;padding:0;border-radius:50%;background:#1a1512;border:1px solid #4a3d30;"></button>
-                <button onclick="setTheme('dark')" style="width:30px;height:30px;padding:0;border-radius:50%;background:#0f172a;"></button>
-            </div>
-            <button class="btn-primary" onclick="document.getElementById('settings-modal').style.display='flex'"><i class="fas fa-cog"></i> الإعدادات</button>
+<!-- API WARNING BANNER -->
+<div id="api-banner" class="hidden">
+  <i class="fa-solid fa-triangle-exclamation"></i>
+  <span id="api-banner-msg">لم يُدخَل مفتاح API بعد — لن تعمل الأدوات الذكية حتى تُدخل مفتاحاً صحيحاً</span>
+  <button onclick="openSettings()"><i class="fa-solid fa-gear"></i> إعداد المفاتيح</button>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="main-header">
+  <div class="logo">
+    <div class="logo-icon"><i class="fa-solid fa-newspaper"></i></div>
+    DESK <span>BOT</span>
+  </div>
+
+  <!-- MODEL SELECTOR -->
+  <div class="model-bar" id="model-bar">
+    <!-- Pills injected by JS -->
+  </div>
+
+  <div class="h-spacer"></div>
+
+  <div class="h-clock">
+    <div id="clock">--:--:--</div>
+    <div class="h-clock-date" id="clock-date">--</div>
+  </div>
+
+  <button class="h-btn" onclick="openSettings()" title="الإعدادات">
+    <i class="fa-solid fa-gear"></i><span>API</span>
+  </button>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">التحرير الذكي</div>
+    <div class="nav-item active" data-panel="home" onclick="showPanel('home',this)">
+      <i class="fa-solid fa-house"></i> الرئيسية
+    </div>
+    <div class="nav-item" data-panel="editor" onclick="showPanel('editor',this)">
+      <i class="fa-solid fa-pen-nib"></i> المحرر PRO
+    </div>
+    <div class="nav-item" data-panel="article" onclick="showPanel('article',this)">
+      <i class="fa-solid fa-newspaper"></i> المقال الإخباري
+    </div>
+    <div class="nav-item" data-panel="flash" onclick="showPanel('flash',this)">
+      <i class="fa-solid fa-bolt"></i> فلاش ديوان FM
+    </div>
+    <div class="nav-item" data-panel="headlines" onclick="showPanel('headlines',this)">
+      <i class="fa-solid fa-heading"></i> العناوين الاحترافية
+    </div>
+    <div class="nav-divider"></div>
+    <div class="sidebar-section">الأدوات</div>
+    <div class="nav-item" data-panel="audio" onclick="showPanel('audio',this)">
+      <i class="fa-solid fa-microphone-lines"></i> التسجيل الذكي
+    </div>
+    <div class="nav-item" data-panel="rss" onclick="showPanel('rss',this)">
+      <i class="fa-solid fa-globe"></i> آخر الأخبار
+    </div>
+    <div class="nav-item" data-panel="tools" onclick="showPanel('tools',this)">
+      <i class="fa-solid fa-calendar-day"></i> حدث اليوم / رياضة
+    </div>
+    <div class="nav-item" data-panel="profile" onclick="showPanel('profile',this)">
+      <i class="fa-solid fa-user-tie"></i> ملف الشخصية
+    </div>
+    <div class="nav-divider"></div>
+    <div class="sidebar-section">الإدارة</div>
+    <div class="nav-item" data-panel="agenda" onclick="showPanel('agenda',this)">
+      <i class="fa-solid fa-calendar-days"></i> الأجندة المشتركة
+    </div>
+    <div class="nav-item" data-panel="archive" onclick="showPanel('archive',this)">
+      <i class="fa-solid fa-clock-rotate-left"></i> الأرشيف
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ══ HOME ══ -->
+    <div id="panel-home" class="panel active">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#c9943a,#e8b96a);display:flex;align-items:center;justify-content:center;font-size:24px;color:#000;box-shadow:0 6px 20px rgba(201,148,58,0.4)">
+            <i class="fa-solid fa-newspaper"></i>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-size:22px;font-weight:700;color:var(--text)">DESK BOT</div>
+            <div style="font-size:11px;color:var(--text2);letter-spacing:2px;text-transform:uppercase">Digital Newsroom · وكالة وات · ديوان FM</div>
+          </div>
+          <div style="margin-right:auto;text-align:left">
+            <div id="home-greeting" style="font-size:14px;font-weight:700;color:var(--gold2)"></div>
+          </div>
         </div>
-    </header>
+        <div class="home-grid" id="home-stats">
+          <div class="home-stat"><div class="home-stat-val" id="stat-req">0</div><div class="home-stat-lbl">طلبات اليوم</div></div>
+          <div class="home-stat"><div class="home-stat-val" id="stat-arc">0</div><div class="home-stat-lbl">مواد مؤرشفة</div></div>
+          <div class="home-stat"><div class="home-stat-val" id="stat-ag">0</div><div class="home-stat-lbl">أحداث في الأجندة</div></div>
+        </div>
+      </div>
 
-    <div class="layout">
-        <nav class="sidebar">
-            <div class="nav-item active" onclick="showPanel('home', this)"><i class="fas fa-home"></i> الرئيسية</div>
-            <div class="nav-item" onclick="showPanel('rss', this)"><i class="fas fa-globe"></i> آخر الأخبار RSS</div>
-            <div class="nav-item" onclick="showPanel('editor', this)"><i class="fas fa-pen-nib"></i> المحرر الذكي PRO</div>
-            <div class="nav-item" onclick="showPanel('article', this)"><i class="fas fa-newspaper"></i> المقال الإخباري PRO</div>
-            <div class="nav-item" onclick="showPanel('audio', this)"><i class="fas fa-microphone"></i> التفريغ الصوتي</div>
-            <div class="nav-item" onclick="showPanel('tools', this)"><i class="fas fa-tools"></i> الأدوات (تاريخ/رياضة)</div>
-            <div class="nav-item" onclick="showPanel('agenda', this)"><i class="fas fa-calendar"></i> الأجندة</div>
-            <div class="nav-item" onclick="showPanel('archive', this)"><i class="fas fa-archive"></i> الأرشيف</div>
-        </nav>
-
-        <main class="main">
-            <!-- الرئيسية -->
-            <div id="panel-home" class="panel">
-                <div class="card">
-                    <div class="card-title">مرحباً بك في غرفة الأخبار الرقمية</div>
-                    <p style="margin-bottom:1rem; color:var(--text2);">هذا التطبيق مصمم لمساعدتك في التحرير الصحفي باستخدام الذكاء الاصطناعي (Qwen 2.5).</p>
-                    <div class="status success">✅ النظام جاهز للعمل</div>
-                    <p style="margin-top:1rem; font-size:0.9rem; color:var(--danger);">⚠️ هام: تأكد من إدخال مفتاح OpenRouter في الإعدادات ⚙️ لكي تعمل الأزرار.</p>
-                </div>
-            </div>
-
-            <!-- الأخبار RSS -->
-            <div id="panel-rss" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-globe"></i> آخر الأخبار الوطنية والعالمية</div>
-                    <button class="btn-primary" onclick="fetchNews()" style="width:100%; justify-content:center;"><i class="fas fa-sync-alt"></i> تحديث الأخبار</button>
-                    <div id="rss-status" class="status"></div>
-                    <div id="news-container" style="margin-top:1rem; display:grid; gap:1rem;"></div>
-                </div>
-            </div>
-
-            <!-- المحرر الذكي -->
-            <div id="panel-editor" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-pen-nib"></i> مركز المعالجة الذكية PRO</div>
-                    <textarea id="editor-input" placeholder="الصق النص الخام هنا..."></textarea>
-                    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                        <select id="editor-mode" style="flex:1;">
-                            <option value="structure">إعادة هيكلة + معايير وات/ديوان أف أم</option>
-                            <option value="seo">إعادة صياغة للنشر الرقمي + SEO</option>
-                            <option value="titles">12 عنواناً احترافياً</option>
-                            <option value="flash">فلاش إذاعي موجز مشكول</option>
-                            <option value="profile">تسمية الشخصية (ملف استقصائي)</option>
-                        </select>
-                        <button class="btn-primary" onclick="runEditor()" style="flex:1; justify-content:center;">تشغيل المعالجة</button>
-                    </div>
-                    <div id="editor-status" class="status"></div>
-                    <textarea id="editor-output" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button onclick="copyText('editor-output')"><i class="fas fa-copy"></i> نسخ</button>
-                        <button class="btn-success" onclick="saveToArchive('محرر', 'editor-output')"><i class="fas fa-save"></i> أرشفة</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- المقال الإخباري -->
-            <div id="panel-article" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-newspaper"></i> المقال الإخباري PRO</div>
-                    <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
-                    <div style="display:flex; gap:1rem; margin-bottom:1rem;">
-                        <select id="article-count" style="flex:1;">
-                            <option value="1">مقال واحد</option>
-                            <option value="2">مقالان بزاويتين مختلفتين</option>
-                            <option value="3">ثلاثة مقالات بزوايا مختلفة</option>
-                        </select>
-                        <button class="btn-primary" onclick="runArticle()" style="flex:1; justify-content:center;">تشغيل المقال</button>
-                    </div>
-                    <div id="article-status" class="status"></div>
-                    <textarea id="article-output" readonly placeholder="المقال الاحترافي سيظهر هنا..."></textarea>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button onclick="copyText('article-output')"><i class="fas fa-copy"></i> نسخ</button>
-                        <button class="btn-success" onclick="saveToArchive('مقال', 'article-output')"><i class="fas fa-save"></i> أرشفة</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- التفريغ الصوتي -->
-            <div id="panel-audio" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-microphone"></i> التفريغ الصوتي</div>
-                    <p style="margin-bottom:1rem; color:var(--text2);">ملاحظة: التفريغ الصوتي الفعلي يتطلب خادماً خلفياً. هذه ميزة تجريبية للمحاكاة.</p>
-                    <input type="file" id="audio-file" accept="audio/*">
-                    <button class="btn-primary" onclick="simulateTranscription()" style="width:100%; justify-content:center;"><i class="fas fa-play"></i> بدء التفريغ (محاكاة)</button>
-                    <div id="audio-status" class="status"></div>
-                    <textarea id="audio-output" readonly placeholder="النص المفرغ سيظهر هنا..."></textarea>
-                    <div style="display:flex; gap:0.5rem;">
-                        <button onclick="copyText('audio-output')"><i class="fas fa-copy"></i> نسخ</button>
-                        <button class="btn-success" onclick="saveToArchive('تفريغ', 'audio-output')"><i class="fas fa-save"></i> أرشفة</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- أدوات (تاريخ/رياضة) -->
-            <div id="panel-tools" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-history"></i> حدث اليوم في التاريخ</div>
-                    <div style="display:flex; gap:1rem;">
-                        <input type="number" id="hist-day" placeholder="اليوم (1-31)" style="flex:1;">
-                        <input type="number" id="hist-month" placeholder="الشهر (1-12)" style="flex:1;">
-                    </div>
-                    <button class="btn-primary" onclick="searchHistory()" style="width:100%; justify-content:center;">بحث</button>
-                    <div id="hist-status" class="status"></div>
-                    <textarea id="hist-output" readonly placeholder="النتيجة..."></textarea>
-                </div>
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-futbol"></i> أرشيف المواجهات الرياضية</div>
-                    <div style="display:flex; gap:1rem;">
-                        <input type="text" id="team-a" placeholder="الفريق الأول" style="flex:1;">
-                        <input type="text" id="team-b" placeholder="الفريق الثاني" style="flex:1;">
-                    </div>
-                    <button class="btn-primary" onclick="searchSports()" style="width:100%; justify-content:center;">بحث</button>
-                    <div id="sports-status" class="status"></div>
-                    <textarea id="sports-output" readonly placeholder="النتيجة..."></textarea>
-                </div>
-            </div>
-
-            <!-- الأجندة -->
-            <div id="panel-agenda" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-calendar"></i> الأجندة المشتركة</div>
-                    <div style="display:flex; gap:1rem; margin-bottom:1rem;">
-                        <input type="date" id="agenda-date" style="flex:1;">
-                        <input type="text" id="agenda-desc" placeholder="وصف الحدث" style="flex:2;">
-                    </div>
-                    <button class="btn-primary" onclick="addAgenda()" style="width:100%; justify-content:center;">إضافة للأجندة</button>
-                    <div id="agenda-list" style="margin-top:1.5rem;"></div>
-                </div>
-            </div>
-
-            <!-- الأرشيف -->
-            <div id="panel-archive" class="panel hidden">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-archive"></i> الأرشيف الذكي</div>
-                    <input type="text" id="archive-search" placeholder="بحث في الأرشيف..." onkeyup="searchArchive()">
-                    <div id="archive-list" style="margin-top:1rem;"></div>
-                </div>
-            </div>
-
-        </main>
+      <!-- MODEL STATUS -->
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-microchip"></i> حالة النماذج الذكية — اختر نموذجك</div>
+        <div class="card-sub">اختر النموذج المناسب لمهمتك. يتطلب كل نموذج مفتاح API خاصاً. النماذج المجانية متاحة بحصة يومية.</div>
+        <div class="model-status-grid" id="model-cards-home">
+          <!-- Injected by JS -->
+        </div>
+        <div style="margin-top:12px;text-align:center">
+          <button class="btn btn-ghost" onclick="openSettings()">
+            <i class="fa-solid fa-gear"></i> إدارة مفاتيح API
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- نافذة الإعدادات -->
-    <div id="settings-modal" class="settings-modal">
-        <div class="settings-content">
-            <h2 style="margin-bottom:1rem; color:var(--primary);">⚙️ إعدادات الاتصال</h2>
-            <p style="margin-bottom:0.5rem; font-size:0.9rem;">أدخل مفتاح OpenRouter الخاص بك:</p>
-            <input type="password" id="api-key-input" placeholder="sk-or-...">
-            <div style="display:flex; gap:1rem;">
-                <button class="btn-primary" onclick="saveKey()" style="flex:1; justify-content:center;">حفظ المفتاح</button>
-                <button onclick="document.getElementById('settings-modal').style.display='none'" style="flex:1; justify-content:center;">إغلاق</button>
-            </div>
-            <div id="settings-status" class="status"></div>
+    <!-- ══ EDITOR ══ -->
+    <div id="panel-editor" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-pen-nib"></i> المحرر الرقمي PRO — معيار وات</div>
+        <div class="card-sub">يُحوّل النص الخام إلى مادة إخبارية متكاملة وفق معايير وكالة تونس إفريقيا للأنباء وإذاعة ديوان أف أم</div>
+        <label>النص الخام أو معطيات الخبر</label>
+        <textarea id="editor-input" placeholder="الصق هنا النص الخام أو اكتب معطيات الخبر..."></textarea>
+        <label>نوع المعالجة</label>
+        <select id="editor-mode">
+          <option value="editor">تحرير كامل — عنوان + شابو + Lead + جسم + SEO + ديوان FM</option>
+          <option value="rewrite">إعادة صياغة احترافية — هرم مقلوب + معايير وات</option>
+          <option value="transcribe">تفريغ وتحرير صوتي — نص حرفي + تحرير وات</option>
+          <option value="monitor">رصد إخباري — آخر 12 ساعة</option>
+          <option value="checker">مدقق مهني — تدقيق لغوي وتحريري</option>
+        </select>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="runEditor()" id="editor-btn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل المعالجة
+          </button>
+          <button class="btn btn-ghost" onclick="clearPanel('editor')">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+          <span id="editor-model-badge" style="font-size:11px;color:var(--text3);margin-right:auto"></span>
         </div>
+        <div id="editor-status" class="status-wrap"></div>
+        <div id="editor-result" class="output-box rendered" style="display:none"></div>
+        <div id="editor-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('editor-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-ghost" onclick="waShare('editor-result')"><i class="fa-brands fa-whatsapp"></i><span> واتساب</span></button>
+          <button class="btn btn-ghost" onclick="emailShare('editor-result')"><i class="fa-solid fa-envelope"></i><span> إيميل</span></button>
+          <button class="btn btn-success" onclick="saveArc('editor-result','محرر PRO')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
     </div>
 
-    <script>
-        // === إدارة الحالة ===
-        let APP_STATE = {
-            key: localStorage.getItem('deskbot_key') || '',
-            archive: JSON.parse(localStorage.getItem('deskbot_archive') || '[]'),
-            agenda: JSON.parse(localStorage.getItem('deskbot_agenda') || '[]')
-        };
+    <!-- ══ ARTICLE ══ -->
+    <div id="panel-article" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-newspaper"></i> المقال الإخباري الاحترافي</div>
+        <div class="card-sub">يكتب مقالاً صحفياً متكاملاً من فكرة أو نص أولي — بلغة رصينة وهيكل هرمي</div>
+        <label>الفكرة الأساسية أو النص الأولي</label>
+        <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
+        <label>عدد الزوايا التحريرية</label>
+        <select id="article-count">
+          <option value="1">مقال واحد — زاوية واحدة</option>
+          <option value="2">مقالان — زاويتان مختلفتان</option>
+          <option value="3">ثلاثة مقالات — زوايا متعددة</option>
+        </select>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="runArticle()" id="article-btn">
+            <i class="fa-solid fa-pen-nib"></i> كتابة المقال
+          </button>
+          <button class="btn btn-ghost" onclick="clearPanel('article')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="article-status" class="status-wrap"></div>
+        <div id="article-result" class="output-box rendered" style="display:none"></div>
+        <div id="article-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('article-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-ghost" onclick="waShare('article-result')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-success" onclick="saveArc('article-result','مقال')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
+    </div>
 
-        // === التهيئة عند التحميل ===
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!APP_STATE.key) {
-                document.getElementById('settings-modal').style.display = 'flex';
-            }
-            renderAgenda();
-            renderArchive();
-        });
+    <!-- ══ FLASH ══ -->
+    <div id="panel-flash" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-bolt"></i> فلاش إخباري — ديوان FM / وات</div>
+        <div class="card-sub">يكتب فلاشاً إذاعياً جاهزاً للإلقاء المباشر — 45 إلى 60 ثانية — مع علامات الوقف</div>
+        <label>معطيات الخبر</label>
+        <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="runFlash()" id="flash-btn">
+            <i class="fa-solid fa-microphone"></i> توليد الفلاش
+          </button>
+          <button class="btn btn-ghost" onclick="clearPanel('flash')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="flash-status" class="status-wrap"></div>
+        <div id="flash-result" class="output-box rendered" style="display:none"></div>
+        <div id="flash-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('flash-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-ghost" onclick="waShare('flash-result')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-success" onclick="saveArc('flash-result','فلاش')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
+    </div>
 
-        // === واجهة المستخدم ===
-        function showPanel(id, btn) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-            document.getElementById('panel-' + id).classList.remove('hidden');
-            
-            if(btn) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                btn.classList.add('active');
-            }
-        }
+    <!-- ══ HEADLINES ══ -->
+    <div id="panel-headlines" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-heading"></i> العناوين الاحترافية — 12 في 4 فئات</div>
+        <div class="card-sub">يولّد 12 عنواناً صحفياً في 4 فئات: وات — ديوان FM — رقمي SEO — شبكات التواصل</div>
+        <label>نص الخبر</label>
+        <textarea id="headlines-input" placeholder="الصق النص هنا..."></textarea>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="runHeadlines()" id="headlines-btn">
+            <i class="fa-solid fa-list"></i> توليد العناوين
+          </button>
+          <button class="btn btn-ghost" onclick="clearPanel('headlines')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="headlines-status" class="status-wrap"></div>
+        <div id="headlines-result" class="output-box rendered" style="display:none"></div>
+        <div id="headlines-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('headlines-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-success" onclick="saveArc('headlines-result','عناوين')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
+    </div>
 
-        function setTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('deskbot_theme', theme);
-        }
-        
-        // استعادة الثيم المحفوظ
-        const savedTheme = localStorage.getItem('deskbot_theme');
-        if(savedTheme) document.body.setAttribute('data-theme', savedTheme);
+    <!-- ══ AUDIO ══ -->
+    <div id="panel-audio" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-microphone-lines"></i> التسجيل الذكي — تفريغ حقيقي</div>
+        <div class="card-sub">سجّل مباشرة أو ارفع ملفاً صوتياً — يُرسَل إلى Gemini للتفريغ الحرفي الحقيقي ثم يُحرَّر وفق معايير وات</div>
 
-        function showStatus(id, msg, type) {
-            const el = document.getElementById(id);
-            el.textContent = msg;
-            el.className = 'status ' + type;
-            if(type === 'loading') el.style.display = 'block';
-        }
+        <!-- REC SECTION -->
+        <div style="text-align:center;padding:24px 0;border:1px dashed var(--line);border-radius:14px;margin-bottom:14px">
+          <div id="rec-status" style="font-size:13px;color:var(--text2);margin-bottom:14px">جاهز للتسجيل</div>
+          <div id="rec-timer" style="font-family:'Oswald',sans-serif;font-size:52px;font-weight:700;color:var(--gold);display:none;margin-bottom:16px">00:00</div>
+          <button class="btn btn-gold" id="rec-btn" onclick="toggleRec()" style="font-size:14px;padding:13px 36px">
+            <i class="fa-solid fa-microphone"></i> بدء تسجيل جديد
+          </button>
+        </div>
 
-        // === الإعدادات ===
-        function saveKey() {
-            const input = document.getElementById('api-key-input').value.trim();
-            if (input) {
-                APP_STATE.key = input;
-                localStorage.setItem('deskbot_key', input);
-                document.getElementById('settings-status').textContent = '✅ تم حفظ المفتاح بنجاح';
-                document.getElementById('settings-status').className = 'status success';
-                setTimeout(() => document.getElementById('settings-modal').style.display = 'none', 1500);
-            }
-        }
+        <!-- AUDIO PLAYER -->
+        <div id="audio-player-wrap" style="display:none;margin-bottom:14px">
+          <label>ملف التسجيل</label>
+          <audio id="audio-player" controls style="width:100%;border-radius:8px;accent-color:var(--gold);margin-bottom:8px"></audio>
+          <div class="act-row">
+            <button class="btn btn-ghost" onclick="downloadAudio()"><i class="fa-solid fa-download"></i><span> تحميل</span></button>
+            <button class="btn btn-ghost" onclick="shareAudioWA()"><i class="fa-brands fa-whatsapp"></i></button>
+          </div>
+        </div>
 
-        // === الاتصال بـ OpenRouter (تم تصحيح اسم النموذج) ===
-        async function callAI(prompt) {
-            if (!APP_STATE.key) throw new Error('مفتاح API غير موجود. اذهب للإعدادات.');
+        <!-- FILE UPLOAD -->
+        <div style="margin-bottom:14px">
+          <label>أو ارفع ملفاً صوتياً</label>
+          <input type="file" id="audio-file" accept="audio/*" onchange="handleAudioFile()" style="cursor:pointer">
+        </div>
 
-            // رابط صحيح تماماً ومباشر
-            const url = 'https://openrouter.ai/api/v1/chat/completions';
-            
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${APP_STATE.key}`,
-                        'HTTP-Referer': window.location.href, 
-                        'X-Title': 'DESK BOT'
-                    },
-                    body: JSON.stringify({
-                        // تم تغيير النموذج إلى النسخة المجانية المستقرة (7B) لتجنب خطأ 404
-                        model: 'qwen/qwen-2.5-7b-instruct:free',
-                        messages: [{ role: 'user', content: prompt }]
-                    })
-                });
+        <div id="audio-status" class="status-wrap"></div>
 
-                if (!response.ok) {
-                    const errData = await response.json().catch(() => ({}));
-                    if (response.status === 401) throw new Error('مفتاح API غير صحيح (401)');
-                    if (response.status === 402) throw new Error('الرصيد غير كافٍ في حساب OpenRouter (402)');
-                    throw new Error(`فشل الاتصال: ${response.status} - ${errData.error?.message || 'خطأ غير معروف'}`);
-                }
+        <!-- TRANSCRIPTION -->
+        <div id="trans-section" style="display:none">
+          <label>النص المفرَّغ</label>
+          <textarea id="trans-text" placeholder="سيظهر هنا النص المفرَّغ تلقائياً..." style="min-height:100px"></textarea>
+          <div class="act-row" style="margin-bottom:12px">
+            <button class="btn btn-ghost" onclick="copyField('trans-text')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+            <button class="btn btn-ghost" onclick="saveTxt()"><i class="fa-solid fa-file-lines"></i><span> .txt</span></button>
+          </div>
+          <button class="btn btn-gold btn-full" onclick="convertToArticle()" id="convert-btn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> تحويل لمقال وفق معايير وات
+          </button>
+          <div id="article-from-rec" style="display:none;margin-top:14px">
+            <div id="rec-article-result" class="output-box rendered"></div>
+            <div class="act-row" style="margin-top:6px">
+              <button class="btn btn-ghost" onclick="copyEl('rec-article-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+              <button class="btn btn-success" onclick="saveArc('rec-article-result','تسجيل ذكي')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                const data = await response.json();
-                return data.choices[0].message.content;
+    <!-- ══ RSS ══ -->
+    <div id="panel-rss" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-globe"></i> آخر الأخبار — وطنية وعالمية</div>
+        <button class="btn btn-gold btn-full" onclick="fetchNews()" id="rss-btn">
+          <i class="fa-solid fa-rotate-right"></i> تحديث الأخبار
+        </button>
+        <div id="rss-status" class="status-wrap"></div>
+        <div id="news-container" style="margin-top:12px"></div>
+      </div>
+    </div>
 
-            } catch (error) {
-                console.error('API Error:', error);
-                throw error;
-            }
-        }
+    <!-- ══ TOOLS ══ -->
+    <div id="panel-tools" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-calendar-day"></i> حدث اليوم في التاريخ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><label>اليوم (1-31)</label><input type="number" id="hist-day" min="1" max="31" placeholder="مثال: 7"></div>
+          <div><label>الشهر (1-12)</label><input type="number" id="hist-month" min="1" max="12" placeholder="مثال: 3"></div>
+        </div>
+        <button class="btn btn-gold btn-full" onclick="runHistory()" id="hist-btn">
+          <i class="fa-solid fa-magnifying-glass"></i> بحث في التاريخ
+        </button>
+        <div id="hist-status" class="status-wrap"></div>
+        <div id="hist-result" class="output-box rendered" style="display:none"></div>
+        <div id="hist-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('hist-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-success" onclick="saveArc('hist-result','حدث اليوم')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-futbol"></i> أرشيف المواجهات الرياضية</div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end">
+          <div><label>الفريق الأول</label><input type="text" id="team-a" placeholder="مثال: الترجي الرياضي"></div>
+          <div style="text-align:center;color:var(--text2);font-weight:900;font-size:18px;padding-bottom:12px">ضد</div>
+          <div><label>الفريق الثاني</label><input type="text" id="team-b" placeholder="مثال: النادي الإفريقي"></div>
+        </div>
+        <button class="btn btn-gold btn-full" onclick="runSports()" id="sports-btn">
+          <i class="fa-solid fa-trophy"></i> بحث عن المواجهات
+        </button>
+        <div id="sports-status" class="status-wrap"></div>
+        <div id="sports-result" class="output-box rendered" style="display:none"></div>
+        <div id="sports-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('sports-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-success" onclick="saveArc('sports-result','أرشيف رياضي')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
+    </div>
 
-        // === وظائف المحرر ===
-        async function runEditor() {
-            const input = document.getElementById('editor-input').value.trim();
-            if (!input) return showStatus('editor-status', 'الرجاء إدخال نص أولاً', 'error');
-            
-            showStatus('editor-status', '⏳ جاري المعالجة...', 'loading');
-            
-            const mode = document.getElementById('editor-mode').value;
-            let prompt = '';
-            
-            // برومبتات مخصصة لكل وضع
-            switch(mode) {
-                case 'structure': prompt = `أعد هيكلة النص التالي وفق معايير صحفية احترافية (وكالة وات/إذاعة ديوان أف أم): عنوان رئيسي، ليد، فقرات متسلسلة، وخاتمة. النص: ${input}`; break;
-                case 'seo': prompt = `أعد صياغة النص التالي ليكون مناسباً للنشر الرقمي مع تحسين محركات البحث SEO (عناوين فرعية، كلمات مفتاحية). النص: ${input}`; break;
-                case 'titles': prompt = `اقترح 12 عنواناً صحفياً جذاباً للنص التالي، مقسمة إلى فئات (إخباري، تشويقي، تحليلي، سوشيال ميديا). النص: ${input}`; break;
-                case 'flash': prompt = `حول النص التالي إلى فلاش إخباري موجز للإلقاء المباشر (أقل من 40 كلمة). النص: ${input}`; break;
-                case 'profile': prompt = `استخرج ملفاً تعريفياً للشخصية المذكورة في النص: التعريف، أهم المواقف، وأسئلة حوارية مقترحة. النص: ${input}`; break;
-            }
+    <!-- ══ PROFILE ══ -->
+    <div id="panel-profile" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-user-tie"></i> ملف الشخصية الصحفي</div>
+        <div class="card-sub">يُعدّ ملفاً تحقيقياً كاملاً عن الشخصية وفق أسلوب وكالة وات</div>
+        <label>اسم الشخصية</label>
+        <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي">
+        <button class="btn btn-gold btn-full" onclick="runProfile()" id="profile-btn">
+          <i class="fa-solid fa-magnifying-glass"></i> استخراج الملف الكامل
+        </button>
+        <div id="profile-status" class="status-wrap"></div>
+        <div id="profile-result" class="output-box rendered" style="display:none"></div>
+        <div id="profile-acts" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyEl('profile-result')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
+          <button class="btn btn-success" onclick="saveArc('profile-result','ملف شخصية')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
+        </div>
+      </div>
+    </div>
 
-            try {
-                const result = await callAI(prompt);
-                document.getElementById('editor-output').value = result;
-                showStatus('editor-status', '✅ تمت المعالجة بنجاح', 'success');
-            } catch (e) {
-                showStatus('editor-status', '❌ ' + e.message, 'error');
-            }
-        }
+    <!-- ══ AGENDA ══ -->
+    <div id="panel-agenda" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-calendar-days"></i> الأجندة المشتركة</div>
+        <div style="background:var(--gold3);border:1px solid var(--line2);border-radius:var(--r);padding:16px;margin-bottom:16px">
+          <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:12px"><i class="fa-solid fa-plus"></i> إضافة حدث</div>
+          <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px">
+            <div><label>التاريخ</label><input type="date" id="ag-date"></div>
+            <div><label>وصف الحدث</label><input type="text" id="ag-desc" placeholder="مثال: مؤتمر صحفي — وزارة التربية"></div>
+          </div>
+          <button class="btn btn-gold btn-full" onclick="addAgenda()">
+            <i class="fa-solid fa-floppy-disk"></i> حفظ في الأجندة
+          </button>
+        </div>
+        <div><label>البحث بالتاريخ</label>
+          <div style="display:flex;gap:8px">
+            <input type="date" id="ag-search" style="flex:1;margin:0">
+            <button class="btn btn-ghost" onclick="searchAgenda()">بحث</button>
+          </div>
+        </div>
+        <div id="agenda-list" style="margin-top:14px"></div>
+      </div>
+    </div>
 
-        async function runArticle() {
-            const input = document.getElementById('article-input').value.trim();
-            if (!input) return showStatus('article-status', 'الرجاء إدخال فكرة المقال', 'error');
+    <!-- ══ ARCHIVE ══ -->
+    <div id="panel-archive" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف الذكي</div>
+        <input type="text" id="arc-search" placeholder="بحث في الأرشيف..." oninput="filterArchive()" style="margin-bottom:12px">
+        <div id="arc-list"></div>
+      </div>
+    </div>
 
-            showStatus('article-status', '⏳ جاري كتابة المقال...', 'loading');
-            const count = document.getElementById('article-count').value;
-            const prompt = `اكتب ${count} مقالاً إخبارياً احترافياً مفصلاً بناءً على الفكرة التالية. استخدم لغة صحفية رصينة: ${input}`;
+  </main>
+</div>
 
-            try {
-                const result = await callAI(prompt);
-                document.getElementById('article-output').value = result;
-                showStatus('article-status', '✅ تم إنشاء المقال', 'success');
-            } catch (e) {
-                showStatus('article-status', '❌ ' + e.message, 'error');
-            }
-        }
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title"><i class="fa-solid fa-gear"></i> إعدادات DESK BOT</div>
+      <button class="modal-close" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
 
-        // === أدوات البحث ===
-        async function searchHistory() {
-            const d = document.getElementById('hist-day').value;
-            const m = document.getElementById('hist-month').value;
-            if (!d || !m) return showStatus('hist-status', 'أدخل اليوم والشهر', 'error');
-            
-            showStatus('hist-status', '⏳ جاري البحث...', 'loading');
-            try {
-                const res = await callAI(`اذكر أحداثاً تاريخية مهمة وقعت في يوم ${d} من الشهر ${m} عبر التاريخ.`);
-                document.getElementById('hist-output').value = res;
-                showStatus('hist-status', '✅ تم', 'success');
-            } catch(e) { showStatus('hist-status', '❌ ' + e.message, 'error'); }
-        }
+      <!-- GEMINI SECTION -->
+      <div class="model-section">
+        <div class="model-section-head">
+          <div class="model-section-icon msi-gemini"><i class="fa-brands fa-google"></i></div>
+          <div>
+            <div class="model-section-title">Google Gemini</div>
+            <div class="model-section-sub">نماذج مجانية عالية الجودة · 1500 طلب/يوم (Flash) · 50 طلب/يوم (Pro)</div>
+          </div>
+        </div>
+        <div id="gemini-key-status" class="key-status"></div>
+        <label>مفتاح Gemini API</label>
+        <input type="password" id="gemini-key-input" placeholder="AIzaSy...">
+        <div style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.15);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.7">
+          <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i>
+          احصل على مفتاحك المجاني من:
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com ←</a>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px">النماذج المتاحة:</div>
+        <div id="gemini-models-list"></div>
+        <button class="btn btn-ghost" onclick="saveGeminiKey()" style="width:100%;justify-content:center;margin-top:8px">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini
+        </button>
+      </div>
 
-        async function searchSports() {
-            const a = document.getElementById('team-a').value;
-            const b = document.getElementById('team-b').value;
-            if (!a || !b) return showStatus('sports-status', 'أدخل اسمي الفريقين', 'error');
-            
-            showStatus('sports-status', '⏳ جاري البحث...', 'loading');
-            try {
-                const res = await callAI(`لخص تاريخ المواجهات بين فريق ${a} وفريق ${b} في كرة القدم.`);
-                document.getElementById('sports-output').value = res;
-                showStatus('sports-status', '✅ تم', 'success');
-            } catch(e) { showStatus('sports-status', '❌ ' + e.message, 'error'); }
-        }
+      <!-- OPENROUTER SECTION -->
+      <div class="model-section">
+        <div class="model-section-head">
+          <div class="model-section-icon msi-qwen"><i class="fa-solid fa-robot"></i></div>
+          <div>
+            <div class="model-section-title">OpenRouter — نماذج مجانية</div>
+            <div class="model-section-sub">Qwen3 · Llama · DeepSeek · مجاناً بدون بطاقة بنكية</div>
+          </div>
+        </div>
+        <div id="or-key-status" class="key-status"></div>
+        <label>مفتاح OpenRouter API</label>
+        <input type="password" id="or-key-input" placeholder="sk-or-v1-...">
+        <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.7">
+          <i class="fa-solid fa-circle-info" style="color:var(--purple)"></i>
+          احصل على مفتاحك المجاني (بلا بطاقة) من:
+          <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--purple);font-weight:700;text-decoration:none">openrouter.ai/keys ←</a>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:8px">النماذج المجانية المتاحة:</div>
+        <div id="or-models-list"></div>
+        <button class="btn btn-ghost" onclick="saveOrKey()" style="width:100%;justify-content:center;margin-top:8px;border-color:rgba(167,139,250,0.3);color:var(--purple)">
+          <i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter
+        </button>
+      </div>
 
-        // === وظائف مساعدة ===
-        function copyText(id) {
-            navigator.clipboard.writeText(document.getElementById(id).value);
-            alert('تم النسخ!');
-        }
+      <button class="btn btn-ghost" onclick="closeSettings()" style="width:100%;justify-content:center">
+        <i class="fa-solid fa-xmark"></i> إغلاق
+      </button>
+    </div>
+  </div>
+</div>
 
-        function saveToArchive(type, inputId) {
-            const content = document.getElementById(inputId).value;
-            if(!content) return alert('لا يوجد نص لحفظه');
-            
-            APP_STATE.archive.unshift({
-                id: Date.now(),
-                type: type,
-                content: content,
-                date: new Date().toLocaleDateString('ar-TN')
-            });
-            localStorage.setItem('deskbot_archive', JSON.stringify(APP_STATE.archive));
-            alert('تمت الأرشفة بنجاح ✅');
-            renderArchive();
-        }
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-        function renderArchive() {
-            const list = document.getElementById('archive-list');
-            list.innerHTML = APP_STATE.archive.map(item => `
-                <div style="background:var(--bg); padding:1rem; border-radius:8px; margin-bottom:0.5rem; border:1px solid var(--border);">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
-                        <strong style="color:var(--primary);">${item.type}</strong>
-                        <small style="color:var(--text2);">${item.date}</small>
-                    </div>
-                    <p style="font-size:0.9rem; color:var(--text); white-space:pre-wrap;">${item.content.substring(0, 150)}...</p>
-                </div>
-            `).join('');
-        }
+<script>
+/* ═══════════════════════════════════════════════
+   DESK BOT v10 — BRAIN
+═══════════════════════════════════════════════ */
 
-        function searchArchive() {
-            const query = document.getElementById('archive-search').value.toLowerCase();
-            const filtered = APP_STATE.archive.filter(item => item.content.toLowerCase().includes(query) || item.type.includes(query));
-            const list = document.getElementById('archive-list');
-            list.innerHTML = filtered.map(item => `
-                <div style="background:var(--bg); padding:1rem; border-radius:8px; margin-bottom:0.5rem; border:1px solid var(--border);">
-                    <strong style="color:var(--primary);">${item.type}</strong> - <small>${item.date}</small>
-                    <p style="margin-top:0.5rem;">${item.content.substring(0, 150)}...</p>
-                </div>
-            `).join('') || '<p style="color:var(--text2); text-align:center;">لا توجد نتائج</p>';
-        }
+// ── MODELS DEFINITION ──
+const MODELS = [
+  {
+    id:'gemini-2.5-flash',
+    name:'Gemini 2.5 Flash',
+    provider:'gemini',
+    badge:'Gemini',
+    quota:'1500 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'الأسرع — مثالي للاستخدام اليومي',
+    icon:'fa-brands fa-google',
+    iconClass:'mc-gemini',
+    recommended:true
+  },
+  {
+    id:'gemini-2.5-pro',
+    name:'Gemini 2.5 Pro',
+    provider:'gemini',
+    badge:'Gemini',
+    quota:'50 طلب/يوم',
+    quotaClass:'quota-amber',
+    desc:'الأقوى — للتحليل المعمق',
+    icon:'fa-brands fa-google',
+    iconClass:'mc-gemini'
+  },
+  {
+    id:'qwen/qwen3-235b-a22b:free',
+    name:'Qwen3 235B',
+    provider:'openrouter',
+    badge:'Qwen',
+    quota:'~40 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'الأقوى مجاناً — نموذج ضخم',
+    icon:'fa-solid fa-robot',
+    iconClass:'mc-qwen',
+    recommended:true
+  },
+  {
+    id:'qwen/qwen-2.5-72b-instruct:free',
+    name:'Qwen2.5 72B',
+    provider:'openrouter',
+    badge:'Qwen',
+    quota:'~50 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'سريع وموثوق — مناسب للتحرير',
+    icon:'fa-solid fa-robot',
+    iconClass:'mc-qwen'
+  },
+  {
+    id:'meta-llama/llama-3.3-70b-instruct:free',
+    name:'Llama 3.3 70B',
+    provider:'openrouter',
+    badge:'Free',
+    quota:'~50 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'نموذج Meta مجاني وقوي',
+    icon:'fa-solid fa-code-branch',
+    iconClass:'mc-qwen'
+  },
+  {
+    id:'deepseek/deepseek-chat-v3-0324:free',
+    name:'DeepSeek V3',
+    provider:'openrouter',
+    badge:'Free',
+    quota:'~30 طلب/يوم',
+    quotaClass:'quota-amber',
+    desc:'قوي في التحليل النصي',
+    icon:'fa-solid fa-brain',
+    iconClass:'mc-qwen'
+  }
+];
 
-        function addAgenda() {
-            const date = document.getElementById('agenda-date').value;
-            const desc = document.getElementById('agenda-desc').value;
-            if(!date || !desc) return alert('املأ الحقول');
-            
-            APP_STATE.agenda.push({ date, desc });
-            localStorage.setItem('deskbot_agenda', JSON.stringify(APP_STATE.agenda));
-            renderAgenda();
-            document.getElementById('agenda-desc').value = '';
-        }
+// ── STATE ──
+const S = {
+  geminiKey: localStorage.getItem('db_gk') || '',
+  orKey:     localStorage.getItem('db_ok') || '',
+  model:     localStorage.getItem('db_model') || 'gemini-2.5-flash',
+  archive:   JSON.parse(localStorage.getItem('db_archive') || '[]'),
+  agenda:    JSON.parse(localStorage.getItem('db_agenda') || '[]'),
+  reqToday:  parseInt(localStorage.getItem('db_req_' + new Date().toDateString()) || '0')
+};
 
-        function renderAgenda() {
-            const list = document.getElementById('agenda-list');
-            list.innerHTML = APP_STATE.agenda.map(item => `
-                <div style="display:flex; justify-content:space-between; padding:0.8rem; border-bottom:1px solid var(--border);">
-                    <span>${item.desc}</span>
-                    <span style="color:var(--primary); font-weight:bold;">${item.date}</span>
-                </div>
-            `).join('') || '<p style="color:var(--text2); text-align:center;">لا توجد أحداث</p>';
-        }
+// ── PROMPTS ──
+const SYS = `أنت DESK BOT، نظام غرفة الأخبار الرقمية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم.
+القواعد الذهبية: العربية الفصحى الحديثة — كل جملة ≤ 20 كلمة — كل معلومة لمصدر مسمّى — لا رأي ولا تعليق — الهرم المقلوب دائماً — ابدأ الإخراج مباشرة بلا ديباجة.
 
-        // === أخبار RSS ===
-        async function fetchNews() {
-            showStatus('rss-status', '⏳ جاري جلب الأخبار...', 'loading');
-            try {
-                const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/arabic/rss.xml');
-                const data = await res.json();
-                const container = document.getElementById('news-container');
-                container.innerHTML = data.items.map(item => `
-                    <div style="background:var(--bg); padding:1rem; border-radius:8px; border:1px solid var(--border);">
-                        <a href="${item.link}" target="_blank" style="color:var(--primary); font-weight:bold; text-decoration:none; display:block; margin-bottom:0.5rem;">${item.title}</a>
-                        <p style="font-size:0.85rem; color:var(--text2);">${item.description.replace(/<[^>]*>/g, '').substring(0, 100)}...</p>
-                    </div>
-                `).join('');
-                showStatus('rss-status', '✅ تم التحديث', 'success');
-            } catch(e) {
-                showStatus('rss-status', '❌ فشل جلب الأخبار', 'error');
-            }
-        }
-        
-        // محاكاة التفريغ
-        function simulateTranscription() {
-            showStatus('audio-status', '⏳ جاري التفريغ...', 'loading');
-            setTimeout(() => {
-                document.getElementById('audio-output').value = 'هذا نص تجريبي ناتج عن محاكاة التفريغ الصوتي. للحصول على تفريغ حقيقي ودقيق، يجب ربط التطبيق بخدمة مثل Whisper API عبر خادم خلفي (Backend) لأن المتصفح لا يدعم ذلك مباشرة لأسباب أمنية.';
-                showStatus('audio-status', '✅ تم التفريغ (تجريبي)', 'success');
-            }, 2000);
-        }
-    </script>
+`;
+
+const PROMPTS = {
+  editor: SYS + `## مهمتك: تحرير خبر وكالة وات احترافي كامل
+### الإخراج الإلزامي:
+## 📰 عنوان وات
+[فعل مضارع + فاعل + نتيجة — 6-8 كلمات — لا نقطة — لا تعجب]
+**الشابو:** [جملتان — 25-30 كلمة — يُكمل العنوان]
+### Lead وات: [30-35 كلمة — من؟ ماذا؟ متى؟ أين؟ لماذا؟ — مصدر مسمّى]
+### الفقرة 2 — السياق: [25-30 كلمة]
+### الفقرة 3 — التفاصيل: [25-30 كلمة + اقتباس مباشر بين " " مع اسم صاحبه وصفته]
+### الفقرة 4 — الخلفية: [20-25 كلمة]
+### الفقرة 5 — الأفق: [20 كلمة — ما المتوقع؟]
+---
+### 🔍 الصياغة الرقمية:
+**الكلمات المفتاحية:** ... | **الوسوم:** ... | **الوصف (155 حرف):** ...
+---
+### 📻 نسخة ديوان FM:
+**عنوان إذاعي:** [6 كلمات] | **مانشيت:** [25 كلمة — للإلقاء المباشر]`,
+
+  rewrite: SYS + `## مهمتك: إعادة هيكلة وصياغة وفق معيار وات
+1. استخرج الحقيقة الإخبارية — احذف كل تزيين
+2. ابنِ الهرم المقلوب من الصفر
+3. Lead 30-35 كلمة — 5Ws — مصدر مسمّى
+4. اقتباس مباشر واحد في الفقرة الثالثة
+5. نسخة إذاعية لديوان FM في النهاية`,
+
+  transcribe: SYS + `## مهمتك: تفريغ المحتوى الصوتي + تحرير وات
+### الجزء 1 — التفريغ الحرفي:
+تفريغ كلمة بكلمة — تمييز المتحدثين — الوقفات [...] — غير المفهوم [؟؟؟]
+[المذيع:] ... | [الضيف:] ...
+---
+### الجزء 2 — تحرير وات:
+**عنوان وات:** ... | **Lead 35 كلمة:** ... | **3 اقتباسات:** ... | **نسخة ديوان FM:** ...`,
+
+  monitor: SYS + `## مهمتك: رصد إخباري — آخر 12 ساعة
+| # | Lead وات | المصدر | التوقيت | الأهمية |
+اقتباسات رسمية + خلاصة تحريرية 150 كلمة + مقترح فلاش ديوان FM`,
+
+  checker: SYS + `## مهمتك: تدقيق مهني شامل
+المؤسسات: موزاييك FM — ديوان FM — شمس FM — الوطنية 1 — الشروق — الصباح — Business News — Leaders — وات
+### 1. أخطاء لغوية | 2. أخطاء منهجية | 3. إشكاليات أخلاقية | 4. نماذج إيجابية | توصيات عاجلة`,
+
+  article: SYS + `## مهمتك: كتابة مقال إخباري احترافي
+هيكل: عنوان + شابو + Lead + 5 فقرات (هرم مقلوب) + خاتمة + SEO. أسلوب: رصين، مباشر، موثّق المصادر.`,
+
+  flash: SYS + `## مهمتك: فلاش إخباري لديوان FM
+المواصفات: 45-60 ثانية | 80-100 كلمة | . = وقفة 1ث | ، = نصف ثانية
+الإخراج:
+🎙️ **فلاش ديوان FM — وات**
+[خبر:] [15 كلمة — فعل+فاعل رسمي+نتيجة]
+[تفاصيل: 25 كلمة — أرقام+مصدر رسمي مسمّى]
+[سياق: 20 كلمة]
+[ختام إذاعي: 10 كلمات]
+*ديوان أف أم — وكالة تونس إفريقيا للأنباء*
+---
+⏱️ الوقت: [X ث] | 📝 الكلمات: [العدد] | 📻 ملاحظة للمذيع: [إن لزم]`,
+
+  headlines: SYS + `## مهمتك: 12 عنواناً في 4 فئات
+## 🔵 وات [3]: فعل مضارع+فاعل رسمي+نتيجة — 6-8 كلمات
+## 🟡 ديوان FM [3]: مشوّق للمستمع — 6 كلمات كحد
+## 🟢 SEO [3]: كلمة مفتاحية أولاً + نتيجة واضحة
+## 🔴 شبكات التواصل [3]: يثير التفاعل — 10 كلمات
+لكل عنوان: [النص] ← [عدد الكلمات] — [المبرر التحريري]
+**⭐ التوصية التحريرية:** [الأمثل لوات ولماذا]`,
+
+  today: SYS + `## مهمتك: "في مثل هذا اليوم" لوكالة وات
+تنسيق: > **[السنة]** — [من+ماذا+أين+النتيجة — 35-40 كلمة] > 📌 **الأهمية:** [جملة واحدة]
+## 🔵 صفاقس والجنوب التونسي (أولاً) | ## 🟢 أحداث وطنية | ## 🌍 عربية ودولية
+📻 **مقترح ديوان FM:** "في مثل هذا اليوم — [الجملة الإذاعية 15 كلمة]"`,
+
+  sports: SYS + `## مهمتك: ملف المواجهات المباشرة
+| التاريخ | البطولة | النتيجة | الهداف | الملعب |
+إحصاءات: إجمالي / انتصارات أ / انتصارات ب / تعادلات / أهداف
+اقتباس تاريخي قابل للنشر + تقديم إذاعي لديوان FM`,
+
+  profile: SYS + `## مهمتك: ملف صحفي كامل — أسلوب وات التحقيقي
+بطاقة رسمية (اسم، ميلاد، جنسية، منصب، مؤسسة)
+📌 Lead وات 35 كلمة
+📋 المسار المهني (جدول)
+💬 أبرز تصريحات موثّقة (2-3)
+⚡ مواقف خلافية موثّقة
+🕐 آخر مستجد إخباري
+📻 تعريف إذاعي لديوان FM 15 كلمة`
+};
+
+// ── CALL AI ──
+async function callAI(prompt) {
+  const m = MODELS.find(x => x.id === S.model) || MODELS[0];
+  
+  if (m.provider === 'gemini') {
+    if (!S.geminiKey) { openSettings(); throw new Error('أدخل مفتاح Gemini API أولاً من الإعدادات'); }
+    return await callGemini(prompt, m.id);
+  } else {
+    if (!S.orKey) { openSettings(); throw new Error('أدخل مفتاح OpenRouter أولاً من الإعدادات'); }
+    return await callOpenRouter(prompt, m.id);
+  }
+}
+
+async function callGemini(prompt, modelId) {
+  const r = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${S.geminiKey}`,
+    {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{temperature:0.7,maxOutputTokens:4096,topP:0.9}
+      })
+    }
+  );
+  if(!r.ok){ const e=await r.json(); throw new Error(e.error?.message || 'خطأ Gemini '+r.status); }
+  const d=await r.json();
+  incReq();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+async function callOpenRouter(prompt, modelId) {
+  const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer '+S.orKey,
+      'HTTP-Referer': window.location.href,
+      'X-Title':'DESK BOT'
+    },
+    body:JSON.stringify({
+      model: modelId,
+      messages:[{role:'user',content:prompt}],
+      max_tokens:4096
+    })
+  });
+  if(!r.ok){ const e=await r.json().catch(()=>{}); 
+    if(r.status===401) throw new Error('مفتاح OpenRouter غير صحيح (401)');
+    if(r.status===402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
+    throw new Error((e?.error?.message)||'خطأ OpenRouter '+r.status);
+  }
+  const d=await r.json();
+  incReq();
+  return d.choices?.[0]?.message?.content || '';
+}
+
+// Gemini multimodal for audio
+async function callGeminiAudio(prompt, b64, mime) {
+  if (!S.geminiKey) { openSettings(); throw new Error('تفريغ الصوت يتطلب مفتاح Gemini — أدخله من الإعدادات'); }
+  const model = S.model.startsWith('gemini') ? S.model : 'gemini-2.5-flash';
+  const r = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.geminiKey}`,
+    {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[
+          {inlineData:{mimeType:mime||'audio/webm',data:b64}},
+          {text:prompt}
+        ]}],
+        generationConfig:{temperature:0,maxOutputTokens:8192}
+      })
+    }
+  );
+  if(!r.ok){ const e=await r.json(); throw new Error(e.error?.message||'خطأ Gemini '+r.status); }
+  const d=await r.json();
+  incReq();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+// ── MARKDOWN RENDERER ──
+function renderMD(txt) {
+  if(!txt) return '';
+  const BT=String.fromCharCode(96);
+  const re=new RegExp(BT+'(.+?)'+BT,'g');
+  let h=txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^---$/gm,'<hr>')
+    .replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>')
+    .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+    .replace(/^[-*] (.+)$/gm,'<li>$1</li>');
+  h=h.replace(re,'<code>$1</code>');
+  h=h.replace(/((?:<li>[^<]*<\/li>\n?)+)/g,'<ul>$1</ul>');
+  h=h.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>');
+  if(!/^<(h[1-3]|ul|hr|blockquote|p)/.test(h)) h='<p>'+h+'</p>';
+  // render tables
+  h=h.replace(/\|(.+)\|/g, (match)=>{
+    const cells=match.split('|').filter(c=>c.trim()&&!/^[-:]+$/.test(c.trim()));
+    return '<tr>'+cells.map(c=>`<td>${c.trim()}</td>`).join('')+'</tr>';
+  });
+  h=h.replace(/(<tr>.*<\/tr>\s*)+/g, (rows)=>`<table>${rows}</table>`);
+  return h;
+}
+
+// ── STATUS HELPERS ──
+function setStatus(id, msg, type) {
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.className='status-wrap '+type;
+  el.innerHTML = type==='loading'
+    ? `<div class="spin"></div><span>${msg}</span>`
+    : `<i class="fa-solid ${type==='success'?'fa-check-circle':'fa-circle-exclamation'}"></i><span>${msg}</span>`;
+}
+function hideStatus(id){ const el=document.getElementById(id); if(el) el.className='status-wrap'; }
+
+function showResult(resultId, actsId, html) {
+  const r=document.getElementById(resultId);
+  const a=document.getElementById(actsId);
+  if(r){ r.innerHTML=html; r.style.display='block'; }
+  if(a) a.style.display='flex';
+}
+function hideResult(resultId, actsId) {
+  const r=document.getElementById(resultId);
+  const a=document.getElementById(actsId);
+  if(r){ r.style.display='none'; r.innerHTML=''; }
+  if(a) a.style.display='none';
+}
+
+// ── TOAST ──
+function toast(msg, type='') {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show '+(type==='s'?'s':type==='e'?'e':'');
+  setTimeout(()=>el.className='toast',3000);
+}
+
+// ── REQ COUNTER ──
+function incReq() {
+  S.reqToday++;
+  const k='db_req_'+new Date().toDateString();
+  localStorage.setItem(k,S.reqToday);
+  const el=document.getElementById('stat-req');
+  if(el) el.textContent=S.reqToday;
+}
+
+// ── PANEL NAVIGATION ──
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+// ── CLEAR PANEL ──
+function clearPanel(name) {
+  const inp=document.getElementById(name+'-input');
+  const mode=document.getElementById(name+'-mode');
+  if(inp) inp.value='';
+  hideResult(name+'-result', name+'-acts');
+  hideStatus(name+'-status');
+}
+
+// ── COPY / SHARE ──
+function copyEl(id) {
+  const t=document.getElementById(id)?.innerText||'';
+  if(!t) return toast('لا يوجد نص','e');
+  navigator.clipboard.writeText(t).then(()=>toast('تم النسخ ✓','s'));
+}
+function copyField(id) {
+  const t=document.getElementById(id)?.value||'';
+  if(!t) return toast('لا يوجد نص','e');
+  navigator.clipboard.writeText(t).then(()=>toast('تم النسخ ✓','s'));
+}
+function waShare(id) {
+  const t=document.getElementById(id)?.innerText||'';
+  if(t) window.open('https://wa.me/?text='+encodeURIComponent(t));
+}
+function emailShare(id) {
+  const t=document.getElementById(id)?.innerText||'';
+  if(t) window.open('mailto:?subject=DESK BOT&body='+encodeURIComponent(t));
+}
+
+// ── ARCHIVE ──
+function saveArc(id, type) {
+  const c=document.getElementById(id)?.innerText||'';
+  if(!c.trim()) return toast('لا يوجد نص للأرشفة','e');
+  S.archive.unshift({id:Date.now(),type,content:c,date:new Date().toLocaleDateString('ar-TN')});
+  localStorage.setItem('db_archive',JSON.stringify(S.archive));
+  renderArchive();
+  toast('تم الحفظ في الأرشيف ✓','s');
+  const el=document.getElementById('stat-arc');
+  if(el) el.textContent=S.archive.length;
+}
+function renderArchive(list) {
+  const el=document.getElementById('arc-list');
+  if(!el) return;
+  const data=list||S.archive;
+  if(!data.length){ el.innerHTML='<p style="text-align:center;color:var(--text3);padding:24px">لا توجد مواد مؤرشفة بعد</p>'; return; }
+  el.innerHTML=data.map(it=>`
+    <div class="arc-item">
+      <div class="arc-meta">
+        <span class="arc-type">${it.type}</span>
+        <span class="arc-date">${it.date}</span>
+      </div>
+      <div class="arc-preview">${it.content.substring(0,140)}...</div>
+      <div class="act-row" style="margin-top:8px">
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="copyArcItem(${it.id})"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+        <button class="btn btn-danger" style="font-size:11px;padding:5px 10px" onclick="delArc(${it.id})"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+function copyArcItem(id) {
+  const it=S.archive.find(x=>x.id===id);
+  if(it) navigator.clipboard.writeText(it.content).then(()=>toast('تم النسخ ✓','s'));
+}
+function delArc(id) {
+  S.archive=S.archive.filter(x=>x.id!==id);
+  localStorage.setItem('db_archive',JSON.stringify(S.archive));
+  renderArchive();
+  const el=document.getElementById('stat-arc');
+  if(el) el.textContent=S.archive.length;
+}
+function filterArchive() {
+  const q=(document.getElementById('arc-search')?.value||'').toLowerCase();
+  const filtered=q?S.archive.filter(x=>x.content.toLowerCase().includes(q)||x.type.includes(q)):S.archive;
+  renderArchive(filtered);
+}
+
+// ── AGENDA ──
+function addAgenda() {
+  const date=document.getElementById('ag-date')?.value;
+  const desc=(document.getElementById('ag-desc')?.value||'').trim();
+  if(!date||!desc) return toast('أدخل التاريخ ووصف الحدث','e');
+  S.agenda.push({id:Date.now(),date,desc});
+  localStorage.setItem('db_agenda',JSON.stringify(S.agenda));
+  document.getElementById('ag-desc').value='';
+  renderAgenda();
+  toast('تمت الإضافة ✓','s');
+  const el=document.getElementById('stat-ag');
+  if(el) el.textContent=S.agenda.length;
+}
+function searchAgenda() {
+  const date=document.getElementById('ag-search')?.value;
+  const res=date?S.agenda.filter(x=>x.date===date):S.agenda;
+  renderAgenda(res);
+}
+function renderAgenda(list) {
+  const el=document.getElementById('agenda-list');
+  if(!el) return;
+  const data=list||S.agenda;
+  if(!data.length){ el.innerHTML='<p style="text-align:center;color:var(--text3);padding:24px">لا توجد أحداث</p>'; return; }
+  const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  el.innerHTML=data.map(it=>{
+    const d=new Date(it.date); const fmtd=d.getDate()+' '+months[d.getMonth()];
+    return `<div class="ag-item">
+      <div class="ag-date-badge">${fmtd}</div>
+      <div style="flex:1;font-size:13px">${it.desc}</div>
+      <button class="btn btn-danger" style="font-size:10px;padding:4px 8px" onclick="delAgenda(${it.id})"><i class="fa-solid fa-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+function delAgenda(id) {
+  S.agenda=S.agenda.filter(x=>x.id!==id);
+  localStorage.setItem('db_agenda',JSON.stringify(S.agenda));
+  renderAgenda();
+  const el=document.getElementById('stat-ag');
+  if(el) el.textContent=S.agenda.length;
+}
+
+// ── TOOL RUNNERS ──
+async function runTool(inputId, statusId, resultId, actsId, promptKey, btnId, promptSuffix) {
+  const inp=(document.getElementById(inputId)?.value||'').trim();
+  if(!inp) return toast('أدخل النص أولاً','e');
+  checkApiKey();
+  setStatus(statusId,'⏳ جاري المعالجة بـ '+getModelName()+'...','loading');
+  hideResult(resultId,actsId);
+  const btn=document.getElementById(btnId);
+  if(btn) btn.disabled=true;
+  try{
+    const prompt=(PROMPTS[promptKey]||SYS)+'\n\n'+(promptSuffix||inp);
+    const res=await callAI(prompt);
+    showResult(resultId,actsId,renderMD(res));
+    setStatus(statusId,'✅ اكتملت المعالجة بنجاح','success');
+    setTimeout(()=>hideStatus(statusId),3000);
+  }catch(e){
+    setStatus(statusId,'❌ '+e.message,'error');
+  }finally{
+    if(btn) btn.disabled=false;
+  }
+}
+
+async function runEditor() {
+  const mode=document.getElementById('editor-mode')?.value||'editor';
+  await runTool('editor-input','editor-status','editor-result','editor-acts',mode,'editor-btn');
+}
+async function runArticle() {
+  const inp=(document.getElementById('article-input')?.value||'').trim();
+  if(!inp) return toast('أدخل فكرة المقال','e');
+  const count=document.getElementById('article-count')?.value||'1';
+  await runTool('article-input','article-status','article-result','article-acts','article','article-btn',
+    `اكتب ${count} مقالاً إخبارياً احترافياً مفصلاً بناءً على: ${inp}`);
+}
+async function runFlash() { await runTool('flash-input','flash-status','flash-result','flash-acts','flash','flash-btn'); }
+async function runHeadlines() { await runTool('headlines-input','headlines-status','headlines-result','headlines-acts','headlines','headlines-btn'); }
+async function runHistory() {
+  const d=document.getElementById('hist-day')?.value;
+  const m=document.getElementById('hist-month')?.value;
+  if(!d||!m) return toast('أدخل اليوم والشهر','e');
+  const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const fmt=d+' '+months[parseInt(m)-1];
+  checkApiKey();
+  setStatus('hist-status','⏳ جاري البحث في التاريخ...','loading');
+  hideResult('hist-result','hist-acts');
+  const btn=document.getElementById('hist-btn'); if(btn) btn.disabled=true;
+  try{
+    const res=await callAI(PROMPTS.today+'\n\nاليوم والشهر: '+fmt);
+    showResult('hist-result','hist-acts',renderMD(res));
+    setStatus('hist-status','✅ تم','success');
+    setTimeout(()=>hideStatus('hist-status'),3000);
+  }catch(e){ setStatus('hist-status','❌ '+e.message,'error'); }
+  finally{ if(btn) btn.disabled=false; }
+}
+async function runSports() {
+  const a=(document.getElementById('team-a')?.value||'').trim();
+  const b=(document.getElementById('team-b')?.value||'').trim();
+  if(!a||!b) return toast('أدخل اسمي الفريقين','e');
+  checkApiKey();
+  setStatus('sports-status','⏳ جاري البحث...','loading');
+  hideResult('sports-result','sports-acts');
+  const btn=document.getElementById('sports-btn'); if(btn) btn.disabled=true;
+  try{
+    const res=await callAI(PROMPTS.sports+'\n\nالفريق الأول: '+a+'\nالفريق الثاني: '+b);
+    showResult('sports-result','sports-acts',renderMD(res));
+    setStatus('sports-status','✅ تم','success');
+    setTimeout(()=>hideStatus('sports-status'),3000);
+  }catch(e){ setStatus('sports-status','❌ '+e.message,'error'); }
+  finally{ if(btn) btn.disabled=false; }
+}
+async function runProfile() {
+  const name=(document.getElementById('profile-name')?.value||'').trim();
+  if(!name) return toast('أدخل اسم الشخصية','e');
+  checkApiKey();
+  setStatus('profile-status','⏳ جاري إعداد الملف...','loading');
+  hideResult('profile-result','profile-acts');
+  const btn=document.getElementById('profile-btn'); if(btn) btn.disabled=true;
+  try{
+    const res=await callAI(PROMPTS.profile+'\n\nالشخصية: '+name);
+    showResult('profile-result','profile-acts',renderMD(res));
+    setStatus('profile-status','✅ تم','success');
+    setTimeout(()=>hideStatus('profile-status'),3000);
+  }catch(e){ setStatus('profile-status','❌ '+e.message,'error'); }
+  finally{ if(btn) btn.disabled=false; }
+}
+
+// ── AUDIO / SMART RECORDING ──
+let smartRec=null, smartChunks=[], smartTimer=null, smartSecs=0, isRec=false;
+let srBlob=null, srBlobUrl=null;
+
+async function toggleRec() { isRec?stopRec():startRec(); }
+async function startRec() {
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    smartChunks=[];
+    smartRec=new MediaRecorder(stream);
+    smartRec.ondataavailable=e=>smartChunks.push(e.data);
+    smartRec.onstop=processRec;
+    smartRec.start();
+    isRec=true; smartSecs=0;
+    const btn=document.getElementById('rec-btn');
+    const timer=document.getElementById('rec-timer');
+    const status=document.getElementById('rec-status');
+    if(timer){timer.style.display='block';timer.textContent='00:00';timer.style.color='var(--red)'}
+    if(status) status.textContent='🔴 جاري التسجيل... تحدث بوضوح';
+    if(btn){btn.innerHTML='<i class="fa-solid fa-stop"></i> إيقاف وتفريغ';btn.style.background='linear-gradient(135deg,#ef4444,#dc2626)'}
+    smartTimer=setInterval(()=>{smartSecs++;const t=document.getElementById('rec-timer');if(t)t.textContent=fmtTime(smartSecs);},1000);
+  }catch(e){ toast('لا يمكن الوصول للميكروفون','e'); }
+}
+function stopRec() {
+  if(smartRec){smartRec.stop();smartRec.getTracks?.forEach(t=>t.stop());}
+  if(smartTimer){clearInterval(smartTimer);smartTimer=null;}
+  isRec=false;
+  const btn=document.getElementById('rec-btn');
+  if(btn){btn.innerHTML='<i class="fa-solid fa-microphone"></i> بدء تسجيل جديد';btn.style.background='';}
+  document.getElementById('rec-status').textContent='⏳ جاري المعالجة...';
+  document.getElementById('rec-timer').classList&&document.getElementById('rec-timer').style&&(document.getElementById('rec-timer').style.color='');
+}
+async function processRec() {
+  const blob=new Blob(smartChunks,{type:'audio/webm'});
+  srBlob=blob; srBlobUrl=URL.createObjectURL(blob);
+  const player=document.getElementById('audio-player');
+  if(player){player.src=srBlobUrl;player.load();}
+  document.getElementById('audio-player-wrap').style.display='block';
+  document.getElementById('rec-timer').style.display='none';
+  document.getElementById('rec-status').textContent='✅ انتهى التسجيل — جاري التفريغ...';
+  document.getElementById('trans-section').style.display='block';
+  setStatus('audio-status','⏳ جاري التفريغ الصوتي الحرفي عبر Gemini...','loading');
+  try{
+    const ab=await blob.arrayBuffer();
+    const ua=new Uint8Array(ab);
+    let bin=''; const CHUNK=8192;
+    for(let i=0;i<ua.length;i+=CHUNK) bin+=String.fromCharCode.apply(null,ua.subarray(i,Math.min(i+CHUNK,ua.length)));
+    const b64=btoa(bin);
+    const res=await callGeminiAudio('فرّغ هذا التسجيل الصوتي كلمةً بكلمة باللهجة أو اللغة المستخدمة. حافظ على التسلسل الطبيعي. ميّز المتحدثين إن وجدوا. لا تضف تعليقات.',b64,'audio/webm');
+    document.getElementById('trans-text').value=res;
+    setStatus('audio-status',res?'✅ اكتمل التفريغ التلقائي':'✅ التسجيل محفوظ — أدخل النص يدوياً','success');
+    document.getElementById('rec-status').textContent='✅ اكتمل التفريغ';
+  }catch(e){
+    document.getElementById('trans-text').value='';
+    setStatus('audio-status','⚠ '+e.message+' — يمكنك إدخال النص يدوياً','error');
+    document.getElementById('rec-status').textContent='⚠ خطأ في التفريغ';
+  }
+}
+function handleAudioFile() {
+  const f=document.getElementById('audio-file')?.files[0];
+  if(!f) return;
+  srBlob=f; srBlobUrl=URL.createObjectURL(f);
+  const player=document.getElementById('audio-player');
+  if(player){player.src=srBlobUrl;player.load();}
+  document.getElementById('audio-player-wrap').style.display='block';
+  document.getElementById('trans-section').style.display='block';
+  setStatus('audio-status','⏳ جاري التفريغ عبر Gemini...','loading');
+  f.arrayBuffer().then(async ab=>{
+    const ua=new Uint8Array(ab);
+    let bin=''; const CHUNK=8192;
+    for(let i=0;i<ua.length;i+=CHUNK) bin+=String.fromCharCode.apply(null,ua.subarray(i,Math.min(i+CHUNK,ua.length)));
+    const b64=btoa(bin);
+    try{
+      const res=await callGeminiAudio('فرّغ هذا التسجيل الصوتي كلمةً بكلمة.',b64,f.type||'audio/mpeg');
+      document.getElementById('trans-text').value=res;
+      setStatus('audio-status','✅ اكتمل التفريغ','success');
+    }catch(e){ setStatus('audio-status','❌ '+e.message,'error'); }
+  });
+}
+async function convertToArticle() {
+  const txt=(document.getElementById('trans-text')?.value||'').trim();
+  if(!txt) return toast('أدخل النص المفرَّغ أولاً','e');
+  checkApiKey();
+  const btn=document.getElementById('convert-btn'); if(btn) btn.disabled=true;
+  try{
+    const res=await callAI(PROMPTS.editor+'\n\n---\nنص التسجيل المفرَّغ:\n'+txt);
+    document.getElementById('rec-article-result').innerHTML=renderMD(res);
+    document.getElementById('article-from-rec').style.display='block';
+    toast('✅ تم تحويل التسجيل لمقال وفق معايير وات','s');
+  }catch(e){ toast('خطأ: '+e.message,'e'); }
+  finally{ if(btn) btn.disabled=false; }
+}
+function downloadAudio() {
+  if(!srBlobUrl) return toast('لا يوجد تسجيل','e');
+  const a=document.createElement('a');a.href=srBlobUrl;
+  a.download='تسجيل_'+new Date().toISOString().slice(0,10)+'.webm';a.click();
+}
+function shareAudioWA() {
+  if(!srBlobUrl){ toast('لا يوجد تسجيل','e'); return; }
+  window.open('https://wa.me/?text='+encodeURIComponent('تسجيل صوتي من DESK BOT — '+new Date().toLocaleString('ar-TN')),'_blank');
+}
+function saveTxt() {
+  const t=document.getElementById('trans-text')?.value||'';
+  if(!t.trim()) return toast('لا يوجد نص','e');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([t],{type:'text/plain;charset=utf-8'}));
+  a.download='تفريغ_'+new Date().toISOString().slice(0,10)+'.txt';a.click();
+}
+function fmtTime(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+
+// ── RSS NEWS ──
+async function fetchNews() {
+  const btn=document.getElementById('rss-btn'); if(btn) btn.disabled=true;
+  setStatus('rss-status','⏳ جاري جلب الأخبار...','loading');
+  const FEEDS=[
+    {u:'https://www.mosaiquefm.net/ar/feed',s:'موزاييك FM',intl:false},
+    {u:'https://www.kapitalis.com/feed',s:'Kapitalis',intl:false},
+    {u:'https://www.businessnews.com.tn/rss',s:'Business TN',intl:false},
+    {u:'https://www.aljazeera.net/xml/rss/all.xml',s:'الجزيرة',intl:true},
+    {u:'https://feeds.bbci.co.uk/arabic/rss.xml',s:'BBC عربي',intl:true},
+    {u:'https://www.france24.com/ar/rss',s:'France24',intl:true}
+  ];
+  async function fetchFeed(f){
+    try{
+      const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(f.u),{signal:AbortSignal.timeout(8000)});
+      if(!r.ok) return [];
+      const d=await r.json();
+      if(!d?.contents) return [];
+      const doc=new DOMParser().parseFromString(d.contents,'text/xml');
+      return Array.from(doc.querySelectorAll('item')).slice(0,4).map(el=>({
+        title:(el.querySelector('title')||{}).textContent||'',
+        link:(el.querySelector('link')||{}).textContent||'',
+        pub:(el.querySelector('pubDate')||{}).textContent||'',
+        src:f.s,intl:f.intl
+      })).filter(n=>n.title.trim());
+    }catch{return [];}
+  }
+  let news=[];
+  await Promise.allSettled(FEEDS.map(f=>fetchFeed(f).then(a=>a.forEach(n=>news.push(n)))));
+  news.sort((a,b)=>(b.pub?new Date(b.pub):0)-(a.pub?new Date(a.pub):0));
+  const c=document.getElementById('news-container');
+  if(!news.length){
+    c.innerHTML='<p style="text-align:center;color:var(--text3);padding:24px">تعذّر جلب الأخبار — تحقق من الاتصال</p>';
+    setStatus('rss-status','❌ فشل جلب الأخبار','error');
+  } else {
+    c.innerHTML=news.slice(0,20).map(n=>{
+      const t=n.pub?new Date(n.pub):null;
+      const time=t&&!isNaN(t)?t.toLocaleTimeString('ar-TN',{hour:'2-digit',minute:'2-digit'}):'';
+      return `<div class="news-item" onclick="${n.link?`window.open('${n.link.replace(/'/g,"\\'")}','_blank')`:'void(0)'}">
+        <span class="news-src ${n.intl?'src-intl':'src-local'}">${n.src}</span>
+        <span class="news-title">${n.title}</span>
+        ${time?`<span class="news-time">${time}</span>`:''}
+      </div>`;
+    }).join('');
+    setStatus('rss-status','✅ '+news.length+' خبر','success');
+    setTimeout(()=>hideStatus('rss-status'),3000);
+  }
+  if(btn) btn.disabled=false;
+}
+
+// ── API KEY CHECK ──
+function checkApiKey() {
+  const m=MODELS.find(x=>x.id===S.model)||MODELS[0];
+  const hasKey=m.provider==='gemini'?!!S.geminiKey:!!S.orKey;
+  if(!hasKey) {
+    document.getElementById('api-banner').classList.remove('hidden');
+    document.getElementById('api-banner-msg').textContent=
+      m.provider==='gemini'
+      ?'النموذج المحدد يتطلب مفتاح Gemini API — أدخله من الإعدادات لتعمل الأدوات'
+      :'النموذج المحدد يتطلب مفتاح OpenRouter — أدخله من الإعدادات لتعمل الأدوات';
+  }
+}
+function updateBanner() {
+  const m=MODELS.find(x=>x.id===S.model)||MODELS[0];
+  const hasKey=m.provider==='gemini'?!!S.geminiKey:!!S.orKey;
+  const banner=document.getElementById('api-banner');
+  if(hasKey) banner.classList.add('hidden');
+  else banner.classList.remove('hidden');
+}
+
+// ── MODEL SELECTOR ──
+function selectModel(id) {
+  S.model=id;
+  localStorage.setItem('db_model',id);
+  renderModelBar();
+  renderModelCardsHome();
+  updateBanner();
+  const m=MODELS.find(x=>x.id===id);
+  if(m) toast('النموذج: '+m.name,'s');
+}
+function getModelName() {
+  return MODELS.find(x=>x.id===S.model)?.name||S.model;
+}
+function hasKeyForModel(m) {
+  return m.provider==='gemini'?!!S.geminiKey:!!S.orKey;
+}
+function renderModelBar() {
+  const bar=document.getElementById('model-bar');
+  if(!bar) return;
+  bar.innerHTML=MODELS.map(m=>{
+    const ok=hasKeyForModel(m);
+    const active=m.id===S.model;
+    const bc=m.provider==='gemini'?'badge-gemini':'badge-qwen';
+    return `<button class="model-pill ${active?'active':''} ${!ok?'no-key':''}" onclick="selectModel('${m.id}')" title="${m.desc}">
+      <div class="dot"></div>
+      <span>${m.name}</span>
+      <span class="badge ${bc}">${m.badge}</span>
+    </button>`;
+  }).join('');
+}
+function renderModelCardsHome() {
+  const el=document.getElementById('model-cards-home');
+  if(!el) return;
+  el.innerHTML=MODELS.map(m=>{
+    const ok=hasKeyForModel(m);
+    const active=m.id===S.model;
+    return `<div class="model-card ${active?'active-model':''}" onclick="selectModel('${m.id}')">
+      <div style="display:flex;gap:2px;flex-direction:column;align-items:center;padding-top:3px">
+        <div class="model-indicator ${ok?'ind-ok':'ind-err'}"></div>
+      </div>
+      <div class="model-card-icon ${m.iconClass}"><i class="fa-solid fa-microchip"></i></div>
+      <div style="flex:1;min-width:0">
+        <div class="model-card-name">${m.name}${m.recommended?` <span style="font-size:9px;background:rgba(201,148,58,0.15);color:var(--gold);padding:1px 6px;border-radius:4px">موصى به</span>`:''}
+        </div>
+        <div class="model-card-info">${m.desc}</div>
+        <div class="model-card-quota ${m.quotaClass}">${m.quota}</div>
+        ${!ok?`<div style="font-size:10px;color:var(--red);margin-top:3px"><i class="fa-solid fa-lock"></i> يتطلب ${m.provider==='gemini'?'مفتاح Gemini':'مفتاح OpenRouter'}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderSettingsModels() {
+  // Gemini models list
+  const gList=document.getElementById('gemini-models-list');
+  if(gList){
+    const gModels=MODELS.filter(m=>m.provider==='gemini');
+    gList.innerHTML=gModels.map(m=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.2);margin-bottom:6px;cursor:pointer;border:1px solid ${S.model===m.id?'var(--line2)':'transparent'}" onclick="selectModel('${m.id}');renderSettingsModels()">
+        <div class="model-indicator ${S.geminiKey?'ind-ok':'ind-off'}"></div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:var(--text)">${m.name}${m.recommended?' ⭐':''}</div>
+          <div style="font-size:10px;color:var(--text2)">${m.desc}</div>
+        </div>
+        <div class="model-card-quota ${m.quotaClass}" style="font-size:10px">${m.quota}</div>
+      </div>`).join('');
+  }
+  // OR models list
+  const oList=document.getElementById('or-models-list');
+  if(oList){
+    const oModels=MODELS.filter(m=>m.provider==='openrouter');
+    oList.innerHTML=oModels.map(m=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.2);margin-bottom:6px;cursor:pointer;border:1px solid ${S.model===m.id?'var(--line2)':'transparent'}" onclick="selectModel('${m.id}');renderSettingsModels()">
+        <div class="model-indicator ${S.orKey?'ind-ok':'ind-off'}"></div>
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:700;color:var(--text)">${m.name}${m.recommended?' ⭐':''}</div>
+          <div style="font-size:10px;color:var(--text2)">${m.desc}</div>
+        </div>
+        <div class="model-card-quota ${m.quotaClass}" style="font-size:10px">${m.quota}</div>
+      </div>`).join('');
+  }
+  // Key statuses
+  const gs=document.getElementById('gemini-key-status');
+  if(gs) gs.innerHTML=S.geminiKey
+    ?'<i class="fa-solid fa-check-circle ks-ok"></i><span class="ks-ok"> مفتاح محفوظ وجاهز</span>'
+    :'<i class="fa-solid fa-circle-exclamation ks-err"></i><span class="ks-err"> لم يُدخَل مفتاح بعد</span>';
+  const os=document.getElementById('or-key-status');
+  if(os) os.innerHTML=S.orKey
+    ?'<i class="fa-solid fa-check-circle ks-ok"></i><span class="ks-ok"> مفتاح محفوظ وجاهز</span>'
+    :'<i class="fa-solid fa-circle-exclamation ks-err"></i><span class="ks-err"> لم يُدخَل مفتاح بعد</span>';
+}
+
+// ── SETTINGS ──
+function openSettings() {
+  const inp=document.getElementById('gemini-key-input');
+  const oi=document.getElementById('or-key-input');
+  if(inp) inp.value=S.geminiKey;
+  if(oi) oi.value=S.orKey;
+  renderSettingsModels();
+  document.getElementById('settings-overlay').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('open');
+}
+function saveGeminiKey() {
+  const k=(document.getElementById('gemini-key-input')?.value||'').trim();
+  if(!k) return toast('أدخل المفتاح أولاً','e');
+  S.geminiKey=k; localStorage.setItem('db_gk',k);
+  renderModelBar(); renderModelCardsHome(); renderSettingsModels(); updateBanner();
+  toast('✅ تم حفظ مفتاح Gemini','s');
+}
+function saveOrKey() {
+  const k=(document.getElementById('or-key-input')?.value||'').trim();
+  if(!k) return toast('أدخل المفتاح أولاً','e');
+  S.orKey=k; localStorage.setItem('db_ok',k);
+  renderModelBar(); renderModelCardsHome(); renderSettingsModels(); updateBanner();
+  toast('✅ تم حفظ مفتاح OpenRouter','s');
+}
+
+// ── CLOCK ──
+function updateClock() {
+  const now=new Date();
+  const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const months=['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+  const cl=document.getElementById('clock');
+  const cd=document.getElementById('clock-date');
+  if(cl) cl.textContent=`${h}:${m}:${s}`;
+  if(cd) cd.textContent=`${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+}
+
+// ── WELCOME ──
+function updateWelcome() {
+  const h=new Date().getHours();
+  let g='';
+  if(h>=5&&h<12) g='صباح الخير ☀️';
+  else if(h>=12&&h<17) g='مساء الخير 🌤️';
+  else if(h>=17&&h<20) g='مساء النور 🌅';
+  else g='مساء الخير 🌙';
+  const el=document.getElementById('home-greeting');
+  if(el) el.textContent=g;
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  updateClock(); setInterval(updateClock,1000);
+  updateWelcome();
+  renderModelBar();
+  renderModelCardsHome();
+  renderArchive();
+  renderAgenda();
+  updateBanner();
+  const se=document.getElementById('stat-arc'); if(se) se.textContent=S.archive.length;
+  const sg=document.getElementById('stat-ag'); if(sg) sg.textContent=S.agenda.length;
+  const sr=document.getElementById('stat-req'); if(sr) sr.textContent=S.reqToday;
+  if(!S.geminiKey&&!S.orKey) openSettings();
+});
+</script>
 </body>
 </html>
