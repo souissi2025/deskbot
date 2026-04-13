@@ -968,7 +968,6 @@ label{
 
 // ── MODELS DEFINITION ──
 const MODELS = [
-  // ── Gemini (Google AI Studio) ──
   {
     id:'gemini-2.5-flash',
     name:'Gemini 2.5 Flash',
@@ -992,31 +991,6 @@ const MODELS = [
     icon:'fa-brands fa-google',
     iconClass:'mc-gemini'
   },
-  // ── OpenRouter — Qwen (الأفضل للكتابة الصحفية العربية) ──
-  {
-    id:'qwen/qwen3.6-plus:free',
-    name:'Qwen 3.6 Plus',
-    provider:'openrouter',
-    badge:'Qwen',
-    quota:'مجاني',
-    quotaClass:'quota-green',
-    desc:'الأحدث — 1M توكن، الأفضل عربياً',
-    icon:'fa-solid fa-star',
-    iconClass:'mc-qwen',
-    recommended:true
-  },
-  {
-    id:'qwen/qwen3.6-plus-preview:free',
-    name:'Qwen 3.6 Preview',
-    provider:'openrouter',
-    badge:'Qwen',
-    quota:'مجاني',
-    quotaClass:'quota-green',
-    desc:'معاينة 1M توكن — تفكير متسلسل',
-    icon:'fa-solid fa-eye',
-    iconClass:'mc-qwen'
-  },
-  // ── OpenRouter — نماذج مجانية مؤكدة أبريل 2026 ──
   {
     id:'meta-llama/llama-3.3-70b-instruct:free',
     name:'Llama 3.3 70B',
@@ -1024,8 +998,20 @@ const MODELS = [
     badge:'Meta',
     quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'قوي في العربية — Meta مجاناً',
+    desc:'الأفضل للعربية — جودة GPT-4 مجاناً',
     icon:'fa-solid fa-fire',
+    iconClass:'mc-qwen',
+    recommended:true
+  },
+  {
+    id:'nousresearch/hermes-3-llama-3.1-405b:free',
+    name:'Hermes 3 405B',
+    provider:'openrouter',
+    badge:'Nous',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'ضخم 405B — صياغة احترافية دقيقة',
+    icon:'fa-solid fa-brain',
     iconClass:'mc-qwen'
   },
   {
@@ -1035,7 +1021,7 @@ const MODELS = [
     badge:'Google',
     quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'Google مجاناً — 140+ لغة',
+    desc:'Google مفتوح — 140+ لغة بما فيها العربية',
     icon:'fa-brands fa-google',
     iconClass:'mc-gemini'
   },
@@ -1046,8 +1032,19 @@ const MODELS = [
     badge:'NVIDIA',
     quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'NVIDIA — تعليمات دقيقة واحترافية',
+    desc:'NVIDIA — دقيق في الصياغة والتحليل',
     icon:'fa-solid fa-microchip',
+    iconClass:'mc-qwen'
+  },
+  {
+    id:'mistralai/mistral-small-24b-instruct-2501:free',
+    name:'Mistral Small 24B',
+    provider:'openrouter',
+    badge:'Mistral',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'أوروبي سريع — ممتاز للتحرير والمراجعة',
+    icon:'fa-solid fa-meteor',
     iconClass:'mc-qwen'
   }
 ];
@@ -1223,6 +1220,7 @@ async function callOpenRouter(prompt, modelId) {
   }
 }
 
+// Gemini multimodal for audio
 async function callGeminiAudio(prompt, b64, mime) {
   if (!S.geminiKey) { openSettings(); throw new Error('تفريغ الصوت يتطلب مفتاح Gemini — أدخله من الإعدادات'); }
   const model = S.model.startsWith('gemini') ? S.model : 'gemini-2.5-flash';
