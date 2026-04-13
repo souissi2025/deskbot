@@ -996,9 +996,9 @@ const MODELS = [
     name:'Qwen 3.6 Plus',
     provider:'openrouter',
     badge:'Qwen',
-    quota:'مجاني — 1M توكن',
+    quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'الأحدث من Alibaba — أفضل أداء عربياً',
+    desc:'الأحدث — 1M توكن، الأفضل عربياً',
     icon:'fa-solid fa-star',
     iconClass:'mc-qwen',
     recommended:true
@@ -1008,9 +1008,9 @@ const MODELS = [
     name:'Qwen 3.6 Preview',
     provider:'openrouter',
     badge:'Qwen',
-    quota:'مجاني — 1M توكن',
+    quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'معاينة 1M توكن — تفكير متسلسل',
+    desc:'معاينة — تفكير متسلسل 1M توكن',
     icon:'fa-solid fa-eye',
     iconClass:'mc-qwen'
   },
@@ -1019,9 +1019,9 @@ const MODELS = [
     name:'Qwen3 Coder 480B',
     provider:'openrouter',
     badge:'Qwen',
-    quota:'مجاني — 262K توكن',
+    quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'ضخم 480B — دقيق في التعليمات النصية',
+    desc:'الأضخم — 480B دقيق في التعليمات',
     icon:'fa-solid fa-robot',
     iconClass:'mc-qwen'
   }
@@ -1197,7 +1197,6 @@ async function callOpenRouter(prompt, modelId) {
     clearTimeout(timer);
   }
 }
-
 // Gemini multimodal for audio
 async function callGeminiAudio(prompt, b64, mime) {
   if (!S.geminiKey) { openSettings(); throw new Error('تفريغ الصوت يتطلب مفتاح Gemini — أدخله من الإعدادات'); }
@@ -1684,6 +1683,11 @@ function updateBanner() {
 function selectModel(id) {
   S.model=id;
   localStorage.setItem('db_model',id);
+  // إعادة ضبط النموذج إذا لم يكن في القائمة
+  if (!MODELS.find(x => x.id === S.model)) {
+    S.model = 'gemini-2.5-flash';
+    localStorage.setItem('db_model', S.model);
+  }
   renderModelBar();
   renderModelCardsHome();
   updateBanner();
