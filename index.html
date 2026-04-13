@@ -5,23 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DESK BOT — Digital Newsroom System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                        tajawal: ['Tajawal', 'sans-serif'],
-                    },
+                    fontFamily: { cairo: ['Cairo', 'sans-serif'] },
                     colors: {
-                        primary: '#3b82f6',
-                        secondary: '#8b5cf6',
-                        accent: '#10b981',
-                        dark: '#0f172a',
-                        darker: '#020617',
-                        surface: '#1e293b',
+                        primary: '#3b82f6', secondary: '#8b5cf6', accent: '#10b981',
+                        dark: '#0f172a', darker: '#020617', surface: '#1e293b'
                     }
                 }
             }
@@ -42,13 +35,6 @@
             background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-hover:hover {            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
         }
         .btn-gradient {
             background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
@@ -58,52 +44,26 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
         }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            z-index: 50;
-            animation: slideDown 0.2s ease;
+        .panel { display: none; animation: fadeIn 0.4s ease; }
+        .panel.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }            to { opacity: 1; transform: translateY(0); }
         }
-        .dropdown-menu.show {
-            display: block;
+        .nav-item { transition: all 0.3s ease; }
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, transparent 100%);
+            border-right: 3px solid #3b82f6;
         }
+        .dropdown-menu { display: none; animation: slideDown 0.2s ease; }
+        .dropdown-menu.show { display: block; }
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .panel {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-        .panel.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .pulse-ring {
-            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-        .nav-item {
-            transition: all 0.3s ease;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, transparent 100%);
-            border-right: 3px solid #3b82f6;
-        }        .model-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        .model-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.25rem 0.75rem; border-radius: 9999px;
+            font-size: 0.75rem; font-weight: 600;
         }
         .model-free { background: rgba(16, 185, 129, 0.2); color: #10b981; }
         .model-pro { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
@@ -115,7 +75,7 @@
     <header class="glass-effect fixed top-0 left-0 right-0 z-50 border-b border-gray-700">
         <div class="flex items-center justify-between px-6 py-3">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center pulse-ring">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                     <i class="fas fa-robot text-white text-lg"></i>
                 </div>
                 <div>
@@ -123,13 +83,12 @@
                     <p class="text-xs text-gray-400">Digital Newsroom System</p>
                 </div>
             </div>
-            
             <div class="flex items-center gap-4">
                 <div class="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg bg-surface border border-gray-600">
                     <i class="fas fa-key text-yellow-500"></i>
                     <span id="api-status" class="text-sm text-gray-300">جاري التحقق...</span>
                 </div>
-                <button onclick="toggleSettings()" class="w-10 h-10 rounded-lg bg-surface hover:bg-surface-light flex items-center justify-center transition-all border border-gray-600">
+                <button id="btn-settings" class="w-10 h-10 rounded-lg bg-surface hover:bg-surface-light flex items-center justify-center transition-all border border-gray-600">
                     <i class="fas fa-cog text-gray-300"></i>
                 </button>
             </div>
@@ -137,145 +96,73 @@
     </header>
 
     <div class="flex pt-20 min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 fixed right-0 top-20 bottom-0 glass-effect border-l border-gray-700 overflow-y-auto">
+        <!-- Sidebar -->        <aside class="w-64 fixed right-0 top-20 bottom-0 glass-effect border-l border-gray-700 overflow-y-auto">
             <nav class="p-4 space-y-2">
-                <button onclick="showPanel('home')" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
-                    <i class="fas fa-home w-5"></i>
-                    <span class="font-medium">الرئيسية</span>
+                <button data-panel="home" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-home w-5"></i><span class="font-medium">الرئيسية</span>
                 </button>
-                <button onclick="showPanel('rss')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
-                    <i class="fas fa-globe w-5"></i>                    <span class="font-medium">آخر الأخبار</span>
+                <button data-panel="rss" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-globe w-5"></i><span class="font-medium">آخر الأخبار</span>
                 </button>
-                <button onclick="toggleDropdown('editor-dropdown')" class="nav-item w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-300 hover:text-white relative">
+                <button class="nav-item w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-300 hover:text-white relative" id="btn-editor-dropdown">
                     <div class="flex items-center gap-3">
-                        <i class="fas fa-pen-fancy w-5"></i>
-                        <span class="font-medium">المحرر الذكي</span>
+                        <i class="fas fa-pen-fancy w-5"></i><span class="font-medium">المحرر الذكي</span>
                     </div>
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div id="editor-dropdown" class="dropdown-menu mr-4 mt-1 space-y-1">
-                    <button onclick="showPanel('editor')" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المحرر PRO</button>
-                    <button onclick="showPanel('pro-article')" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المقال الإخباري</button>
+                    <button data-panel="editor" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المحرر PRO</button>
+                    <button data-panel="pro-article" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المقال الإخباري</button>
                 </div>
-                
-                <button onclick="toggleDropdown('tools-dropdown')" class="nav-item w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-300 hover:text-white relative">
+                <button class="nav-item w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-300 hover:text-white relative" id="btn-tools-dropdown">
                     <div class="flex items-center gap-3">
-                        <i class="fas fa-toolbox w-5"></i>
-                        <span class="font-medium">الأدوات</span>
+                        <i class="fas fa-toolbox w-5"></i><span class="font-medium">الأدوات</span>
                     </div>
                     <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div id="tools-dropdown" class="dropdown-menu mr-4 mt-1 space-y-1">
-                    <button onclick="showPanel('history')" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">حدث اليوم</button>
-                    <button onclick="showPanel('sports')" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المواجهات الرياضية</button>
-                    <button onclick="showPanel('persona')" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">تسمية الشخصية</button>
+                    <button data-panel="history" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">حدث اليوم</button>
+                    <button data-panel="sports" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المواجهات الرياضية</button>
+                    <button data-panel="persona" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">تسمية الشخصية</button>
                 </div>
-
-                <button onclick="showPanel('audio')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
-                    <i class="fas fa-microphone w-5"></i>
-                    <span class="font-medium">التفريغ الصوتي</span>
+                <button data-panel="audio" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-microphone w-5"></i><span class="font-medium">التفريغ الصوتي</span>
                 </button>
-                <button onclick="showPanel('qwen')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
-                    <i class="fas fa-robot w-5"></i>
-                    <span class="font-medium">Qwen AI</span>
+                <button data-panel="qwen" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-robot w-5"></i><span class="font-medium">Qwen AI</span>
                 </button>
-                <button onclick="showPanel('agenda')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
-                    <i class="fas fa-calendar w-5"></i>
-                    <span class="font-medium">الأجندة</span>
+                <button data-panel="agenda" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-calendar w-5"></i><span class="font-medium">الأجندة</span>
                 </button>
-                <button onclick="showPanel('archive')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
-                    <i class="fas fa-archive w-5"></i>
-                    <span class="font-medium">الأرشيف</span>
+                <button data-panel="archive" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-archive w-5"></i><span class="font-medium">الأرشيف</span>
                 </button>
             </nav>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 mr-64 p-6">
-            
-            <!-- Home Panel -->            <div id="panel-home" class="panel active">
+            <!-- Home Panel -->
+            <div id="panel-home" class="panel active">
                 <div class="mb-8">
-                    <h2 class="text-3xl font-bold mb-2 gradient-text">مرحباً بك في DESK BOT</h2>
-                    <p class="text-gray-400">منصتك الشاملة للعمل الصحفي الذكي</p>
+                    <h2 class="text-3xl font-bold mb-2 gradient-text">مرحباً بك في DESK BOT</h2>                    <p class="text-gray-400">منصتك الشاملة للعمل الصحفي الذكي</p>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    <div class="glass-effect rounded-2xl p-6 border border-gray-700">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                                <i class="fas fa-bolt text-white text-xl"></i>
-                            </div>
-                            <span class="model-badge model-free">
-                                <i class="fas fa-infinity"></i>
-                                1500/يوم
-                            </span>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2">Gemini 1.5 Flash</h3>
-                        <p class="text-gray-400 text-sm mb-3">النموذج الأسرع والأكثر كفاءة للمهام التحريرية اليومية</p>
-                        <ul class="text-sm text-gray-400 space-y-1">
-                            <li><i class="fas fa-check text-green-500 ml-2"></i>سرعة فائقة</li>
-                            <li><i class="fas fa-check text-green-500 ml-2"></i>1 مليون رمز</li>
-                            <li><i class="fas fa-check text-green-500 ml-2"></i>مجاني تماماً</li>
-                        </ul>
-                    </div>
-
-                    <div class="glass-effect rounded-2xl p-6 border border-gray-700">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
-                                <i class="fas fa-brain text-white text-xl"></i>
-                            </div>
-                            <span class="model-badge model-pro">
-                                <i class="fas fa-star"></i>
-                                50/يوم
-                            </span>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2">Gemini 1.5 Pro</h3>
-                        <p class="text-gray-400 text-sm mb-3">للأبحاث المتعمقة والتحليلات المعقدة</p>
-                        <ul class="text-sm text-gray-400 space-y-1">
-                            <li><i class="fas fa-check text-purple-500 ml-2"></i>دقة عالية</li>
-                            <li><i class="fas fa-check text-purple-500 ml-2"></i>2 مليون رمز</li>
-                            <li><i class="fas fa-check text-purple-500 ml-2"></i>تحليل متقدم</li>
-                        </ul>
-                    </div>
-
-                    <div class="glass-effect rounded-2xl p-6 border border-gray-700">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
-                                <i class="fas fa-robot text-white text-xl"></i>
-                            </div>                            <span class="model-badge model-free">
-                                <i class="fas fa-infinity"></i>
-                                50/يوم
-                            </span>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2">Qwen 2.5</h3>
-                        <p class="text-gray-400 text-sm mb-3">نموذج مفتوح المصدر عبر OpenRouter</p>
-                        <ul class="text-sm text-gray-400 space-y-1">
-                            <li><i class="fas fa-check text-green-500 ml-2"></i>مجاني</li>
-                            <li><i class="fas fa-check text-green-500 ml-2"></i>32K سياق</li>
-                            <li><i class="fas fa-check text-green-500 ml-2"></i>متعدد اللغات</li>
-                        </ul>
-                    </div>
-                </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div onclick="showPanel('editor')" class="card-hover glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer">
+                    <div class="glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer hover:transform hover:-translate-y-2 transition-all" id="card-editor">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-4">
                             <i class="fas fa-pen-fancy text-white text-xl"></i>
                         </div>
                         <h3 class="text-lg font-bold mb-2">المحرر الذكي PRO</h3>
                         <p class="text-gray-400 text-sm">تحويل النص الخام إلى مادة إخبارية احترافية</p>
                     </div>
-
-                    <div onclick="showPanel('pro-article')" class="card-hover glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer">
+                    <div class="glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer hover:transform hover:-translate-y-2 transition-all" id="card-pro-article">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-4">
                             <i class="fas fa-newspaper text-white text-xl"></i>
                         </div>
                         <h3 class="text-lg font-bold mb-2">المقال الإخباري</h3>
                         <p class="text-gray-400 text-sm">إنشاء مقالات احترافية بزاوايا متعددة</p>
                     </div>
-
-                    <div onclick="showPanel('audio')" class="card-hover glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer">
+                    <div class="glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer hover:transform hover:-translate-y-2 transition-all" id="card-audio">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mb-4">
                             <i class="fas fa-microphone text-white text-xl"></i>
                         </div>
@@ -290,9 +177,10 @@
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold gradient-text">📡 آخر الأخبار</h2>
-                        <button onclick="fetchRSS()" class="btn-gradient px-6 py-2 rounded-lg text-white font-medium">
+                        <button id="btn-refresh-rss" class="btn-gradient px-6 py-2 rounded-lg text-white font-medium">
                             <i class="fas fa-sync-alt ml-2"></i>تحديث
-                        </button>                    </div>
+                        </button>
+                    </div>
                     <div id="rss-status" class="text-center py-4 text-gray-400">اضغط تحديث لتحميل الأخبار</div>
                     <div id="rss-container" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
                 </div>
@@ -306,14 +194,11 @@
                         <select id="editor-model" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
                             <option value="gemini-1.5-flash">Gemini 1.5 Flash (1500/يوم)</option>
                             <option value="gemini-1.5-pro">Gemini 1.5 Pro (50/يوم)</option>
-                        </select>
-                    </div>
-
+                        </select>                    </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-300 mb-2">النص الأصلي</label>
                         <textarea id="editor-input" class="w-full h-48 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none" placeholder="الصق النص الخام هنا..."></textarea>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-300 mb-2">وضع المعالجة</label>
@@ -326,26 +211,24 @@
                             </select>
                         </div>
                         <div class="md:col-span-2 flex items-end">
-                            <button onclick="processEditor()" class="btn-gradient w-full py-3 rounded-lg text-white font-bold text-lg">
+                            <button id="btn-run-editor" class="btn-gradient w-full py-3 rounded-lg text-white font-bold text-lg">
                                 <i class="fas fa-magic ml-2"></i>تشغيل المعالجة
                             </button>
                         </div>
                     </div>
-
                     <div id="editor-status" class="mb-4"></div>
-
                     <div class="relative">
                         <label class="block text-sm font-medium text-gray-300 mb-2">النتيجة</label>
                         <textarea id="editor-output" readonly class="w-full h-64 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none" placeholder="النتيجة ستظهر هنا..."></textarea>
                     </div>
-
                     <div class="flex gap-3 mt-4">
-                        <button onclick="copyText('editor-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg transition-all">
-                            <i class="fas fa-copy ml-2"></i>نسخ                        </button>
-                        <button onclick="saveToArchive('محرر', 'editor-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg transition-all font-medium">
+                        <button id="btn-copy-editor" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg transition-all">
+                            <i class="fas fa-copy ml-2"></i>نسخ
+                        </button>
+                        <button id="btn-save-editor" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg transition-all font-medium">
                             <i class="fas fa-save ml-2"></i>أرشفة
                         </button>
-                        <button onclick="shareText('whatsapp', 'editor-output')" class="flex-1 bg-green-500 hover:bg-green-600 py-2 rounded-lg transition-all">
+                        <button id="btn-share-editor" class="flex-1 bg-green-500 hover:bg-green-600 py-2 rounded-lg transition-all">
                             <i class="fab fa-whatsapp ml-2"></i>واتساب
                         </button>
                     </div>
@@ -356,14 +239,11 @@
             <div id="panel-pro-article" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">📝 المقال الإخباري PRO</h2>
-                    
                     <div class="mb-4">
                         <textarea id="pro-input" class="w-full h-32 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none" placeholder="أدخل النص أو الفكرة الأساسية للمقال..."></textarea>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <select id="pro-model" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
-                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                        <select id="pro-model" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
                             <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
                         </select>
                         <select id="pro-count" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
@@ -371,18 +251,15 @@
                             <option value="2">مقالان بزاويتين مختلفتين</option>
                             <option value="3">ثلاثة مقالات بزوايا مختلفة</option>
                         </select>
-                        <button onclick="processProArticle()" class="btn-gradient py-2 rounded-lg text-white font-bold">
+                        <button id="btn-run-pro" class="btn-gradient py-2 rounded-lg text-white font-bold">
                             <i class="fas fa-play ml-2"></i>تشغيل
                         </button>
                     </div>
-
                     <div id="pro-status" class="mb-4"></div>
-
                     <textarea id="pro-output" readonly class="w-full h-96 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="المقال/المقالات ستظهر هنا..."></textarea>
-
                     <div class="flex gap-3">
-                        <button onclick="copyText('pro-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
-                        <button onclick="saveToArchive('مقال', 'pro-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
+                        <button id="btn-copy-pro" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
+                        <button id="btn-save-pro" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
             </div>
@@ -390,25 +267,21 @@
             <!-- Audio Panel -->
             <div id="panel-audio" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
-                    <h2 class="text-2xl font-bold gradient-text mb-6">🎙️ التفريغ الصوتي</h2>                    
-                    <div class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center mb-4 hover:border-blue-500 transition-all cursor-pointer" onclick="document.getElementById('audio-file').click()">
+                    <h2 class="text-2xl font-bold gradient-text mb-6">🎙️ التفريغ الصوتي</h2>
+                    <div class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center mb-4 hover:border-blue-500 transition-all cursor-pointer" id="audio-upload-area">
                         <i class="fas fa-cloud-upload-alt text-5xl text-gray-500 mb-4"></i>
                         <p class="text-gray-300 mb-2">اضغط لرفع ملف صوتي أو مرئي</p>
                         <p class="text-sm text-gray-500">MP3 · MP4 · WAV · OGG · M4A · WebM</p>
                         <input type="file" id="audio-file" accept="audio/*,video/*" class="hidden">
                     </div>
-
-                    <button onclick="transcribeAudio()" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
+                    <button id="btn-transcribe" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
                         <i class="fas fa-play ml-2"></i>بدء التفريغ
                     </button>
-
                     <div id="transcribe-status" class="mb-4"></div>
-
                     <textarea id="transcribe-output" readonly class="w-full h-64 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="النص المفرّغ سيظهر هنا..."></textarea>
-
                     <div class="flex gap-3">
-                        <button onclick="copyText('transcribe-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
-                        <button onclick="saveToArchive('تفريغ', 'transcribe-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
+                        <button id="btn-copy-audio" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
+                        <button id="btn-save-audio" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
             </div>
@@ -417,47 +290,37 @@
             <div id="panel-history" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">📜 حدث اليوم في التاريخ</h2>
-                    
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <input type="number" id="hist-day" min="1" max="31" placeholder="اليوم (1-31)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
-                        <input type="number" id="hist-month" min="1" max="12" placeholder="الشهر (1-12)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
-                    </div>
-
-                    <button onclick="searchHistory()" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
+                        <input type="number" id="hist-month" min="1" max="12" placeholder="الشهر (1-12)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">                    </div>
+                    <button id="btn-search-hist" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
                         <i class="fas fa-search ml-2"></i>بحث في هذا اليوم
                     </button>
-
                     <div id="hist-status" class="mb-4"></div>
-
                     <textarea id="hist-output" readonly class="w-full h-64 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="النتيجة..."></textarea>
-
                     <div class="flex gap-3">
-                        <button onclick="copyText('hist-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
-                        <button onclick="saveToArchive('تاريخ', 'hist-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
+                        <button id="btn-copy-hist" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
+                        <button id="btn-save-hist" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
             </div>
 
             <!-- Sports Panel -->
-            <div id="panel-sports" class="panel">                <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+            <div id="panel-sports" class="panel">
+                <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">⚽ أرشيف المواجهات</h2>
-                    
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <input type="text" id="team-a" placeholder="الفريق الأول" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
                         <input type="text" id="team-b" placeholder="الفريق الثاني" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
                     </div>
-
-                    <button onclick="searchSports()" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
+                    <button id="btn-search-sports" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
                         <i class="fas fa-search ml-2"></i>بحث عن المواجهات
                     </button>
-
                     <div id="sports-status" class="mb-4"></div>
-
                     <textarea id="sports-output" readonly class="w-full h-64 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="النتيجة..."></textarea>
-
                     <div class="flex gap-3">
-                        <button onclick="copyText('sports-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
-                        <button onclick="saveToArchive('رياضة', 'sports-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
+                        <button id="btn-copy-sports" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
+                        <button id="btn-save-sports" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
             </div>
@@ -466,47 +329,34 @@
             <div id="panel-persona" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">👤 تسمية الشخصية</h2>
-                    
                     <input type="text" id="persona-input" placeholder="اسم الشخصية أو المنصب..." class="w-full bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 mb-4">
-
-                    <button onclick="searchPersona()" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
+                    <button id="btn-search-persona" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
                         <i class="fas fa-user-search ml-2"></i>استخراج الملف
                     </button>
-
                     <div id="persona-status" class="mb-4"></div>
-
                     <textarea id="persona-output" readonly class="w-full h-64 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="النتيجة..."></textarea>
-
                     <div class="flex gap-3">
-                        <button onclick="copyText('persona-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
-                        <button onclick="saveToArchive('شخصية', 'persona-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
+                        <button id="btn-copy-persona" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
+                        <button id="btn-save-persona" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
             </div>
-
             <!-- Qwen Panel -->
             <div id="panel-qwen" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold gradient-text">🤖 Qwen 2.5 — OpenRouter</h2>                        <span class="model-badge model-free">
-                            <i class="fas fa-infinity"></i>
-                            50/يوم مجاني
-                        </span>
+                        <h2 class="text-2xl font-bold gradient-text">🤖 Qwen 2.5 — OpenRouter</h2>
+                        <span class="model-badge model-free"><i class="fas fa-infinity"></i>50/يوم مجاني</span>
                     </div>
-                    
                     <textarea id="qwen-input" class="w-full h-32 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="نص أو سؤال أو مهمة..."></textarea>
-
-                    <button onclick="runQwen()" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
+                    <button id="btn-run-qwen" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
                         <i class="fas fa-robot ml-2"></i>تشغيل Qwen
                     </button>
-
                     <div id="qwen-status" class="mb-4"></div>
-
                     <textarea id="qwen-output" readonly class="w-full h-64 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none mb-4" placeholder="نتيجة Qwen..."></textarea>
-
                     <div class="flex gap-3">
-                        <button onclick="copyText('qwen-output')" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
-                        <button onclick="saveToArchive('Qwen', 'qwen-output')" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
+                        <button id="btn-copy-qwen" class="flex-1 bg-surface hover:bg-surface-light border border-gray-600 py-2 rounded-lg">نسخ</button>
+                        <button id="btn-save-qwen" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
             </div>
@@ -515,18 +365,14 @@
             <div id="panel-agenda" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">📅 الأجندة المشتركة</h2>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <input type="date" id="agenda-date" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
                         <input type="text" id="agenda-desc" placeholder="وصف الحدث" class="md:col-span-2 bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
                     </div>
-
-                    <button onclick="addAgenda()" class="btn-gradient px-6 py-2 rounded-lg text-white font-medium mb-6">
+                    <button id="btn-add-agenda" class="btn-gradient px-6 py-2 rounded-lg text-white font-medium mb-6">
                         <i class="fas fa-plus ml-2"></i>إضافة حدث
                     </button>
-
                     <div id="agenda-status" class="mb-4"></div>
-
                     <div id="agenda-list" class="space-y-3"></div>
                 </div>
             </div>
@@ -535,19 +381,16 @@
             <div id="panel-archive" class="panel">
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">🗄️ الأرشيف الذكي</h2>
-                    
                     <div class="flex gap-4 mb-6">
-                        <input type="text" id="archive-search" placeholder="ابحث بالسياق، الأسماء، أو الكلمات المفتاحية..." class="flex-1 bg-dark border border-gray-600 rounded-xl px-4 py-3 text-gray-100 focus:border-blue-500">                        <button onclick="searchArchive()" class="btn-gradient px-8 py-3 rounded-xl text-white font-bold">
+                        <input type="text" id="archive-search" placeholder="ابحث بالسياق، الأسماء، أو الكلمات المفتاحية..." class="flex-1 bg-dark border border-gray-600 rounded-xl px-4 py-3 text-gray-100 focus:border-blue-500">
+                        <button id="btn-search-archive" class="btn-gradient px-8 py-3 rounded-xl text-white font-bold">
                             <i class="fas fa-search ml-2"></i>بحث
                         </button>
                     </div>
-
                     <div id="archive-status" class="mb-4"></div>
                     <div id="archive-results" class="space-y-4"></div>
                 </div>
-            </div>
-
-        </main>
+            </div>        </main>
     </div>
 
     <!-- Settings Modal -->
@@ -555,13 +398,11 @@
         <div class="glass-effect rounded-2xl p-8 max-w-2xl w-full border border-gray-600 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold gradient-text">⚙️ إعدادات النماذج الذكية</h2>
-                <button onclick="toggleSettings()" class="w-10 h-10 rounded-lg bg-surface hover:bg-surface-light flex items-center justify-center">
+                <button id="btn-close-settings" class="w-10 h-10 rounded-lg bg-surface hover:bg-surface-light flex items-center justify-center">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-
             <div class="space-y-6">
-                <!-- Gemini -->
                 <div class="p-4 bg-surface rounded-xl border border-gray-600">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
@@ -577,8 +418,6 @@
                         <i class="fas fa-external-link-alt ml-1"></i>احصل على مفتاح مجاني من Google AI Studio
                     </a>
                 </div>
-
-                <!-- OpenRouter -->
                 <div class="p-4 bg-surface rounded-xl border border-gray-600">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
@@ -586,71 +425,33 @@
                         </div>
                         <div>
                             <h3 class="font-bold">OpenRouter (Qwen)</h3>
-                            <p class="text-sm text-gray-400">50 طلب/يوم مجاني</p>                        </div>
+                            <p class="text-sm text-gray-400">50 طلب/يوم مجاني</p>
+                        </div>
                     </div>
                     <input type="password" id="openrouter-key" class="w-full bg-dark border border-gray-600 rounded-xl px-4 py-3 text-gray-100 focus:border-purple-500 mb-3" placeholder="sk-or-...">
                     <a href="https://openrouter.ai/keys" target="_blank" class="text-purple-400 hover:underline text-sm">
                         <i class="fas fa-external-link-alt ml-1"></i>احصل على مفتاح من OpenRouter
                     </a>
                 </div>
-
-                <button onclick="saveKeys()" class="btn-gradient w-full py-3 rounded-xl text-white font-bold">
+                <button id="btn-save-keys" class="btn-gradient w-full py-3 rounded-xl text-white font-bold">
                     <i class="fas fa-save ml-2"></i>حفظ المفاتيح
                 </button>
-
                 <div id="settings-status" class="text-center"></div>
-
-                <!-- معلومات النماذج -->
-                <div class="mt-6 p-4 bg-blue-900/20 border border-blue-600/30 rounded-xl">
-                    <h4 class="font-bold text-blue-400 mb-2"><i class="fas fa-info-circle ml-2"></i>مقارنة النماذج:</h4>
-                    <ul class="text-sm text-gray-300 space-y-1">
-                        <li><strong class="text-green-400">Gemini 1.5 Flash:</strong> الأسرع، 1500 طلب/يوم، مثالي للمهام اليومية</li>
-                        <li><strong class="text-purple-400">Gemini 1.5 Pro:</strong> الأكثر دقة، 50 طلب/يوم، للأبحاث المتعمقة</li>
-                        <li><strong class="text-blue-400">Qwen 2.5:</strong> مجاني تماماً، 50 طلب/يوم، بديل ممتاز</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
-
     <script>
         // برومبتات احترافية
         const PROMPTS = {
-            structure: `أنت محرر إخباري أول في غرفة أخبار رقمية عربية. حوّل النص التالي إلى مادة إخبارية احترافية وفق معايير وكالة "وات" وإذاعة "ديوان أف أم".
-الهيكل المطلوب:
-1. عنوان رئيسي جذاب (12-18 كلمة)
-2. مقدمة مختصرة (لید) تجيب على 5W+1H
-3. جسم الخبر: فقرات قصيرة، كل فكرة في فقرة، تسلسل زمني أو منطقي
-4. خاتمة أو تطور متوقع
-5. 5 وسوم SEO مناسبة
-النص: {input}`,
-
-            seo: `أعد صياغة النص التالي خصيصاً للنشر الرقمي مع تحسين محركات البحث (SEO).
-أضف: عنوان H1، عنوانين H2 فرعيين، جملة تعريفية (Meta Description) لا تتجاوز 155 حرفاً، وكلمات مفتاحية موزعة طبيعياً. حافظ على الدقة الإخبارية والأسلوب المهني.
-النص: {input}`,
-
-            titles: `أنشئ 12 عنواناً إخبارياً احترافياً مقسّماً إلى 4 فئات (3 عناوين لكل فئة):
-أ) إخباري مباشر (محايد، دقيق)
-ب) تشويقي/إنساني (يجذب القارئ العاطفي)
-ج) سؤال/تحليلي (يحفز التفكير والنقاش)
-د) مختصر للسوشيال ميديا (أقل من 8 كلمات مع هاشتاق)
-النص المرجعي: {input}`,
-            flash: `حوّل النص إلى فلاش إذاعي موجز للإلقاء المباشر. الشروط: لا يتجاوز 40 كلمة، مشكول جزئياً لتسهيل النطق، يبدأ بعبارة تنبيهية (مثل: "فلاش إخباري:" أو "عاجل:")، وينتهي بتوقيع المصدر. النص: {input}`,
-
-            profile: `أنشئ ملفاً صحفياً استقصائياً للشخصية المذكورة. يتضمن:
-1. التعريف المختصر (المسمى، المنصب، الخبرة)
-2. أبرز 3 تصريحات أو مواقف موثقة
-3. الخلفية المهنية أو السياسية
-4. 10 أسئلة احترافية موجهة للحوار الاستقصائي
-النص/الاسم: {input}`,
-
-            pro_article: `اكتب {count} مقال/مقالات إخبارية احترافية بناءً على النص التالي. زاوية كل مقال تختلف عن الأخرى. أضف عناوين، هيكل واضح، ولغة صحفية رصينة. النص: {input}`,
-
-            history: `اذكر 4-5 أحداث تاريخية هامة وقعت في اليوم {day} من الشهر {month} عبر السنوات المختلفة. لكل حدث: السنة، الدولة/المدينة، السياق التاريخي المختصر، والأثر الإخباري المعاصر. رتّبها زمنياً.`,
-
-            sports: `لخّص تاريخ المواجهات بين {teamA} و {teamB} في كرة القدم. اذكر: آخر 5 نتائج مباشرة، أبرز الأرقام والإحصائيات، السياق التنافسي الحالي، وتوقعات الخبراء المختصرة.`,
-            
-            qwen: `أنت مساعد تحريري ذكي. نفّذ المهمة التالية بدقة واحترافية صحفية عالية: {input}`
+            structure: `أنت محرر إخباري أول. حوّل النص إلى مادة وفق معايير وات/ديوان أف أم: عنوان جذاب، ليد (5W1H)، فقرات قصيرة، خاتمة، 5 وسوم SEO. النص: {input}`,
+            seo: `أعد صياغة النص للنشر الرقمي مع SEO: عنوان H1، عنوانان H2، Meta Description (155 حرف)، كلمات مفتاحية طبيعية. النص: {input}`,
+            titles: `أنشئ 12 عنواناً مقسّمة لـ 4 فئات (3 لكل فئة): إخباري، تشويقي، تحليلي، سوشيال ميديا. النص: {input}`,
+            flash: `حوّل النص لفلاش إذاعي ≤40 كلمة، مشكول جزئياً، يبدأ بـ "فلاش:" أو "عاجل:"، ينتهي بالمصدر. النص: {input}`,
+            profile: `أنشئ ملفاً استقصائياً للشخصية: تعريف، 3 تصريحات موثقة، خلفية مهنية، 10 أسئلة حوارية. النص/الاسم: {input}`,
+            pro_article: `اكتب {count} مقال/مقالات إخبارية احترافية بناءً على النص التالي. زاوية كل مقال تختلف. النص: {input}`,
+            history: `اذكر 4-5 أحداث تاريخية وقعت في {day}/{month}. السنة، الموقع، السياق، والأثر المعاصر.`,
+            sports: `لخّص تاريخ المواجهات بين {teamA} و {teamB}: آخر 5 نتائج، إحصائيات، سياق تنافسي، توقعات.`,
+            qwen: `أنت مساعد تحريري ذكي. نفّذ المهمة التالية بدقة صحفية عالية: {input}`
         };
 
         // إدارة الحالة
@@ -678,37 +479,32 @@
             }
         }
 
-        // عرض/إخفاء الإعدادات
-        function toggleSettings() {
-            const modal = document.getElementById('settings-modal');
-            modal.classList.toggle('hidden');
-        }
-
-        // حفظ المفاتيح        function saveKeys() {
-            const geminiKey = document.getElementById('gemini-key').value.trim();
-            const openrouterKey = document.getElementById('openrouter-key').value.trim();
-            
-            if (geminiKey) {
-                State.keys.gemini = geminiKey;
-                localStorage.setItem('gemini_key', geminiKey);
-            }
-            if (openrouterKey) {
-                State.keys.openrouter = openrouterKey;
-                localStorage.setItem('openrouter_key', openrouterKey);
-            }
-            
-            const statusEl = document.getElementById('settings-status');
-            statusEl.innerHTML = '<div class="bg-green-600/20 text-green-400 px-4 py-2 rounded-lg"><i class="fas fa-check ml-2"></i>تم حفظ المفاتيح بنجاح</div>';
-            checkAPIStatus();
-            setTimeout(() => statusEl.innerHTML = '', 3000);
-        }
-
-        // التبديل بين اللوحات
+        // التبديل بين اللوحات - الإصلاح الجذري
         function showPanel(panelId) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.getElementById(`panel-${panelId}`).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
+            console.log('Opening panel:', panelId);
+            // إخفاء جميع اللوحات
+            document.querySelectorAll('.panel').forEach(p => {
+                p.classList.remove('active');
+            });
+            // إظهار اللوحة المطلوبة
+            const targetPanel = document.getElementById('panel-' + panelId);
+            if (targetPanel) {                targetPanel.classList.add('active');
+                console.log('Panel shown:', panelId);
+            } else {
+                console.error('Panel not found:', panelId);
+            }
+            // تحديث القائمة الجانبية
+            document.querySelectorAll('.nav-item').forEach(b => {
+                b.classList.remove('active');
+                if (b.getAttribute('data-panel') === panelId) {
+                    b.classList.add('active');
+                }
+            });
+            // إغلاق القوائم المنسدلة
+            document.querySelectorAll('.dropdown-menu').forEach(d => {
+                d.classList.remove('show');
+            });
+            // التمرير للأعلى
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -718,38 +514,30 @@
             document.querySelectorAll('.dropdown-menu').forEach(d => {
                 if (d.id !== dropdownId) d.classList.remove('show');
             });
-            dropdown.classList.toggle('show');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
         }
 
-        // الاتصال بـ Gemini (النماذج الحديثة)
+        // الاتصال بـ Gemini
         async function callGemini(prompt, model = 'gemini-1.5-flash') {
             if (!State.keys.gemini) {
                 throw new Error('مفتاح Gemini غير مدخل. افتح الإعدادات وأضف المفتاح');
             }
-
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${State.keys.gemini}`;
-            
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],                    generationConfig: { 
-                        temperature: 0.7, 
-                        maxOutputTokens: 4096,
-                        topP: 0.9
-                    }
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 4096, topP: 0.9 }
                 })
             });
-
             if (!response.ok) {
                 const error = await response.json();
-                if (response.status === 429) {
-                    throw new Error('تم تجاوز الحد اليومي. استخدم نموذجاً آخر أو انتظر غداً');
-                }
+                if (response.status === 429) throw new Error('تم تجاوز الحد اليومي. استخدم نموذجاً آخر');
                 throw new Error(`خطأ: ${error.error?.message || response.statusText}`);
-            }
-
-            const data = await response.json();
+            }            const data = await response.json();
             return data.candidates[0].content.parts[0].text;
         }
 
@@ -760,19 +548,16 @@
                 showStatus('editor-status', 'الرجاء إدخال نص أولاً', 'error');
                 return;
             }
-
             const mode = document.getElementById('editor-mode').value;
             const model = document.getElementById('editor-model').value;
             const prompt = PROMPTS[mode].replace('{input}', input);
-            
-            showStatus('editor-status', `<i class="fas fa-spinner fa-spin ml-2"></i>جاري المعالجة بـ ${model}...`, 'loading');
-            
+            showStatus('editor-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري المعالجة...', 'loading');
             try {
                 const result = await callGemini(prompt, model);
                 document.getElementById('editor-output').value = result;
                 showStatus('editor-status', '<i class="fas fa-check-circle ml-2"></i>تمت المعالجة بنجاح', 'success');
             } catch (error) {
-                showStatus('editor-status', `<i class="fas fa-exclamation-circle ml-2"></i>${error.message}`, 'error');
+                showStatus('editor-status', '<i class="fas fa-exclamation-circle ml-2"></i>' + error.message, 'error');
             }
         }
 
@@ -786,15 +571,13 @@
             const count = document.getElementById('pro-count').value;
             const model = document.getElementById('pro-model').value;
             const prompt = PROMPTS.pro_article.replace('{input}', input).replace('{count}', count);
-            
-            showStatus('pro-status', `<i class="fas fa-spinner fa-spin ml-2"></i>جاري الكتابة بـ ${model}...`, 'loading');
-            
+            showStatus('pro-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الكتابة...', 'loading');
             try {
                 const result = await callGemini(prompt, model);
                 document.getElementById('pro-output').value = result;
                 showStatus('pro-status', '<i class="fas fa-check-circle ml-2"></i>تم إنشاء المقالات', 'success');
             } catch (error) {
-                showStatus('pro-status', `<i class="fas fa-exclamation-circle ml-2"></i>${error.message}`, 'error');
+                showStatus('pro-status', '<i class="fas fa-exclamation-circle ml-2"></i>' + error.message, 'error');
             }
         }
 
@@ -802,15 +585,11 @@
         async function searchHistory() {
             const day = document.getElementById('hist-day').value;
             const month = document.getElementById('hist-month').value;
-            
             if (!day || !month) {
-                showStatus('hist-status', 'أدخل اليوم والشهر', 'error');
-                return;
+                showStatus('hist-status', 'أدخل اليوم والشهر', 'error');                return;
             }
-
             const prompt = PROMPTS.history.replace('{day}', day).replace('{month}', month);
             showStatus('hist-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري البحث...', 'loading');
-            
             try {
                 const result = await callGemini(prompt);
                 document.getElementById('hist-output').value = result;
@@ -824,14 +603,12 @@
         async function searchSports() {
             const teamA = document.getElementById('team-a').value;
             const teamB = document.getElementById('team-b').value;
-            
             if (!teamA || !teamB) {
                 showStatus('sports-status', 'أدخل اسمي الفريقين', 'error');
                 return;
             }
-
             const prompt = PROMPTS.sports.replace('{teamA}', teamA).replace('{teamB}', teamB);
-            showStatus('sports-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري البحث...', 'loading');            
+            showStatus('sports-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري البحث...', 'loading');
             try {
                 const result = await callGemini(prompt);
                 document.getElementById('sports-output').value = result;
@@ -848,10 +625,8 @@
                 showStatus('persona-status', 'أدخل اسم الشخصية', 'error');
                 return;
             }
-
             const prompt = PROMPTS.profile.replace('{input}', name);
             showStatus('persona-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الرصد...', 'loading');
-            
             try {
                 const result = await callGemini(prompt);
                 document.getElementById('persona-output').value = result;
@@ -860,7 +635,6 @@
                 showStatus('persona-status', error.message, 'error');
             }
         }
-
         // Qwen
         async function runQwen() {
             const input = document.getElementById('qwen-input').value.trim();
@@ -872,15 +646,14 @@
                 showStatus('qwen-status', 'مفتاح OpenRouter غير مدخل', 'error');
                 return;
             }
-
             showStatus('qwen-status', '<i class="fas fa-spinner fa-spin ml-2"></i>Qwen يعالج...', 'loading');
-            
             try {
                 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${State.keys.openrouter}`,
-                        'Content-Type': 'application/json',                        'HTTP-Referer': window.location.href,
+                        'Authorization': 'Bearer ' + State.keys.openrouter,
+                        'Content-Type': 'application/json',
+                        'HTTP-Referer': window.location.href,
                         'X-Title': 'DESK BOT'
                     },
                     body: JSON.stringify({
@@ -888,12 +661,10 @@
                         messages: [{ role: 'user', content: input }]
                     })
                 });
-
                 if (!response.ok) {
                     if (response.status === 429) throw new Error('تم تجاوز الحد اليومي (50 طلب)');
                     throw new Error('فشل الاتصال بـ Qwen');
                 }
-                
                 const data = await response.json();
                 document.getElementById('qwen-output').value = data.choices[0].message.content;
                 showStatus('qwen-status', '<i class="fas fa-check-circle ml-2"></i>تمت المعالجة', 'success');
@@ -907,39 +678,37 @@
             const statusEl = document.getElementById('rss-status');
             const container = document.getElementById('rss-container');
             statusEl.textContent = 'جاري جلب الأخبار...';
-            
             try {
                 const feeds = [
                     'https://api.rss2json.com/v1/api.json?rss_url=https://www.babnet.net/rss.xml',
                     'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/arabic/rss.xml'
                 ];
-                
                 const results = await Promise.all(feeds.map(url => 
-                    fetch(url).then(r => r.json()).then(d => d.items || []).catch(() => [])
-                ));
-                
+                    fetch(url).then(r => r.json()).then(d => d.items || []).catch(() => [])                ));
                 const allNews = results.flat().slice(0, 12);
-                container.innerHTML = allNews.map(item => `
-                    <div class="bg-dark border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-all cursor-pointer" onclick="loadNewsToEditor('${(item.description || item.content || '').replace(/'/g, "\\'").substring(0, 200)}')">
-                        <h4 class="font-bold mb-2 text-blue-400">${item.title}</h4>
-                        <p class="text-sm text-gray-400 mb-2">${(item.description || item.content || '').substring(0, 150)}...</p>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>${item.author || 'وكالة'}</span>
-                            <span>${new Date(item.pubDate).toLocaleDateString('ar-TN')}</span>
-                        </div>
-                    </div>
-                `).join('');
-                                statusEl.textContent = `تم تحميل ${allNews.length} خبر`;
+                container.innerHTML = allNews.map(item => {
+                    const desc = (item.description || item.content || '').replace(/'/g, "\\'").substring(0, 200);
+                    return '<div class="bg-dark border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-all cursor-pointer" data-news=\'' + desc + '\">' +
+                        '<h4 class="font-bold mb-2 text-blue-400">' + item.title + '</h4>' +
+                        '<p class="text-sm text-gray-400 mb-2">' + (item.description || item.content || '').substring(0, 150) + '...</p>' +
+                        '<div class="flex justify-between text-xs text-gray-500">' +
+                        '<span>' + (item.author || 'وكالة') + '</span>' +
+                        '<span>' + new Date(item.pubDate).toLocaleDateString('ar-TN') + '</span></div></div>';
+                }).join('');
+                // إضافة مستمعي الأحداث
+                container.querySelectorAll('[data-news]').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const text = this.getAttribute('data-news');
+                        document.getElementById('editor-input').value = text;
+                        showPanel('editor');
+                    });
+                });
+                statusEl.textContent = 'تم تحميل ' + allNews.length + ' خبر';
                 statusEl.className = 'text-center py-4 text-green-400';
             } catch (error) {
                 statusEl.textContent = 'فشل جلب الأخبار';
                 statusEl.className = 'text-center py-4 text-red-400';
             }
-        }
-
-        function loadNewsToEditor(text) {
-            document.getElementById('editor-input').value = text;
-            showPanel('editor');
         }
 
         // الأرشفة
@@ -949,40 +718,33 @@
                 alert('لا يوجد محتوى لحفظه');
                 return;
             }
-
             const entry = {
                 id: Date.now(),
-                type,
-                content,
+                type: type,
+                content: content,
                 date: new Date().toLocaleString('ar-TN'),
                 tags: content.split(' ').slice(0, 10)
             };
-
             State.archive.unshift(entry);
             localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
-            
             alert('تمت الأرشفة بنجاح');
         }
 
         function searchArchive() {
             const query = document.getElementById('archive-search').value.toLowerCase();
             const results = State.archive.filter(item => 
-                item.content.toLowerCase().includes(query) ||
-                item.type.includes(query)
-            );
-
+                item.content.toLowerCase().includes(query) || item.type.includes(query)            );
             const container = document.getElementById('archive-results');
             if (results.length === 0) {
                 container.innerHTML = '<div class="text-center text-gray-400 py-8">لا توجد نتائج</div>';
             } else {
-                container.innerHTML = results.map(item => `
-                    <div class="bg-dark border border-gray-700 rounded-xl p-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="px-3 py-1 rounded-full bg-blue-600/20 text-blue-400 text-sm">${item.type}</span>                            <span class="text-xs text-gray-500">${item.date}</span>
-                        </div>
-                        <p class="text-gray-300 text-sm">${item.content.substring(0, 200)}...</p>
-                    </div>
-                `).join('');
+                container.innerHTML = results.map(item => 
+                    '<div class="bg-dark border border-gray-700 rounded-xl p-4">' +
+                    '<div class="flex justify-between items-start mb-2">' +
+                    '<span class="px-3 py-1 rounded-full bg-blue-600/20 text-blue-400 text-sm">' + item.type + '</span>' +
+                    '<span class="text-xs text-gray-500">' + item.date + '</span></div>' +
+                    '<p class="text-gray-300 text-sm">' + item.content.substring(0, 200) + '...</p></div>'
+                ).join('');
             }
         }
 
@@ -990,13 +752,11 @@
         function addAgenda() {
             const date = document.getElementById('agenda-date').value;
             const desc = document.getElementById('agenda-desc').value.trim();
-            
             if (!date || !desc) {
                 showStatus('agenda-status', 'أدخل التاريخ والوصف', 'error');
                 return;
             }
-
-            State.agenda.push({ date, desc });
+            State.agenda.push({ date: date, desc: desc });
             localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
             renderAgenda();
             showStatus('agenda-status', '<i class="fas fa-check ml-2"></i>تمت الإضافة', 'success');
@@ -1006,30 +766,27 @@
         function renderAgenda() {
             const list = document.getElementById('agenda-list');
             const sorted = State.agenda.sort((a, b) => new Date(a.date) - new Date(b.date));
-            
-            list.innerHTML = sorted.map((item, index) => `
-                <div class="bg-dark border border-gray-700 rounded-xl p-4 flex justify-between items-center">
-                    <div>
-                        <p class="font-medium">${item.desc}</p>
-                        <p class="text-sm text-gray-400">${item.date}</p>
-                    </div>
-                    <button onclick="deleteAgenda(${index})" class="text-red-500 hover:text-red-400">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `).join('') || '<div class="text-center text-gray-400 py-8">لا توجد أحداث</div>';
+            list.innerHTML = sorted.map((item, index) => 
+                '<div class="bg-dark border border-gray-700 rounded-xl p-4 flex justify-between items-center">' +
+                '<div><p class="font-medium">' + item.desc + '</p><p class="text-sm text-gray-400">' + item.date + '</p></div>' +
+                '<button data-index="' + index + '" class="text-red-500 hover:text-red-400 btn-delete-agenda">' +
+                '<i class="fas fa-trash"></i></button></div>'
+            ).join('') || '<div class="text-center text-gray-400 py-8">لا توجد أحداث</div>';
+            // إضافة مستمعي الحذف
+            document.querySelectorAll('.btn-delete-agenda').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    State.agenda.splice(index, 1);
+                    localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
+                    renderAgenda();
+                });
+            });
         }
-
-        function deleteAgenda(index) {
-            State.agenda.splice(index, 1);
-            localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
-            renderAgenda();
-        }
-
-        // التفريغ الصوتي (محاكاة)
-        function transcribeAudio() {            showStatus('transcribe-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري التفريغ...', 'loading');
+        // التفريغ الصوتي
+        function transcribeAudio() {
+            showStatus('transcribe-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري التفريغ...', 'loading');
             setTimeout(() => {
-                document.getElementById('transcribe-output').value = 'هذا نص تجريبي للتفريغ. لربط Whisper API فعلياً، أضف الخادم الخلفي.';
+                document.getElementById('transcribe-output').value = 'هذا نص تجريبي للتفريغ.';
                 showStatus('transcribe-status', '<i class="fas fa-check-circle ml-2"></i>تم التفريغ', 'success');
             }, 1500);
         }
@@ -1042,7 +799,7 @@
                 success: 'bg-green-600/20 text-green-400',
                 error: 'bg-red-600/20 text-red-400'
             };
-            el.innerHTML = `<div class="${colors[type]} px-4 py-2 rounded-lg">${message}</div>`;
+            el.innerHTML = '<div class="' + colors[type] + ' px-4 py-2 rounded-lg">' + message + '</div>';
         }
 
         function copyText(elementId) {
@@ -1056,24 +813,119 @@
         function shareText(platform, elementId) {
             const text = document.getElementById(elementId).value;
             if (!text) return;
-            const url = platform === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(text)}` : 
-                        platform === 'telegram' ? `https://t.me/share/url?url=${encodeURIComponent(text)}` :
-                        `mailto:?body=${encodeURIComponent(text)}`;
+            let url = '';
+            if (platform === 'whatsapp') url = 'https://wa.me/?text=' + encodeURIComponent(text);
+            else if (platform === 'telegram') url = 'https://t.me/share/url?url=' + encodeURIComponent(text);
+            else url = 'mailto:?body=' + encodeURIComponent(text);
             window.open(url, '_blank');
         }
 
-        // التهيئة
-        document.addEventListener('DOMContentLoaded', () => {
+        // حفظ المفاتيح
+        function saveKeys() {
+            const geminiKey = document.getElementById('gemini-key').value.trim();
+            const openrouterKey = document.getElementById('openrouter-key').value.trim();
+            if (geminiKey) {
+                State.keys.gemini = geminiKey;
+                localStorage.setItem('gemini_key', geminiKey);
+            }
+            if (openrouterKey) {
+                State.keys.openrouter = openrouterKey;
+                localStorage.setItem('openrouter_key', openrouterKey);
+            }            const statusEl = document.getElementById('settings-status');
+            statusEl.innerHTML = '<div class="bg-green-600/20 text-green-400 px-4 py-2 rounded-lg"><i class="fas fa-check ml-2"></i>تم حفظ المفاتيح بنجاح</div>';
+            checkAPIStatus();
+            setTimeout(() => statusEl.innerHTML = '', 3000);
+        }
+
+        // تهيئة جميع الأحداث - الإصلاح الجذري
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Loaded - Initializing...');
+            
+            // التحقق من المفاتيح
             checkAPIStatus();
             if (State.keys.gemini) document.getElementById('gemini-key').value = State.keys.gemini;
             if (State.keys.openrouter) document.getElementById('openrouter-key').value = State.keys.openrouter;
             renderAgenda();
+
+            // ربط أزرار القائمة الجانبية
+            document.querySelectorAll('[data-panel]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const panelId = this.getAttribute('data-panel');
+                    console.log('Button clicked:', panelId);
+                    showPanel(panelId);
+                });
+            });
+
+            // ربط البطاقات في الرئيسية
+            document.getElementById('card-editor').addEventListener('click', function() { showPanel('editor'); });
+            document.getElementById('card-pro-article').addEventListener('click', function() { showPanel('pro-article'); });
+            document.getElementById('card-audio').addEventListener('click', function() { showPanel('audio'); });
+
+            // القوائم المنسدلة
+            document.getElementById('btn-editor-dropdown').addEventListener('click', function() {
+                toggleDropdown('editor-dropdown');
+            });
+            document.getElementById('btn-tools-dropdown').addEventListener('click', function() {
+                toggleDropdown('tools-dropdown');
+            });
+
+            // الإعدادات
+            document.getElementById('btn-settings').addEventListener('click', function() {
+                document.getElementById('settings-modal').classList.remove('hidden');
+            });
+            document.getElementById('btn-close-settings').addEventListener('click', function() {
+                document.getElementById('settings-modal').classList.add('hidden');
+            });
+            document.getElementById('btn-save-keys').addEventListener('click', saveKeys);
+
+            // أزرار المعالجة
+            document.getElementById('btn-run-editor').addEventListener('click', processEditor);
+            document.getElementById('btn-run-pro').addEventListener('click', processProArticle);            document.getElementById('btn-search-hist').addEventListener('click', searchHistory);
+            document.getElementById('btn-search-sports').addEventListener('click', searchSports);
+            document.getElementById('btn-search-persona').addEventListener('click', searchPersona);
+            document.getElementById('btn-run-qwen').addEventListener('click', runQwen);
+            document.getElementById('btn-refresh-rss').addEventListener('click', fetchRSS);
+            document.getElementById('btn-search-archive').addEventListener('click', searchArchive);
+            document.getElementById('btn-add-agenda').addEventListener('click', addAgenda);
+            document.getElementById('btn-transcribe').addEventListener('click', transcribeAudio);
+
+            // رفع الملف الصوتي
+            document.getElementById('audio-upload-area').addEventListener('click', function() {
+                document.getElementById('audio-file').click();
+            });
+
+            // أزرار النسخ والأرشفة
+            document.getElementById('btn-copy-editor').addEventListener('click', function() { copyText('editor-output'); });
+            document.getElementById('btn-save-editor').addEventListener('click', function() { saveToArchive('محرر', 'editor-output'); });
+            document.getElementById('btn-share-editor').addEventListener('click', function() { shareText('whatsapp', 'editor-output'); });
             
-            document.addEventListener('click', (e) => {
+            document.getElementById('btn-copy-pro').addEventListener('click', function() { copyText('pro-output'); });
+            document.getElementById('btn-save-pro').addEventListener('click', function() { saveToArchive('مقال', 'pro-output'); });
+            
+            document.getElementById('btn-copy-audio').addEventListener('click', function() { copyText('transcribe-output'); });
+            document.getElementById('btn-save-audio').addEventListener('click', function() { saveToArchive('تفريغ', 'transcribe-output'); });
+            
+            document.getElementById('btn-copy-hist').addEventListener('click', function() { copyText('hist-output'); });
+            document.getElementById('btn-save-hist').addEventListener('click', function() { saveToArchive('تاريخ', 'hist-output'); });
+            
+            document.getElementById('btn-copy-sports').addEventListener('click', function() { copyText('sports-output'); });
+            document.getElementById('btn-save-sports').addEventListener('click', function() { saveToArchive('رياضة', 'sports-output'); });
+            
+            document.getElementById('btn-copy-persona').addEventListener('click', function() { copyText('persona-output'); });
+            document.getElementById('btn-save-persona').addEventListener('click', function() { saveToArchive('شخصية', 'persona-output'); });
+            
+            document.getElementById('btn-copy-qwen').addEventListener('click', function() { copyText('qwen-output'); });
+            document.getElementById('btn-save-qwen').addEventListener('click', function() { saveToArchive('Qwen', 'qwen-output'); });
+
+            // إغلاق القوائم عند النقر خارجها
+            document.addEventListener('click', function(e) {
                 if (!e.target.closest('.nav-item')) {
                     document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
                 }
             });
+
+            console.log('Initialization complete!');
         });
     </script>
-</body></html>
+</body>
+</html>
