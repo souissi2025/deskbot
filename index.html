@@ -992,61 +992,62 @@ const MODELS = [
     icon:'fa-brands fa-google',
     iconClass:'mc-gemini'
   },
-  // ── OpenRouter — نماذج مجانية فعّالة للكتابة العربية ──
+  // ── OpenRouter — Qwen (الأفضل للكتابة الصحفية العربية) ──
+  {
+    id:'qwen/qwen3.6-plus:free',
+    name:'Qwen 3.6 Plus',
+    provider:'openrouter',
+    badge:'Qwen',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'الأحدث — 1M توكن، الأفضل عربياً',
+    icon:'fa-solid fa-star',
+    iconClass:'mc-qwen',
+    recommended:true
+  },
+  {
+    id:'qwen/qwen3.6-plus-preview:free',
+    name:'Qwen 3.6 Preview',
+    provider:'openrouter',
+    badge:'Qwen',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'معاينة 1M توكن — تفكير متسلسل',
+    icon:'fa-solid fa-eye',
+    iconClass:'mc-qwen'
+  },
+  // ── OpenRouter — نماذج مجانية مؤكدة أبريل 2026 ──
   {
     id:'meta-llama/llama-3.3-70b-instruct:free',
     name:'Llama 3.3 70B',
     provider:'openrouter',
     badge:'Meta',
-    quota:'200 طلب/يوم',
+    quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'الأفضل للعربية — أداء GPT-4 مجاناً',
+    desc:'قوي في العربية — Meta مجاناً',
     icon:'fa-solid fa-fire',
-    iconClass:'mc-qwen',
-    recommended:true
+    iconClass:'mc-qwen'
   },
   {
     id:'google/gemma-3-27b-it:free',
     name:'Gemma 3 27B',
     provider:'openrouter',
     badge:'Google',
-    quota:'200 طلب/يوم',
+    quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'متعدد اللغات — 140+ لغة بما فيها العربية',
+    desc:'Google مجاناً — 140+ لغة',
     icon:'fa-brands fa-google',
     iconClass:'mc-gemini'
   },
   {
-    id:'openai/gpt-oss-120b:free',
-    name:'GPT-OSS 120B',
+    id:'nvidia/llama-3.1-nemotron-70b-instruct:free',
+    name:'Nemotron 70B',
     provider:'openrouter',
-    badge:'OpenAI',
-    quota:'200 طلب/يوم',
+    badge:'NVIDIA',
+    quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'أول نموذج مفتوح من OpenAI — Apache 2.0',
-    icon:'fa-solid fa-wand-sparkles',
-    iconClass:'mc-qwen'
-  },
-  {
-    id:'nousresearch/hermes-3-llama-3.1-405b:free',
-    name:'Hermes 3 405B',
-    provider:'openrouter',
-    badge:'Free',
-    quota:'200 طلب/يوم',
-    quotaClass:'quota-green',
-    desc:'نموذج ضخم — تعليمات دقيقة ومحتوى احترافي',
-    icon:'fa-solid fa-brain',
-    iconClass:'mc-qwen'
-  },
-  {
-    id:'mistralai/mistral-small-24b-instruct-2501:free',
-    name:'Mistral Small 24B',
-    provider:'openrouter',
-    badge:'Mistral',
-    quota:'200 طلب/يوم',
-    quotaClass:'quota-green',
-    desc:'أوروبي سريع — ممتاز للتحرير والصياغة',
-    icon:'fa-solid fa-meteor',
+    desc:'NVIDIA — تعليمات دقيقة واحترافية',
+    icon:'fa-solid fa-microchip',
     iconClass:'mc-qwen'
   }
 ];
@@ -1187,41 +1188,41 @@ async function callOpenRouter(prompt, modelId) {
   const timer = setTimeout(() => controller.abort(), 60000);
   try {
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method:'POST',
+      method: 'POST',
       signal: controller.signal,
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer '+S.orKey,
-        'HTTP-Referer':'https://deskbot.app',
-        'X-Title':'DESK BOT'
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + S.orKey,
+        'HTTP-Referer': 'https://deskbot.app',
+        'X-Title': 'DESK BOT'
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         model: modelId,
-        messages:[{role:'user',content:prompt}],
-        max_tokens:4096
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 4096,
+        temperature: 0.7
       })
     });
-    if(!r.ok){
+    if (!r.ok) {
       let e = {};
       try { e = await r.json(); } catch(x) {}
-      if(r.status===401) throw new Error('مفتاح OpenRouter غير صحيح — تحقق من المفتاح (401)');
-      if(r.status===402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
-      if(r.status===429) throw new Error('تجاوزت الحد اليومي لهذا النموذج — جرّب نموذجاً آخر (429)');
-      if(r.status===503) throw new Error('النموذج غير متاح حالياً — جرّب نموذجاً آخر (503)');
-      throw new Error((e?.error?.message)||'خطأ OpenRouter '+r.status);
+      if (r.status === 401) throw new Error('مفتاح OpenRouter غير صحيح — تحقق من المفتاح (401)');
+      if (r.status === 402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
+      if (r.status === 429) throw new Error('تجاوزت الحد اليومي — جرّب نموذجاً آخر (429)');
+      if (r.status === 503) throw new Error('النموذج غير متاح حالياً — جرّب نموذجاً آخر (503)');
+      throw new Error((e?.error?.message) || 'خطأ OpenRouter ' + r.status);
     }
     const d = await r.json();
     incReq();
     return d.choices?.[0]?.message?.content || '';
   } catch(err) {
-    if(err.name === 'AbortError') throw new Error('انتهت مهلة الاتصال بـ OpenRouter — جرّب مجدداً');
+    if (err.name === 'AbortError') throw new Error('انتهت مهلة الاتصال — جرّب مجدداً');
     throw err;
   } finally {
     clearTimeout(timer);
   }
 }
 
-// Gemini multimodal for audio
 async function callGeminiAudio(prompt, b64, mime) {
   if (!S.geminiKey) { openSettings(); throw new Error('تفريغ الصوت يتطلب مفتاح Gemini — أدخله من الإعدادات'); }
   const model = S.model.startsWith('gemini') ? S.model : 'gemini-2.5-flash';
