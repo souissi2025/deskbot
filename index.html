@@ -968,6 +968,7 @@ label{
 
 // ── MODELS DEFINITION ──
 const MODELS = [
+  // ── Gemini (Google AI Studio) ──
   {
     id:'gemini-2.5-flash',
     name:'Gemini 2.5 Flash',
@@ -991,60 +992,61 @@ const MODELS = [
     icon:'fa-brands fa-google',
     iconClass:'mc-gemini'
   },
-  {
-    id:'qwen/qwen3-235b-a22b:free',
-    name:'Qwen3 235B',
-    provider:'openrouter',
-    badge:'Qwen',
-    quota:'~40 طلب/يوم',
-    quotaClass:'quota-green',
-    desc:'الأقوى مجاناً — نموذج ضخم',
-    icon:'fa-solid fa-robot',
-    iconClass:'mc-qwen',
-    recommended:true
-  },
-  {
-    id:'qwen/qwen3-30b-a3b:free',
-    name:'Qwen3 30B',
-    provider:'openrouter',
-    badge:'Qwen',
-    quota:'~60 طلب/يوم',
-    quotaClass:'quota-green',
-    desc:'سريع وخفيف — البديل الأمثل',
-    icon:'fa-solid fa-bolt',
-    iconClass:'mc-qwen'
-  },
-  {
-    id:'qwen/qwen-2.5-72b-instruct:free',
-    name:'Qwen2.5 72B',
-    provider:'openrouter',
-    badge:'Qwen',
-    quota:'~50 طلب/يوم',
-    quotaClass:'quota-green',
-    desc:'سريع وموثوق — مناسب للتحرير',
-    icon:'fa-solid fa-robot',
-    iconClass:'mc-qwen'
-  },
+  // ── OpenRouter — نماذج مجانية فعّالة للكتابة العربية ──
   {
     id:'meta-llama/llama-3.3-70b-instruct:free',
     name:'Llama 3.3 70B',
     provider:'openrouter',
-    badge:'Free',
-    quota:'~50 طلب/يوم',
+    badge:'Meta',
+    quota:'200 طلب/يوم',
     quotaClass:'quota-green',
-    desc:'نموذج Meta مجاني وقوي',
-    icon:'fa-solid fa-code-branch',
+    desc:'الأفضل للعربية — أداء GPT-4 مجاناً',
+    icon:'fa-solid fa-fire',
+    iconClass:'mc-qwen',
+    recommended:true
+  },
+  {
+    id:'google/gemma-3-27b-it:free',
+    name:'Gemma 3 27B',
+    provider:'openrouter',
+    badge:'Google',
+    quota:'200 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'متعدد اللغات — 140+ لغة بما فيها العربية',
+    icon:'fa-brands fa-google',
+    iconClass:'mc-gemini'
+  },
+  {
+    id:'openai/gpt-oss-120b:free',
+    name:'GPT-OSS 120B',
+    provider:'openrouter',
+    badge:'OpenAI',
+    quota:'200 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'أول نموذج مفتوح من OpenAI — Apache 2.0',
+    icon:'fa-solid fa-wand-sparkles',
     iconClass:'mc-qwen'
   },
   {
-    id:'deepseek/deepseek-chat-v3-0324:free',
-    name:'DeepSeek V3',
+    id:'nousresearch/hermes-3-llama-3.1-405b:free',
+    name:'Hermes 3 405B',
     provider:'openrouter',
     badge:'Free',
-    quota:'~30 طلب/يوم',
-    quotaClass:'quota-amber',
-    desc:'قوي في التحليل النصي',
+    quota:'200 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'نموذج ضخم — تعليمات دقيقة ومحتوى احترافي',
     icon:'fa-solid fa-brain',
+    iconClass:'mc-qwen'
+  },
+  {
+    id:'mistralai/mistral-small-24b-instruct-2501:free',
+    name:'Mistral Small 24B',
+    provider:'openrouter',
+    badge:'Mistral',
+    quota:'200 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'أوروبي سريع — ممتاز للتحرير والصياغة',
+    icon:'fa-solid fa-meteor',
     iconClass:'mc-qwen'
   }
 ];
@@ -1181,33 +1183,42 @@ async function callGemini(prompt, modelId) {
 }
 
 async function callOpenRouter(prompt, modelId) {
-  const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method:'POST',
-    signal: AbortSignal.timeout(60000),
-    headers:{
-      'Content-Type':'application/json',
-      'Authorization':'Bearer '+S.orKey,
-      'HTTP-Referer': 'https://deskbot.app',
-      'X-Title':'DESK BOT'
-    },
-    body:JSON.stringify({
-      model: modelId,
-      messages:[{role:'user',content:prompt}],
-      max_tokens:4096
-    })
-  });
-  if(!r.ok){
-    let e = {};
-    try { e = await r.json(); } catch(x) {}
-    if(r.status===401) throw new Error('مفتاح OpenRouter غير صحيح — تحقق من المفتاح (401)');
-    if(r.status===402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
-    if(r.status===429) throw new Error('تجاوزت الحد اليومي لهذا النموذج — جرب نموذجاً آخر (429)');
-    if(r.status===503) throw new Error('النموذج غير متاح حالياً — جرب نموذجاً آخر (503)');
-    throw new Error((e?.error?.message)||'خطأ OpenRouter '+r.status);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 60000);
+  try {
+    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method:'POST',
+      signal: controller.signal,
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+S.orKey,
+        'HTTP-Referer':'https://deskbot.app',
+        'X-Title':'DESK BOT'
+      },
+      body:JSON.stringify({
+        model: modelId,
+        messages:[{role:'user',content:prompt}],
+        max_tokens:4096
+      })
+    });
+    if(!r.ok){
+      let e = {};
+      try { e = await r.json(); } catch(x) {}
+      if(r.status===401) throw new Error('مفتاح OpenRouter غير صحيح — تحقق من المفتاح (401)');
+      if(r.status===402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
+      if(r.status===429) throw new Error('تجاوزت الحد اليومي لهذا النموذج — جرّب نموذجاً آخر (429)');
+      if(r.status===503) throw new Error('النموذج غير متاح حالياً — جرّب نموذجاً آخر (503)');
+      throw new Error((e?.error?.message)||'خطأ OpenRouter '+r.status);
+    }
+    const d = await r.json();
+    incReq();
+    return d.choices?.[0]?.message?.content || '';
+  } catch(err) {
+    if(err.name === 'AbortError') throw new Error('انتهت مهلة الاتصال بـ OpenRouter — جرّب مجدداً');
+    throw err;
+  } finally {
+    clearTimeout(timer);
   }
-  const d = await r.json();
-  incReq();
-  return d.choices?.[0]?.message?.content || '';
 }
 
 // Gemini multimodal for audio
