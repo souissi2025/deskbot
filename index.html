@@ -507,77 +507,70 @@ label{
   .model-bar{display:none}
 }
 
-/* ── MOBILE BOTTOM NAV ── */
-.bottom-nav {
-  display: none;
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 200;
-  background: var(--glass2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--line2);
-  padding: 6px 0 env(safe-area-inset-bottom, 6px);
-  justify-content: space-around;
-  align-items: center;
+/* ══ MOBILE BOTTOM NAV ══ */
+@media(max-width:768px){
+  .sidebar{ display:none !important; }
+  .main{ padding:14px; padding-bottom:82px; }
+  .home-grid{ grid-template-columns:1fr 1fr; }
+  .model-status-grid{ grid-template-columns:1fr; }
+  .act-row .btn span{ display:none; }
+  .bottom-nav{ display:flex !important; }
 }
-.bn-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--text3);
-  font-size: 9px;
-  font-weight: 700;
-  font-family: Cairo, sans-serif;
-  transition: all .2s;
-  border: none;
-  background: none;
-  min-width: 52px;
+@media(max-width:480px){
+  .home-grid{ grid-template-columns:1fr; }
+  .model-bar{ display:none; }
 }
-.bn-item i { font-size: 18px; }
-.bn-item.active { color: var(--gold2); }
-.bn-item.active i { filter: drop-shadow(0 0 6px var(--gold)); }
-.bn-more-menu {
-  display: none;
-  position: fixed;
-  bottom: 68px; left: 0; right: 0;
-  z-index: 199;
-  background: var(--glass2);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--line2);
-  padding: 12px;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  animation: slideUpMenu .2s ease;
+.bottom-nav{
+  display:none;
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:var(--glass2);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--line2);
+  padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));
+  justify-content:space-around; align-items:center;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.4);
 }
-.bn-more-menu.open { display: grid; }
-@keyframes slideUpMenu {
-  from { transform: translateY(20px); opacity:0; }
-  to   { transform: translateY(0);    opacity:1; }
+.bn-btn{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:6px 8px; border-radius:10px; cursor:pointer;
+  color:var(--text3); font-size:9px; font-weight:700;
+  font-family:Cairo,sans-serif; transition:all .2s;
+  border:none; background:none; min-width:48px; flex:1;
 }
-.bn-more-item {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 4px;
-  padding: 10px 6px; border-radius: 12px;
-  background: var(--ink3); border: 1px solid var(--line);
-  cursor: pointer; color: var(--text2);
-  font-size: 9px; font-weight: 700;
-  font-family: Cairo, sans-serif;
-  transition: all .2s;
+.bn-btn i{ font-size:17px; transition:all .2s; }
+.bn-btn.active{ color:var(--gold2); }
+.bn-btn.active i{ filter:drop-shadow(0 0 5px var(--gold)); }
+/* قائمة المزيد */
+.bn-drawer{
+  display:none; position:fixed;
+  bottom:0; left:0; right:0; z-index:198;
+  background:var(--glass2);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--line2);
+  padding:16px 12px calc(80px + env(safe-area-inset-bottom,0px));
+  animation:drawerUp .25s ease;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.5);
 }
-.bn-more-item i { font-size: 16px; }
-.bn-more-item:hover, .bn-more-item.active {
-  background: var(--gold3); color: var(--gold2);
-  border-color: var(--line2);
+.bn-drawer.open{ display:block; }
+@keyframes drawerUp{ from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
+.bn-drawer-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
 }
-@media(max-width: 768px) {
-  .bottom-nav { display: flex; }
-  .main { padding-bottom: 80px; }
-  .sidebar { display: none !important; }
+.bn-drawer-item{
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  padding:12px 6px; border-radius:14px;
+  background:rgba(0,0,0,0.3); border:1px solid var(--line);
+  cursor:pointer; color:var(--text2);
+  font-size:10px; font-weight:700; font-family:Cairo,sans-serif;
+  transition:all .2s;
+}
+.bn-drawer-item i{ font-size:18px; }
+.bn-drawer-item:active,
+.bn-drawer-item.active{ background:var(--gold3); color:var(--gold2); border-color:var(--line2); }
+.bn-drawer-title{
+  font-size:10px; color:var(--text3); font-weight:700;
+  letter-spacing:2px; text-transform:uppercase;
+  font-family:Oswald,sans-serif; margin-bottom:10px;
 }
 
 </style>
@@ -1047,7 +1040,7 @@ const MODELS = [
     name:'Gemini 2.5 Flash',
     provider:'gemini',
     badge:'Gemini',
-    quota:'1500 طلب/يوم',
+    quota:'1500/يوم',
     quotaClass:'quota-green',
     desc:'الأسرع — مثالي للاستخدام اليومي',
     icon:'fa-brands fa-google',
@@ -1059,34 +1052,23 @@ const MODELS = [
     name:'Gemini 2.5 Pro',
     provider:'gemini',
     badge:'Gemini',
-    quota:'50 طلب/يوم',
+    quota:'50/يوم',
     quotaClass:'quota-amber',
     desc:'الأقوى — للتحليل المعمق',
     icon:'fa-brands fa-google',
     iconClass:'mc-gemini'
   },
   {
-    id:'qwen/qwen3.6-plus:free',
-    name:'Qwen 3.6 Plus',
+    id:'qwen/qwen3-next-80b-a3b-instruct:free',
+    name:'Qwen3 Next 80B',
     provider:'openrouter',
     badge:'Qwen',
     quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'الأحدث — 1M توكن، الأفضل عربياً',
+    desc:'أحدث Qwen — 80B مجاناً',
     icon:'fa-solid fa-star',
     iconClass:'mc-qwen',
     recommended:true
-  },
-  {
-    id:'qwen/qwen3.6-plus-preview:free',
-    name:'Qwen 3.6 Preview',
-    provider:'openrouter',
-    badge:'Qwen',
-    quota:'مجاني',
-    quotaClass:'quota-green',
-    desc:'معاينة — تفكير متسلسل 1M توكن',
-    icon:'fa-solid fa-eye',
-    iconClass:'mc-qwen'
   },
   {
     id:'qwen/qwen3-coder:free',
@@ -1095,8 +1077,41 @@ const MODELS = [
     badge:'Qwen',
     quota:'مجاني',
     quotaClass:'quota-green',
-    desc:'الأضخم — 480B دقيق في التعليمات',
+    desc:'الأضخم مجاناً — 480B دقيق',
     icon:'fa-solid fa-robot',
+    iconClass:'mc-qwen'
+  },
+  {
+    id:'openai/gpt-oss-120b:free',
+    name:'GPT OSS 120B',
+    provider:'openrouter',
+    badge:'OpenAI',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'OpenAI مفتوح المصدر — 120B',
+    icon:'fa-solid fa-wand-sparkles',
+    iconClass:'mc-qwen'
+  },
+  {
+    id:'google/gemma-3-27b-it:free',
+    name:'Gemma 3 27B',
+    provider:'openrouter',
+    badge:'Google',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'Google مفتوح — ممتاز للعربية',
+    icon:'fa-brands fa-google',
+    iconClass:'mc-gemini'
+  },
+  {
+    id:'meta-llama/llama-3.3-70b-instruct:free',
+    name:'Llama 3.3 70B',
+    provider:'openrouter',
+    badge:'Meta',
+    quota:'مجاني',
+    quotaClass:'quota-green',
+    desc:'Meta مجاناً — موثوق ومستقر',
+    icon:'fa-solid fa-fire',
     iconClass:'mc-qwen'
   }
 ];
@@ -1256,7 +1271,7 @@ async function callOpenRouter(prompt, modelId) {
       let e = {};
       try { e = await r.json(); } catch(x) {}
       if (r.status === 401) throw new Error('مفتاح OpenRouter غير صحيح (401)');
-      if (r.status === 402) throw new Error('الرصيد غير كافٍ (402)');
+      if (r.status === 402) throw new Error('رصيد OpenRouter غير كافٍ (402)');
       if (r.status === 429) throw new Error('تجاوزت الحد اليومي — جرّب نموذجاً آخر (429)');
       if (r.status === 503) throw new Error('النموذج غير متاح — جرّب نموذجاً آخر (503)');
       throw new Error((e?.error?.message) || 'خطأ OpenRouter ' + r.status);
@@ -1757,7 +1772,6 @@ function updateBanner() {
 function selectModel(id) {
   S.model=id;
   localStorage.setItem('db_model',id);
-  // إعادة ضبط النموذج إذا لم يعد في القائمة
   if (!MODELS.find(x => x.id === S.model)) {
     S.model = 'gemini-2.5-flash';
     localStorage.setItem('db_model', S.model);
@@ -1917,29 +1931,41 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(!S.geminiKey&&!S.orKey) openSettings();
 });
 
-// ── MOBILE NAV ──
-function mobileNav(panel, btn) {
-  // إغلاق قائمة المزيد
-  document.getElementById('bn-more-menu').classList.remove('open');
-  // تحديث الأزرار النشطة
-  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  // إظهار اللوحة المطلوبة
-  showPanel(panel, null);
-  // مزامنة مع السايدبار
+/* ══ BOTTOM NAV JS ══ */
+function bnNav(panel, btn) {
+  bnCloseDrawer();
+  // تحديث الأزرار
+  document.querySelectorAll('.bn-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  // تحديث السايدبار (مزامنة)
   document.querySelectorAll('.nav-item').forEach(n => {
     n.classList.toggle('active', n.dataset.panel === panel);
   });
-}
-function toggleMoreMenu() {
-  const m = document.getElementById('bn-more-menu');
-  m.classList.toggle('open');
-}
-// إغلاق قائمة المزيد عند الضغط خارجها
-document.addEventListener('click', function(e) {
-  if(!e.target.closest('#bn-more-menu') && !e.target.closest('#bn-more')) {
-    document.getElementById('bn-more-menu')?.classList.remove('open');
+  // إظهار اللوحة
+  showPanel(panel, null);
+  // تفعيل زر المزيد إذا كان البانل من قائمة المزيد
+  const mainPanels = ['home','editor','flash','audio'];
+  if (!mainPanels.includes(panel)) {
+    document.getElementById('bn-more')?.classList.add('active');
   }
+}
+function bnToggleDrawer() {
+  const d = document.getElementById('bn-drawer');
+  d.classList.toggle('open');
+  document.getElementById('bn-more')?.classList.toggle('active', d.classList.contains('open'));
+}
+function bnCloseDrawer() {
+  document.getElementById('bn-drawer')?.classList.remove('open');
+}
+// إغلاق الـ drawer عند الضغط خارجه
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#bn-drawer') && !e.target.closest('#bn-more')) {
+    bnCloseDrawer();
+  }
+}, true);
+// تفعيل الزر الرئيسي عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('bn-home')?.classList.add('active');
 });
 
 </script>
