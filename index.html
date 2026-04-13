@@ -66,7 +66,7 @@
 
         /* استجابة للجوال */
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* يمكن إضافة زر قائمة لاحقاً */
+            .sidebar { display: none; } 
             .layout { flex-direction: column; }
         }
     </style>
@@ -102,7 +102,7 @@
             <div id="panel-home" class="panel">
                 <div class="card">
                     <div class="card-title">مرحباً بك في غرفة الأخبار الرقمية</div>
-                    <p style="margin-bottom:1rem; color:var(--text2);">هذا التطبيق مصمم لمساعدتك في التحرير الصحفي باستخدام الذكاء الاصطناعي.</p>
+                    <p style="margin-bottom:1rem; color:var(--text2);">هذا التطبيق مصمم لمساعدتك في التحرير الصحفي باستخدام الذكاء الاصطناعي (Qwen 2.5).</p>
                     <div class="status success">✅ النظام جاهز للعمل</div>
                     <p style="margin-top:1rem; font-size:0.9rem; color:var(--danger);">⚠️ هام: تأكد من إدخال مفتاح OpenRouter في الإعدادات ⚙️ لكي تعمل الأزرار.</p>
                 </div>
@@ -254,7 +254,6 @@
         // === التهيئة عند التحميل ===
         document.addEventListener('DOMContentLoaded', () => {
             if (!APP_STATE.key) {
-                alert('مرحباً! يرجى إدخال مفتاح OpenRouter من زر الإعدادات ⚙️ لكي يعمل التطبيق.');
                 document.getElementById('settings-modal').style.display = 'flex';
             }
             renderAgenda();
@@ -300,8 +299,7 @@
             }
         }
 
-        // === الاتصال بـ OpenRouter (Qwen) ===
-        // هذه هي الدالة الأساسية التي تحل مشكلة 404
+        // === الاتصال بـ OpenRouter (تم تصحيح اسم النموذج) ===
         async function callAI(prompt) {
             if (!APP_STATE.key) throw new Error('مفتاح API غير موجود. اذهب للإعدادات.');
 
@@ -314,13 +312,12 @@
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${APP_STATE.key}`,
-                        // الهيدر التالي مطلوب من OpenRouter
                         'HTTP-Referer': window.location.href, 
                         'X-Title': 'DESK BOT'
                     },
                     body: JSON.stringify({
-                        // استخدام نموذج Qwen 2.5 72B المجاني والمستقر
-                        model: 'qwen/qwen-2.5-72b-instruct:free',
+                        // تم تغيير النموذج إلى النسخة المجانية المستقرة (7B) لتجنب خطأ 404
+                        model: 'qwen/qwen-2.5-7b-instruct:free',
                         messages: [{ role: 'user', content: prompt }]
                     })
                 });
@@ -484,7 +481,6 @@
         async function fetchNews() {
             showStatus('rss-status', '⏳ جاري جلب الأخبار...', 'loading');
             try {
-                // استخدام واجهة وسيطة لجلب RSS لتجنب مشاكل CORS
                 const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/arabic/rss.xml');
                 const data = await res.json();
                 const container = document.getElementById('news-container');
