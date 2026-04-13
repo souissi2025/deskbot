@@ -7,151 +7,129 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* CSS Variables for Theming */
     :root {
       --bg: #1a1512; --surface: #261f18; --surface2: #332a20;
       --border: #4a3d30; --text: #f5e6d3; --text2: #b8a088;
       --primary: #d4956a; --primary-hover: #e8b08a;
       --success: #6db87a; --danger: #d46a5a; --warning: #e8b84a;
-      --shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
-    /* Light Theme */
     [data-theme="light"] {
       --bg: #f1f5f9; --surface: #ffffff; --surface2: #f8fafc;
       --border: #e2e8f0; --text: #1e293b; --text2: #64748b;
       --primary: #2563eb; --primary-hover: #3b82f6;
-      --shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    /* Dark Theme */
     [data-theme="dark"] {
       --bg: #0b0e14; --surface: #151922; --surface2: #1e2330;
       --border: #2a3040; --text: #e2e8f0; --text2: #94a3b8;
       --primary: #3b82f6; --primary-hover: #60a5fa;
-      --shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.4s, color 0.4s; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: 0.3s; }
     
-    /* Header */
     .header {
       position: fixed; top: 0; right: 0; left: 0;
       background: var(--surface); border-bottom: 1px solid var(--border);
-      padding: 0.5rem 1rem; z-index: 100; display: flex;
-      justify-content: space-between; align-items: center; height: 60px;
+      padding: 0.8rem 1rem; z-index: 100; display: flex;
+      justify-content: space-between; align-items: center;
     }
-    .brand { font-size: 1.2rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
-    
-    /* Header Actions (Themes + Settings) */
+    .brand { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
     .header-actions { display: flex; gap: 0.8rem; align-items: center; }
-    .model-tag { font-size: 0.8rem; color: var(--text2); padding: 0.2rem 0.6rem; background: var(--bg); border-radius: 4px; border: 1px solid var(--border); }
     
-    /* Theme Switcher */
-    .theme-switcher { display: flex; gap: 4px; background: var(--bg); padding: 2px; border-radius: 20px; border: 1px solid var(--border); }
-    .theme-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
-    .theme-dot:hover { transform: scale(1.1); }
-    .theme-dot.active { border-color: var(--primary); box-shadow: 0 0 5px rgba(255,255,255,0.3); }
+    .theme-switcher { display: flex; gap: 4px; background: var(--bg); padding: 2px; border-radius: 20px; }
+    .theme-dot { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+    .theme-dot.active { border-color: var(--primary); }
     .t-dark { background: #0b0e14; }
     .t-light { background: #f1f5f9; }
     .t-warm { background: #1a1512; }
-
-    /* Settings Button */
-    .settings-btn {
-      background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-      width: 35px; height: 35px; border-radius: 8px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; transition: 0.3s;
-    }
-    .settings-btn:hover { background: var(--primary); color: #fff; transform: rotate(30deg); }
-
-    /* Layout */
-    .app { display: flex; margin-top: 60px; min-height: calc(100vh - 60px); }
     
-    /* Sidebar */
+    .settings-btn {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); width: 40px; height: 40px; border-radius: 8px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .settings-btn:hover { background: var(--primary); color: #fff; }
+    
+    .app { display: flex; margin-top: 70px; min-height: calc(100vh - 70px); }
     .sidebar {
-      width: 240px; background: var(--surface); border-left: 1px solid var(--border);
-      padding: 1rem 0.5rem; display: flex; flex-direction: column; gap: 2px;
-      position: fixed; right: 0; top: 60px; bottom: 0; overflow-y: auto; z-index: 50;
+      width: 260px; background: var(--surface); border-left: 1px solid var(--border);
+      padding: 1rem; display: flex; flex-direction: column; gap: 4px;
+      position: fixed; right: 0; top: 70px; bottom: 0; overflow-y: auto;
     }
     .nav-btn {
       background: transparent; border: none; color: var(--text2);
-      padding: 0.7rem 1rem; border-radius: 8px; cursor: pointer; text-align: right;
-      font-family: inherit; font-size: 0.9rem; transition: 0.2s;
+      padding: 0.7rem 0.9rem; border-radius: 8px; cursor: pointer;
+      text-align: right; font-family: inherit; font-size: 0.9rem;
       display: flex; align-items: center; gap: 0.6rem; width: 100%;
     }
-    .nav-btn:hover { background: var(--surface2); color: var(--text); }
-    .nav-btn.active { background: var(--primary); color: #fff; font-weight: 600; }
-    .nav-icon { width: 20px; text-align: center; }
-
-    /* Main Content */
-    .main { margin-right: 240px; padding: 1.5rem; flex: 1; width: calc(100% - 240px); }
-    .panel { display: none; animation: fadeIn 0.3s; }
+    .nav-btn:hover, .nav-btn.active { background: var(--primary); color: #fff; }
+    .nav-icon { width: 18px; text-align: center; }
+    
+    .main { margin-right: 260px; padding: 1.5rem; flex: 1; }
+    .panel { display: none; }
     .panel.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Components */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
-    .card-title { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+    
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .card-title { font-size: 1.15rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
     
     input, textarea, select {
-      width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text);
-      padding: 0.7rem; border-radius: 8px; font-family: inherit; margin-bottom: 0.8rem;
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 0.7rem; border-radius: 8px;
+      font-family: inherit; margin-bottom: 0.8rem;
     }
-    input:focus, textarea:focus { outline: none; border-color: var(--primary); }
     textarea { min-height: 120px; resize: vertical; }
-
-    .btn { padding: 0.6rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: 0.2s; background: var(--surface2); color: var(--text); }
-    .btn:hover { background: var(--border); }
-    .btn:active { transform: scale(0.97); }
+    
+    .btn {
+      padding: 0.6rem 1.2rem; border-radius: 8px; border: none;
+      cursor: pointer; font-family: inherit; font-weight: 500;
+      background: var(--surface2); color: var(--text);
+    }
     .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-hover); }
     .btn-success { background: var(--success); color: #fff; }
     .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem; }
-
+    
     .status { padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; text-align: center; margin-top: 0.5rem; }
     .status.loading { background: rgba(212, 149, 106, 0.15); color: var(--primary); }
     .status.success { background: rgba(109, 184, 122, 0.15); color: var(--success); }
     .status.error { background: rgba(212, 106, 90, 0.15); color: var(--danger); }
-
-    /* Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; justify-content: center; align-items: center; }
-    .modal-content { background: var(--surface); padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; border: 1px solid var(--border); position: relative; }
-    .close-modal { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem; color: var(--text2); }
-
+    
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); z-index: 200; justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: var(--surface); padding: 2rem; border-radius: 12px;
+      width: 90%; max-width: 500px; border: 1px solid var(--border); position: relative;
+    }
+    .close-modal { position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 1.5rem; }
+    
     @media (max-width: 768px) {
-      .sidebar { width: 100%; position: relative; top: 0; height: auto; border-left: none; border-bottom: 1px solid var(--border); flex-direction: row; overflow-x: auto; padding: 0.5rem; }
-      .main { margin-right: 0; width: 100%; padding: 1rem; }
+      .sidebar { width: 100%; position: relative; top: 0; height: auto; }
+      .main { margin-right: 0; }
       .app { flex-direction: column; }
     }
   </style>
 </head>
 <body data-theme="warm">
 
-  <!-- Header -->
   <header class="header">
-    <div class="brand"><i class="fas fa-robot"></i> DESK BOT</div>
-    
+    <div class="brand">📰 DESK BOT</div>
     <div class="header-actions">
-      <span class="model-tag">Gemini 2.0 Flash</span>
-      
-      <!-- Theme Switcher Restored -->
+      <span style="font-size:0.85rem;color:var(--text2);">Gemini 2.0 Flash</span>
       <div class="theme-switcher">
         <div class="theme-dot t-dark" onclick="setTheme('dark')" title="ليلي"></div>
         <div class="theme-dot t-light" onclick="setTheme('light')" title="نهاري"></div>
         <div class="theme-dot t-warm active" onclick="setTheme('warm')" title="دافئ"></div>
       </div>
-
-      <!-- Settings Button -->
       <button class="settings-btn" onclick="openSettings()"><i class="fas fa-cog"></i></button>
     </div>
   </header>
 
   <div class="app">
-    <!-- Sidebar -->
     <nav class="sidebar">
       <button class="nav-btn active" onclick="showPanel('home')"><span class="nav-icon">🏠</span> الرئيسية</button>
-      <button class="nav-btn" onclick="showPanel('rss')"><span class="nav-icon">🌍</span> آخر الأخبار</button>
-      <button class="nav-btn" onclick="showPanel('editor')"><span class="nav-icon">✍️</span> المحرر الذكي</button>
+      <button class="nav-btn" onclick="showPanel('rss')"><span class="nav-icon">🌍</span> آخر الأخبار RSS</button>
+      <button class="nav-btn" onclick="showPanel('editor')"><span class="nav-icon">✍️</span> المحرر الذكي PRO</button>
       <button class="nav-btn" onclick="showPanel('pro-article')"><span class="nav-icon">📝</span> المقال الإخباري</button>
       <button class="nav-btn" onclick="showPanel('audio')"><span class="nav-icon">🎙️</span> التفريغ الصوتي</button>
       <button class="nav-btn" onclick="showPanel('tools')"><span class="nav-icon">🧰</span> الأدوات</button>
@@ -160,29 +138,24 @@
       <button class="nav-btn" onclick="showPanel('archive')"><span class="nav-icon">🗄️</span> الأرشيف</button>
     </nav>
 
-    <!-- Main Content -->
     <main class="main">
-      
-      <!-- Home Panel -->
       <section id="panel-home" class="panel active">
         <div class="card">
           <h2 class="card-title">مرحباً 👋 جاهز لبدء العمل التحريري</h2>
-          <p style="color:var(--text2);margin-bottom:1rem;">جميع الأزرار تعمل الآن. زر الإضاءة عاد في الأعلى. جرب المقال الإخباري الآن.</p>
-          <div class="status success">✅ النظام يعمل بكفاءة</div>
+          <p style="color:var(--text2);margin-bottom:1rem;">جميع الأزرار تعمل. تأكد من إدخال مفتاح Gemini من الإعدادات ⚙️</p>
+          <div class="status success">✅ النظام جاهز</div>
         </div>
       </section>
 
-      <!-- RSS Panel -->
       <section id="panel-rss" class="panel">
         <div class="card">
           <h3 class="card-title">📡 آخر الأخبار</h3>
-          <button class="btn btn-primary" id="btn-refresh-rss" style="width:100%;margin-bottom:1rem;"><i class="fas fa-sync-alt"></i> تحديث</button>
-          <div id="rss-status" class="status loading">اضغط تحديث</div>
+          <button class="btn btn-primary" id="btn-rss" style="width:100%;margin-bottom:1rem;">تحديث</button>
+          <div id="rss-status" class="status">اضغط تحديث</div>
           <div id="rss-container" class="grid-2" style="margin-top:1rem;"></div>
         </div>
       </section>
 
-      <!-- Editor Panel -->
       <section id="panel-editor" class="panel">
         <div class="card">
           <h3 class="card-title">✍️ المحرر الذكي PRO</h3>
@@ -190,12 +163,10 @@
           <select id="editor-mode">
             <option value="structure">إعادة هيكلة + معايير وات</option>
             <option value="seo">إعادة صياغة + SEO</option>
-            <option value="titles">12 عنواناً احترافياً</option>
+            <option value="titles">12 عنواناً</option>
             <option value="flash">فلاش إذاعي</option>
           </select>
-          <button class="btn btn-primary" id="btn-run-editor" style="width:100%;padding:0.8rem;margin-bottom:0.5rem;">
-            <i class="fas fa-magic"></i> تشغيل المعالجة
-          </button>
+          <button class="btn btn-primary" id="btn-editor" style="width:100%;padding:0.8rem;">تشغيل المعالجة</button>
           <div id="editor-status" class="status"></div>
           <textarea id="editor-output" readonly placeholder="النتيجة..." style="margin-top:0.5rem;"></textarea>
           <div class="actions">
@@ -205,7 +176,6 @@
         </div>
       </section>
 
-      <!-- Pro Article Panel -->
       <section id="panel-pro-article" class="panel">
         <div class="card">
           <h3 class="card-title">📝 المقال الإخباري PRO</h3>
@@ -215,9 +185,7 @@
             <option value="2">مقالان</option>
             <option value="3">ثلاثة مقالات</option>
           </select>
-          <button class="btn btn-primary" id="btn-run-pro" style="width:100%;padding:0.8rem;margin-bottom:0.5rem;">
-            <i class="fas fa-play"></i> تشغيل
-          </button>
+          <button class="btn btn-primary" id="btn-pro" style="width:100%;padding:0.8rem;">تشغيل</button>
           <div id="pro-status" class="status"></div>
           <textarea id="pro-output" readonly placeholder="المقالات..." style="min-height:200px;margin-top:0.5rem;"></textarea>
           <div class="actions">
@@ -227,16 +195,13 @@
         </div>
       </section>
 
-      <!-- Audio Panel -->
       <section id="panel-audio" class="panel">
         <div class="card">
           <h3 class="card-title">🎙️ التفريغ الصوتي</h3>
           <input type="file" id="audio-file" accept="audio/*">
-          <button class="btn btn-primary" id="btn-transcribe" style="width:100%;padding:0.8rem;">
-            <i class="fas fa-play"></i> بدء التفريغ
-          </button>
-          <div id="transcribe-status" class="status"></div>
-          <textarea id="transcribe-output" readonly placeholder="النص المفرغ..." style="margin-top:0.5rem;"></textarea>
+          <button class="btn btn-primary" id="btn-audio" style="width:100%;padding:0.8rem;">بدء التفريغ</button>
+          <div id="audio-status" class="status"></div>
+          <textarea id="audio-output" readonly placeholder="النص المفرغ..." style="margin-top:0.5rem;"></textarea>
           <div class="actions">
             <button class="btn" id="btn-copy-audio">نسخ</button>
             <button class="btn btn-success" id="btn-save-audio">أرشفة</button>
@@ -244,7 +209,6 @@
         </div>
       </section>
 
-      <!-- Tools Panel -->
       <section id="panel-tools" class="panel">
         <div class="card">
           <h3 class="card-title">📜 حدث اليوم</h3>
@@ -252,7 +216,7 @@
             <input type="number" id="hist-day" placeholder="اليوم (1-31)">
             <input type="number" id="hist-month" placeholder="الشهر (1-12)">
           </div>
-          <button class="btn btn-primary" id="btn-search-hist" style="width:100%;padding:0.8rem;">بحث</button>
+          <button class="btn btn-primary" id="btn-hist" style="width:100%;padding:0.8rem;">بحث</button>
           <div id="hist-status" class="status"></div>
           <textarea id="hist-output" readonly style="margin-top:0.5rem;"></textarea>
         </div>
@@ -262,45 +226,41 @@
             <input type="text" id="team-a" placeholder="الفريق الأول">
             <input type="text" id="team-b" placeholder="الفريق الثاني">
           </div>
-          <button class="btn btn-primary" id="btn-search-sports" style="width:100%;padding:0.8rem;">بحث</button>
+          <button class="btn btn-primary" id="btn-sports" style="width:100%;padding:0.8rem;">بحث</button>
           <div id="sports-status" class="status"></div>
           <textarea id="sports-output" readonly style="margin-top:0.5rem;"></textarea>
         </div>
       </section>
 
-      <!-- Qwen Panel -->
       <section id="panel-qwen" class="panel">
         <div class="card">
           <h3 class="card-title">🤖 Qwen AI</h3>
           <textarea id="qwen-input" placeholder="سؤال أو مهمة..."></textarea>
-          <button class="btn btn-primary" id="btn-run-qwen" style="width:100%;padding:0.8rem;">تشغيل</button>
+          <button class="btn btn-primary" id="btn-qwen" style="width:100%;padding:0.8rem;">تشغيل</button>
           <div id="qwen-status" class="status"></div>
           <textarea id="qwen-output" readonly style="margin-top:0.5rem;"></textarea>
         </div>
       </section>
 
-      <!-- Agenda Panel -->
       <section id="panel-agenda" class="panel">
         <div class="card">
           <h3 class="card-title">📅 الأجندة</h3>
           <input type="date" id="agenda-date">
           <input type="text" id="agenda-desc" placeholder="وصف الحدث">
-          <button class="btn btn-primary" id="btn-add-agenda" style="width:100%;padding:0.8rem;">إضافة</button>
+          <button class="btn btn-primary" id="btn-agenda" style="width:100%;padding:0.8rem;">إضافة</button>
           <div id="agenda-status" class="status"></div>
           <div id="agenda-list" style="margin-top:1rem;"></div>
         </div>
       </section>
 
-      <!-- Archive Panel -->
       <section id="panel-archive" class="panel">
         <div class="card">
           <h3 class="card-title">🗄️ الأرشيف</h3>
           <input type="text" id="archive-search" placeholder="بحث..." style="margin-bottom:0.8rem;">
-          <button class="btn btn-primary" id="btn-search-archive" style="width:100%;padding:0.8rem;">بحث</button>
+          <button class="btn btn-primary" id="btn-archive" style="width:100%;padding:0.8rem;">بحث</button>
           <div id="archive-results" style="margin-top:1rem;"></div>
         </div>
       </section>
-
     </main>
   </div>
 
@@ -315,6 +275,10 @@
       <input type="password" id="openrouter-key" placeholder="sk-or-...">
       <button class="btn btn-primary" id="btn-save-keys" style="width:100%;margin-top:1rem;">حفظ</button>
       <div id="settings-status" class="status"></div>
+      <p style="font-size:0.75rem;color:var(--text2);margin-top:1rem;">
+        احصل على مفتاح مجاني من: 
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary);">aistudio.google.com</a>
+      </p>
     </div>
   </div>
 
@@ -322,7 +286,7 @@
 (function() {
   'use strict';
 
-  // State
+  // State Management
   let State = {
     archive: JSON.parse(localStorage.getItem('desbot_archive') || '[]'),
     agenda: JSON.parse(localStorage.getItem('desbot_agenda') || '[]'),
@@ -332,22 +296,18 @@
     }
   };
 
-  // --- Core UI Functions ---
-
-  // Theme Switcher Logic
+  // Theme
   window.setTheme = function(theme) {
     document.body.setAttribute('data-theme', theme);
     localStorage.setItem('deskbot_theme', theme);
     document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-    const activeDot = document.querySelector(`.theme-dot.t-${theme === 'dark' ? 'dark' : theme === 'light' ? 'light' : 'warm'}`);
-    if (activeDot) activeDot.classList.add('active');
+    document.querySelector(`.t-${theme}`).classList.add('active');
   };
-
-  // Initialize Theme
+  
   const savedTheme = localStorage.getItem('deskbot_theme') || 'warm';
   setTheme(savedTheme);
 
-  // Show Panel Logic
+  // Panel Navigation
   window.showPanel = function(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -356,213 +316,367 @@
     if (btn) btn.classList.add('active');
   };
 
-  // Settings Modal Logic
+  // Settings Modal
   window.openSettings = function() {
     document.getElementById('settings-modal').style.display = 'flex';
-    if (State.keys.gemini) document.getElementById('gemini-key').value = State.keys.gemini;
-    if (State.keys.openrouter) document.getElementById('openrouter-key').value = State.keys.openrouter;
+    document.getElementById('gemini-key').value = State.keys.gemini;
+    document.getElementById('openrouter-key').value = State.keys.openrouter;
   };
+  
   window.closeSettings = function() {
     document.getElementById('settings-modal').style.display = 'none';
   };
 
-  // Save Keys
+  // Save API Keys
   document.getElementById('btn-save-keys').addEventListener('click', function() {
     State.keys.gemini = document.getElementById('gemini-key').value.trim();
     State.keys.openrouter = document.getElementById('openrouter-key').value.trim();
     localStorage.setItem('gemini_key', State.keys.gemini);
     localStorage.setItem('openrouter_key', State.keys.openrouter);
-    document.getElementById('settings-status').textContent = '✅ تم الحفظ';
-    document.getElementById('settings-status').className = 'status success';
-    setTimeout(window.closeSettings, 1000);
+    
+    const statusEl = document.getElementById('settings-status');
+    statusEl.textContent = '✅ تم حفظ المفاتيح بنجاح';
+    statusEl.className = 'status success';
+    setTimeout(window.closeSettings, 1500);
   });
 
-  // --- API Calls (Fixed URL errors) ---
-
+  // Gemini API Call - FIXED
   async function callGemini(prompt) {
-    if (!State.keys.gemini) throw new Error('مفتاح Gemini غير موجود - اضغط ⚙️');
-    // Explicitly define URL variable to avoid "url is not defined" error
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${State.keys.gemini}`;
-    const res = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-    if (!res.ok) {
-      if (res.status === 401) throw new Error('مفتاح غير صحيح');
-      throw new Error('خطأ في الاتصال بـ Gemini');
+    if (!State.keys.gemini) {
+      throw new Error('مفتاح Gemini غير موجود. اضغط على ⚙️ وأدخل المفتاح');
     }
-    const data = await res.json();
-    return data.candidates[0].content.parts[0].text;
+    
+    const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+    const url = `${API_URL}?key=${State.keys.gemini}`;
+    
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }]
+        })
+      });
+      
+      if (!response.ok) {
+        if (response.status === 400) throw new Error('طلب غير صالح - تحقق من النص');
+        if (response.status === 401) throw new Error('مفتاح API غير صحيح');
+        if (response.status === 403) throw new Error('المفتاح غير مفعل - تحقق من Google AI Studio');
+        if (response.status === 429) throw new Error('تم تجاوز الحد اليومي');
+        throw new Error(`خطأ في الاتصال: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+        throw new Error('استجابة غير متوقعة من API');
+      }
+      
+      return data.candidates[0].content.parts[0].text;
+    } catch (error) {
+      console.error('Gemini API Error:', error);
+      throw error;
+    }
   }
 
-  // --- Button Event Listeners ---
-
-  // Editor
-  document.getElementById('btn-run-editor').addEventListener('click', async function() {
+  // Editor Button
+  document.getElementById('btn-editor').addEventListener('click', async function() {
     const input = document.getElementById('editor-input').value.trim();
-    if (!input) return setStatus('editor-status', 'أدخل النص', 'error');
-    setStatus('editor-status', 'جاري المعالجة...', 'loading');
+    if (!input) {
+      setStatus('editor-status', '⚠️ أدخل النص أولاً', 'error');
+      return;
+    }
+    
+    const mode = document.getElementById('editor-mode').value;
+    let prompt = '';
+    
+    switch(mode) {
+      case 'structure':
+        prompt = `أعد هيكلة النص التالي وفق معايير احترافية: عنوان رئيسي، مقدمة (ليد)، فقرات متسلسلة، خاتمة. النص: ${input}`;
+        break;
+      case 'seo':
+        prompt = `أعد صياغة النص التالي مع تحسين SEO: أضف عنوان H1، عنوانين H2، وكلمات مفتاحية. النص: ${input}`;
+        break;
+      case 'titles':
+        prompt = `أنشئ 12 عنواناً إخبارياً جذاباً مقسمة لـ 4 فئات (إخباري، تشويقي، تحليلي، سوشيال ميديا). النص: ${input}`;
+        break;
+      case 'flash':
+        prompt = `حوّل النص التالي لفلاش إذاعي موجز ≤40 كلمة، مشكول جزئياً. النص: ${input}`;
+        break;
+    }
+    
+    setStatus('editor-status', '⏳ جاري المعالجة...', 'loading');
     try {
-      const mode = document.getElementById('editor-mode').value;
-      const prompt = `أنت محرر. ${mode === 'structure' ? 'أعد هيكلة النص' : mode === 'seo' ? 'حسن SEO النص' : mode === 'titles' ? 'أنشئ 12 عنواناً' : 'حوّل لفلاش إذاعي'}: ${input}`;
-      document.getElementById('editor-output').value = await callGemini(prompt);
-      setStatus('editor-status', '✅ تم', 'success');
-    } catch(e) { setStatus('editor-status', '❌ ' + e.message, 'error'); }
+      const result = await callGemini(prompt);
+      document.getElementById('editor-output').value = result;
+      setStatus('editor-status', '✅ تمت المعالجة بنجاح', 'success');
+    } catch (error) {
+      setStatus('editor-status', '❌ ' + error.message, 'error');
+    }
   });
 
-  // Pro Article (The one that was broken)
-  document.getElementById('btn-run-pro').addEventListener('click', async function() {
+  // Pro Article Button
+  document.getElementById('btn-pro').addEventListener('click', async function() {
     const input = document.getElementById('pro-input').value.trim();
-    if (!input) return setStatus('pro-status', 'أدخل النص', 'error');
-    setStatus('pro-status', 'جاري الكتابة...', 'loading');
+    if (!input) {
+      setStatus('pro-status', '⚠️ أدخل النص', 'error');
+      return;
+    }
+    
+    const count = document.getElementById('pro-count').value;
+    const prompt = `اكتب ${count} مقال إخباري احترافي مفصل عن: ${input}`;
+    
+    setStatus('pro-status', '⏳ جاري الكتابة...', 'loading');
     try {
-      const count = document.getElementById('pro-count').value;
-      const prompt = `اكتب ${count} مقال إخباري احترافي عن: ${input}`;
-      document.getElementById('pro-output').value = await callGemini(prompt);
-      setStatus('pro-status', '✅ تم', 'success');
-    } catch(e) { setStatus('pro-status', '❌ ' + e.message, 'error'); }
+      const result = await callGemini(prompt);
+      document.getElementById('pro-output').value = result;
+      setStatus('pro-status', '✅ تم إنشاء المقال', 'success');
+    } catch (error) {
+      setStatus('pro-status', '❌ ' + error.message, 'error');
+    }
   });
 
-  // RSS (Also had URL error potential)
-  document.getElementById('btn-refresh-rss').addEventListener('click', async function() {
-    setStatus('rss-status', 'جاري الجلب...', 'loading');
+  // RSS Button
+  document.getElementById('btn-rss').addEventListener('click', async function() {
+    setStatus('rss-status', '⏳ جاري الجلب...', 'loading');
     try {
-      const rssUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://www.babnet.net/rss.xml';
-      const res = await fetch(rssUrl);
-      const data = await res.json();
+      const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://www.babnet.net/rss.xml');
+      const data = await response.json();
       const container = document.getElementById('rss-container');
-      container.innerHTML = data.items.slice(0, 6).map(item => 
-        `<div class="card" style="cursor:pointer;"><h4 style="color:var(--primary);margin-bottom:0.5rem;">${item.title}</h4><p style="font-size:0.85rem;color:var(--text2);">${(item.description||'').substring(0,100)}...</p></div>`
-      ).join('');
-      setStatus('rss-status', '✅ تم التحميل', 'success');
-    } catch(e) { setStatus('rss-status', '❌ فشل', 'error'); }
+      
+      container.innerHTML = data.items.slice(0, 6).map(item => `
+        <div class="card" style="cursor:pointer;">
+          <h4 style="color:var(--primary);margin-bottom:0.5rem;">${item.title}</h4>
+          <p style="font-size:0.85rem;color:var(--text2);">${(item.description || '').substring(0, 100)}...</p>
+        </div>
+      `).join('');
+      
+      setStatus('rss-status', '✅ تم تحميل ' + data.items.length + ' خبر', 'success');
+    } catch (error) {
+      setStatus('rss-status', '❌ فشل التحميل', 'error');
+    }
   });
 
-  // Audio (Mock)
-  document.getElementById('btn-transcribe').addEventListener('click', function() {
-    setStatus('transcribe-status', 'جاري التفريغ...', 'loading');
+  // Audio Button (Mock)
+  document.getElementById('btn-audio').addEventListener('click', function() {
+    setStatus('audio-status', '⏳ جاري التفريغ...', 'loading');
     setTimeout(() => {
-      document.getElementById('transcribe-output').value = 'نص تجريبي (محاكاة)';
-      setStatus('transcribe-status', '✅ تم', 'success');
-    }, 1500);
+      document.getElementById('audio-output').value = 'هذا نص تجريبي للتفريغ الصوتي. لربط Whisper API حقيقي، يحتاج إلى خادم خلفي.';
+      setStatus('audio-status', '✅ تم التفريغ', 'success');
+    }, 2000);
   });
 
-  // History
-  document.getElementById('btn-search-hist').addEventListener('click', async function() {
-    const d = document.getElementById('hist-day').value;
-    const m = document.getElementById('hist-month').value;
-    if (!d || !m) return setStatus('hist-status', 'أدخل اليوم والشهر', 'error');
-    setStatus('hist-status', 'جاري البحث...', 'loading');
+  // History Button
+  document.getElementById('btn-hist').addEventListener('click', async function() {
+    const day = document.getElementById('hist-day').value;
+    const month = document.getElementById('hist-month').value;
+    
+    if (!day || !month) {
+      setStatus('hist-status', '⚠️ أدخل اليوم والشهر', 'error');
+      return;
+    }
+    
+    const prompt = `اذكر 3-5 أحداث تاريخية مهمة وقعت في يوم ${day} من الشهر ${month} عبر التاريخ`;
+    
+    setStatus('hist-status', '⏳ جاري البحث...', 'loading');
     try {
-      document.getElementById('hist-output').value = await callGemini(`اذكر أحداث تاريخية في يوم ${d} شهر ${m}`);
-      setStatus('hist-status', '✅ تم', 'success');
-    } catch(e) { setStatus('hist-status', '❌ ' + e.message, 'error'); }
+      const result = await callGemini(prompt);
+      document.getElementById('hist-output').value = result;
+      setStatus('hist-status', '✅ تم البحث', 'success');
+    } catch (error) {
+      setStatus('hist-status', '❌ ' + error.message, 'error');
+    }
   });
 
-  // Sports
-  document.getElementById('btn-search-sports').addEventListener('click', async function() {
-    const a = document.getElementById('team-a').value;
-    const b = document.getElementById('team-b').value;
-    if (!a || !b) return setStatus('sports-status', 'أدخل الفريقين', 'error');
-    setStatus('sports-status', 'جاري البحث...', 'loading');
+  // Sports Button
+  document.getElementById('btn-sports').addEventListener('click', async function() {
+    const teamA = document.getElementById('team-a').value.trim();
+    const teamB = document.getElementById('team-b').value.trim();
+    
+    if (!teamA || !teamB) {
+      setStatus('sports-status', '⚠️ أدخل اسمي الفريقين', 'error');
+      return;
+    }
+    
+    const prompt = `لخص تاريخ المواجهات بين ${teamA} و ${teamB}: آخر النتائج، الإحصائيات، السياق التنافسي`;
+    
+    setStatus('sports-status', '⏳ جاري البحث...', 'loading');
     try {
-      document.getElementById('sports-output').value = await callGemini(`المواجهات بين ${a} و ${b}`);
-      setStatus('sports-status', '✅ تم', 'success');
-    } catch(e) { setStatus('sports-status', '❌ ' + e.message, 'error'); }
+      const result = await callGemini(prompt);
+      document.getElementById('sports-output').value = result;
+      setStatus('sports-status', '✅ تم البحث', 'success');
+    } catch (error) {
+      setStatus('sports-status', '❌ ' + error.message, 'error');
+    }
   });
 
-  // Qwen
-  document.getElementById('btn-run-qwen').addEventListener('click', async function() {
+  // Qwen Button
+  document.getElementById('btn-qwen').addEventListener('click', async function() {
     const input = document.getElementById('qwen-input').value.trim();
-    if (!input) return setStatus('qwen-status', 'أدخل نصاً', 'error');
-    if (!State.keys.openrouter) return setStatus('qwen-status', 'مفتاح OpenRouter مفقود', 'error');
-    setStatus('qwen-status', 'Qwen يعالج...', 'loading');
+    if (!input) {
+      setStatus('qwen-status', '⚠️ أدخل نصاً', 'error');
+      return;
+    }
+    
+    if (!State.keys.openrouter) {
+      setStatus('qwen-status', '⚠️ مفتاح OpenRouter غير مدخل', 'error');
+      return;
+    }
+    
+    setStatus('qwen-status', '⏳ Qwen يعالج...', 'loading');
     try {
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${State.keys.openrouter}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'qwen/qwen-2.5-72b-instruct:free', messages: [{ role: 'user', content: input }] })
+        headers: {
+          'Authorization': `Bearer ${State.keys.openrouter}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.href
+        },
+        body: JSON.stringify({
+          model: 'qwen/qwen-2.5-72b-instruct:free',
+          messages: [{ role: 'user', content: input }]
+        })
       });
-      const data = await res.json();
+      
+      if (!response.ok) throw new Error('فشل الاتصال بـ Qwen');
+      
+      const data = await response.json();
       document.getElementById('qwen-output').value = data.choices[0].message.content;
-      setStatus('qwen-status', '✅ تم', 'success');
-    } catch(e) { setStatus('qwen-status', '❌ خطأ', 'error'); }
+      setStatus('qwen-status', '✅ تمت المعالجة', 'success');
+    } catch (error) {
+      setStatus('qwen-status', '❌ ' + error.message, 'error');
+    }
   });
 
-  // Agenda
-  document.getElementById('btn-add-agenda').addEventListener('click', function() {
-    const d = document.getElementById('agenda-date').value;
-    const desc = document.getElementById('agenda-desc').value;
-    if (!d || !desc) return setStatus('agenda-status', 'املأ الحقول', 'error');
-    State.agenda.push({ date: d, desc });
+  // Agenda Button
+  document.getElementById('btn-agenda').addEventListener('click', function() {
+    const date = document.getElementById('agenda-date').value;
+    const desc = document.getElementById('agenda-desc').value.trim();
+    
+    if (!date || !desc) {
+      setStatus('agenda-status', '⚠️ املأ جميع الحقول', 'error');
+      return;
+    }
+    
+    State.agenda.push({ date, desc });
     localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
     renderAgenda();
     setStatus('agenda-status', '✅ تمت الإضافة', 'success');
+    document.getElementById('agenda-desc').value = '';
   });
 
   function renderAgenda() {
     const list = document.getElementById('agenda-list');
-    list.innerHTML = State.agenda.map((item, i) => 
-      `<div style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;margin-bottom:0.5rem;">${item.desc} <small>(${item.date})</small></div>`
-    ).join('') || '<div class="status">لا توجد أحداث</div>';
+    if (State.agenda.length === 0) {
+      list.innerHTML = '<div class="status">لا توجد أحداث</div>';
+      return;
+    }
+    
+    list.innerHTML = State.agenda.map((item, index) => `
+      <div style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;">
+        <div><strong>${item.desc}</strong> <small style="color:var(--text2);">(${item.date})</small></div>
+        <button onclick="deleteAgenda(${index})" style="background:var(--danger);color:#fff;border:none;padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer;">×</button>
+      </div>
+    `).join('');
   }
 
-  // Archive
-  document.getElementById('btn-search-archive').addEventListener('click', function() {
-    const q = document.getElementById('archive-search').value.toLowerCase();
-    const res = State.archive.filter(i => i.content.toLowerCase().includes(q));
-    document.getElementById('archive-results').innerHTML = res.map(i => 
-      `<div class="card" style="padding:0.8rem;"><strong>${i.type}</strong> <small>${i.date}</small><p>${i.content.substring(0,150)}...</p></div>`
-    ).join('') || '<div class="status">لا توجد نتائج</div>';
+  window.deleteAgenda = function(index) {
+    State.agenda.splice(index, 1);
+    localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
+    renderAgenda();
+  };
+
+  // Archive Button
+  document.getElementById('btn-archive').addEventListener('click', function() {
+    const query = document.getElementById('archive-search').value.toLowerCase();
+    const results = State.archive.filter(item => 
+      item.content.toLowerCase().includes(query) || 
+      item.type.toLowerCase().includes(query)
+    );
+    
+    const container = document.getElementById('archive-results');
+    if (results.length === 0) {
+      container.innerHTML = '<div class="status">لا توجد نتائج</div>';
+      return;
+    }
+    
+    container.innerHTML = results.map(item => `
+      <div class="card" style="padding:0.8rem;margin-bottom:0.5rem;">
+        <strong style="color:var(--primary);">${item.type}</strong> 
+        <small style="color:var(--text2);">${item.date}</small>
+        <p style="margin-top:0.5rem;font-size:0.9rem;">${item.content.substring(0, 200)}...</p>
+      </div>
+    `).join('');
   });
 
-  // Helper: Status
-  function setStatus(id, msg, type) {
-    const el = document.getElementById(id);
-    if(el) { el.textContent = msg; el.className = 'status ' + type; }
+  // Copy Buttons
+  document.getElementById('btn-copy-editor').addEventListener('click', function() {
+    const text = document.getElementById('editor-output').value;
+    if (text) {
+      navigator.clipboard.writeText(text);
+      alert('تم النسخ');
+    }
+  });
+
+  document.getElementById('btn-copy-pro').addEventListener('click', function() {
+    const text = document.getElementById('pro-output').value;
+    if (text) {
+      navigator.clipboard.writeText(text);
+      alert('تم النسخ');
+    }
+  });
+
+  document.getElementById('btn-copy-audio').addEventListener('click', function() {
+    const text = document.getElementById('audio-output').value;
+    if (text) {
+      navigator.clipboard.writeText(text);
+      alert('تم النسخ');
+    }
+  });
+
+  // Save/Archive Buttons
+  document.getElementById('btn-save-editor').addEventListener('click', function() {
+    const content = document.getElementById('editor-output').value;
+    if (content) {
+      State.archive.unshift({ type: 'محرر', content, date: new Date().toLocaleString('ar-TN') });
+      localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
+      alert('تمت الأرشفة');
+    }
+  });
+
+  document.getElementById('btn-save-pro').addEventListener('click', function() {
+    const content = document.getElementById('pro-output').value;
+    if (content) {
+      State.archive.unshift({ type: 'مقال', content, date: new Date().toLocaleString('ar-TN') });
+      localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
+      alert('تمت الأرشفة');
+    }
+  });
+
+  document.getElementById('btn-save-audio').addEventListener('click', function() {
+    const content = document.getElementById('audio-output').value;
+    if (content) {
+      State.archive.unshift({ type: 'تفريغ', content, date: new Date().toLocaleString('ar-TN') });
+      localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
+      alert('تمت الأرشفة');
+    }
+  });
+
+  // Helper: Set Status
+  function setStatus(elementId, message, type) {
+    const el = document.getElementById(elementId);
+    if (el) {
+      el.textContent = message;
+      el.className = 'status ' + type;
+    }
   }
 
-  // Helper: Copy
-  document.querySelectorAll('[id^="btn-copy-"]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const targetId = this.id.replace('btn-copy-', '').replace('-editor', '-output').replace('-pro', '-output').replace('-audio', '-output').replace('-hist', '-output').replace('-sports', '-output').replace('-qwen', '-output');
-      // Simple mapping for this simplified structure
-      let target = document.getElementById(targetId);
-      if(!target) {
-          // Fallback mapping for specific IDs
-          if(this.id === 'btn-copy-editor') target = document.getElementById('editor-output');
-          if(this.id === 'btn-copy-pro') target = document.getElementById('pro-output');
-          if(this.id === 'btn-copy-audio') target = document.getElementById('transcribe-output');
-          if(this.id === 'btn-copy-hist') target = document.getElementById('hist-output');
-          if(this.id === 'btn-copy-sports') target = document.getElementById('sports-output');
-          if(this.id === 'btn-copy-qwen') target = document.getElementById('qwen-output');
-      }
-      if(target) {
-        navigator.clipboard.writeText(target.value);
-        alert('تم النسخ');
-      }
-    });
-  });
-
-  // Helper: Save
-  document.querySelectorAll('[id^="btn-save-"]').forEach(btn => {
-    btn.addEventListener('click', function() {
-      let content = '';
-      if(this.id === 'btn-save-editor') content = document.getElementById('editor-output').value;
-      if(this.id === 'btn-save-pro') content = document.getElementById('pro-output').value;
-      if(this.id === 'btn-save-audio') content = document.getElementById('transcribe-output').value;
-      
-      if(content) {
-        const type = this.id.replace('btn-save-', '');
-        State.archive.unshift({ type, content, date: new Date().toLocaleString() });
-        localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
-        alert('تمت الأرشفة');
-      }
-    });
-  });
-
-  // Initial Render
+  // Initialize
   renderAgenda();
 
 })();
