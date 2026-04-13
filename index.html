@@ -67,6 +67,7 @@
         }
         .model-free { background: rgba(16, 185, 129, 0.2); color: #10b981; }
         .model-pro { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        .model-fast { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
     </style>
 </head>
 <body class="text-gray-100 font-cairo">
@@ -95,8 +96,8 @@
         </div>
     </header>
 
-    <div class="flex pt-20 min-h-screen">
-        <!-- Sidebar -->        <aside class="w-64 fixed right-0 top-20 bottom-0 glass-effect border-l border-gray-700 overflow-y-auto">
+    <div class="flex pt-20 min-h-screen">        <!-- Sidebar -->
+        <aside class="w-64 fixed right-0 top-20 bottom-0 glass-effect border-l border-gray-700 overflow-y-auto">
             <nav class="p-4 space-y-2">
                 <button data-panel="home" class="nav-item active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
                     <i class="fas fa-home w-5"></i><span class="font-medium">الرئيسية</span>
@@ -104,29 +105,17 @@
                 <button data-panel="rss" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
                     <i class="fas fa-globe w-5"></i><span class="font-medium">آخر الأخبار</span>
                 </button>
-                <button class="nav-item w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-300 hover:text-white relative" id="btn-editor-dropdown">
-                    <div class="flex items-center gap-3">
-                        <i class="fas fa-pen-fancy w-5"></i><span class="font-medium">المحرر الذكي</span>
-                    </div>
-                    <i class="fas fa-chevron-down text-xs"></i>
+                <button data-panel="editor" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-pen-fancy w-5"></i><span class="font-medium">المحرر الذكي</span>
                 </button>
-                <div id="editor-dropdown" class="dropdown-menu mr-4 mt-1 space-y-1">
-                    <button data-panel="editor" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المحرر PRO</button>
-                    <button data-panel="pro-article" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المقال الإخباري</button>
-                </div>
-                <button class="nav-item w-full flex items-center justify-between px-4 py-3 rounded-lg text-gray-300 hover:text-white relative" id="btn-tools-dropdown">
-                    <div class="flex items-center gap-3">
-                        <i class="fas fa-toolbox w-5"></i><span class="font-medium">الأدوات</span>
-                    </div>
-                    <i class="fas fa-chevron-down text-xs"></i>
+                <button data-panel="pro-article" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-newspaper w-5"></i><span class="font-medium">المقال الإخباري</span>
                 </button>
-                <div id="tools-dropdown" class="dropdown-menu mr-4 mt-1 space-y-1">
-                    <button data-panel="history" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">حدث اليوم</button>
-                    <button data-panel="sports" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">المواجهات الرياضية</button>
-                    <button data-panel="persona" class="w-full text-right px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-surface rounded">تسمية الشخصية</button>
-                </div>
                 <button data-panel="audio" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
                     <i class="fas fa-microphone w-5"></i><span class="font-medium">التفريغ الصوتي</span>
+                </button>
+                <button data-panel="tools" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
+                    <i class="fas fa-toolbox w-5"></i><span class="font-medium">الأدوات</span>
                 </button>
                 <button data-panel="qwen" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:text-white">
                     <i class="fas fa-robot w-5"></i><span class="font-medium">Qwen AI</span>
@@ -145,8 +134,68 @@
             <!-- Home Panel -->
             <div id="panel-home" class="panel active">
                 <div class="mb-8">
-                    <h2 class="text-3xl font-bold mb-2 gradient-text">مرحباً بك في DESK BOT</h2>                    <p class="text-gray-400">منصتك الشاملة للعمل الصحفي الذكي</p>
+                    <h2 class="text-3xl font-bold mb-2 gradient-text">مرحباً بك في DESK BOT</h2>
+                    <p class="text-gray-400">منصتك الشاملة للعمل الصحفي الذكي</p>
                 </div>
+
+                <!-- نماذج Gemini المتاحة -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center">
+                                <i class="fas fa-bolt text-white text-xl"></i>
+                            </div>
+                            <span class="model-badge model-free">                                <i class="fas fa-infinity"></i>
+                                1500/يوم
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Gemini 1.5 Flash</h3>
+                        <p class="text-gray-400 text-sm mb-3">الأفضل للعربية - سريع ودقيق</p>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>دعم ممتاز للعربية</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>1 مليون رمز</li>
+                            <li><i class="fas fa-check text-green-500 ml-2"></i>مثالي للمهام اليومية</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                                <i class="fas fa-star text-white text-xl"></i>
+                            </div>
+                            <span class="model-badge model-pro">
+                                <i class="fas fa-infinity"></i>
+                                1500/يوم
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Gemini 2.0 Flash</h3>
+                        <p class="text-gray-400 text-sm mb-3">الأحدث - دقة عالية للمقالات</p>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li><i class="fas fa-check text-purple-500 ml-2"></i>أحدث نموذج مستقر</li>
+                            <li><i class="fas fa-check text-purple-500 ml-2"></i>فهم سياقي متقدم</li>
+                            <li><i class="fas fa-check text-purple-500 ml-2"></i>للمقالات الاحترافية</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                                <i class="fas fa-tachometer-alt text-white text-xl"></i>
+                            </div>
+                            <span class="model-badge model-fast">
+                                <i class="fas fa-infinity"></i>
+                                1500/يوم
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">Gemini 1.5 Flash-8B</h3>
+                        <p class="text-gray-400 text-sm mb-3">الأسرع - للعناوين والفلاش</p>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li><i class="fas fa-check text-blue-500 ml-2"></i>سرعة فائقة</li>
+                            <li><i class="fas fa-check text-blue-500 ml-2"></i>8B معاملات</li>
+                            <li><i class="fas fa-check text-blue-500 ml-2"></i>للمهام السريعة</li>
+                        </ul>
+                    </div>                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="glass-effect rounded-2xl p-6 border border-gray-700 cursor-pointer hover:transform hover:-translate-y-2 transition-all" id="card-editor">
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-4">
@@ -192,9 +241,10 @@
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold gradient-text">✍️ المحرر الذكي PRO</h2>
                         <select id="editor-model" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
-                            <option value="gemini-1.5-flash">Gemini 1.5 Flash (1500/يوم)</option>
-                            <option value="gemini-1.5-pro">Gemini 1.5 Pro (50/يوم)</option>
-                        </select>                    </div>
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash (موصى به)</option>
+                            <option value="gemini-2.0-flash">Gemini 2.0 Flash (أحدث)</option>
+                            <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8B (أسرع)</option>                        </select>
+                    </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-300 mb-2">النص الأصلي</label>
                         <textarea id="editor-input" class="w-full h-48 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all resize-none" placeholder="الصق النص الخام هنا..."></textarea>
@@ -242,9 +292,9 @@
                     <div class="mb-4">
                         <textarea id="pro-input" class="w-full h-32 bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 resize-none" placeholder="أدخل النص أو الفكرة الأساسية للمقال..."></textarea>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <select id="pro-model" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">                        <select id="pro-model" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
+                            <option value="gemini-2.0-flash">Gemini 2.0 Flash (موصى به)</option>
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
                         </select>
                         <select id="pro-count" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
                             <option value="1">مقال واحد</option>
@@ -286,13 +336,14 @@
                 </div>
             </div>
 
-            <!-- History Panel -->
-            <div id="panel-history" class="panel">
-                <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+            <!-- Tools Panel -->
+            <div id="panel-tools" class="panel">
+                <!-- History -->
+                <div class="glass-effect rounded-2xl p-6 border border-gray-700 mb-6">
                     <h2 class="text-2xl font-bold gradient-text mb-6">📜 حدث اليوم في التاريخ</h2>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <input type="number" id="hist-day" min="1" max="31" placeholder="اليوم (1-31)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
-                        <input type="number" id="hist-month" min="1" max="12" placeholder="الشهر (1-12)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">                        <input type="number" id="hist-day" min="1" max="31" placeholder="اليوم (1-31)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
+                        <input type="number" id="hist-month" min="1" max="12" placeholder="الشهر (1-12)" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
+                    </div>
                     <button id="btn-search-hist" class="btn-gradient w-full py-3 rounded-lg text-white font-bold mb-4">
                         <i class="fas fa-search ml-2"></i>بحث في هذا اليوم
                     </button>
@@ -303,11 +354,9 @@
                         <button id="btn-save-hist" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Sports Panel -->
-            <div id="panel-sports" class="panel">
-                <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+                <!-- Sports -->
+                <div class="glass-effect rounded-2xl p-6 border border-gray-700 mb-6">
                     <h2 class="text-2xl font-bold gradient-text mb-6">⚽ أرشيف المواجهات</h2>
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <input type="text" id="team-a" placeholder="الفريق الأول" class="bg-dark border border-gray-600 rounded-lg px-4 py-2 text-gray-100">
@@ -323,10 +372,8 @@
                         <button id="btn-save-sports" class="flex-1 bg-green-600 hover:bg-green-700 py-2 rounded-lg">أرشفة</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Persona Panel -->
-            <div id="panel-persona" class="panel">
+                <!-- Persona -->
                 <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <h2 class="text-2xl font-bold gradient-text mb-6">👤 تسمية الشخصية</h2>
                     <input type="text" id="persona-input" placeholder="اسم الشخصية أو المنصب..." class="w-full bg-dark border border-gray-600 rounded-xl p-4 text-gray-100 mb-4">
@@ -341,9 +388,9 @@
                     </div>
                 </div>
             </div>
+
             <!-- Qwen Panel -->
-            <div id="panel-qwen" class="panel">
-                <div class="glass-effect rounded-2xl p-6 border border-gray-700">
+            <div id="panel-qwen" class="panel">                <div class="glass-effect rounded-2xl p-6 border border-gray-700">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold gradient-text">🤖 Qwen 2.5 — OpenRouter</h2>
                         <span class="model-badge model-free"><i class="fas fa-infinity"></i>50/يوم مجاني</span>
@@ -390,9 +437,9 @@
                     <div id="archive-status" class="mb-4"></div>
                     <div id="archive-results" class="space-y-4"></div>
                 </div>
-            </div>        </main>
+            </div>
+        </main>
     </div>
-
     <!-- Settings Modal -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="glass-effect rounded-2xl p-8 max-w-2xl w-full border border-gray-600 max-h-[90vh] overflow-y-auto">
@@ -410,7 +457,7 @@
                         </div>
                         <div>
                             <h3 class="font-bold">Google Gemini API</h3>
-                            <p class="text-sm text-gray-400">1500 طلب/يوم (Flash) · 50 طلب/يوم (Pro)</p>
+                            <p class="text-sm text-gray-400">1500 طلب/يوم لكل نموذج</p>
                         </div>
                     </div>
                     <input type="password" id="gemini-key" class="w-full bg-dark border border-gray-600 rounded-xl px-4 py-3 text-gray-100 focus:border-blue-500 mb-3" placeholder="AIzaSy...">
@@ -440,8 +487,8 @@
             </div>
         </div>
     </div>
-    <script>
-        // برومبتات احترافية
+
+    <script>        // برومبتات احترافية
         const PROMPTS = {
             structure: `أنت محرر إخباري أول. حوّل النص إلى مادة وفق معايير وات/ديوان أف أم: عنوان جذاب، ليد (5W1H)، فقرات قصيرة، خاتمة، 5 وسوم SEO. النص: {input}`,
             seo: `أعد صياغة النص للنشر الرقمي مع SEO: عنوان H1، عنوانان H2، Meta Description (155 حرف)، كلمات مفتاحية طبيعية. النص: {input}`,
@@ -479,65 +526,52 @@
             }
         }
 
-        // التبديل بين اللوحات - الإصلاح الجذري
+        // التبديل بين اللوحات
         function showPanel(panelId) {
-            console.log('Opening panel:', panelId);
-            // إخفاء جميع اللوحات
-            document.querySelectorAll('.panel').forEach(p => {
-                p.classList.remove('active');
-            });
-            // إظهار اللوحة المطلوبة
-            const targetPanel = document.getElementById('panel-' + panelId);
-            if (targetPanel) {                targetPanel.classList.add('active');
-                console.log('Panel shown:', panelId);
-            } else {
-                console.error('Panel not found:', panelId);
-            }
-            // تحديث القائمة الجانبية
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('panel-' + panelId).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(b => {
                 b.classList.remove('active');
                 if (b.getAttribute('data-panel') === panelId) {
                     b.classList.add('active');
                 }
             });
-            // إغلاق القوائم المنسدلة
-            document.querySelectorAll('.dropdown-menu').forEach(d => {
-                d.classList.remove('show');
-            });
-            // التمرير للأعلى
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+            document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
+            window.scrollTo({ top: 0, behavior: 'smooth' });        }
 
-        // التحكم في القوائم المنسدلة
-        function toggleDropdown(dropdownId) {
-            const dropdown = document.getElementById(dropdownId);
-            document.querySelectorAll('.dropdown-menu').forEach(d => {
-                if (d.id !== dropdownId) d.classList.remove('show');
-            });
-            if (dropdown) {
-                dropdown.classList.toggle('show');
-            }
-        }
-
-        // الاتصال بـ Gemini
+        // الاتصال بـ Gemini - النماذج المتاحة فقط
         async function callGemini(prompt, model = 'gemini-1.5-flash') {
             if (!State.keys.gemini) {
                 throw new Error('مفتاح Gemini غير مدخل. افتح الإعدادات وأضف المفتاح');
             }
+            
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${State.keys.gemini}`;
+            
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { temperature: 0.7, maxOutputTokens: 4096, topP: 0.9 }
+                    generationConfig: { 
+                        temperature: 0.7, 
+                        maxOutputTokens: 4096, 
+                        topP: 0.9,
+                        topK: 40
+                    }
                 })
             });
+            
             if (!response.ok) {
                 const error = await response.json();
-                if (response.status === 429) throw new Error('تم تجاوز الحد اليومي. استخدم نموذجاً آخر');
+                if (response.status === 429) {
+                    throw new Error('تم تجاوز الحد اليومي (1500 طلب). استخدم نموذجاً آخر أو انتظر غداً');
+                } else if (response.status === 404) {
+                    throw new Error('النموذج غير متوفر. تأكد من اختيار نموذج صحيح');
+                }
                 throw new Error(`خطأ: ${error.error?.message || response.statusText}`);
-            }            const data = await response.json();
+            }
+            
+            const data = await response.json();
             return data.candidates[0].content.parts[0].text;
         }
 
@@ -551,7 +585,8 @@
             const mode = document.getElementById('editor-mode').value;
             const model = document.getElementById('editor-model').value;
             const prompt = PROMPTS[mode].replace('{input}', input);
-            showStatus('editor-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري المعالجة...', 'loading');
+            
+            showStatus('editor-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري المعالجة بـ ' + model + '...', 'loading');            
             try {
                 const result = await callGemini(prompt, model);
                 document.getElementById('editor-output').value = result;
@@ -571,7 +606,9 @@
             const count = document.getElementById('pro-count').value;
             const model = document.getElementById('pro-model').value;
             const prompt = PROMPTS.pro_article.replace('{input}', input).replace('{count}', count);
-            showStatus('pro-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الكتابة...', 'loading');
+            
+            showStatus('pro-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الكتابة بـ ' + model + '...', 'loading');
+            
             try {
                 const result = await callGemini(prompt, model);
                 document.getElementById('pro-output').value = result;
@@ -586,18 +623,19 @@
             const day = document.getElementById('hist-day').value;
             const month = document.getElementById('hist-month').value;
             if (!day || !month) {
-                showStatus('hist-status', 'أدخل اليوم والشهر', 'error');                return;
+                showStatus('hist-status', 'أدخل اليوم والشهر', 'error');
+                return;
             }
             const prompt = PROMPTS.history.replace('{day}', day).replace('{month}', month);
             showStatus('hist-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري البحث...', 'loading');
+            
             try {
-                const result = await callGemini(prompt);
+                const result = await callGemini(prompt, 'gemini-1.5-flash');
                 document.getElementById('hist-output').value = result;
                 showStatus('hist-status', '<i class="fas fa-check-circle ml-2"></i>تم البحث', 'success');
             } catch (error) {
                 showStatus('hist-status', error.message, 'error');
-            }
-        }
+            }        }
 
         // البحث الرياضي
         async function searchSports() {
@@ -609,8 +647,9 @@
             }
             const prompt = PROMPTS.sports.replace('{teamA}', teamA).replace('{teamB}', teamB);
             showStatus('sports-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري البحث...', 'loading');
+            
             try {
-                const result = await callGemini(prompt);
+                const result = await callGemini(prompt, 'gemini-1.5-flash');
                 document.getElementById('sports-output').value = result;
                 showStatus('sports-status', '<i class="fas fa-check-circle ml-2"></i>تم البحث', 'success');
             } catch (error) {
@@ -627,14 +666,16 @@
             }
             const prompt = PROMPTS.profile.replace('{input}', name);
             showStatus('persona-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الرصد...', 'loading');
+            
             try {
-                const result = await callGemini(prompt);
+                const result = await callGemini(prompt, 'gemini-2.0-flash');
                 document.getElementById('persona-output').value = result;
                 showStatus('persona-status', '<i class="fas fa-check-circle ml-2"></i>تم الاستخراج', 'success');
             } catch (error) {
                 showStatus('persona-status', error.message, 'error');
             }
         }
+
         // Qwen
         async function runQwen() {
             const input = document.getElementById('qwen-input').value.trim();
@@ -643,10 +684,11 @@
                 return;
             }
             if (!State.keys.openrouter) {
-                showStatus('qwen-status', 'مفتاح OpenRouter غير مدخل', 'error');
-                return;
+                showStatus('qwen-status', 'مفتاح OpenRouter غير مدخل', 'error');                return;
             }
+            
             showStatus('qwen-status', '<i class="fas fa-spinner fa-spin ml-2"></i>Qwen يعالج...', 'loading');
+            
             try {
                 const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
                     method: 'POST',
@@ -661,10 +703,12 @@
                         messages: [{ role: 'user', content: input }]
                     })
                 });
+                
                 if (!response.ok) {
                     if (response.status === 429) throw new Error('تم تجاوز الحد اليومي (50 طلب)');
                     throw new Error('فشل الاتصال بـ Qwen');
                 }
+                
                 const data = await response.json();
                 document.getElementById('qwen-output').value = data.choices[0].message.content;
                 showStatus('qwen-status', '<i class="fas fa-check-circle ml-2"></i>تمت المعالجة', 'success');
@@ -678,24 +722,27 @@
             const statusEl = document.getElementById('rss-status');
             const container = document.getElementById('rss-container');
             statusEl.textContent = 'جاري جلب الأخبار...';
+            
             try {
                 const feeds = [
                     'https://api.rss2json.com/v1/api.json?rss_url=https://www.babnet.net/rss.xml',
                     'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/arabic/rss.xml'
                 ];
+                
                 const results = await Promise.all(feeds.map(url => 
-                    fetch(url).then(r => r.json()).then(d => d.items || []).catch(() => [])                ));
-                const allNews = results.flat().slice(0, 12);
-                container.innerHTML = allNews.map(item => {
+                    fetch(url).then(r => r.json()).then(d => d.items || []).catch(() => [])
+                ));
+                
+                const allNews = results.flat().slice(0, 12);                container.innerHTML = allNews.map(item => {
                     const desc = (item.description || item.content || '').replace(/'/g, "\\'").substring(0, 200);
-                    return '<div class="bg-dark border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-all cursor-pointer" data-news=\'' + desc + '\">' +
+                    return '<div class="bg-dark border border-gray-700 rounded-xl p-4 hover:border-blue-500 transition-all cursor-pointer" data-news=\'' + desc + '\'>' +
                         '<h4 class="font-bold mb-2 text-blue-400">' + item.title + '</h4>' +
                         '<p class="text-sm text-gray-400 mb-2">' + (item.description || item.content || '').substring(0, 150) + '...</p>' +
                         '<div class="flex justify-between text-xs text-gray-500">' +
                         '<span>' + (item.author || 'وكالة') + '</span>' +
                         '<span>' + new Date(item.pubDate).toLocaleDateString('ar-TN') + '</span></div></div>';
                 }).join('');
-                // إضافة مستمعي الأحداث
+                
                 container.querySelectorAll('[data-news]').forEach(el => {
                     el.addEventListener('click', function() {
                         const text = this.getAttribute('data-news');
@@ -703,6 +750,7 @@
                         showPanel('editor');
                     });
                 });
+                
                 statusEl.textContent = 'تم تحميل ' + allNews.length + ' خبر';
                 statusEl.className = 'text-center py-4 text-green-400';
             } catch (error) {
@@ -733,8 +781,8 @@
         function searchArchive() {
             const query = document.getElementById('archive-search').value.toLowerCase();
             const results = State.archive.filter(item => 
-                item.content.toLowerCase().includes(query) || item.type.includes(query)            );
-            const container = document.getElementById('archive-results');
+                item.content.toLowerCase().includes(query) || item.type.includes(query)
+            );            const container = document.getElementById('archive-results');
             if (results.length === 0) {
                 container.innerHTML = '<div class="text-center text-gray-400 py-8">لا توجد نتائج</div>';
             } else {
@@ -772,7 +820,7 @@
                 '<button data-index="' + index + '" class="text-red-500 hover:text-red-400 btn-delete-agenda">' +
                 '<i class="fas fa-trash"></i></button></div>'
             ).join('') || '<div class="text-center text-gray-400 py-8">لا توجد أحداث</div>';
-            // إضافة مستمعي الحذف
+            
             document.querySelectorAll('.btn-delete-agenda').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const index = parseInt(this.getAttribute('data-index'));
@@ -782,8 +830,8 @@
                 });
             });
         }
-        // التفريغ الصوتي
-        function transcribeAudio() {
+
+        // التفريغ الصوتي        function transcribeAudio() {
             showStatus('transcribe-status', '<i class="fas fa-spinner fa-spin ml-2"></i>جاري التفريغ...', 'loading');
             setTimeout(() => {
                 document.getElementById('transcribe-output').value = 'هذا نص تجريبي للتفريغ.';
@@ -824,6 +872,7 @@
         function saveKeys() {
             const geminiKey = document.getElementById('gemini-key').value.trim();
             const openrouterKey = document.getElementById('openrouter-key').value.trim();
+            
             if (geminiKey) {
                 State.keys.gemini = geminiKey;
                 localStorage.setItem('gemini_key', geminiKey);
@@ -831,17 +880,15 @@
             if (openrouterKey) {
                 State.keys.openrouter = openrouterKey;
                 localStorage.setItem('openrouter_key', openrouterKey);
-            }            const statusEl = document.getElementById('settings-status');
+            }            
+            const statusEl = document.getElementById('settings-status');
             statusEl.innerHTML = '<div class="bg-green-600/20 text-green-400 px-4 py-2 rounded-lg"><i class="fas fa-check ml-2"></i>تم حفظ المفاتيح بنجاح</div>';
             checkAPIStatus();
             setTimeout(() => statusEl.innerHTML = '', 3000);
         }
 
-        // تهيئة جميع الأحداث - الإصلاح الجذري
+        // تهيئة جميع الأحداث
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Loaded - Initializing...');
-            
-            // التحقق من المفاتيح
             checkAPIStatus();
             if (State.keys.gemini) document.getElementById('gemini-key').value = State.keys.gemini;
             if (State.keys.openrouter) document.getElementById('openrouter-key').value = State.keys.openrouter;
@@ -851,7 +898,6 @@
             document.querySelectorAll('[data-panel]').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const panelId = this.getAttribute('data-panel');
-                    console.log('Button clicked:', panelId);
                     showPanel(panelId);
                 });
             });
@@ -860,14 +906,6 @@
             document.getElementById('card-editor').addEventListener('click', function() { showPanel('editor'); });
             document.getElementById('card-pro-article').addEventListener('click', function() { showPanel('pro-article'); });
             document.getElementById('card-audio').addEventListener('click', function() { showPanel('audio'); });
-
-            // القوائم المنسدلة
-            document.getElementById('btn-editor-dropdown').addEventListener('click', function() {
-                toggleDropdown('editor-dropdown');
-            });
-            document.getElementById('btn-tools-dropdown').addEventListener('click', function() {
-                toggleDropdown('tools-dropdown');
-            });
 
             // الإعدادات
             document.getElementById('btn-settings').addEventListener('click', function() {
@@ -880,7 +918,8 @@
 
             // أزرار المعالجة
             document.getElementById('btn-run-editor').addEventListener('click', processEditor);
-            document.getElementById('btn-run-pro').addEventListener('click', processProArticle);            document.getElementById('btn-search-hist').addEventListener('click', searchHistory);
+            document.getElementById('btn-run-pro').addEventListener('click', processProArticle);
+            document.getElementById('btn-search-hist').addEventListener('click', searchHistory);
             document.getElementById('btn-search-sports').addEventListener('click', searchSports);
             document.getElementById('btn-search-persona').addEventListener('click', searchPersona);
             document.getElementById('btn-run-qwen').addEventListener('click', runQwen);
@@ -890,8 +929,7 @@
             document.getElementById('btn-transcribe').addEventListener('click', transcribeAudio);
 
             // رفع الملف الصوتي
-            document.getElementById('audio-upload-area').addEventListener('click', function() {
-                document.getElementById('audio-file').click();
+            document.getElementById('audio-upload-area').addEventListener('click', function() {                document.getElementById('audio-file').click();
             });
 
             // أزرار النسخ والأرشفة
@@ -923,8 +961,6 @@
                     document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
                 }
             });
-
-            console.log('Initialization complete!');
         });
     </script>
 </body>
