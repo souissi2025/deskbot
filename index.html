@@ -1004,6 +1004,17 @@ const MODELS = [
     recommended:true
   },
   {
+    id:'qwen/qwen3-30b-a3b:free',
+    name:'Qwen3 30B',
+    provider:'openrouter',
+    badge:'Qwen',
+    quota:'~60 طلب/يوم',
+    quotaClass:'quota-green',
+    desc:'سريع وخفيف — البديل الأمثل',
+    icon:'fa-solid fa-bolt',
+    iconClass:'mc-qwen'
+  },
+  {
     id:'qwen/qwen-2.5-72b-instruct:free',
     name:'Qwen2.5 72B',
     provider:'openrouter',
@@ -1172,10 +1183,11 @@ async function callGemini(prompt, modelId) {
 async function callOpenRouter(prompt, modelId) {
   const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method:'POST',
+    signal: AbortSignal.timeout(60000),
     headers:{
       'Content-Type':'application/json',
       'Authorization':'Bearer '+S.orKey,
-      'HTTP-Referer': window.location.href,
+      'HTTP-Referer': 'https://deskbot.app',
       'X-Title':'DESK BOT'
     },
     body:JSON.stringify({
@@ -1184,12 +1196,16 @@ async function callOpenRouter(prompt, modelId) {
       max_tokens:4096
     })
   });
-  if(!r.ok){ const e=await r.json().catch(()=>{}); 
-    if(r.status===401) throw new Error('مفتاح OpenRouter غير صحيح (401)');
+  if(!r.ok){
+    let e = {};
+    try { e = await r.json(); } catch(x) {}
+    if(r.status===401) throw new Error('مفتاح OpenRouter غير صحيح — تحقق من المفتاح (401)');
     if(r.status===402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
+    if(r.status===429) throw new Error('تجاوزت الحد اليومي لهذا النموذج — جرب نموذجاً آخر (429)');
+    if(r.status===503) throw new Error('النموذج غير متاح حالياً — جرب نموذجاً آخر (503)');
     throw new Error((e?.error?.message)||'خطأ OpenRouter '+r.status);
   }
-  const d=await r.json();
+  const d = await r.json();
   incReq();
   return d.choices?.[0]?.message?.content || '';
 }
