@@ -506,6 +506,80 @@ label{
   .home-grid{grid-template-columns:1fr}
   .model-bar{display:none}
 }
+
+/* ── MOBILE BOTTOM NAV ── */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--glass2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line2);
+  padding: 6px 0 env(safe-area-inset-bottom, 6px);
+  justify-content: space-around;
+  align-items: center;
+}
+.bn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  font-family: Cairo, sans-serif;
+  transition: all .2s;
+  border: none;
+  background: none;
+  min-width: 52px;
+}
+.bn-item i { font-size: 18px; }
+.bn-item.active { color: var(--gold2); }
+.bn-item.active i { filter: drop-shadow(0 0 6px var(--gold)); }
+.bn-more-menu {
+  display: none;
+  position: fixed;
+  bottom: 68px; left: 0; right: 0;
+  z-index: 199;
+  background: var(--glass2);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line2);
+  padding: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  animation: slideUpMenu .2s ease;
+}
+.bn-more-menu.open { display: grid; }
+@keyframes slideUpMenu {
+  from { transform: translateY(20px); opacity:0; }
+  to   { transform: translateY(0);    opacity:1; }
+}
+.bn-more-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  padding: 10px 6px; border-radius: 12px;
+  background: var(--ink3); border: 1px solid var(--line);
+  cursor: pointer; color: var(--text2);
+  font-size: 9px; font-weight: 700;
+  font-family: Cairo, sans-serif;
+  transition: all .2s;
+}
+.bn-more-item i { font-size: 16px; }
+.bn-more-item:hover, .bn-more-item.active {
+  background: var(--gold3); color: var(--gold2);
+  border-color: var(--line2);
+}
+@media(max-width: 768px) {
+  .bottom-nav { display: flex; }
+  .main { padding-bottom: 80px; }
+  .sidebar { display: none !important; }
+}
+
 </style>
 </head>
 <body>
@@ -1181,10 +1255,10 @@ async function callOpenRouter(prompt, modelId) {
     if (!r.ok) {
       let e = {};
       try { e = await r.json(); } catch(x) {}
-      if (r.status === 401) throw new Error('مفتاح OpenRouter غير صحيح — تحقق من المفتاح (401)');
-      if (r.status === 402) throw new Error('الرصيد غير كافٍ في OpenRouter (402)');
+      if (r.status === 401) throw new Error('مفتاح OpenRouter غير صحيح (401)');
+      if (r.status === 402) throw new Error('الرصيد غير كافٍ (402)');
       if (r.status === 429) throw new Error('تجاوزت الحد اليومي — جرّب نموذجاً آخر (429)');
-      if (r.status === 503) throw new Error('النموذج غير متاح حالياً — جرّب نموذجاً آخر (503)');
+      if (r.status === 503) throw new Error('النموذج غير متاح — جرّب نموذجاً آخر (503)');
       throw new Error((e?.error?.message) || 'خطأ OpenRouter ' + r.status);
     }
     const d = await r.json();
@@ -1683,7 +1757,7 @@ function updateBanner() {
 function selectModel(id) {
   S.model=id;
   localStorage.setItem('db_model',id);
-  // إعادة ضبط النموذج إذا لم يكن في القائمة
+  // إعادة ضبط النموذج إذا لم يعد في القائمة
   if (!MODELS.find(x => x.id === S.model)) {
     S.model = 'gemini-2.5-flash';
     localStorage.setItem('db_model', S.model);
@@ -1842,6 +1916,32 @@ document.addEventListener('DOMContentLoaded',()=>{
   const sr=document.getElementById('stat-req'); if(sr) sr.textContent=S.reqToday;
   if(!S.geminiKey&&!S.orKey) openSettings();
 });
+
+// ── MOBILE NAV ──
+function mobileNav(panel, btn) {
+  // إغلاق قائمة المزيد
+  document.getElementById('bn-more-menu').classList.remove('open');
+  // تحديث الأزرار النشطة
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // إظهار اللوحة المطلوبة
+  showPanel(panel, null);
+  // مزامنة مع السايدبار
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.panel === panel);
+  });
+}
+function toggleMoreMenu() {
+  const m = document.getElementById('bn-more-menu');
+  m.classList.toggle('open');
+}
+// إغلاق قائمة المزيد عند الضغط خارجها
+document.addEventListener('click', function(e) {
+  if(!e.target.closest('#bn-more-menu') && !e.target.closest('#bn-more')) {
+    document.getElementById('bn-more-menu')?.classList.remove('open');
+  }
+});
+
 </script>
 </body>
 </html>
