@@ -8,133 +8,170 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --bg: #0b0e14; --surface: #151922; --surface2: #1e2330;
-      --border: #2a3040; --text: #e2e8f0; --text2: #94a3b8;
-      --primary: #3b82f6; --primary-hover: #60a5fa;
-      --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
-      --shadow: 0 4px 16px rgba(0,0,0,0.4);
-    }
-    [data-theme="light"] {
-      --bg: #f8fafc; --surface: #ffffff; --surface2: #f1f5f9;
-      --border: #e2e8f0; --text: #0f172a; --text2: #64748b;
-      --primary: #2563eb; --primary-hover: #3b82f6;
-      --shadow: 0 4px 16px rgba(0,0,0,0.08);
-    }
-    [data-theme="warm"] {
       --bg: #1a1512; --surface: #261f18; --surface2: #332a20;
       --border: #4a3d30; --text: #f5e6d3; --text2: #b8a088;
       --primary: #d4956a; --primary-hover: #e8b08a;
-      --shadow: 0 4px 16px rgba(0,0,0,0.5);
+      --success: #6db87a; --danger: #d46a5a; --warning: #e8b84a;
+      --shadow: 0 4px 20px rgba(0,0,0,0.5);
+      --card-bg: #261f18; --input-bg: #1a1512;
     }
+    /* Light Theme */
+    [data-theme="light"] {
+      --bg: #f1f5f9; --surface: #ffffff; --surface2: #f8fafc;
+      --border: #e2e8f0; --text: #1e293b; --text2: #64748b;
+      --primary: #2563eb; --primary-hover: #3b82f6;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --card-bg: #ffffff; --input-bg: #f1f5f9;
+    }
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --bg: #0b0e14; --surface: #151922; --surface2: #1e2330;
+      --border: #2a3040; --text: #e2e8f0; --text2: #94a3b8;
+      --primary: #3b82f6; --primary-hover: #60a5fa;
+      --shadow: 0 4px 20px rgba(0,0,0,0.4);
+      --card-bg: #151922; --input-bg: #0b0e14;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; transition: background 0.3s, color 0.3s; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: background 0.4s, color 0.4s; }
     .app { display: flex; min-height: 100vh; }
-    
+
     /* Sidebar */
-    .sidebar { width: 260px; background: var(--surface); border-left: 1px solid var(--border); padding: 1rem; display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 10; transition: background 0.3s; }
+    .sidebar {
+      width: 260px; background: var(--surface); border-left: 1px solid var(--border);
+      padding: 1rem; display: flex; flex-direction: column; gap: 4px;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 10; transition: background 0.4s;
+    }
     .brand { font-size: 1.3rem; font-weight: 700; color: var(--primary); text-align: center; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border); }
-    
-    /* Theme Switcher */
-    .theme-bar { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; padding: 0.5rem; background: var(--surface2); border-radius: 8px; }
-    .theme-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid var(--border); transition: 0.2s; position: relative; }
-    .theme-dot:hover { transform: scale(1.1); }
-    .theme-dot.active { border-color: var(--primary); box-shadow: 0 0 10px rgba(59,130,246,0.4); }
-    .theme-dot::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #fff; font-size: 12px; opacity: 0; transition: 0.2s; }
-    .theme-dot.active::after { opacity: 1; }
-    
+
     /* Nav Buttons */
-    .nav-btn { background: transparent; border: none; color: var(--text2); padding: 0.7rem 0.9rem; border-radius: 8px; cursor: pointer; text-align: right; font-family: inherit; font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; gap: 0.6rem; width: 100%; }
-    .nav-btn:hover { background: var(--surface2); color: var(--text); }
-    .nav-btn.active { background: var(--primary); color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(59,130,246,0.3); }
+    .nav-btn {
+      background: transparent; border: 1px solid transparent; color: var(--text2);
+      padding: 0.7rem 0.9rem; border-radius: 8px; cursor: pointer; text-align: right;      font-family: inherit; font-size: 0.9rem; transition: all 0.3s ease;
+      display: flex; align-items: center; gap: 0.6rem; width: 100%;
+    }
+    .nav-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }
+    .nav-btn.active { background: var(--primary); color: #fff; font-weight: 600; border-color: var(--primary); box-shadow: 0 0 15px rgba(212, 149, 106, 0.3); }
     .nav-icon { width: 18px; text-align: center; }
-        /* Main */
+
+    /* Theme Bar */
+    .theme-bar { display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); margin-bottom: 1rem; justify-content: center; }
+    .theme-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; transition: all 0.3s; }
+    .theme-btn.active { border-color: var(--primary); box-shadow: 0 0 12px rgba(212, 149, 106, 0.5); transform: scale(1.1); }
+    
+    /* Main */
     .main { flex: 1; padding: 1.5rem; overflow-y: auto; max-width: 1200px; margin: 0 auto; width: 100%; }
     .panel { display: none; animation: fadeIn 0.3s ease; }
     .panel.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    
-    /* Cards & Inputs */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--shadow); transition: background 0.3s, border 0.3s; }
-    .card-title { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Components */
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); transition: all 0.4s; }
+    .card-title { font-size: 1.15rem; font-weight: 600; color: var(--primary); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
     
-    input, textarea, select { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.6rem; border-radius: 6px; font-family: inherit; margin-bottom: 0.8rem; transition: border 0.2s; }
-    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
-    textarea { min-height: 120px; resize: vertical; }
-    
     /* Buttons */
-    .btn { padding: 0.6rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.2s; background: var(--surface2); color: var(--text); font-size: 0.9rem; position: relative; overflow: hidden; }
+    .btn { padding: 0.6rem 1.2rem; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.3s ease; background: var(--surface2); color: var(--text); font-size: 0.9rem; }
     .btn:hover { background: var(--border); transform: translateY(-1px); }
-    .btn:active, .btn.pressed { transform: scale(0.96); filter: brightness(1.1); }
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-success { background: var(--success); color: #fff; }
-    .btn-danger { background: var(--danger); color: #fff; }
-    .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .btn:active, .btn.pressed { transform: scale(0.96); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+    .btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+    .btn-success { background: var(--success); color: #fff; border-color: var(--success); }
+    .btn-success.pressed { box-shadow: 0 0 20px rgba(109, 184, 122, 0.4); }
+
+    /* Inputs */
+    .input, textarea, select { width: 100%; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 0.7rem; border-radius: 8px; font-family: inherit; margin-bottom: 0.8rem; transition: border 0.3s, background 0.4s; }
+    .input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212, 149, 106, 0.15); }
+    textarea { min-height: 120px; resize: vertical; }
+
+    /* Status & Lists */
+    .status { padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; text-align: center; margin-top: 0.5rem; }
+    .status.loading { background: rgba(212, 149, 106, 0.15); color: var(--primary); }
+    .status.success { background: rgba(109, 184, 122, 0.15); color: var(--success); }
+    .status.error { background: rgba(212, 106, 90, 0.15); color: var(--danger); }
     
-    /* Status & Items */
-    .status { padding: 0.4rem; border-radius: 5px; font-size: 0.8rem; text-align: center; margin-top: 0.4rem; }
-    .status.loading { background: rgba(59,130,246,0.15); color: var(--primary); }
-    .status.success { background: rgba(16,185,129,0.15); color: var(--success); }
-    .status.error { background: rgba(239,68,68,0.15); color: var(--danger); }
-    .news-item, .archive-item { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.8rem; margin-bottom: 0.6rem; cursor: pointer; transition: 0.2s; }
-    .news-item:hover, .archive-item:hover { border-color: var(--primary); transform: translateX(-2px); }
-    .news-title { font-weight: 600; margin-bottom: 0.2rem; font-size: 0.95rem; }
+    .news-item, .archive-item { background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.6rem; cursor: pointer; transition: all 0.2s; }
+    .news-item:hover, .archive-item:hover { border-color: var(--primary); transform: translateX(-3px); }
+    .news-title { font-weight: 600; margin-bottom: 0.3rem; font-size: 0.95rem; }
     .news-meta { font-size: 0.75rem; color: var(--text2); display: flex; justify-content: space-between; }
     
+    .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem; }
+    .dropdown-content { display: none; padding-right: 1.5rem; padding-top: 4px; }    .dropdown-content.show { display: block; }
+    .dropdown-item { display: block; width: 100%; background: transparent; border: none; color: var(--text2); padding: 0.5rem 1rem; text-align: right; font-family: inherit; font-size: 0.85rem; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+    .dropdown-item:hover { background: var(--surface2); color: var(--text); }
+
     @media (max-width: 768px) {
       .app { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; overflow-x: auto; padding: 0.8rem; border-left: none; border-bottom: 1px solid var(--border); gap: 2px; }
+      .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; overflow-x: auto; padding: 0.5rem; border-left: none; border-bottom: 1px solid var(--border); }
       .brand { display: none; }
-      .nav-btn { padding: 0.5rem 0.7rem; font-size: 0.85rem; white-space: nowrap; }
+      .nav-btn { padding: 0.5rem 0.7rem; font-size: 0.8rem; white-space: nowrap; min-width: fit-content; }
       .main { padding: 1rem; }
+      .dropdown-content { padding-right: 0; }
     }
   </style>
 </head>
-<body data-theme="dark">
+<body data-theme="warm">
 
 <div class="app">
+  <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
     <div class="brand">📰 DESK BOT</div>
-        <div class="theme-bar">
-      <div class="theme-dot active" data-theme-set="dark" style="background:#0b0e14;" title="ليلي"></div>
-      <div class="theme-dot" data-theme-set="light" style="background:#f8fafc;" title="نهاري"></div>
-      <div class="theme-dot" data-theme-set="warm" style="background:#1a1512;" title="دافئ"></div>
+
+    <!-- Theme Switcher -->
+    <div class="theme-bar">
+      <button class="theme-btn" data-theme="dark" style="background: #0b0e14;" title="Dark"></button>
+      <button class="theme-btn" data-theme="light" style="background: #f1f5f9;" title="Light"></button>
+      <button class="theme-btn active" data-theme="warm" style="background: #1a1512;" title="Warm"></button>
     </div>
 
     <button class="nav-btn active" data-panel="home"><span class="nav-icon">🏠</span> الرئيسية</button>
     <button class="nav-btn" data-panel="rss"><span class="nav-icon">🌍</span> آخر الأخبار RSS</button>
-    <button class="nav-btn" data-panel="editor"><span class="nav-icon">✍️</span> المحرر الذكي PRO</button>
-    <button class="nav-btn" data-panel="pro-article"><span class="nav-icon">📝</span> المقال الإخباري</button>
+    
+    <button class="nav-btn" data-toggle="editor-group"><span class="nav-icon">✍️</span> المحرر الذكي <span style="margin-right:auto;font-size:0.7rem;">▼</span></button>
+    <div class="dropdown-content" id="editor-group">
+      <button class="dropdown-item" data-panel="editor">المحرر PRO</button>
+      <button class="dropdown-item" data-panel="pro-article">المقال الإخباري</button>
+    </div>
+
     <button class="nav-btn" data-panel="audio"><span class="nav-icon">🎙️</span> التفريغ الصوتي</button>
-    <button class="nav-btn" data-panel="tools"><span class="nav-icon">🧰</span> الأدوات (تاريخ/رياضة/شخصية)</button>
+
+    <button class="nav-btn" data-toggle="tools-group"><span class="nav-icon">🧰</span> الأدوات <span style="margin-right:auto;font-size:0.7rem;">▼</span></button>
+    <div class="dropdown-content" id="tools-group">
+      <button class="dropdown-item" data-panel="history">حدث اليوم</button>
+      <button class="dropdown-item" data-panel="sports">المواجهات الرياضية</button>
+      <button class="dropdown-item" data-panel="persona">تسمية الشخصية</button>
+    </div>
+
     <button class="nav-btn" data-panel="qwen"><span class="nav-icon">🤖</span> Qwen AI</button>
     <button class="nav-btn" data-panel="agenda"><span class="nav-icon">📅</span> الأجندة</button>
     <button class="nav-btn" data-panel="archive"><span class="nav-icon">🗄️</span> الأرشيف</button>
-    <button class="nav-btn" data-panel="settings"><span class="nav-icon">⚙️</span> الإعدادات</button>
-  </nav>
+    <button class="nav-btn" data-panel="settings"><span class="nav-icon">⚙️</span> الإعدادات</button>  </nav>
 
-  <main class="main">
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+
+    <!-- Home -->
     <section id="panel-home" class="panel active">
       <div class="card">
         <h2 class="card-title">مرحباً 👋 جاهز لبدء العمل التحريري</h2>
-        <p style="color:var(--text2);margin-bottom:1rem;">اختر أداة من القائمة الجانبية. جميع الأزرار تعمل وتفتح النوافذ المخصصة لها فوراً.</p>
+        <p style="color:var(--text2);margin-bottom:1rem;">اختر أداة من القائمة الجانبية. جميع الأزرار تعمل مباشرة.</p>
         <div class="status success">✅ النظام يعمل بكفاءة — جميع الخدمات متاحة</div>
       </div>
       <div class="grid-2">
         <div class="card" style="cursor:pointer;text-align:center;" data-panel="editor">
-          <div style="font-size:2rem;margin-bottom:0.5rem;">✍️</div>
-          <h3 style="color:var(--primary);">المحرر الذكي PRO</h3>
-          <p style="font-size:0.85rem;color:var(--text2);">تحويل النص إلى مادة إخبارية احترافية</p>
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;">✍️</div>
+          <h3 class="card-title" style="justify-content:center;">المحرر الذكي PRO</h3>
+          <p style="color:var(--text2);font-size:0.85rem;">تحويل النص إلى مادة إخبارية احترافية</p>
         </div>
         <div class="card" style="cursor:pointer;text-align:center;" data-panel="pro-article">
-          <div style="font-size:2rem;margin-bottom:0.5rem;">📝</div>
-          <h3 style="color:var(--primary);">المقال الإخباري</h3>
-          <p style="font-size:0.85rem;color:var(--text2);">إنشاء مقالات احترافية بزاوايا متعددة</p>
+          <div style="font-size:2.5rem;margin-bottom:0.5rem;">📝</div>
+          <h3 class="card-title" style="justify-content:center;">المقال الإخباري</h3>
+          <p style="color:var(--text2);font-size:0.85rem;">إنشاء مقالات احترافية بزاوايا متعددة</p>
         </div>
       </div>
     </section>
 
+    <!-- RSS -->
     <section id="panel-rss" class="panel">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
@@ -145,21 +182,29 @@
         <div id="rss-container" class="grid-2" style="margin-top:1rem;"></div>
       </div>
     </section>
+
+    <!-- Editor -->
     <section id="panel-editor" class="panel">
       <div class="card">
         <h3 class="card-title">✍️ مركز المعالجة الذكية PRO</h3>
         <textarea id="editor-input" placeholder="الصق النص الخام أو المادة الإخبارية هنا..."></textarea>
         <div class="grid-2" style="margin-bottom:0.8rem;">
-          <select id="editor-model">
-            <option value="gemini-1.5-flash">Gemini 1.5 Flash (موصى به)</option>
-            <option value="gemini-2.0-flash">Gemini 2.0 Flash (أحدث)</option>
-          </select>
-          <select id="editor-mode">
-            <option value="structure">إعادة هيكلة + معايير وات/ديوان أف أم</option>
-            <option value="seo">إعادة صياغة + SEO</option>
-            <option value="titles">12 عنواناً احترافياً</option>
-            <option value="flash">فلاش إذاعي مشكول</option>
-          </select>
+          <div>
+            <label style="font-size:0.8rem;color:var(--text2);display:block;margin-bottom:0.3rem;">النموذج:</label>
+            <select id="editor-model">
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash (جديد)</option>
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash (بديل)</option>
+            </select>          </div>
+          <div>
+            <label style="font-size:0.8rem;color:var(--text2);display:block;margin-bottom:0.3rem;">وضع المعالجة:</label>
+            <select id="editor-mode">
+              <option value="structure">إعادة هيكلة + معايير وات/ديوان أف أم</option>
+              <option value="seo">إعادة صياغة + SEO</option>
+              <option value="titles">12 عنواناً احترافياً</option>
+              <option value="flash">فلاش إذاعي مشكول</option>
+              <option value="profile">تسمية الشخصية</option>
+            </select>
+          </div>
         </div>
         <button class="btn btn-primary" id="btn-run-editor" style="width:100%;padding:0.8rem;font-size:1rem;margin-bottom:0.8rem;">
           <i class="fas fa-magic"></i> تشغيل المعالجة
@@ -174,31 +219,39 @@
       </div>
     </section>
 
+    <!-- Pro Article -->
     <section id="panel-pro-article" class="panel">
       <div class="card">
         <h3 class="card-title">📝 المقال الإخباري PRO</h3>
         <textarea id="pro-input" placeholder="أدخل النص أو الفكرة الأساسية للمقال..."></textarea>
         <div class="grid-2" style="margin-bottom:0.8rem;">
+          <select id="pro-model">
+            <option value="gemini-2.0-flash">Gemini 2.0 Flash (موصى به)</option>
+            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+          </select>
           <select id="pro-count">
             <option value="1">مقال واحد</option>
             <option value="2">مقالان بزاويتين مختلفتين</option>
             <option value="3">ثلاثة مقالات</option>
           </select>
-          <button class="btn btn-primary" id="btn-run-pro"><i class="fas fa-play"></i> تشغيل</button>
         </div>
-        <div id="pro-status" class="status" style="margin-top:0.5rem;"></div>
-        <textarea id="pro-output" readonly placeholder="المقال/المقالات ستظهر هنا..." style="min-height:200px;margin-top:0.8rem;"></textarea>
+        <button class="btn btn-primary" id="btn-run-pro" style="width:100%;padding:0.8rem;font-size:1rem;margin-bottom:0.8rem;">
+          <i class="fas fa-play"></i> تشغيل
+        </button>
+        <div id="pro-status" class="status"></div>
+        <textarea id="pro-output" readonly placeholder="المقال/المقالات ستظهر هنا..." style="min-height:250px;margin-top:0.8rem;"></textarea>
         <div class="actions">
           <button class="btn" id="btn-copy-pro"><i class="fas fa-copy"></i> نسخ</button>
           <button class="btn btn-success" id="btn-save-pro"><i class="fas fa-save"></i> أرشفة</button>
-        </div>
-      </div>
+        </div>      </div>
     </section>
+
+    <!-- Audio -->
     <section id="panel-audio" class="panel">
       <div class="card">
         <h3 class="card-title">🎙️ التفريغ الصوتي الذكي</h3>
-        <div style="border:2px dashed var(--border);padding:2rem;text-align:center;border-radius:10px;cursor:pointer;" id="audio-upload-area">
-          <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:var(--text2);margin-bottom:0.5rem;"></i>
+        <div class="upload-area" id="audio-upload-area" style="border:2px dashed var(--border);padding:2rem;text-align:center;border-radius:12px;cursor:pointer;transition:0.3s;">
+          <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem;color:var(--text2);margin-bottom:0.5rem;"></i>
           <p style="color:var(--text2);">اضغط لرفع ملف صوتي أو مرئي</p>
           <p style="font-size:0.8rem;color:var(--text2);">MP3 · MP4 · WAV · OGG · M4A · WebM</p>
           <input type="file" id="audio-file" accept="audio/*,video/*" style="display:none;">
@@ -215,7 +268,9 @@
       </div>
     </section>
 
+    <!-- Tools (History, Sports, Persona) -->
     <section id="panel-tools" class="panel">
+      <!-- History -->
       <div class="card">
         <h3 class="card-title">📜 حدث اليوم في التاريخ</h3>
         <div class="grid-2" style="margin-bottom:0.8rem;">
@@ -232,21 +287,25 @@
           <button class="btn btn-success" id="btn-save-hist"><i class="fas fa-save"></i> أرشفة</button>
         </div>
       </div>
+
+      <!-- Sports -->
       <div class="card">
         <h3 class="card-title">⚽ أرشيف المواجهات</h3>
         <div class="grid-2" style="margin-bottom:0.8rem;">
-          <input type="text" id="team-a" placeholder="الفريق الأول">
-          <input type="text" id="team-b" placeholder="الفريق الثاني">
+          <input type="text" id="team-a" placeholder="الفريق الأول">          <input type="text" id="team-b" placeholder="الفريق الثاني">
         </div>
         <button class="btn btn-primary" id="btn-search-sports" style="width:100%;padding:0.8rem;font-size:1rem;margin-bottom:0.8rem;">
           <i class="fas fa-search"></i> بحث عن المواجهات
         </button>
         <div id="sports-status" class="status"></div>
         <textarea id="sports-output" readonly placeholder="النتيجة..." style="margin-top:0.8rem;"></textarea>
-        <div class="actions">          <button class="btn" id="btn-copy-sports"><i class="fas fa-copy"></i> نسخ</button>
+        <div class="actions">
+          <button class="btn" id="btn-copy-sports"><i class="fas fa-copy"></i> نسخ</button>
           <button class="btn btn-success" id="btn-save-sports"><i class="fas fa-save"></i> أرشفة</button>
         </div>
       </div>
+
+      <!-- Persona -->
       <div class="card">
         <h3 class="card-title">👤 تسمية الشخصية</h3>
         <input type="text" id="persona-input" placeholder="اسم الشخصية أو المنصب..." style="margin-bottom:0.8rem;">
@@ -262,11 +321,12 @@
       </div>
     </section>
 
+    <!-- Qwen -->
     <section id="panel-qwen" class="panel">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
           <h3 class="card-title" style="margin-bottom:0;">🤖 Qwen 2.5 — OpenRouter</h3>
-          <span style="background:rgba(16,185,129,0.15);color:var(--success);padding:0.2rem 0.6rem;border-radius:20px;font-size:0.75rem;font-weight:600;">50/يوم مجاني</span>
+          <span style="background:rgba(16,185,129,0.15);color:var(--success);padding:0.2rem 0.6rem;border-radius:20px;font-size:0.7rem;font-weight:600;">50/يوم مجاني</span>
         </div>
         <textarea id="qwen-input" placeholder="نص أو سؤال أو مهمة..."></textarea>
         <button class="btn btn-primary" id="btn-run-qwen" style="width:100%;padding:0.8rem;font-size:1rem;margin-bottom:0.8rem;">
@@ -281,7 +341,7 @@
       </div>
     </section>
 
-    <section id="panel-agenda" class="panel">
+    <!-- Agenda -->    <section id="panel-agenda" class="panel">
       <div class="card">
         <h3 class="card-title">📅 الأجندة المشتركة</h3>
         <div class="grid-2" style="margin-bottom:0.8rem;">
@@ -292,9 +352,11 @@
           <i class="fas fa-plus"></i> إضافة حدث
         </button>
         <div id="agenda-status" class="status"></div>
-        <div id="agenda-list" style="margin-top:1rem;"></div>      </div>
+        <div id="agenda-list" style="margin-top:1rem;"></div>
+      </div>
     </section>
 
+    <!-- Archive -->
     <section id="panel-archive" class="panel">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
@@ -310,6 +372,7 @@
       </div>
     </section>
 
+    <!-- Settings -->
     <section id="panel-settings" class="panel">
       <div class="card">
         <h3 class="card-title">⚙️ إعدادات النماذج الذكية</h3>
@@ -322,14 +385,13 @@
         </button>
         <div id="settings-status" class="status" style="margin-top:0.5rem;"></div>
         <div style="margin-top:1.5rem;padding:1rem;background:var(--surface2);border-radius:8px;border:1px solid var(--border);font-size:0.85rem;color:var(--text2);line-height:1.8;">
-          <strong style="color:var(--primary);">💡 حل مشكلة اتصال Gemini:</strong><br>
+          <strong style="color:var(--primary);">💡 إصلاح خطأ Gemini:</strong><br>
           1. تأكد أن المفتاح يبدأ بـ <code>AIzaSy</code> ولا يحتوي مسافات.<br>
-          2. في <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary);">AI Studio</a> تأكد أن الـ API مفعل.<br>
-          3. إذا ظهر خطأ 403، فعّل الفوترة المجانية في Google Cloud (لا يُخصم إلا بعد تجاوز الحد المجاني).<br>
-          4. جرّب نموذج <code>gemini-1.5-flash</code> فهو الأوثق حالياً.
+          2. إذا ظهر خطأ 403، فعّل "Generative Language API" من Google Cloud.<br>
+          3. جرب تغيير النموذج إلى <code>gemini-2.0-flash</code> في القائمة المنسدلة.
         </div>
-      </div>
-    </section>
+      </div>    </section>
+
   </main>
 </div>
 
@@ -337,317 +399,325 @@
 (function() {
   'use strict';
 
+  // Prompts
   const PROMPTS = {
     structure: 'أنت محرر إخباري أول. حوّل النص التالي إلى مادة إخبارية وفق معايير وات/ديوان أف أم: عنوان جذاب (12-18 كلمة)، ليد يجيب على 5W1H، فقرات قصيرة متسلسلة، خاتمة، 5 وسوم SEO. النص: {input}',
     seo: 'أعد صياغة النص التالي للنشر الرقمي مع SEO: عنوان H1، عنوانان H2، Meta Description (≤155 حرف)، كلمات مفتاحية طبيعية. حافظ على الدقة الإخبارية. النص: {input}',
     titles: 'أنشئ 12 عنواناً إخبارياً مقسّمة لـ 4 فئات (3 لكل فئة): أ) إخباري مباشر ب) تشويقي/إنساني ج) سؤال/تحليلي د) مختصر سوشيال ميديا (≤8 كلمات). النص: {input}',
-    flash: 'حوّل النص لفلاش إذاعي ≤40 كلمة، مشكول جزئياً، يبدأ بـ "فلاش:" أو "عاجل:"، ينتهي بالمصدر. النص: {input}'  };
+    flash: 'حوّل النص لفلاش إذاعي ≤40 كلمة، مشكول جزئياً، يبدأ بـ "فلاش:" أو "عاجل:"، ينتهي بالمصدر. النص: {input}',
+    profile: 'أنشئ ملفاً استقصائياً للشخصية: تعريف، 3 تصريحات موثقة، خلفية مهنية، 10 أسئلة حوارية. النص/الاسم: {input}',
+    pro_article: 'اكتب {count} مقال/مقالات إخبارية احترافية بناءً على النص التالي. زاوية كل مقال تختلف. أضف عناوين وهيكل واضح ولغة صحفية رصينة. النص: {input}',
+    history: 'اذكر 4-5 أحداث تاريخية وقعت في يوم {day} من الشهر {month}. السنة، الموقع، السياق، والأثر المعاصر. رتّبها زمنياً.',
+    sports: 'لخّص تاريخ المواجهات بين {teamA} و {teamB}: آخر 5 نتائج مباشرة، أبرز إحصائيات، سياق تنافسي، توقعات.',
+    qwen: 'أنت مساعد تحريري ذكي. نفّذ المهمة التالية بدقة صحفية عالية: {input}'
+  };
 
+  // State
   let State = {
     archive: [],
     agenda: [],
     keys: { gemini: '', openrouter: '' }
   };
+
   try { State.archive = JSON.parse(localStorage.getItem('desbot_archive') || '[]'); } catch(e) {}
   try { State.agenda = JSON.parse(localStorage.getItem('desbot_agenda') || '[]'); } catch(e) {}
   try { State.keys.gemini = localStorage.getItem('gemini_key') || ''; } catch(e) {}
   try { State.keys.openrouter = localStorage.getItem('openrouter_key') || ''; } catch(e) {}
 
-  function showPanel(id) {
+  // UI Functions
+  function showPanel(panelId) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const target = document.getElementById('panel-' + id);
-    if (target) target.classList.add('active');
-    const navBtn = document.querySelector(`.nav-btn[data-panel="${id}"]`);
-    if (navBtn) navBtn.classList.add('active');
+    document.getElementById('panel-' + panelId).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.classList.remove('active');
+      if (b.getAttribute('data-panel') === panelId) b.classList.add('active');
+    });
+    document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleDropdown(groupId) {
+    var el = document.getElementById(groupId);
+    if (el) {
+      var isOpen = el.classList.contains('show');      document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
+      if (!isOpen) el.classList.add('show');
+    }
   }
 
   function setTheme(theme) {
     document.body.setAttribute('data-theme', theme);
     localStorage.setItem('deskbot_theme', theme);
-    document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-    const active = document.querySelector(`.theme-dot[data-theme-set="${theme}"]`);
-    if (active) active.classList.add('active');
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    var btn = document.querySelector('.theme-btn[data-theme="' + theme + '"]');
+    if (btn) btn.classList.add('active');
   }
 
   function setStatus(elId, msg, type) {
-    const el = document.getElementById(elId);
+    var el = document.getElementById(elId);
     if (el) { el.textContent = msg; el.className = 'status ' + type; }
   }
 
-  function copyText(outId) {
-    const txt = document.getElementById(outId).value;
-    if (!txt) return;
-    navigator.clipboard.writeText(txt).then(() => setStatus(outId.replace('-output', '-status'), '✅ تم النسخ', 'success'));
+  function copyText(outputId) {
+    var text = document.getElementById(outputId).value;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(function() {
+      setStatus(outputId.replace('-output', '-status'), '✅ تم النسخ', 'success');
+    });
   }
 
-  function shareText(platform, outId) {
-    const txt = document.getElementById(outId).value;
-    if (!txt) return;
-    const url = platform === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(txt)}` : `mailto:?body=${encodeURIComponent(txt)}`;
+  function shareText(platform, outputId) {
+    var text = document.getElementById(outputId).value;
+    if (!text) return;
+    var url = platform === 'whatsapp' ? 'https://wa.me/?text=' + encodeURIComponent(text) : 'mailto:?body=' + encodeURIComponent(text);
     window.open(url, '_blank');
   }
 
-  function saveArchive(type, outId, inId) {
-    const content = document.getElementById(outId).value || (inId ? document.getElementById(inId).value : '');    if (!content.trim()) { setStatus(outId.replace('-output','-status'), 'لا يوجد نص', 'error'); return; }
-    const title = content.split('\n')[0].slice(0, 50) || type;
-    const tags = ['أرشيف', type].concat(content.slice(0, 80).split(/\s+/).filter(w => w.length > 3));
-    State.archive.unshift({ id: Date.now(), title, content, tags: tags.slice(0, 6), type, date: new Date().toLocaleString('ar-TN') });
+  function saveToArchive(type, outputId) {
+    var content = document.getElementById(outputId).value;
+    if (!content) { alert('لا يوجد محتوى لحفظه'); return; }
+    var entry = { id: Date.now(), type: type, content: content, date: new Date().toLocaleString('ar-TN') };
+    State.archive.unshift(entry);
     if (State.archive.length > 500) State.archive.pop();
     localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
-    setStatus(outId.replace('-output','-status'), '🗄️ تمت الأرشفة', 'success');
-    renderArchive(State.archive);
-  }
-
-  function renderArchive(items) {
-    const c = document.getElementById('archive-results');
-    if (!c) return;
-    c.innerHTML = items.length ? items.map(i => `
-      <div class="archive-item">
-        <strong>${i.title}</strong> <span style="color:var(--text2);font-size:0.75rem;">[${i.type}]</span>
-        <div style="margin:0.3rem 0;font-size:0.9rem;">${i.content.slice(0,200)}${i.content.length>200?'...':''}</div>
-        <div>${i.tags.map(t=>`<span style="background:var(--surface2);padding:0.1rem 0.4rem;border-radius:4px;font-size:0.65rem;margin-left:0.3rem;">${t}</span>`).join('')}
-        <span style="font-size:0.7rem;color:var(--text2);margin-right:0.5rem;">${i.date}</span></div>
-      </div>`).join('') : '<div class="status">لا توجد نتائج</div>';
+    alert('تمت الأرشفة بنجاح');
   }
 
   function renderAgenda() {
-    const list = document.getElementById('agenda-list');
+    var list = document.getElementById('agenda-list');
     if (!list) return;
-    const sorted = State.agenda.sort((a,b) => new Date(a.date) - new Date(b.date));
-    list.innerHTML = sorted.map((item, idx) => `
-      <div class="archive-item" style="display:flex;justify-content:space-between;align-items:center;">
-        <div><strong>${item.desc}</strong><br><span style="font-size:0.8rem;color:var(--text2);">${item.date}</span></div>
-        <button class="btn btn-danger" data-agenda-del="${idx}" style="padding:0.3rem 0.6rem;font-size:0.8rem;"><i class="fas fa-trash"></i></button>
-      </div>`).join('') || '<div class="status">لا توجد أحداث</div>';
-    list.querySelectorAll('[data-agenda-del]').forEach(btn => {
+    var sorted = State.agenda.sort((a, b) => new Date(a.date) - new Date(b.date));
+    list.innerHTML = sorted.map((item, index) => 
+      '<div class="archive-item" style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<div><strong>' + item.desc + '</strong><br><span style="font-size:0.8rem;color:var(--text2);">' + item.date + '</span></div>' +      '<button data-idx="' + index + '" class="btn btn-danger" style="padding:0.3rem 0.6rem;font-size:0.8rem;"><i class="fas fa-trash"></i></button></div>'
+    ).join('') || '<div class="status">لا توجد أحداث</div>';
+    
+    list.querySelectorAll('button[data-idx]').forEach(btn => {
       btn.addEventListener('click', function() {
-        State.agenda.splice(parseInt(this.dataset.agendaDel), 1);
+        State.agenda.splice(parseInt(this.getAttribute('data-idx')), 1);
         localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
         renderAgenda();
       });
     });
   }
 
-  async function callGemini(prompt, model = 'gemini-1.5-flash') {
-    const key = State.keys.gemini || document.getElementById('gemini-key')?.value.trim();
-    if (!key || !key.startsWith('AIza')) throw new Error('مفتاح Gemini غير صالح أو غير محفوظ');
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-    const res = await fetch(url, {
+  // API Calls
+  async function callGemini(prompt, model = 'gemini-2.0-flash') {
+    if (!State.keys.gemini) throw new Error('مفتاح Gemini غير مدخل. اذهب للإعدادات');
+    var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + State.keys.gemini;
+    var res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 2048 } })
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 4096 } })
     });
-    if (!res.ok) {      const err = await res.json().catch(() => ({}));
-      if (res.status === 400) throw new Error('نموذج غير مدعوم أو طلب خاطئ. جرّب gemini-1.5-flash');
-      if (res.status === 401) throw new Error('مفتاح API غير صحيح');
-      if (res.status === 403) throw new Error('الـ API غير مُفعّل أو المفتاح مقيد. فعّل Generative Language API من Google Cloud');
-      if (res.status === 429) throw new Error('تم تجاوز الحد اليومي (1500). انتظر غداً أو استخدم Qwen');
+    if (!res.ok) {
+      var err = await res.json().catch(() => ({}));
+      if (res.status === 429) throw new Error('تم تجاوز الحد اليومي. استخدم نموذجاً آخر');
+      if (res.status === 400) throw new Error('نموذج غير صالح أو طلب خاطئ. جرّب نموذجاً آخر');
       throw new Error('خطأ: ' + (err.error?.message || res.statusText));
     }
-    const data = await res.json();
+    var data = await res.json();
     return data.candidates[0].content.parts[0].text;
   }
 
-  async function callQwen(prompt) {
+  async function runQwen(input) {
     if (!State.keys.openrouter) throw new Error('مفتاح OpenRouter غير مدخل');
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    var res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${State.keys.openrouter}`, 'Content-Type': 'application/json', 'HTTP-Referer': location.href, 'X-Title': 'DESK BOT' },
-      body: JSON.stringify({ model: 'qwen/qwen-2.5-72b-instruct:free', messages: [{ role: 'user', content: prompt }] })
+      headers: { 'Authorization': 'Bearer ' + State.keys.openrouter, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'qwen/qwen-2.5-72b-instruct:free', messages: [{ role: 'user', content: input }] })
     });
-    if (!res.ok) throw new Error(res.status === 429 ? 'تم تجاوز الحد اليومي (50)' : 'فشل الاتصال بـ Qwen');
-    const data = await res.json();
+    if (!res.ok) throw new Error('فشل الاتصال بـ Qwen');
+    var data = await res.json();
     return data.choices[0].message.content;
   }
 
+  // RSS
   async function fetchRSS() {
-    setStatus('rss-status', '🔄 جاري جلب الأخبار...', 'loading');
-    const container = document.getElementById('rss-container');
+    setStatus('rss-status', 'جاري جلب الأخبار...', 'loading');
+    var container = document.getElementById('rss-container');
     container.innerHTML = '';
-    const feeds = [
-      'https://api.rss2json.com/v1/api.json?rss_url=https://www.babnet.net/rss.xml',
-      'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/arabic/rss.xml'
-    ];
     try {
-      const results = await Promise.all(feeds.map(u => fetch(u).then(r=>r.json()).then(d=>d.items||[]).catch(()=>[])));
-      const news = results.flat().slice(0, 12);
-      news.forEach(item => {
-        const div = document.createElement('div');
+      var feeds = ['https://api.rss2json.com/v1/api.json?rss_url=https://www.babnet.net/rss.xml', 'https://api.rss2json.com/v1/api.json?rss_url=https://feeds.bbci.co.uk/arabic/rss.xml'];      var results = await Promise.all(feeds.map(u => fetch(u).then(r => r.json()).then(d => d.items || []).catch(() => [])));
+      var allNews = results.flat().slice(0, 12);
+      allNews.forEach(item => {
+        var div = document.createElement('div');
         div.className = 'news-item';
-        div.innerHTML = `<div class="news-title">${item.title}</div><p style="font-size:0.85rem;color:var(--text2);margin:0.3rem 0;">${(item.description||item.content||'').substring(0,150)}...</p><div class="news-meta"><span>${item.author||'وكالة'}</span><span>${new Date(item.pubDate).toLocaleDateString('ar-TN')}</span></div>`;
-        div.addEventListener('click', () => {
-          const inp = document.getElementById('editor-input');
-          if (inp) { inp.value = item.description || item.content || ''; showPanel('editor'); }
+        div.innerHTML = '<h4 class="news-title">' + item.title + '</h4><p style="font-size:0.85rem;color:var(--text2);margin:0.3rem 0;">' + (item.description || '').substring(0, 150) + '...</p><div class="news-meta"><span>' + (item.author || 'وكالة') + '</span><span>' + new Date(item.pubDate).toLocaleDateString('ar-TN') + '</span></div>';
+        div.addEventListener('click', function() {
+          document.getElementById('editor-input').value = item.description || item.content || '';
+          showPanel('editor');
         });
         container.appendChild(div);
       });
-      setStatus('rss-status', `✅ تم تحميل ${news.length} خبر`, 'success');
-    } catch { setStatus('rss-status', '❌ فشل جلب الأخبار', 'error'); }
+      setStatus('rss-status', 'تم تحميل ' + allNews.length + ' خبر', 'success');
+    } catch (e) { setStatus('rss-status', 'فشل جلب الأخبار', 'error'); }
   }
 
-  // ربط كل الأحداث مرة واحدة عند تحميل الصفحة
-  document.addEventListener('DOMContentLoaded', function() {    // تحميل الإعدادات المحفوظة
-    const savedTheme = localStorage.getItem('deskbot_theme') || 'dark';
+  // Init
+  document.addEventListener('DOMContentLoaded', function() {
+    var savedTheme = localStorage.getItem('deskbot_theme') || 'warm';
     setTheme(savedTheme);
     if (State.keys.gemini) document.getElementById('gemini-key').value = State.keys.gemini;
     if (State.keys.openrouter) document.getElementById('openrouter-key').value = State.keys.openrouter;
-    renderArchive(State.archive);
     renderAgenda();
 
-    // تأثير الضغط على الأزرار
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('.btn, .nav-btn, .theme-dot')) {
-        const btn = e.target.closest('.btn, .nav-btn');
-        if (btn) {
-          btn.classList.add('pressed');
-          setTimeout(() => btn.classList.remove('pressed'), 200);
-        }
-      }
-    });
-
-    // القائمة الجانبية
+    // Navigation
     document.querySelectorAll('[data-panel]').forEach(btn => {
-      btn.addEventListener('click', function() { showPanel(this.dataset.panel); });
+      btn.addEventListener('click', function() { showPanel(this.getAttribute('data-panel')); });
+    });
+    document.querySelectorAll('[data-toggle]').forEach(btn => {
+      btn.addEventListener('click', function() { toggleDropdown(this.getAttribute('data-toggle')); });
+    });
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.addEventListener('click', function() { setTheme(this.getAttribute('data-theme')); });
     });
 
-    // الأوضاع
-    document.querySelectorAll('[data-theme-set]').forEach(btn => {
-      btn.addEventListener('click', function() { setTheme(this.dataset.themeSet); });
-    });
-
-    // RSS
-    document.getElementById('btn-refresh-rss').addEventListener('click', fetchRSS);
-
-    // المحرر
+    // Editors
     document.getElementById('btn-run-editor').addEventListener('click', async function() {
-      const input = document.getElementById('editor-input').value.trim();
-      if (!input) return setStatus('editor-status', '⚠️ أدخل النص أولاً', 'error');
-      const mode = document.getElementById('editor-mode').value;
-      const model = document.getElementById('editor-model').value;
-      setStatus('editor-status', '⏳ جاري المعالجة بـ ' + model + '...', 'loading');
+      var input = document.getElementById('editor-input').value.trim();
+      if (!input) return setStatus('editor-status', 'أدخل النص أولاً', 'error');
+      var mode = document.getElementById('editor-mode').value;
+      var model = document.getElementById('editor-model').value;
+      setStatus('editor-status', 'جاري المعالجة...', 'loading');
       try {
         document.getElementById('editor-output').value = await callGemini(PROMPTS[mode].replace('{input}', input), model);
-        setStatus('editor-status', '✅ تمت المعالجة بنجاح', 'success');
-      } catch(e) { setStatus('editor-status', '❌ ' + e.message, 'error'); }
+        setStatus('editor-status', '✅ تمت المعالجة', 'success');
+      } catch (e) { setStatus('editor-status', '❌ ' + e.message, 'error'); }
     });
-    document.getElementById('btn-copy-editor').addEventListener('click', () => copyText('editor-output'));
-    document.getElementById('btn-save-editor').addEventListener('click', () => saveArchive('محرر', 'editor-output', 'editor-input'));
-    document.getElementById('btn-share-editor').addEventListener('click', () => shareText('whatsapp', 'editor-output'));
 
-    // المقال PRO
-    document.getElementById('btn-run-pro').addEventListener('click', async function() {      const input = document.getElementById('pro-input').value.trim();
-      if (!input) return setStatus('pro-status', '⚠️ أدخل النص', 'error');
-      const count = document.getElementById('pro-count').value;
-      setStatus('pro-status', '⏳ جاري الكتابة...', 'loading');
+    document.getElementById('btn-run-pro').addEventListener('click', async function() {
+      var input = document.getElementById('pro-input').value.trim();      if (!input) return setStatus('pro-status', 'أدخل النص', 'error');
+      var count = document.getElementById('pro-count').value;
+      var model = document.getElementById('pro-model').value;
+      setStatus('pro-status', 'جاري الكتابة...', 'loading');
       try {
-        document.getElementById('pro-output').value = await callGemini(`اكتب ${count} مقال/مقالات إخبارية احترافية بناءً على: ${input}`, 'gemini-1.5-flash');
-        setStatus('pro-status', '✅ تم إنشاء المقالات', 'success');
-      } catch(e) { setStatus('pro-status', '❌ ' + e.message, 'error'); }
+        document.getElementById('pro-output').value = await callGemini(PROMPTS.pro_article.replace('{input}', input).replace('{count}', count), model);
+        setStatus('pro-status', '✅ تم الإنشاء', 'success');
+      } catch (e) { setStatus('pro-status', '❌ ' + e.message, 'error'); }
     });
-    document.getElementById('btn-copy-pro').addEventListener('click', () => copyText('pro-output'));
-    document.getElementById('btn-save-pro').addEventListener('click', () => saveArchive('مقال', 'pro-output', 'pro-input'));
 
-    // التفريغ الصوتي
-    document.getElementById('audio-upload-area').addEventListener('click', () => document.getElementById('audio-file').click());
-    document.getElementById('btn-transcribe').addEventListener('click', function() {
-      setStatus('transcribe-status', '⏳ جاري التفريغ...', 'loading');
-      setTimeout(() => {
-        document.getElementById('transcribe-output').value = 'نص تجريبي. لربط Whisper API فعلياً يحتاج لسيرفر خلفي.';
-        setStatus('transcribe-status', '✅ تم التفريغ', 'success');
-      }, 1200);
-    });
-    document.getElementById('btn-copy-audio').addEventListener('click', () => copyText('transcribe-output'));
-    document.getElementById('btn-save-audio').addEventListener('click', () => saveArchive('تفريغ', 'transcribe-output'));
-
-    // التاريخ
+    // Tools
     document.getElementById('btn-search-hist').addEventListener('click', async function() {
-      const d = document.getElementById('hist-day').value;
-      const m = document.getElementById('hist-month').value;
-      if (!d || !m) return setStatus('hist-status', '⚠️ أدخل اليوم والشهر', 'error');
-      setStatus('hist-status', '⏳ جاري البحث...', 'loading');
+      var d = document.getElementById('hist-day').value;
+      var m = document.getElementById('hist-month').value;
+      if (!d || !m) return setStatus('hist-status', 'أدخل اليوم والشهر', 'error');
+      setStatus('hist-status', 'جاري البحث...', 'loading');
       try {
-        document.getElementById('hist-output').value = await callGemini(`اذكر 4-5 أحداث تاريخية وقعت في يوم ${d} شهر ${m}. رتّبها زمنياً.`, 'gemini-1.5-flash');
+        document.getElementById('hist-output').value = await callGemini(PROMPTS.history.replace('{day}', d).replace('{month}', m));
         setStatus('hist-status', '✅ تم البحث', 'success');
-      } catch(e) { setStatus('hist-status', '❌ ' + e.message, 'error'); }
+      } catch (e) { setStatus('hist-status', '❌ ' + e.message, 'error'); }
     });
-    document.getElementById('btn-copy-hist').addEventListener('click', () => copyText('hist-output'));
-    document.getElementById('btn-save-hist').addEventListener('click', () => saveArchive('تاريخ', 'hist-output'));
 
-    // الرياضة
     document.getElementById('btn-search-sports').addEventListener('click', async function() {
-      const a = document.getElementById('team-a').value;
-      const b = document.getElementById('team-b').value;
-      if (!a || !b) return setStatus('sports-status', '⚠️ أدخل الفريقين', 'error');
-      setStatus('sports-status', '⏳ جاري البحث...', 'loading');
+      var a = document.getElementById('team-a').value;
+      var b = document.getElementById('team-b').value;
+      if (!a || !b) return setStatus('sports-status', 'أدخل الفريقين', 'error');
+      setStatus('sports-status', 'جاري البحث...', 'loading');
       try {
-        document.getElementById('sports-output').value = await callGemini(`لخّص تاريخ المواجهات بين ${a} و ${b}: آخر 5 نتائج، إحصائيات، سياق تنافسي.`, 'gemini-1.5-flash');
+        document.getElementById('sports-output').value = await callGemini(PROMPTS.sports.replace('{teamA}', a).replace('{teamB}', b));
         setStatus('sports-status', '✅ تم البحث', 'success');
-      } catch(e) { setStatus('sports-status', '❌ ' + e.message, 'error'); }
+      } catch (e) { setStatus('sports-status', '❌ ' + e.message, 'error'); }
     });
-    document.getElementById('btn-copy-sports').addEventListener('click', () => copyText('sports-output'));    document.getElementById('btn-save-sports').addEventListener('click', () => saveArchive('رياضة', 'sports-output'));
 
-    // الشخصية
     document.getElementById('btn-search-persona').addEventListener('click', async function() {
-      const name = document.getElementById('persona-input').value.trim();
-      if (!name) return setStatus('persona-status', '⚠️ أدخل الاسم', 'error');
-      setStatus('persona-status', '⏳ جاري الرصد...', 'loading');
+      var n = document.getElementById('persona-input').value.trim();
+      if (!n) return setStatus('persona-status', 'أدخل الاسم', 'error');
+      setStatus('persona-status', 'جاري الرصد...', 'loading');
       try {
-        document.getElementById('persona-output').value = await callGemini(`أنشئ ملفاً استقصائياً لـ ${name}: تعريف، 3 تصريحات موثقة، خلفية مهنية، 10 أسئلة حوارية.`, 'gemini-2.0-flash');
+        document.getElementById('persona-output').value = await callGemini(PROMPTS.profile.replace('{input}', n));
         setStatus('persona-status', '✅ تم الاستخراج', 'success');
-      } catch(e) { setStatus('persona-status', '❌ ' + e.message, 'error'); }
+      } catch (e) { setStatus('persona-status', '❌ ' + e.message, 'error'); }
     });
-    document.getElementById('btn-copy-persona').addEventListener('click', () => copyText('persona-output'));
-    document.getElementById('btn-save-persona').addEventListener('click', () => saveArchive('شخصية', 'persona-output'));
 
     // Qwen
     document.getElementById('btn-run-qwen').addEventListener('click', async function() {
-      const input = document.getElementById('qwen-input').value.trim();
-      if (!input) return setStatus('qwen-status', '⚠️ أدخل نصاً', 'error');
-      setStatus('qwen-status', '⏳ Qwen يعالج...', 'loading');
+      var input = document.getElementById('qwen-input').value.trim();
+      if (!input) return setStatus('qwen-status', 'أدخل نصاً', 'error');
+      setStatus('qwen-status', 'Qwen يعالج...', 'loading');
       try {
-        document.getElementById('qwen-output').value = await callQwen(input);
-        setStatus('qwen-status', '✅ تمت المعالجة', 'success');
-      } catch(e) { setStatus('qwen-status', '❌ ' + e.message, 'error'); }
+        document.getElementById('qwen-output').value = await runQwen(PROMPTS.qwen.replace('{input}', input));        setStatus('qwen-status', '✅ تمت المعالجة', 'success');
+      } catch (e) { setStatus('qwen-status', '❌ ' + e.message, 'error'); }
     });
-    document.getElementById('btn-copy-qwen').addEventListener('click', () => copyText('qwen-output'));
-    document.getElementById('btn-save-qwen').addEventListener('click', () => saveArchive('Qwen', 'qwen-output'));
 
-    // الأجندة
+    // Audio (Mock)
+    document.getElementById('audio-upload-area').addEventListener('click', function() { document.getElementById('audio-file').click(); });
+    document.getElementById('btn-transcribe').addEventListener('click', function() {
+      setStatus('transcribe-status', 'جاري التفريغ...', 'loading');
+      setTimeout(() => {
+        document.getElementById('transcribe-output').value = 'هذا نص تجريبي للتفريغ. لربط Whisper API فعلياً، أضف خادماً خلفياً.';
+        setStatus('transcribe-status', '✅ تم التفريغ', 'success');
+      }, 1500);
+    });
+
+    // Actions (Copy, Save, Share)
+    document.getElementById('btn-copy-editor').addEventListener('click', () => copyText('editor-output'));
+    document.getElementById('btn-save-editor').addEventListener('click', () => saveToArchive('محرر', 'editor-output'));
+    document.getElementById('btn-share-editor').addEventListener('click', () => shareText('whatsapp', 'editor-output'));
+    
+    document.getElementById('btn-copy-pro').addEventListener('click', () => copyText('pro-output'));
+    document.getElementById('btn-save-pro').addEventListener('click', () => saveToArchive('مقال', 'pro-output'));
+    
+    document.getElementById('btn-copy-audio').addEventListener('click', () => copyText('transcribe-output'));
+    document.getElementById('btn-save-audio').addEventListener('click', () => saveToArchive('تفريغ', 'transcribe-output'));
+    
+    document.getElementById('btn-copy-hist').addEventListener('click', () => copyText('hist-output'));
+    document.getElementById('btn-save-hist').addEventListener('click', () => saveToArchive('تاريخ', 'hist-output'));
+    
+    document.getElementById('btn-copy-sports').addEventListener('click', () => copyText('sports-output'));
+    document.getElementById('btn-save-sports').addEventListener('click', () => saveToArchive('رياضة', 'sports-output'));
+    
+    document.getElementById('btn-copy-persona').addEventListener('click', () => copyText('persona-output'));
+    document.getElementById('btn-save-persona').addEventListener('click', () => saveToArchive('شخصية', 'persona-output'));
+    
+    document.getElementById('btn-copy-qwen').addEventListener('click', () => copyText('qwen-output'));
+    document.getElementById('btn-save-qwen').addEventListener('click', () => saveToArchive('Qwen', 'qwen-output'));
+
+    // Agenda
     document.getElementById('btn-add-agenda').addEventListener('click', function() {
-      const d = document.getElementById('agenda-date').value;
-      const desc = document.getElementById('agenda-desc').value.trim();
-      if (!d || !desc) return setStatus('agenda-status', '⚠️ أدخل التاريخ والوصف', 'error');
-      State.agenda.push({ date: d, desc });
+      var d = document.getElementById('agenda-date').value;
+      var desc = document.getElementById('agenda-desc').value.trim();
+      if (!d || !desc) return setStatus('agenda-status', 'أدخل التاريخ والوصف', 'error');
+      State.agenda.push({ date: d, desc: desc });
       localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
       renderAgenda();
       setStatus('agenda-status', '✅ تمت الإضافة', 'success');
       document.getElementById('agenda-desc').value = '';
     });
 
-    // الأرشيف
-    document.getElementById('btn-search-archive').addEventListener('click', function() {
-      const q = document.getElementById('archive-search').value.trim().toLowerCase();
-      const filtered = q ? State.archive.filter(i => (i.title + ' ' + i.content).toLowerCase().includes(q)) : State.archive;
-      renderArchive(filtered);
-      setStatus('archive-status', `نتائج: ${filtered.length}`, 'success');
+    // Archive    document.getElementById('btn-search-archive').addEventListener('click', function() {
+      var q = document.getElementById('archive-search').value.toLowerCase();
+      var res = State.archive.filter(i => i.content.toLowerCase().includes(q));
+      document.getElementById('archive-results').innerHTML = res.map(i => 
+        '<div class="archive-item"><strong>' + i.type + '</strong> <span style="font-size:0.8rem;color:var(--text2);">' + i.date + '</span><p>' + i.content.substring(0, 150) + '...</p></div>'
+      ).join('') || '<div class="status">لا توجد نتائج</div>';
     });
     document.getElementById('btn-clear-archive').addEventListener('click', function() {
-      if (confirm('مسح الأرشيف نهائياً؟')) {
-        State.archive = [];        localStorage.removeItem('desbot_archive');
-        renderArchive([]);
-        setStatus('archive-status', '✅ تم المسح', 'success');
+      if (confirm('مسح الأرشيف؟')) {
+        State.archive = [];
+        localStorage.removeItem('desbot_archive');
+        document.getElementById('archive-results').innerHTML = '';
       }
     });
 
-    // الإعدادات
+    // RSS Refresh
+    document.getElementById('btn-refresh-rss').addEventListener('click', fetchRSS);
+
+    // Save Keys
     document.getElementById('btn-save-keys').addEventListener('click', function() {
-      const gk = document.getElementById('gemini-key').value.trim();
-      const ok = document.getElementById('openrouter-key').value.trim();
+      var gk = document.getElementById('gemini-key').value.trim();
+      var ok = document.getElementById('openrouter-key').value.trim();
       if (gk) { State.keys.gemini = gk; localStorage.setItem('gemini_key', gk); }
       if (ok) { State.keys.openrouter = ok; localStorage.setItem('openrouter_key', ok); }
       setStatus('settings-status', '✅ تم حفظ المفاتيح', 'success');
+    });
+
+    // Press Effect
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.btn, .nav-btn, .theme-btn')) {
+        var btn = e.target.closest('.btn, .nav-btn, .theme-btn');
+        btn.classList.add('pressed');
+        setTimeout(() => btn.classList.remove('pressed'), 200);
+      }
     });
   });
 })();
