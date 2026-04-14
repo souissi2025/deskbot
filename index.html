@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DESK BOT — Digital Newsroom System</title>
+  <title>DESK BOT — غرفة الأخبار الرقمية</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,10 +26,11 @@
       --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
       --border: #475569; --text: #f8fafc; --text2: #94a3b8;
       --primary: #3b82f6; --success: #10b981; --danger: #ef4444;
+      --font-base: 17px;
     }
     [data-theme="light"] {
       --bg: #f8fafc; --surface: #ffffff; --surface2: #f1f5f9;
-      --border: #e2e8f0; --text: #0f172a; --text2: #64748b;
+      --border: #cbd5e1; --text: #0f172a; --text2: #64748b;
       --primary: #2563eb;
     }
     [data-theme="warm"] {
@@ -37,179 +38,198 @@
       --border: #57534e; --text: #fef3c7; --text2: #d6d3d1;
       --primary: #d97706; --success: #65a30d; --danger: #dc2626;
     }
-    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); transition: 0.3s; }
+    body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); font-size: var(--font-base); transition: 0.3s; }
     .panel { display: none; animation: fadeIn 0.3s ease; }
     .panel.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .nav-btn.active { background: var(--primary); color: #fff; font-weight: 600; }
-    .theme-dot.active { box-shadow: 0 0 0 2px var(--primary); }
-    input, textarea, select { background: var(--surface2); border-color: var(--border); color: var(--text); }
+    .theme-dot { transition: 0.2s; }
+    .theme-dot:hover { transform: scale(1.15); }
+    .theme-dot.active { box-shadow: 0 0 0 2px var(--primary); transform: scale(1.1); }
+    input, textarea, select { 
+      background: var(--surface2); border-color: var(--border); color: var(--text); 
+      font-size: 1rem; padding: 0.75rem; min-height: 48px;
+    }
     input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59,130,246,0.2); }
-    @media (max-width: 768px) { .sidebar { display: none; } .mobile-nav { display: flex; } }
+    textarea { min-height: 140px; resize: vertical; line-height: 1.6; }
+    .btn { min-height: 48px; font-size: 1rem; }
+    @media (max-width: 768px) { .sidebar { display: none; } .mobile-nav { display: flex; } body { font-size: 16px; } }
   </style>
 </head>
 <body data-theme="dark" class="min-h-screen flex flex-col">
 
   <!-- الهيدر -->
-  <header class="bg-surface border-b border-border px-4 py-3 flex justify-between items-center sticky top-0 z-50">
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold">DB</div>
-      <h1 class="font-bold text-lg hidden sm:block">DESK BOT</h1>
+  <header class="bg-surface border-b border-border px-4 py-3 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg">DB</div>
+      <h1 class="font-bold text-xl hidden sm:block">DESK BOT</h1>
     </div>
-    <div class="flex items-center gap-2">
-      <div class="flex gap-1 bg-surface2 rounded-full p-1">
-        <button class="theme-dot w-5 h-5 rounded-full bg-[#0f172a]" onclick="setTheme('dark')"></button>
-        <button class="theme-dot w-5 h-5 rounded-full bg-[#f8fafc]" onclick="setTheme('light')"></button>
-        <button class="theme-dot w-5 h-5 rounded-full bg-[#1c1917]" onclick="setTheme('warm')"></button>
+    <div class="flex items-center gap-3">
+      <!-- أزرار الإضاءة -->
+      <div class="flex gap-2 bg-surface2 rounded-full p-1.5 border border-border">
+        <button class="theme-dot w-6 h-6 rounded-full bg-[#0f172a]" onclick="setTheme('dark')" title="ليلي"></button>
+        <button class="theme-dot w-6 h-6 rounded-full bg-[#f8fafc]" onclick="setTheme('light')" title="نهاري"></button>
+        <button class="theme-dot w-6 h-6 rounded-full bg-[#1c1917]" onclick="setTheme('warm')" title="دافئ"></button>
       </div>
-      <button onclick="toggleSettings()" class="bg-surface2 border border-border rounded-lg px-3 py-1.5 text-sm hover:bg-border transition"><i class="fas fa-cog ml-1"></i>الإعدادات</button>
+      <!-- زر الإعدادات -->
+      <button onclick="toggleSettings()" class="bg-surface2 border border-border rounded-lg px-4 py-2 text-sm font-medium hover:bg-border transition flex items-center gap-2">
+        <i class="fas fa-cog"></i> الإعدادات
+      </button>
     </div>
   </header>
 
   <div class="flex flex-1 overflow-hidden">
     <!-- الشريط الجانبي (سطح المكتب) -->
-    <aside class="sidebar w-64 bg-surface border-l border-border p-4 hidden md:flex flex-col gap-1 overflow-y-auto">
-      <button class="nav-btn active text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="home"><i class="fas fa-home w-5"></i> الرئيسية</button>
-      <button class="nav-btn text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="editor"><i class="fas fa-pen-fancy w-5"></i> المحرر الذكي PRO</button>
-      <button class="nav-btn text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="article"><i class="fas fa-newspaper w-5"></i> المقال الإخباري</button>
-      <button class="nav-btn text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="flash"><i class="fas fa-bolt w-5"></i> فلاش إذاعي</button>
-      <button class="nav-btn text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="tools"><i class="fas fa-toolbox w-5"></i> الأدوات</button>
-      <button class="nav-btn text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="agenda"><i class="fas fa-calendar w-5"></i> الأجندة</button>
-      <button class="nav-btn text-right px-3 py-2 rounded-lg hover:bg-surface2 transition" data-panel="archive"><i class="fas fa-archive w-5"></i> الأرشيف</button>
+    <aside class="sidebar w-72 bg-surface border-l border-border p-4 hidden md:flex flex-col gap-2 overflow-y-auto">
+      <button class="nav-btn active text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="home"><i class="fas fa-home w-6"></i> الرئيسية</button>
+      <button class="nav-btn text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="editor"><i class="fas fa-pen-fancy w-6"></i> المحرر الذكي PRO</button>
+      <button class="nav-btn text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="article"><i class="fas fa-newspaper w-6"></i> المقال الإخباري</button>
+      <button class="nav-btn text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="flash"><i class="fas fa-bolt w-6"></i> فلاش إذاعي</button>
+      <button class="nav-btn text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="tools"><i class="fas fa-toolbox w-6"></i> الأدوات</button>
+      <button class="nav-btn text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="agenda"><i class="fas fa-calendar w-6"></i> الأجندة</button>
+      <button class="nav-btn text-right px-3 py-2.5 rounded-lg hover:bg-surface2 transition text-lg" data-panel="archive"><i class="fas fa-archive w-6"></i> الأرشيف</button>
     </aside>
 
     <!-- المحتوى الرئيسي -->
-    <main class="flex-1 overflow-y-auto p-4 md:p-6 pb-20 md:pb-6" id="main-content">
+    <main class="flex-1 overflow-y-auto p-5 md:p-8 pb-24 md:pb-8" id="main-content">
       
       <!-- لوحة الرئيسية -->
       <section id="panel-home" class="panel active">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div class="bg-surface border border-border rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-primary" id="stat-req">0</div>
-            <div class="text-sm text-text2">طلبات اليوم</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+          <div class="bg-surface border border-border rounded-xl p-5 text-center shadow-sm">
+            <div class="text-3xl font-bold text-primary mb-1" id="stat-req">0</div>
+            <div class="text-base text-text2">طلبات اليوم</div>
           </div>
-          <div class="bg-surface border border-border rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-success" id="stat-arch">0</div>
-            <div class="text-sm text-text2">مواد مؤرشفة</div>
+          <div class="bg-surface border border-border rounded-xl p-5 text-center shadow-sm">
+            <div class="text-3xl font-bold text-success mb-1" id="stat-arch">0</div>
+            <div class="text-base text-text2">مواد مؤرشفة</div>
           </div>
-          <div class="bg-surface border border-border rounded-xl p-4 text-center">
-            <div class="text-2xl font-bold text-primary" id="stat-agenda">0</div>
-            <div class="text-sm text-text2">أحداث في الأجندة</div>
+          <div class="bg-surface border border-border rounded-xl p-5 text-center shadow-sm">
+            <div class="text-3xl font-bold text-primary mb-1" id="stat-agenda">0</div>
+            <div class="text-base text-text2">أحداث في الأجندة</div>
           </div>
         </div>
-        <div class="bg-surface border border-border rounded-xl p-6">
-          <h2 class="text-xl font-bold mb-2">مرحباً 👋 جاهز لبدء العمل التحريري</h2>
-          <p class="text-text2 mb-4">منصة متكاملة للصحفيين: تحرير، صياغة، تفريغ، أرشفة، وأجندة مشتركة.</p>
-          <div class="flex gap-2 flex-wrap">
-            <button onclick="showPanel('editor')" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg"><i class="fas fa-pen-fancy ml-2"></i>بدء التحرير</button>
-            <button onclick="showPanel('agenda')" class="bg-surface2 border border-border px-4 py-2 rounded-lg"><i class="fas fa-calendar ml-2"></i>الأجندة</button>
-            <button onclick="toggleSettings()" class="bg-surface2 border border-border px-4 py-2 rounded-lg"><i class="fas fa-cog ml-2"></i>إعدادات API</button>
+        <div class="bg-surface border border-border rounded-xl p-8 shadow-sm">
+          <h2 class="text-2xl font-bold mb-3">مرحباً 👋 جاهز لبدء العمل التحريري</h2>
+          <p class="text-text2 text-lg mb-6 leading-relaxed">منصة متكاملة للصحفيين: تحرير، صياغة، تفريغ، أرشفة، وأجندة مشتركة. تعمل الآن بنموذجي <span class="text-primary font-medium">Gemini 2.5 Flash & Pro</span> فقط.</p>
+          <div class="flex gap-3 flex-wrap">
+            <button onclick="showPanel('editor')" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md"><i class="fas fa-pen-fancy ml-2"></i>بدء التحرير</button>
+            <button onclick="showPanel('agenda')" class="bg-surface2 border border-border px-6 py-3 rounded-xl text-lg"><i class="fas fa-calendar ml-2"></i>الأجندة</button>
+            <button onclick="toggleSettings()" class="bg-surface2 border border-border px-6 py-3 rounded-xl text-lg"><i class="fas fa-cog ml-2"></i>إعدادات API</button>
           </div>
         </div>
       </section>
 
       <!-- لوحة المحرر -->
       <section id="panel-editor" class="panel">
-        <div class="bg-surface border border-border rounded-xl p-5">
-          <h2 class="text-lg font-bold mb-4"><i class="fas fa-pen-fancy ml-2 text-primary"></i>مركز المعالجة الذكية PRO</h2>
-          <textarea id="editor-input" placeholder="الصق النص الخام أو المعطيات هنا..." class="w-full h-40 mb-3"></textarea>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
-            <select id="editor-mode" class="md:col-span-3">
+        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-5"><i class="fas fa-pen-fancy ml-2 text-primary"></i>مركز المعالجة الذكية PRO</h2>
+          <textarea id="editor-input" placeholder="الصق النص الخام أو المعطيات هنا..." class="w-full mb-4 rounded-xl"></textarea>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <select id="editor-model" class="md:col-span-2 rounded-xl">
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash (سريع)</option>
+              <option value="gemini-2.5-pro">Gemini 2.5 Pro (دقيق)</option>
+            </select>
+            <select id="editor-mode" class="md:col-span-2 rounded-xl">
               <option value="structure">إعادة هيكلة + معايير وات/ديوان أف أم</option>
               <option value="seo">إعادة صياغة + تحسين SEO</option>
               <option value="titles">12 عنواناً احترافياً (4 فئات)</option>
               <option value="flash">فلاش إذاعي موجز مشكول</option>
               <option value="profile">تسمية الشخصية (ملف استقصائي)</option>
             </select>
-            <button id="btn-run-editor" class="bg-primary hover:bg-primary/90 text-white rounded-lg font-medium">تشغيل المعالجة</button>
           </div>
-          <div id="editor-status" class="mb-3"></div>
-          <textarea id="editor-output" readonly placeholder="النتيجة ستظهر هنا..." class="w-full h-48 mb-3"></textarea>
-          <div class="flex gap-2 flex-wrap">
-            <button onclick="copyText('editor-output')" class="bg-surface2 border border-border px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy ml-1"></i>نسخ</button>
-            <button onclick="saveArchive('محرر','editor-output')" class="bg-success hover:bg-success/90 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-save ml-1"></i>أرشفة</button>
-            <button onclick="shareText('whatsapp','editor-output')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fab fa-whatsapp ml-1"></i>واتساب</button>
+          <button id="btn-run-editor" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl font-medium mb-4 shadow-md">تشغيل المعالجة</button>
+          <div id="editor-status" class="mb-4 text-center font-medium"></div>
+          <textarea id="editor-output" readonly placeholder="النتيجة ستظهر هنا..." class="w-full mb-4 rounded-xl"></textarea>
+          <div class="flex gap-3 flex-wrap">
+            <button onclick="copyText('editor-output')" class="btn bg-surface2 border border-border px-4 rounded-xl text-lg"><i class="fas fa-copy ml-2"></i>نسخ</button>
+            <button onclick="saveArchive('محرر','editor-output')" class="btn bg-success hover:bg-success/90 text-white px-4 rounded-xl text-lg"><i class="fas fa-save ml-2"></i>أرشفة</button>
+            <button onclick="shareText('whatsapp','editor-output')" class="btn bg-green-600 hover:bg-green-700 text-white px-4 rounded-xl text-lg"><i class="fab fa-whatsapp ml-2"></i>واتساب</button>
           </div>
         </div>
       </section>
 
       <!-- لوحة المقال -->
       <section id="panel-article" class="panel">
-        <div class="bg-surface border border-border rounded-xl p-5">
-          <h2 class="text-lg font-bold mb-4"><i class="fas fa-newspaper ml-2 text-primary"></i>المقال الإخباري PRO</h2>
-          <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي..." class="w-full h-32 mb-3"></textarea>
-          <div class="grid grid-cols-2 gap-3 mb-3">
-            <select id="article-count">
+        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-5"><i class="fas fa-newspaper ml-2 text-primary"></i>المقال الإخباري PRO</h2>
+          <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي..." class="w-full mb-4 rounded-xl"></textarea>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <select id="article-model" class="rounded-xl">
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+              <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+            </select>
+            <select id="article-count" class="rounded-xl">
               <option value="1">مقال واحد</option>
               <option value="2">مقالان بزاويتين</option>
               <option value="3">ثلاثة مقالات</option>
             </select>
-            <button id="btn-run-article" class="bg-primary hover:bg-primary/90 text-white rounded-lg font-medium">تشغيل</button>
+            <button id="btn-run-article" class="btn bg-primary hover:bg-primary/90 text-white rounded-xl font-medium shadow-md">تشغيل</button>
           </div>
-          <div id="article-status" class="mb-3"></div>
-          <textarea id="article-output" readonly placeholder="المقالات ستظهر هنا..." class="w-full h-64 mb-3"></textarea>
-          <div class="flex gap-2">
-            <button onclick="copyText('article-output')" class="bg-surface2 border border-border px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy ml-1"></i>نسخ</button>
-            <button onclick="saveArchive('مقال','article-output')" class="bg-success hover:bg-success/90 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-save ml-1"></i>أرشفة</button>
+          <div id="article-status" class="mb-4 text-center font-medium"></div>
+          <textarea id="article-output" readonly placeholder="المقالات ستظهر هنا..." class="w-full mb-4 rounded-xl"></textarea>
+          <div class="flex gap-3">
+            <button onclick="copyText('article-output')" class="btn bg-surface2 border border-border px-4 rounded-xl text-lg"><i class="fas fa-copy ml-2"></i>نسخ</button>
+            <button onclick="saveArchive('مقال','article-output')" class="btn bg-success hover:bg-success/90 text-white px-4 rounded-xl text-lg"><i class="fas fa-save ml-2"></i>أرشفة</button>
           </div>
         </div>
       </section>
 
       <!-- لوحة الفلاش -->
       <section id="panel-flash" class="panel">
-        <div class="bg-surface border border-border rounded-xl p-5">
-          <h2 class="text-lg font-bold mb-4"><i class="fas fa-bolt ml-2 text-primary"></i>فلاش إذاعي جاهز للإلقاء</h2>
-          <textarea id="flash-input" placeholder="معطيات الخبر..." class="w-full h-32 mb-3"></textarea>
-          <button id="btn-run-flash" class="w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg font-medium mb-3">توليد الفلاش</button>
-          <div id="flash-status" class="mb-3"></div>
-          <textarea id="flash-output" readonly placeholder="النص المفرغ أو الفلاش..." class="w-full h-32 mb-3"></textarea>
-          <div class="flex gap-2">
-            <button onclick="copyText('flash-output')" class="bg-surface2 border border-border px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy ml-1"></i>نسخ</button>
-            <button onclick="saveArchive('فلاش','flash-output')" class="bg-success hover:bg-success/90 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-save ml-1"></i>أرشفة</button>
+        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-5"><i class="fas fa-bolt ml-2 text-primary"></i>فلاش إذاعي جاهز للإلقاء</h2>
+          <textarea id="flash-input" placeholder="معطيات الخبر..." class="w-full mb-4 rounded-xl"></textarea>
+          <button id="btn-run-flash" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl font-medium mb-4 shadow-md">توليد الفلاش</button>
+          <div id="flash-status" class="mb-4 text-center font-medium"></div>
+          <textarea id="flash-output" readonly placeholder="النص المفرغ أو الفلاش..." class="w-full mb-4 rounded-xl"></textarea>
+          <div class="flex gap-3">
+            <button onclick="copyText('flash-output')" class="btn bg-surface2 border border-border px-4 rounded-xl text-lg"><i class="fas fa-copy ml-2"></i>نسخ</button>
+            <button onclick="saveArchive('فلاش','flash-output')" class="btn bg-success hover:bg-success/90 text-white px-4 rounded-xl text-lg"><i class="fas fa-save ml-2"></i>أرشفة</button>
           </div>
         </div>
       </section>
 
       <!-- لوحة الأدوات -->
       <section id="panel-tools" class="panel">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-surface border border-border rounded-xl p-5">
-            <h3 class="font-bold mb-3"><i class="fas fa-history ml-2 text-primary"></i>حدث اليوم في التاريخ</h3>
-            <div class="grid grid-cols-2 gap-2 mb-3">
-              <input type="number" id="hist-day" placeholder="اليوم (1-31)" min="1" max="31">
-              <input type="number" id="hist-month" placeholder="الشهر (1-12)" min="1" max="12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-history ml-2 text-primary"></i>حدث اليوم في التاريخ</h3>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <input type="number" id="hist-day" placeholder="اليوم (1-31)" min="1" max="31" class="rounded-xl">
+              <input type="number" id="hist-month" placeholder="الشهر (1-12)" min="1" max="12" class="rounded-xl">
             </div>
-            <button id="btn-search-hist" class="w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg mb-3">بحث</button>
-            <div id="hist-status" class="mb-3"></div>
-            <textarea id="hist-output" readonly class="w-full h-32 mb-3"></textarea>
-            <div class="flex gap-2">
-              <button onclick="copyText('hist-output')" class="bg-surface2 border border-border px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy ml-1"></i>نسخ</button>
-              <button onclick="saveArchive('تاريخ','hist-output')" class="bg-success hover:bg-success/90 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-save ml-1"></i>أرشفة</button>
-            </div>
-          </div>
-          <div class="bg-surface border border-border rounded-xl p-5">
-            <h3 class="font-bold mb-3"><i class="fas fa-futbol ml-2 text-primary"></i>أرشيف المواجهات</h3>
-            <div class="grid grid-cols-2 gap-2 mb-3">
-              <input type="text" id="team-a" placeholder="الفريق الأول">
-              <input type="text" id="team-b" placeholder="الفريق الثاني">
-            </div>
-            <button id="btn-search-sports" class="w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg mb-3">بحث</button>
-            <div id="sports-status" class="mb-3"></div>
-            <textarea id="sports-output" readonly class="w-full h-32 mb-3"></textarea>
-            <div class="flex gap-2">
-              <button onclick="copyText('sports-output')" class="bg-surface2 border border-border px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy ml-1"></i>نسخ</button>
-              <button onclick="saveArchive('رياضة','sports-output')" class="bg-success hover:bg-success/90 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-save ml-1"></i>أرشفة</button>
+            <button id="btn-search-hist" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl mb-4 shadow-md">بحث</button>
+            <div id="hist-status" class="mb-4 text-center font-medium"></div>
+            <textarea id="hist-output" readonly class="w-full mb-4 rounded-xl"></textarea>
+            <div class="flex gap-3">
+              <button onclick="copyText('hist-output')" class="btn bg-surface2 border border-border px-4 rounded-xl text-lg"><i class="fas fa-copy ml-2"></i>نسخ</button>
+              <button onclick="saveArchive('تاريخ','hist-output')" class="btn bg-success hover:bg-success/90 text-white px-4 rounded-xl text-lg"><i class="fas fa-save ml-2"></i>أرشفة</button>
             </div>
           </div>
-          <div class="bg-surface border border-border rounded-xl p-5 md:col-span-2">
-            <h3 class="font-bold mb-3"><i class="fas fa-user-shield ml-2 text-primary"></i>تسمية الشخصية (ملف صحفي)</h3>
-            <input type="text" id="persona-input" placeholder="اسم الشخصية أو المنصب..." class="mb-3">
-            <button id="btn-search-persona" class="w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg mb-3">استخراج الملف</button>
-            <div id="persona-status" class="mb-3"></div>
-            <textarea id="persona-output" readonly class="w-full h-40 mb-3"></textarea>
-            <div class="flex gap-2">
-              <button onclick="copyText('persona-output')" class="bg-surface2 border border-border px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-copy ml-1"></i>نسخ</button>
-              <button onclick="saveArchive('شخصية','persona-output')" class="bg-success hover:bg-success/90 text-white px-3 py-1.5 rounded-lg text-sm"><i class="fas fa-save ml-1"></i>أرشفة</button>
+          <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-futbol ml-2 text-primary"></i>أرشيف المواجهات</h3>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <input type="text" id="team-a" placeholder="الفريق الأول" class="rounded-xl">
+              <input type="text" id="team-b" placeholder="الفريق الثاني" class="rounded-xl">
+            </div>
+            <button id="btn-search-sports" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl mb-4 shadow-md">بحث</button>
+            <div id="sports-status" class="mb-4 text-center font-medium"></div>
+            <textarea id="sports-output" readonly class="w-full mb-4 rounded-xl"></textarea>
+            <div class="flex gap-3">
+              <button onclick="copyText('sports-output')" class="btn bg-surface2 border border-border px-4 rounded-xl text-lg"><i class="fas fa-copy ml-2"></i>نسخ</button>
+              <button onclick="saveArchive('رياضة','sports-output')" class="btn bg-success hover:bg-success/90 text-white px-4 rounded-xl text-lg"><i class="fas fa-save ml-2"></i>أرشفة</button>
+            </div>
+          </div>
+          <div class="bg-surface border border-border rounded-xl p-6 md:col-span-2 shadow-sm">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-user-shield ml-2 text-primary"></i>تسمية الشخصية (ملف صحفي)</h3>
+            <input type="text" id="persona-input" placeholder="اسم الشخصية أو المنصب..." class="mb-4 rounded-xl w-full">
+            <button id="btn-search-persona" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl mb-4 shadow-md">استخراج الملف</button>
+            <div id="persona-status" class="mb-4 text-center font-medium"></div>
+            <textarea id="persona-output" readonly class="w-full mb-4 rounded-xl"></textarea>
+            <div class="flex gap-3">
+              <button onclick="copyText('persona-output')" class="btn bg-surface2 border border-border px-4 rounded-xl text-lg"><i class="fas fa-copy ml-2"></i>نسخ</button>
+              <button onclick="saveArchive('شخصية','persona-output')" class="btn bg-success hover:bg-success/90 text-white px-4 rounded-xl text-lg"><i class="fas fa-save ml-2"></i>أرشفة</button>
             </div>
           </div>
         </div>
@@ -217,28 +237,28 @@
 
       <!-- لوحة الأجندة -->
       <section id="panel-agenda" class="panel">
-        <div class="bg-surface border border-border rounded-xl p-5">
-          <h2 class="text-lg font-bold mb-4"><i class="fas fa-calendar ml-2 text-primary"></i>الأجندة المشتركة</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-            <input type="date" id="agenda-date">
-            <input type="text" id="agenda-desc" placeholder="وصف الحدث" class="md:col-span-2">
+        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-5"><i class="fas fa-calendar ml-2 text-primary"></i>الأجندة المشتركة</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+            <input type="date" id="agenda-date" class="rounded-xl">
+            <input type="text" id="agenda-desc" placeholder="وصف الحدث" class="md:col-span-2 rounded-xl">
           </div>
-          <button id="btn-add-agenda" class="w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg mb-4"><i class="fas fa-plus ml-2"></i>إضافة حدث</button>
-          <div id="agenda-status" class="mb-4"></div>
-          <div id="agenda-list" class="space-y-2 max-h-96 overflow-y-auto"></div>
+          <button id="btn-add-agenda" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl mb-5 shadow-md"><i class="fas fa-plus ml-2"></i>إضافة حدث</button>
+          <div id="agenda-status" class="mb-5 text-center font-medium"></div>
+          <div id="agenda-list" class="space-y-3 max-h-[500px] overflow-y-auto"></div>
         </div>
       </section>
 
       <!-- لوحة الأرشيف -->
       <section id="panel-archive" class="panel">
-        <div class="bg-surface border border-border rounded-xl p-5">
-          <h2 class="text-lg font-bold mb-4"><i class="fas fa-archive ml-2 text-primary"></i>الأرشيف الذكي</h2>
-          <div class="flex gap-3 mb-4">
-            <input type="text" id="archive-search" placeholder="بحث بالسياق أو الكلمات المفتاحية..." class="flex-1">
-            <button id="btn-search-archive" class="bg-primary hover:bg-primary/90 text-white px-4 rounded-lg"><i class="fas fa-search"></i></button>
+        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-5"><i class="fas fa-archive ml-2 text-primary"></i>الأرشيف الذكي</h2>
+          <div class="flex gap-4 mb-5">
+            <input type="text" id="archive-search" placeholder="بحث بالسياق أو الكلمات المفتاحية..." class="flex-1 rounded-xl">
+            <button id="btn-search-archive" class="btn bg-primary hover:bg-primary/90 text-white px-5 rounded-xl shadow-md"><i class="fas fa-search"></i></button>
           </div>
-          <div id="archive-list" class="space-y-3 max-h-[500px] overflow-y-auto"></div>
-          <button onclick="clearArchive()" class="mt-4 w-full bg-danger/20 text-danger border border-danger/30 py-2 rounded-lg hover:bg-danger/30">مسح الأرشيف نهائياً</button>
+          <div id="archive-list" class="space-y-4 max-h-[600px] overflow-y-auto"></div>
+          <button onclick="clearArchive()" class="btn mt-5 w-full bg-danger/20 text-danger border border-danger/30 rounded-xl hover:bg-danger/30 text-lg">مسح الأرشيف نهائياً</button>
         </div>
       </section>
 
@@ -246,40 +266,36 @@
   </div>
 
   <!-- شريط التنقل للجوال -->
-  <nav class="mobile-nav fixed bottom-0 left-0 right-0 bg-surface border-t border-border px-4 py-2 justify-around items-center md:hidden z-50">
-    <button class="nav-btn p-2 text-text2 hover:text-primary" data-panel="home"><i class="fas fa-home text-lg"></i></button>
-    <button class="nav-btn p-2 text-text2 hover:text-primary" data-panel="editor"><i class="fas fa-pen-fancy text-lg"></i></button>
-    <button class="nav-btn p-2 text-text2 hover:text-primary" data-panel="tools"><i class="fas fa-toolbox text-lg"></i></button>
-    <button class="nav-btn p-2 text-text2 hover:text-primary" data-panel="agenda"><i class="fas fa-calendar text-lg"></i></button>
-    <button class="nav-btn p-2 text-text2 hover:text-primary" data-panel="archive"><i class="fas fa-archive text-lg"></i></button>
+  <nav class="mobile-nav fixed bottom-0 left-0 right-0 bg-surface border-t border-border px-2 py-3 justify-around items-center md:hidden z-50 shadow-lg">
+    <button class="nav-btn p-3 text-text2 hover:text-primary rounded-lg" data-panel="home"><i class="fas fa-home text-xl"></i></button>
+    <button class="nav-btn p-3 text-text2 hover:text-primary rounded-lg" data-panel="editor"><i class="fas fa-pen-fancy text-xl"></i></button>
+    <button class="nav-btn p-3 text-text2 hover:text-primary rounded-lg" data-panel="tools"><i class="fas fa-toolbox text-xl"></i></button>
+    <button class="nav-btn p-3 text-text2 hover:text-primary rounded-lg" data-panel="agenda"><i class="fas fa-calendar text-xl"></i></button>
+    <button class="nav-btn p-3 text-text2 hover:text-primary rounded-lg" data-panel="archive"><i class="fas fa-archive text-xl"></i></button>
   </nav>
 
   <!-- نافذة الإعدادات -->
-  <div id="settings-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
-    <div class="bg-surface border border-border rounded-xl p-6 w-full max-w-md">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold">⚙️ إعدادات النماذج الذكية</h3>
-        <button onclick="toggleSettings()" class="text-text2 hover:text-text"><i class="fas fa-times text-xl"></i></button>
+  <div id="settings-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    <div class="bg-surface border border-border rounded-2xl p-8 w-full max-w-lg shadow-2xl">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-2xl font-bold">⚙️ إعدادات النماذج الذكية</h3>
+        <button onclick="toggleSettings()" class="text-text2 hover:text-text text-2xl p-2"><i class="fas fa-times"></i></button>
       </div>
       
-      <div class="space-y-4">
-        <div class="p-3 bg-surface2 rounded-lg border border-border">
-          <label class="block text-sm font-medium mb-1">مفتاح Google Gemini API</label>
-          <input type="password" id="gemini-key" placeholder="AIzaSy...">
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-primary hover:underline">احصل على مفتاح مجاني ←</a>
+      <div class="space-y-6">
+        <div class="p-4 bg-surface2 rounded-xl border border-border">
+          <label class="block text-base font-medium mb-2">مفتاح Google Gemini API</label>
+          <input type="password" id="gemini-key" placeholder="AIzaSy..." class="w-full rounded-xl text-lg">
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="inline-block mt-2 text-sm text-primary hover:underline font-medium">احصل على مفتاحك المجاني من Google AI Studio ←</a>
         </div>
         
-        <div class="p-3 bg-surface2 rounded-lg border border-border">
-          <label class="block text-sm font-medium mb-1">مفتاح OpenRouter (Qwen)</label>
-          <input type="password" id="openrouter-key" placeholder="sk-or-...">
-          <a href="https://openrouter.ai/keys" target="_blank" class="text-xs text-primary hover:underline">احصل على مفتاح مجاني ←</a>
-        </div>
-
-        <button id="btn-save-keys" class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-lg font-medium">حفظ المفاتيح</button>
-        <div id="settings-status" class="text-center text-sm"></div>
+        <button id="btn-save-keys" class="btn w-full bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-lg shadow-md">حفظ المفاتيح</button>
+        <div id="settings-status" class="text-center text-base font-medium"></div>
         
-        <div class="text-xs text-text2 bg-surface2/50 p-3 rounded-lg">
-          <strong>ملاحظة هامة:</strong> النموذج المستخدم هو <code>qwen/qwen-2.5-7b-instruct:free</code> عبر OpenRouter. مجاني تماماً ويصلح للمهام الصحفية اليومية.
+        <div class="text-sm text-text2 bg-surface2/50 p-4 rounded-xl border border-border leading-relaxed">
+          <strong class="text-text block mb-1">📌 ملاحظة هامة:</strong>
+          تم إلغاء جميع المودالات الأخرى. التطبيق يعمل الآن حصرياً مع <code class="bg-surface px-1.5 py-0.5 rounded">gemini-2.5-flash</code> و <code class="bg-surface px-1.5 py-0.5 rounded">gemini-2.5-pro</code>. 
+          أدخل مفتاحك في الحقل أعلاه واحفظه. ستعمل جميع الأزرار فوراً.
         </div>
       </div>
     </div>
@@ -293,10 +309,7 @@
   const State = {
     archive: JSON.parse(localStorage.getItem('desbot_archive') || '[]'),
     agenda: JSON.parse(localStorage.getItem('desbot_agenda') || '[]'),
-    keys: {
-      gemini: localStorage.getItem('gemini_key') || '',
-      openrouter: localStorage.getItem('openrouter_key') || ''
-    },
+    keys: { gemini: localStorage.getItem('gemini_key') || '' },
     dailyCount: parseInt(localStorage.getItem('desbot_daily') || '0'),
     lastDate: localStorage.getItem('desbot_lastdate') || new Date().toDateString()
   };
@@ -310,257 +323,263 @@
   }
 
   // === دوال الواجهة ===
-  function setTheme(theme) {
+  window.setTheme = function(theme) {
     document.body.setAttribute('data-theme', theme);
     localStorage.setItem('deskbot_theme', theme);
     document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
-    document.querySelector(`.theme-dot[onclick="setTheme('${theme}')"]`)?.classList.add('active');
-  }
+    const activeDot = document.querySelector(`.theme-dot[onclick="setTheme('${theme}')"]`);
+    if (activeDot) activeDot.classList.add('active');
+  };
 
-  function showPanel(id) {
+  window.showPanel = function(id) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(`panel-${id}`).classList.add('active');
+    const target = document.getElementById(`panel-${id}`);
+    if (target) target.classList.add('active');
     document.querySelectorAll(`.nav-btn[data-panel="${id}"]`).forEach(b => b.classList.add('active'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  };
 
-  function toggleSettings() {
+  window.toggleSettings = function() {
     const modal = document.getElementById('settings-modal');
     modal.classList.toggle('hidden');
     if (!modal.classList.contains('hidden')) {
       document.getElementById('gemini-key').value = State.keys.gemini;
-      document.getElementById('openrouter-key').value = State.keys.openrouter;
     }
-  }
+  };
 
-  function setStatus(id, msg, type = 'loading') {
+  window.setStatus = function(id, msg, type = 'loading') {
     const el = document.getElementById(id);
-    if (el) { el.innerHTML = msg; el.className = `text-sm font-medium ${type === 'error' ? 'text-danger' : type === 'success' ? 'text-success' : 'text-primary'}`; }
-  }
+    if (el) { 
+      el.textContent = msg; 
+      el.className = `text-base font-medium ${type === 'error' ? 'text-danger' : type === 'success' ? 'text-success' : 'text-primary'}`; 
+    }
+  };
 
-  function copyText(id) {
+  window.copyText = function(id) {
     const txt = document.getElementById(id).value;
     if (!txt) return;
-    navigator.clipboard.writeText(txt).then(() => alert('✅ تم النسخ'));
-  }
+    navigator.clipboard.writeText(txt).then(() => alert('✅ تم النسخ بنجاح'));
+  };
 
-  function shareText(platform, id) {
+  window.shareText = function(platform, id) {
     const txt = document.getElementById(id).value;
     if (!txt) return;
     const url = platform === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(txt)}` : `mailto:?body=${encodeURIComponent(txt)}`;
     window.open(url, '_blank');
-  }
+  };
 
-  function saveArchive(type, outId) {
+  window.saveArchive = function(type, outId) {
     const content = document.getElementById(outId).value.trim();
     if (!content) return alert('⚠️ لا يوجد نص لحفظه');
     State.archive.unshift({ id: Date.now(), type, content, date: new Date().toLocaleString('ar-TN') });
     localStorage.setItem('desbot_archive', JSON.stringify(State.archive));
-    renderArchive();
-    updateStats();
+    window.renderArchive();
+    window.updateStats();
     alert('🗄️ تمت الأرشفة بنجاح');
-  }
+  };
 
-  function clearArchive() {
+  window.clearArchive = function() {
     if (confirm('هل أنت متأكد من مسح الأرشيف نهائياً؟')) {
       State.archive = [];
       localStorage.removeItem('desbot_archive');
-      renderArchive();
-      updateStats();
+      window.renderArchive();
+      window.updateStats();
     }
-  }
+  };
 
-  function renderArchive() {
+  window.renderArchive = function() {
     const list = document.getElementById('archive-list');
     const q = document.getElementById('archive-search')?.value.toLowerCase() || '';
     const filtered = q ? State.archive.filter(i => (i.content + i.type).toLowerCase().includes(q)) : State.archive;
     
     list.innerHTML = filtered.length ? filtered.map(i => `
-      <div class="bg-surface2 border border-border rounded-lg p-3">
-        <div class="flex justify-between items-start mb-1">
-          <span class="bg-primary/20 text-primary text-xs px-2 py-0.5 rounded">${i.type}</span>
-          <span class="text-xs text-text2">${i.date}</span>
+      <div class="bg-surface2 border border-border rounded-xl p-4 shadow-sm">
+        <div class="flex justify-between items-start mb-2">
+          <span class="bg-primary/20 text-primary text-sm px-3 py-1 rounded-lg font-medium">${i.type}</span>
+          <span class="text-sm text-text2">${i.date}</span>
         </div>
-        <p class="text-sm text-text whitespace-pre-line line-clamp-3">${i.content}</p>
+        <p class="text-base text-text whitespace-pre-line leading-relaxed">${i.content}</p>
       </div>
-    `).join('') : '<div class="text-center text-text2 py-8">لا توجد مواد مؤرشفة</div>';
-  }
+    `).join('') : '<div class="text-center text-text2 py-10 text-lg">لا توجد مواد مؤرشفة</div>';
+  };
 
-  function renderAgenda() {
+  window.renderAgenda = function() {
     const list = document.getElementById('agenda-list');
     list.innerHTML = State.agenda.length ? State.agenda.sort((a,b) => new Date(a.date) - new Date(b.date)).map((item, idx) => `
-      <div class="flex justify-between items-center bg-surface2 border border-border rounded-lg p-3">
+      <div class="flex justify-between items-center bg-surface2 border border-border rounded-xl p-4 shadow-sm">
         <div>
-          <div class="font-medium">${item.desc}</div>
-          <div class="text-xs text-text2">${item.date}</div>
+          <div class="text-lg font-medium">${item.desc}</div>
+          <div class="text-sm text-text2 mt-1">${item.date}</div>
         </div>
-        <button onclick="deleteAgenda(${idx})" class="text-danger hover:text-danger/80 p-1"><i class="fas fa-trash"></i></button>
+        <button onclick="window.deleteAgenda(${idx})" class="text-danger hover:text-danger/80 p-2 text-lg"><i class="fas fa-trash"></i></button>
       </div>
-    `).join('') : '<div class="text-center text-text2 py-8">لا توجد أحداث في الأجندة</div>';
-  }
+    `).join('') : '<div class="text-center text-text2 py-10 text-lg">لا توجد أحداث في الأجندة</div>';
+  };
 
   window.deleteAgenda = function(idx) {
     State.agenda.splice(idx, 1);
     localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
-    renderAgenda();
-    updateStats();
+    window.renderAgenda();
+    window.updateStats();
   };
 
-  function updateStats() {
-    document.getElementById('stat-req').textContent = State.dailyCount;
-    document.getElementById('stat-arch').textContent = State.archive.length;
-    document.getElementById('stat-agenda').textContent = State.agenda.length;
-  }
+  window.updateStats = function() {
+    const reqEl = document.getElementById('stat-req');
+    const archEl = document.getElementById('stat-arch');
+    const agEl = document.getElementById('stat-agenda');
+    if(reqEl) reqEl.textContent = State.dailyCount;
+    if(archEl) archEl.textContent = State.archive.length;
+    if(agEl) agEl.textContent = State.agenda.length;
+  };
 
-  // === الاتصال بـ OpenRouter (Qwen) ===
-  async function callQwen(prompt) {
-    if (!State.keys.openrouter) throw new Error('مفتاح OpenRouter غير مدخل. اذهب للإعدادات ⚙️');
-    if (State.dailyCount >= 50) throw new Error('تم تجاوز الحد اليومي المجاني (50 طلب). انتظر غداً أو استخدم مفتاحاً آخر.');
+  // === الاتصال بـ Gemini فقط ===
+  async function callGemini(model, prompt) {
+    if (!State.keys.gemini) throw new Error('مفتاح Gemini غير مدخل. اذهب للإعدادات ⚙️ وأدخله.');
+    if (State.dailyCount >= 1500) throw new Error('تم تجاوز الحد اليومي المجاني (1500 طلب). انتظر غداً.');
 
-    const url = 'https://openrouter.ai/api/v1/chat/completions';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${State.keys.gemini}`;
     const res = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${State.keys.openrouter}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': window.location.href,
-        'X-Title': 'DESK BOT'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'qwen/qwen-2.5-7b-instruct:free',
-        messages: [{ role: 'user', content: prompt }]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 4096 }
       })
     });
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      if (res.status === 401) throw new Error('مفتاح API غير صحيح');
-      if (res.status === 402) throw new Error('الرصيد غير كافٍ في OpenRouter');
+      if (res.status === 401) throw new Error('مفتاح API غير صحيح أو منتهي');
+      if (res.status === 400) throw new Error('نموذج غير مدعوم حالياً. جرب Gemini 2.5 Flash');
       throw new Error(`فشل الاتصال: ${res.status} - ${err.error?.message || 'خطأ غير معروف'}`);
     }
 
     const data = await res.json();
     State.dailyCount++;
     localStorage.setItem('desbot_daily', State.dailyCount);
-    updateStats();
-    return data.choices[0].message.content;
+    window.updateStats();
+    return data.candidates[0].content.parts[0].text;
   }
 
-  // === ربط الأزرار ===
+  // === تهيئة الأحداث ===
   document.addEventListener('DOMContentLoaded', () => {
-    // التهيئة
     const savedTheme = localStorage.getItem('deskbot_theme') || 'dark';
-    setTheme(savedTheme);
-    renderArchive();
-    renderAgenda();
-    updateStats();
+    window.setTheme(savedTheme);
+    window.renderArchive();
+    window.renderAgenda();
+    window.updateStats();
 
     // التنقل
     document.querySelectorAll('[data-panel]').forEach(btn => {
-      btn.addEventListener('click', () => showPanel(btn.dataset.panel));
+      btn.addEventListener('click', () => window.showPanel(btn.dataset.panel));
     });
 
-    // الإعدادات
+    // حفظ المفاتيح
     document.getElementById('btn-save-keys').addEventListener('click', () => {
       State.keys.gemini = document.getElementById('gemini-key').value.trim();
-      State.keys.openrouter = document.getElementById('openrouter-key').value.trim();
       localStorage.setItem('gemini_key', State.keys.gemini);
-      localStorage.setItem('openrouter_key', State.keys.openrouter);
-      setStatus('settings-status', '✅ تم حفظ المفاتيح بنجاح', 'success');
-      setTimeout(toggleSettings, 1200);
+      window.setStatus('settings-status', '✅ تم حفظ المفاتيح بنجاح', 'success');
+      setTimeout(window.toggleSettings, 1200);
     });
 
-    // المحرر
-    document.getElementById('btn-run-editor').addEventListener('click', async () => {
-      const input = document.getElementById('editor-input').value.trim();
-      if (!input) return setStatus('editor-status', '⚠️ أدخل النص أولاً', 'error');
-      setStatus('editor-status', '⏳ جاري المعالجة...', 'loading');
+    // دالة تشغيل عامة
+    async function runAI(btnId, inputId, outputId, statusId, promptFn, modelSelectId) {
+      const btn = document.getElementById(btnId);
+      const input = document.getElementById(inputId).value.trim();
+      if (!input) return window.setStatus(statusId, '⚠️ أدخل النص أو المعطيات أولاً', 'error');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i> جاري المعالجة...';
+      window.setStatus(statusId, '⏳ جاري المعالجة بالذكاء الاصطناعي...', 'loading');
+      
       try {
-        const mode = document.getElementById('editor-mode').value;
-        let prompt = '';
-        if(mode==='structure') prompt = `أعد هيكلة النص وفق معايير وات/ديوان أف أم: عنوان، ليد، فقرات، خاتمة. النص: ${input}`;
-        else if(mode==='seo') prompt = `أعد صياغة النص مع تحسين SEO: عنوان H1، وصف تعريفي، كلمات مفتاحية. النص: ${input}`;
-        else if(mode==='titles') prompt = `اقترح 12 عنواناً مقسمة لـ 4 فئات (إخباري، تشويقي، تحليلي، سوشيال). النص: ${input}`;
-        else if(mode==='flash') prompt = `حوّل النص لفلاش إذاعي ≤40 كلمة، مشكول جزئياً. النص: ${input}`;
-        else prompt = `أنشئ ملفاً استقصائياً للشخصية: تعريف، تصريحات، خلفية، 10 أسئلة. النص: ${input}`;
-        
-        document.getElementById('editor-output').value = await callQwen(prompt);
-        setStatus('editor-status', '✅ تمت المعالجة', 'success');
-      } catch(e) { setStatus('editor-status', `❌ ${e.message}`, 'error'); }
+        const model = modelSelectId ? document.getElementById(modelSelectId).value : 'gemini-2.5-flash';
+        const prompt = promptFn(input);
+        const result = await callGemini(model, prompt);
+        document.getElementById(outputId).value = result;
+        window.setStatus(statusId, '✅ تمت المعالجة بنجاح', 'success');
+      } catch(e) {
+        window.setStatus(statusId, `❌ ${e.message}`, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = btn.dataset.originalText || 'تشغيل';
+      }
+    }
+
+    // حفظ نص الأزرار الأصلي
+    document.querySelectorAll('button[id^="btn-"]').forEach(b => b.dataset.originalText = b.textContent.trim());
+
+    // المحرر
+    document.getElementById('btn-run-editor').addEventListener('click', () => {
+      runAI('btn-run-editor', 'editor-input', 'editor-output', 'editor-status', 
+        input => {
+          const mode = document.getElementById('editor-mode').value;
+          const map = {
+            structure: `أعد هيكلة النص وفق معايير وات/ديوان أف أم: عنوان، ليد، فقرات، خاتمة. النص: ${input}`,
+            seo: `أعد صياغة النص مع تحسين SEO: عنوان H1، وصف تعريفي، كلمات مفتاحية. النص: ${input}`,
+            titles: `اقترح 12 عنواناً مقسمة لـ 4 فئات (إخباري، تشويقي، تحليلي، سوشيال). النص: ${input}`,
+            flash: `حوّل النص لفلاش إذاعي ≤40 كلمة، مشكول جزئياً. النص: ${input}`,
+            profile: `أنشئ ملفاً استقصائياً للشخصية: تعريف، تصريحات، خلفية، 10 أسئلة. النص: ${input}`
+          };
+          return map[mode] || map.structure;
+        }, 'editor-model'
+      );
     });
 
     // المقال
-    document.getElementById('btn-run-article').addEventListener('click', async () => {
-      const input = document.getElementById('article-input').value.trim();
-      if (!input) return setStatus('article-status', '⚠️ أدخل النص', 'error');
-      setStatus('article-status', '⏳ جاري الكتابة...', 'loading');
-      try {
-        const count = document.getElementById('article-count').value;
-        document.getElementById('article-output').value = await callQwen(`اكتب ${count} مقالاً إخبارياً احترافياً عن: ${input}`);
-        setStatus('article-status', '✅ تم الإنشاء', 'success');
-      } catch(e) { setStatus('article-status', `❌ ${e.message}`, 'error'); }
+    document.getElementById('btn-run-article').addEventListener('click', () => {
+      runAI('btn-run-article', 'article-input', 'article-output', 'article-status',
+        input => {
+          const count = document.getElementById('article-count').value;
+          return `اكتب ${count} مقالاً إخبارياً احترافياً عن: ${input}`;
+        }, 'article-model'
+      );
     });
 
     // الفلاش
-    document.getElementById('btn-run-flash').addEventListener('click', async () => {
-      const input = document.getElementById('flash-input').value.trim();
-      if (!input) return setStatus('flash-status', '⚠️ أدخل المعطيات', 'error');
-      setStatus('flash-status', '⏳ جاري التوليد...', 'loading');
-      try {
-        document.getElementById('flash-output').value = await callQwen(`حوّل المعطيات لفلاش إذاعي جاهز للإلقاء ≤45 كلمة: ${input}`);
-        setStatus('flash-status', '✅ تم التوليد', 'success');
-      } catch(e) { setStatus('flash-status', `❌ ${e.message}`, 'error'); }
+    document.getElementById('btn-run-flash').addEventListener('click', () => {
+      runAI('btn-run-flash', 'flash-input', 'flash-output', 'flash-status',
+        input => `حوّل المعطيات لفلاش إذاعي جاهز للإلقاء ≤45 كلمة: ${input}`
+      );
     });
 
     // التاريخ
-    document.getElementById('btn-search-hist').addEventListener('click', async () => {
+    document.getElementById('btn-search-hist').addEventListener('click', () => {
       const d = document.getElementById('hist-day').value, m = document.getElementById('hist-month').value;
-      if (!d || !m) return setStatus('hist-status', '⚠️ أدخل اليوم والشهر', 'error');
-      setStatus('hist-status', '⏳ جاري البحث...', 'loading');
-      try {
-        document.getElementById('hist-output').value = await callQwen(`اذكر أحداثاً تاريخية في يوم ${d} شهر ${m}.`);
-        setStatus('hist-status', '✅ تم', 'success');
-      } catch(e) { setStatus('hist-status', `❌ ${e.message}`, 'error'); }
+      if (!d || !m) return window.setStatus('hist-status', '⚠️ أدخل اليوم والشهر', 'error');
+      runAI('btn-search-hist', 'hist-day', 'hist-output', 'hist-status', () => `اذكر أحداثاً تاريخية في يوم ${d} شهر ${m}.`);
     });
 
     // الرياضة
-    document.getElementById('btn-search-sports').addEventListener('click', async () => {
+    document.getElementById('btn-search-sports').addEventListener('click', () => {
       const a = document.getElementById('team-a').value, b = document.getElementById('team-b').value;
-      if (!a || !b) return setStatus('sports-status', '⚠️ أدخل الفريقين', 'error');
-      setStatus('sports-status', '⏳ جاري البحث...', 'loading');
-      try {
-        document.getElementById('sports-output').value = await callQwen(`لخص تاريخ المواجهات بين ${a} و ${b}.`);
-        setStatus('sports-status', '✅ تم', 'success');
-      } catch(e) { setStatus('sports-status', `❌ ${e.message}`, 'error'); }
+      if (!a || !b) return window.setStatus('sports-status', '⚠️ أدخل الفريقين', 'error');
+      runAI('btn-search-sports', 'team-a', 'sports-output', 'sports-status', () => `لخص تاريخ المواجهات بين ${a} و ${b}.`);
     });
 
     // الشخصية
-    document.getElementById('btn-search-persona').addEventListener('click', async () => {
-      const name = document.getElementById('persona-input').value.trim();
-      if (!name) return setStatus('persona-status', '⚠️ أدخل الاسم', 'error');
-      setStatus('persona-status', '⏳ جاري الرصد...', 'loading');
-      try {
-        document.getElementById('persona-output').value = await callQwen(`استخرج ملفاً صحفياً لـ: ${name}`);
-        setStatus('persona-status', '✅ تم', 'success');
-      } catch(e) { setStatus('persona-status', `❌ ${e.message}`, 'error'); }
+    document.getElementById('btn-search-persona').addEventListener('click', () => {
+      runAI('btn-search-persona', 'persona-input', 'persona-output', 'persona-status',
+        name => `استخرج ملفاً صحفياً لـ: ${name}`
+      );
     });
 
     // الأجندة
     document.getElementById('btn-add-agenda').addEventListener('click', () => {
       const d = document.getElementById('agenda-date').value, desc = document.getElementById('agenda-desc').value.trim();
-      if (!d || !desc) return setStatus('agenda-status', '⚠️ املأ الحقول', 'error');
+      if (!d || !desc) return window.setStatus('agenda-status', '⚠️ املأ الحقول', 'error');
       State.agenda.push({ date: d, desc });
       localStorage.setItem('desbot_agenda', JSON.stringify(State.agenda));
-      renderAgenda();
-      updateStats();
-      setStatus('agenda-status', '✅ تمت الإضافة', 'success');
+      window.renderAgenda();
+      window.updateStats();
+      window.setStatus('agenda-status', '✅ تمت الإضافة', 'success');
       document.getElementById('agenda-desc').value = '';
     });
 
     // البحث في الأرشيف
-    document.getElementById('btn-search-archive').addEventListener('click', renderArchive);
-    document.getElementById('archive-search').addEventListener('keyup', renderArchive);
+    document.getElementById('btn-search-archive').addEventListener('click', window.renderArchive);
+    document.getElementById('archive-search').addEventListener('keyup', window.renderArchive);
   });
 })();
 </script>
