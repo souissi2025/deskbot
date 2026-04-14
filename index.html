@@ -1585,11 +1585,11 @@ async function runTool(inputId, statusId, resultId, actsId, promptKey, btnId, pr
   }
 }
 
-async function runEditor() {
+async async function runEditor() {
   const mode=document.getElementById('editor-mode')?.value||'editor';
   await runTool('editor-input','editor-status','editor-result','editor-acts',mode,'editor-btn');
 }
-async async function runArticle() {
+async function runArticle() {
   const inp=(document.getElementById('article-input')?.value||'').trim();
   if(!inp) return toast('أدخل النص الخبري أولاً','e');
   checkApiKey();
