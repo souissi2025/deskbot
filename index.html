@@ -621,6 +621,65 @@ body.theme-dim {
 }
 .tbtn i { font-size:11px; }
 
+
+/* ═══ THEME MODES ═══════════════════════════════ */
+body.theme-day {
+  --ink:#f0f4f8;--ink2:#e2e8f2;--ink3:#d5dce8;--ink4:#c0c9d8;
+  --glass:rgba(255,255,255,0.93);--glass2:rgba(240,244,250,0.97);
+  --line:rgba(100,80,30,0.18);--line2:rgba(100,80,30,0.32);
+  --text:#1a1208;--text2:#5a4020;--text3:#9a7a40;
+  --shadow:0 8px 32px rgba(0,0,0,0.1);--shadow2:0 20px 60px rgba(0,0,0,0.15);
+  --glow-gold:0 0 24px rgba(180,120,20,0.15);
+}
+body.theme-dim {
+  --ink:#161920;--ink2:#1c2028;--ink3:#222832;--ink4:#2a3040;
+  --glass:rgba(22,25,32,0.93);--glass2:rgba(28,32,40,0.97);
+  --line:rgba(140,110,55,0.2);--line2:rgba(160,130,65,0.3);
+  --gold:#b8893a;--gold2:#d4a855;--gold3:rgba(184,137,58,0.1);
+  --text:#c4b49a;--text2:#7a6848;--text3:#4a3828;
+  --shadow:0 8px 32px rgba(0,0,0,0.6);--shadow2:0 20px 60px rgba(0,0,0,0.8);
+}
+.theme-bar{display:flex;gap:4px;align-items:center;flex-shrink:0}
+.tbtn{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:9px;font-size:11px;font-weight:700;
+  cursor:pointer;border:1px solid var(--line2);
+  background:rgba(255,255,255,0.04);color:var(--text2);
+  font-family:'Cairo',sans-serif;transition:all .22s;white-space:nowrap;
+}
+.tbtn:hover{border-color:var(--gold);color:var(--gold2);background:var(--gold3)}
+.tbtn.t-active{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#000;border-color:transparent;box-shadow:0 4px 14px rgba(201,148,58,0.4);
+}
+.tbtn i{font-size:11px}
+/* ═══ ATTACHMENT BAR ══════════════════════════════ */
+.attach-bar{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  background:rgba(0,0,0,0.2);border:1px solid var(--line);
+  border-radius:10px;padding:10px 14px;margin-bottom:12px;
+}
+.attach-label{font-size:12px;color:var(--text2);font-weight:700}
+.attach-label i{color:var(--gold);margin-left:6px}
+.attach-btns{display:flex;gap:6px;flex-wrap:wrap}
+.attach-btn{
+  display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;
+  font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--line2);
+  background:rgba(255,255,255,0.04);color:var(--text2);
+  font-family:'Cairo',sans-serif;transition:all .2s;
+}
+.attach-btn:hover{border-color:var(--gold);color:var(--gold2);background:var(--gold3)}
+.attach-btn.attached{border-color:var(--gold);color:var(--gold2);background:var(--gold3)}
+.attach-btn.danger{border-color:rgba(239,68,68,0.3);color:#fca5a5}
+.attach-btn.danger:hover{background:rgba(239,68,68,0.1)}
+/* ═══ MOBILE FIXES ════════════════════════════════ */
+@media(max-width:768px){
+  .h-clock-date{display:none}
+  .h-clock{font-size:12px;letter-spacing:0.5px}
+  .tbtn span{display:none}
+  .tbtn{padding:5px 8px}
+}
+
 </style>
 </head>
 <body>
@@ -652,6 +711,11 @@ body.theme-dim {
   </div>
 
   <div class="theme-bar">
+  <button class="tbtn t-active" id="tbtn-night" onclick="setTheme('night',this)"><i class="fa-solid fa-moon"></i><span>ليلي</span></button>
+  <button class="tbtn" id="tbtn-dim" onclick="setTheme('dim',this)"><i class="fa-solid fa-circle-half-stroke"></i><span>خافت</span></button>
+  <button class="tbtn" id="tbtn-day" onclick="setTheme('day',this)"><i class="fa-solid fa-sun"></i><span>نهاري</span></button>
+</div>
+<div class="theme-bar">
   <button class="tbtn t-active" id="tbtn-night" onclick="setTheme('night',this)"><i class="fa-solid fa-moon"></i><span>ليلي</span></button>
   <button class="tbtn" id="tbtn-dim" onclick="setTheme('dim',this)"><i class="fa-solid fa-circle-half-stroke"></i><span>خافت</span></button>
   <button class="tbtn" id="tbtn-day" onclick="setTheme('day',this)"><i class="fa-solid fa-sun"></i><span>نهاري</span></button>
@@ -783,14 +847,32 @@ body.theme-dim {
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-newspaper"></i> المقال الإخباري الاحترافي</div>
         <div class="card-sub">يكتب مقالاً صحفياً متكاملاً من فكرة أو نص أولي — بلغة رصينة وهيكل هرمي</div>
-        <label>الفكرة الأساسية أو النص الأولي</label>
-        <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
-        <label>عدد الزوايا التحريرية</label>
-        <select id="article-count">
-          <option value="1">مقال واحد — زاوية واحدة</option>
-          <option value="2">مقالان — زاويتان مختلفتان</option>
-          <option value="3">ثلاثة مقالات — زوايا متعددة</option>
-        </select>
+        <label>النص الأولي أو الفكرة الأساسية</label>
+        <textarea id="article-input" placeholder="أدخل النص الخام أو المعلومات الأساسية... (أو أرفق ملفاً أدناه)"></textarea>
+
+        <div class="attach-bar">
+          <span class="attach-label"><i class="fa-solid fa-paperclip"></i> إرفاق ملف</span>
+          <div class="attach-btns">
+            <label class="attach-btn" id="ab-text" title="ملف نصي">
+              <i class="fa-solid fa-file-lines"></i><span>نص</span>
+              <input type="file" accept=".txt,.md" onchange="handleArticleFile(this,'text')" hidden>
+            </label>
+            <label class="attach-btn" id="ab-image" title="صورة">
+              <i class="fa-solid fa-image"></i><span>صورة</span>
+              <input type="file" accept="image/*" onchange="handleArticleFile(this,'image')" hidden>
+            </label>
+            <label class="attach-btn" id="ab-audio" title="ملف صوتي">
+              <i class="fa-solid fa-headphones"></i><span>صوت</span>
+              <input type="file" accept="audio/*" onchange="handleArticleFile(this,'audio')" hidden>
+            </label>
+            <button class="attach-btn danger" id="ab-clear" onclick="clearArticleAttachment()" style="display:none">
+              <i class="fa-solid fa-xmark"></i><span>حذف</span>
+            </button>
+          </div>
+        </div>
+        <div id="article-attach-info" style="display:none;font-size:11px;color:var(--gold2);margin-bottom:10px;padding:7px 12px;background:var(--gold3);border-radius:8px;border:1px solid var(--line2)">
+          <i class="fa-solid fa-circle-check"></i> مرفق: <span id="article-attach-name"></span>
+        </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-gold" onclick="runArticle()" id="article-btn">
             <i class="fa-solid fa-pen-nib"></i> كتابة المقال
@@ -1604,15 +1686,35 @@ async function runEditor() {
 }
 async function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
-  if (!inp) return toast('أدخل النص الخبري أولاً', 'e');
+  const hasAttach = !!articleAttachment;
+  if (!inp && !hasAttach) return toast('أدخل نصاً أو أرفق ملفاً', 'e');
   checkApiKey();
   setStatus('article-status', '⏳ جارٍ التحرير وفق معيار وات...', 'loading');
   hideResult('article-result', 'article-acts');
   const btn = document.getElementById('article-btn');
   if (btn) btn.disabled = true;
   try {
-    const prompt = PROMPTS.article + inp;
-    const res = await callAI(prompt);
+    const m = MODELS.find(x => x.id === S.model) || MODELS[0];
+    let res;
+    if (hasAttach && articleAttachment.type === 'image' && m.provider === 'gemini') {
+      // Vision: send image + prompt via Gemini
+      const prompt = PROMPTS.article + (inp || 'حرر مقالاً إخبارياً من محتوى هذه الصورة');
+      res = await callGeminiVision(prompt, articleAttachment.data, articleAttachment.mimeType);
+    } else if (hasAttach && articleAttachment.type === 'audio' && m.provider === 'gemini') {
+      // Audio: send audio + prompt via Gemini
+      const prompt = PROMPTS.article + (inp || 'فرّغ هذا التسجيل الصوتي وحرره مقالاً إخبارياً');
+      res = await callGeminiAudio(prompt, articleAttachment.data, articleAttachment.mimeType);
+    } else {
+      // Text or text file
+      let fullText = PROMPTS.article;
+      if (hasAttach && articleAttachment.type === 'text') {
+        fullText += '\n[محتوى الملف المرفق]:\n' + articleAttachment.data;
+        if (inp) fullText += '\n\n[ملاحظات إضافية]:\n' + inp;
+      } else {
+        fullText += inp;
+      }
+      res = await callAI(fullText);
+    }
     showResult('article-result', 'article-acts', renderMD(res));
     setStatus('article-status', '✅ تم التحرير بنجاح', 'success');
     setTimeout(() => hideStatus('article-status'), 3000);
@@ -2075,6 +2177,105 @@ function setTheme(mode, btn) {
   setTheme(saved, btn);
 })();
 
+
+// ════════════════════════════════════════
+// THEME SWITCHER
+// ════════════════════════════════════════
+function setTheme(mode, btn) {
+  document.body.classList.remove('theme-day','theme-dim');
+  document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('t-active'));
+  if (mode==='day') document.body.classList.add('theme-day');
+  else if (mode==='dim') document.body.classList.add('theme-dim');
+  if (btn) btn.classList.add('t-active');
+  localStorage.setItem('dbtheme', mode);
+}
+(function(){
+  const t = localStorage.getItem('dbtheme') || 'night';
+  const btn = document.getElementById('tbtn-' + t);
+  setTheme(t, btn);
+})();
+
+// ════════════════════════════════════════
+// ARTICLE ATTACHMENT
+// ════════════════════════════════════════
+let articleAttachment = null;
+
+function handleArticleFile(input, type) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  articleAttachment = { type, name: file.name, mimeType: file.type };
+  if (type === 'text') {
+    reader.onload = e => { articleAttachment.data = e.target.result; _showAttach(file.name, type); };
+    reader.readAsText(file, 'utf-8');
+  } else {
+    reader.onload = e => { articleAttachment.data = e.target.result.split(',')[1]; _showAttach(file.name, type); };
+    reader.readAsDataURL(file);
+  }
+}
+function _showAttach(name, type) {
+  const icons = {text:'ab-text', image:'ab-image', audio:'ab-audio'};
+  document.querySelectorAll('.attach-btn').forEach(b => b.classList.remove('attached'));
+  document.getElementById(icons[type])?.classList.add('attached');
+  const info = document.getElementById('article-attach-info');
+  const nameEl = document.getElementById('article-attach-name');
+  const clrBtn = document.getElementById('ab-clear');
+  if (info) info.style.display = 'block';
+  if (nameEl) nameEl.textContent = name;
+  if (clrBtn) clrBtn.style.display = 'flex';
+  toast('📎 مرفق: ' + name, 's');
+}
+function clearArticleAttachment() {
+  articleAttachment = null;
+  document.querySelectorAll('#panel-article input[type=file]').forEach(el => el.value='');
+  document.querySelectorAll('.attach-btn').forEach(b => b.classList.remove('attached'));
+  const info = document.getElementById('article-attach-info');
+  const clrBtn = document.getElementById('ab-clear');
+  if (info) info.style.display = 'none';
+  if (clrBtn) clrBtn.style.display = 'none';
+  toast('🗑️ تم حذف المرفق', 's');
+}
+
+// ════════════════════════════════════════
+// GEMINI VISION (صورة)
+// ════════════════════════════════════════
+async function callGeminiVision(prompt, base64data, mimeType) {
+  if (!S.geminiKey) { openSettings(); throw new Error('أدخل مفتاح Gemini'); }
+  const model = S.model.includes('gemini') ? S.model : 'gemini-2.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.geminiKey}`;
+  const body = {
+    contents:[{ parts:[
+      { inline_data:{ mime_type: mimeType, data: base64data }},
+      { text: prompt }
+    ]}],
+    generationConfig:{ temperature:0.7, maxOutputTokens:4096 }
+  };
+  const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||'خطأ في Gemini Vision'); }
+  const d = await r.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || 'لا توجد نتيجة';
+}
+
+// ════════════════════════════════════════
+// GEMINI AUDIO (صوت)
+// ════════════════════════════════════════
+async function callGeminiAudio(prompt, base64data, mimeType) {
+  if (!S.geminiKey) { openSettings(); throw new Error('أدخل مفتاح Gemini'); }
+  const model = 'gemini-2.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.geminiKey}`;
+  const body = {
+    contents:[{ parts:[
+      { inline_data:{ mime_type: mimeType, data: base64data }},
+      { text: prompt }
+    ]}],
+    generationConfig:{ temperature:0.7, maxOutputTokens:4096 }
+  };
+  const r = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||'خطأ في Gemini Audio'); }
+  const d = await r.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text || 'لا توجد نتيجة';
+}
+
 </script>
 
 <!-- ══════════════════════════════════
@@ -2120,6 +2321,26 @@ function setTheme(mode, btn) {
     <div class="bn-drawer-item" onclick="bnNav('archive',this)">
       <i class="fa-solid fa-clock-rotate-left"></i><span>أرشيف</span>
     </div>
+  </div>
+</div>
+
+
+<div class="bottom-nav" id="bottom-nav">
+  <button class="bn-btn active" id="bn-home" onclick="bnNav('home',this)"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
+  <button class="bn-btn" id="bn-article" onclick="bnNav('article',this)"><i class="fa-solid fa-newspaper"></i><span>مقال</span></button>
+  <button class="bn-btn" id="bn-flash" onclick="bnNav('flash',this)"><i class="fa-solid fa-bolt"></i><span>فلاش</span></button>
+  <button class="bn-btn" id="bn-audio" onclick="bnNav('audio',this)"><i class="fa-solid fa-microphone-lines"></i><span>صوت</span></button>
+  <button class="bn-btn" id="bn-more" onclick="bnToggleDrawer()"><i class="fa-solid fa-grip"></i><span>المزيد</span></button>
+</div>
+<div class="bn-drawer" id="bn-drawer">
+  <div class="bn-drawer-title">أدوات إضافية</div>
+  <div class="bn-drawer-grid">
+    <div class="bn-drawer-item" onclick="bnNav('headlines',this)"><i class="fa-solid fa-heading"></i><span>عناوين</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('rss',this)"><i class="fa-solid fa-globe"></i><span>أخبار</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('tools',this)"><i class="fa-solid fa-calendar-day"></i><span>في التاريخ</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('profile',this)"><i class="fa-solid fa-user-tie"></i><span>ملف شخصية</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('agenda',this)"><i class="fa-solid fa-calendar-days"></i><span>أجندة</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('archive',this)"><i class="fa-solid fa-clock-rotate-left"></i><span>أرشيف</span></div>
   </div>
 </div>
 
