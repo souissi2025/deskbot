@@ -574,36 +574,40 @@ label{
 }
 
 
-/* ═══════════════ THEME MODES ═══════════════ */
+/* ═══════════════════════════════════
+   THEME MODES — ليلي / نهاري / خافت
+═══════════════════════════════════ */
 body.theme-day {
-  --ink:#f4f6f9; --ink2:#e8ecf2; --ink3:#d8dfe9; --ink4:#c4ccd8;
-  --glass:rgba(255,255,255,0.9); --glass2:rgba(240,244,250,0.97);
-  --line:rgba(100,80,30,0.2); --line2:rgba(120,90,30,0.35);
+  --ink:#f0f4f8; --ink2:#e2e8f2; --ink3:#d5dce8; --ink4:#c0c9d8;
+  --glass:rgba(255,255,255,0.92); --glass2:rgba(240,244,250,0.97);
+  --line:rgba(100,80,30,0.18); --line2:rgba(100,80,30,0.32);
   --text:#1a1208; --text2:#5a4020; --text3:#9a7a40;
+  --shadow:0 8px 32px rgba(0,0,0,0.12); --shadow2:0 20px 60px rgba(0,0,0,0.18);
+  --glow-gold:0 0 24px rgba(180,120,20,0.18);
 }
 body.theme-dim {
-  --ink:#16191f; --ink2:#1c2028; --ink3:#222732; --ink4:#2a3040;
-  --glass:rgba(22,25,31,0.92); --glass2:rgba(28,32,40,0.97);
-  --line:rgba(140,110,55,0.18); --line2:rgba(160,130,65,0.28);
+  --ink:#161920; --ink2:#1c2028; --ink3:#222832; --ink4:#2a3040;
+  --glass:rgba(22,25,32,0.92); --glass2:rgba(28,32,40,0.97);
+  --line:rgba(140,110,55,0.2); --line2:rgba(160,130,65,0.3);
   --gold:#b8893a; --gold2:#d4a855; --gold3:rgba(184,137,58,0.1);
   --text:#c4b49a; --text2:#7a6848; --text3:#4a3828;
+  --shadow:0 8px 32px rgba(0,0,0,0.6); --shadow2:0 20px 60px rgba(0,0,0,0.8);
 }
-/* ── THEME BAR ── */
-.theme-bar{display:flex;gap:5px;align-items:center;flex-shrink:0}
-.tbtn{
-  display:flex;align-items:center;gap:5px;
-  padding:5px 12px;border-radius:9px;font-size:11px;font-weight:700;
-  cursor:pointer;border:1px solid var(--line2);
-  background:var(--glass);color:var(--text2);
-  font-family:'Cairo',sans-serif;transition:all .25s;white-space:nowrap;
+.theme-bar { display:flex; gap:4px; align-items:center; flex-shrink:0; }
+.tbtn {
+  display:flex; align-items:center; gap:5px;
+  padding:5px 11px; border-radius:9px; font-size:11px; font-weight:700;
+  cursor:pointer; border:1px solid var(--line2);
+  background:rgba(255,255,255,0.04); color:var(--text2);
+  font-family:'Cairo',sans-serif; transition:all .22s; white-space:nowrap;
 }
-.tbtn:hover{border-color:var(--gold);color:var(--gold2);background:var(--gold3)}
-.tbtn.active{
+.tbtn:hover { border-color:var(--gold); color:var(--gold2); background:var(--gold3); }
+.tbtn.t-active {
   background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#000;border-color:transparent;
+  color:#000; border-color:transparent;
   box-shadow:0 4px 14px rgba(201,148,58,0.45);
 }
-.tbtn i{font-size:12px}
+.tbtn i { font-size:11px; }
 
 </style>
 </head>
@@ -636,15 +640,9 @@ body.theme-dim {
   </div>
 
   <div class="theme-bar">
-  <button class="tbtn active" id="tbtn-night" onclick="setTheme('night',this)" title="وضع ليلي">
-    <i class="fa-solid fa-moon"></i><span>ليلي</span>
-  </button>
-  <button class="tbtn" id="tbtn-dim" onclick="setTheme('dim',this)" title="وضع خافت">
-    <i class="fa-solid fa-circle-half-stroke"></i><span>خافت</span>
-  </button>
-  <button class="tbtn" id="tbtn-day" onclick="setTheme('day',this)" title="وضع نهاري">
-    <i class="fa-solid fa-sun"></i><span>نهاري</span>
-  </button>
+  <button class="tbtn t-active" id="tbtn-night" onclick="setTheme('night',this)" title="وضع ليلي"><i class="fa-solid fa-moon"></i><span>ليلي</span></button>
+  <button class="tbtn" id="tbtn-dim" onclick="setTheme('dim',this)" title="وضع خافت"><i class="fa-solid fa-circle-half-stroke"></i><span>خافت</span></button>
+  <button class="tbtn" id="tbtn-day" onclick="setTheme('day',this)" title="وضع نهاري"><i class="fa-solid fa-sun"></i><span>نهاري</span></button>
 </div>
 <button class="h-btn" onclick="openSettings()" title="الإعدادات">
     <i class="fa-solid fa-gear"></i><span>API</span>
@@ -660,6 +658,7 @@ body.theme-dim {
     <div class="nav-item active" data-panel="home" onclick="showPanel('home',this)">
       <i class="fa-solid fa-house"></i> الرئيسية
     </div>
+    
     <div class="nav-item" data-panel="article" onclick="showPanel('article',this)">
       <i class="fa-solid fa-newspaper"></i> المقال الإخباري
     </div>
@@ -1158,8 +1157,8 @@ const MODELS = [
 
 // ── STATE ──
 const S = {
-  geminiKey: localStorage.getItem('db_gk') || '',
-  orKey:     localStorage.getItem('db_ok') || '',
+  geminiKey: '',
+  orKey: '',
   model:     localStorage.getItem('db_model') || 'gemini-2.5-flash',
   archive:   JSON.parse(localStorage.getItem('db_archive') || '[]'),
   agenda:    JSON.parse(localStorage.getItem('db_agenda') || '[]'),
@@ -1167,13 +1166,12 @@ const S = {
 };
 
 // ── PROMPTS ──
-const SYS = `أنت DESK BOT، نظام غرفة الأخبار الرقمية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم.
-القواعد الذهبية: العربية الفصحى الحديثة — كل جملة ≤ 20 كلمة — كل معلومة لمصدر مسمّى — لا رأي ولا تعليق — الهرم المقلوب دائماً — ابدأ الإخراج مباشرة بلا ديباجة.
-
-`;
+const SYS = `✨ DESK BOT v2.0 ✨ مساعد تحرير لوكالة وات وديوان FM.
+📝 عربية فصحى، هرم مقلوب، مصادر مسماة، جمل قصيرة، بدون رأي أو ديباجة.`;
 
 const PROMPTS = {
-  editor: SYS + `## مهمتك: تحرير خبر وكالة وات احترافي كامل
+  editor: SYS + `## ✨ تحرير خبر وات احترافي
+عنوان | شابو | Lead | 5 فقرات | SEO | نسخة FM
 ### الإخراج الإلزامي:
 ## 📰 عنوان وات
 [فعل مضارع + فاعل + نتيجة — 6-8 كلمات — لا نقطة — لا تعجب]
@@ -1215,8 +1213,7 @@ const PROMPTS = {
 
   article: `الموجه التحريري الشامل المحدث للصحفي المحرر المحترف
 
-الدور:
-محرر أخبار رئيسي (Senior News Editor) يطبق معايير وكالة تونس إفريقيا للأنباء "وات" وإذاعة "ديوان أف أم".
+الدور: محرر أخبار رئيسي (Senior News Editor) يطبق معايير وكالة تونس إفريقيا للأنباء "وات" وإذاعة "ديوان أف أم".
 
 المخرجات الإلزامية (بالترتيب الصارم):
 السطر الأول حصراً: تحرير مقال جديد (حمدي).
@@ -1225,33 +1222,20 @@ const PROMPTS = {
 (يُمنع توليد أي نص إضافي قبل أو بعد هذه المخرجات).
 
 1. هندسة الاستهلال (Lead Paragraph):
-البدء حصراً بأفعال مبنية للمعلوم متبوعة مباشرة بالجهة أو الشخص الفاعل.
-(أمثلة معتمدة: قرر [الجهة/الشخص]، أكد...، أعلنت الوزارة...، أفادت الوزيرة...، نفى...).
-يُمنع منعاً باتاً استخدام الأفعال المبنية للمجهول في بداية الخبر.
-(أمثلة مرفوضة: تقرر، أُعلن، صُودق على).
-الإجابة المباشرة على: ماذا، متى، أين، ولماذا.
-يُمنع التمهيد الإنشائي أو البادئات الكلاسيكية.
+البدء حصراً بأفعال مبنية للمعلوم (قرر، أكد، أعلنت، أفادت، نفى).
+يُمنع: تقرر، أُعلن، صُودق، والتمهيد الإنشائي.
+الإجابة المباشرة: ماذا، متى، أين، ولماذا.
 
-2. بروتوكول المصدر (Source Attribution):
-الفقرة الثانية حصراً للإشارة إلى طبيعة الوثيقة (بلاغ، بيان، تصريح).
-الصياغة الوظيفية: "وأوضحت [اسم الجهة]، وفق بلاغ صادر عنها، أن..."
+2. بروتوكول المصدر: الفقرة 2 فقط للمصدر (بلاغ، بيان، تصريح).
+مثال: "وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..."
 
-3. المعالجة الرقمية والزمنية:
-العملات: تحويل أي عملة أجنبية إلى الدينار التونسي.
-الأشهر: جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر.
+3. المعالجة الرقمية: تحويل العملات للدينار التونسي. الأشهر: جانفي فيفري مارس أفريل ماي جوان جويلية أوت سبتمبر أكتوبر نوفمبر ديسمبر.
 
-4. البناء الهيكلي واللغوي:
-الهرم المقلوب: قرار/حدث رئيسي (الفقرة 1) ← تفاصيل المصدر (الفقرة 2) ← سياق وخلفية (الفقرة 3+).
-طول الفقرات: جملة إلى 3 جمل كحد أقصى.
-الروابط المحايدة: وفي سياق متصل، من جهة أخرى، وأضافت.
-التجرد: يُمنع الاستنتاج الشخصي وصفات التضخيم والأفعال الروتينية (انعقد، استقبل).
-
-أفضل الممارسات:
-استخراج الحقائق المباشرة وإهمال العبارات التبريرية والعاطفية.
-التركيز على الأفعال المنجزة الملموسة وتحويلها إلى صياغة تقريرية مباشرة.
+4. البناء: هرم مقلوب — فقرة 1 (حدث) ← فقرة 2 (مصدر) ← فقرة 3+ (سياق). كل فقرة 1-3 جمل. لا استنتاجات شخصية.
 
 النص المُدخل:
 ` + inp,
+
   flash: SYS + `## مهمتك: فلاش إخباري لديوان FM
 المواصفات: 45-60 ثانية | 80-100 كلمة | . = وقفة 1ث | ، = نصف ثانية
 الإخراج:
@@ -1606,22 +1590,22 @@ async function runEditor() {
   await runTool('editor-input','editor-status','editor-result','editor-acts',mode,'editor-btn');
 }
 async async function runArticle() {
-  const inp = (document.getElementById('article-input')?.value||'').trim();
-  if(!inp) return toast('أدخل النص أولاً','e');
+  const inp=(document.getElementById('article-input')?.value||'').trim();
+  if(!inp) return toast('أدخل النص الخبري أولاً','e');
   checkApiKey();
   setStatus('article-status','⏳ جارٍ التحرير وفق معيار وات...','loading');
   hideResult('article-result','article-acts');
-  const btn = document.getElementById('article-btn');
-  if(btn) btn.disabled = true;
+  const btn=document.getElementById('article-btn');
+  if(btn) btn.disabled=true;
   try {
-    const res = await callAI(PROMPTS.article + inp);
-    showResult('article-result','article-acts', renderMD(res));
+    const res=await callAI(PROMPTS.article+inp);
+    showResult('article-result','article-acts',renderMD(res));
     setStatus('article-status','✅ تم التحرير','success');
     setTimeout(()=>hideStatus('article-status'),3000);
   } catch(e) {
-    setStatus('article-status', e.message,'error');
+    setStatus('article-status',e.message,'error');
   } finally {
-    if(btn) btn.disabled = false;
+    if(btn) btn.disabled=false;
   }
 }
 async function runFlash() { await runTool('flash-input','flash-status','flash-result','flash-acts','flash','flash-btn'); }
@@ -1966,14 +1950,14 @@ function closeSettings() {
 function saveGeminiKey() {
   const k=(document.getElementById('gemini-key-input')?.value||'').trim();
   if(!k) return toast('أدخل المفتاح أولاً','e');
-  S.geminiKey=k; localStorage.setItem('db_gk',k);
+  S.geminiKey=k;
   renderModelBar(); renderModelCardsHome(); renderSettingsModels(); updateBanner();
   toast('✅ تم حفظ مفتاح Gemini','s');
 }
 function saveOrKey() {
   const k=(document.getElementById('or-key-input')?.value||'').trim();
   if(!k) return toast('أدخل المفتاح أولاً','e');
-  S.orKey=k; localStorage.setItem('db_ok',k);
+  S.orKey=k;
   renderModelBar(); renderModelCardsHome(); renderSettingsModels(); updateBanner();
   toast('✅ تم حفظ مفتاح OpenRouter','s');
 }
@@ -2032,7 +2016,7 @@ function bnNav(panel, btn) {
   // إظهار اللوحة
   showPanel(panel, null);
   // تفعيل زر المزيد إذا كان البانل من قائمة المزيد
-  const mainPanels = ['home','editor','flash','audio'];
+  const mainPanels = ['home','article','flash','audio'];
   if (!mainPanels.includes(panel)) {
     document.getElementById('bn-more')?.classList.add('active');
   }
@@ -2054,25 +2038,56 @@ document.addEventListener('click', function(e) {
 // تفعيل الزر الرئيسي عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('bn-home')?.classList.add('active');
+  setTimeout(()=>{ if(!S.geminiKey&&!S.orKey) openSettings(); },800);
 });
 
 
 // ── THEME SWITCHER ──
 function setTheme(mode, btn) {
   document.body.classList.remove('theme-day','theme-dim');
-  document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('active'));
-  if(mode === 'day') document.body.classList.add('theme-day');
-  else if(mode === 'dim') document.body.classList.add('theme-dim');
-  if(btn) btn.classList.add('active');
+  document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('t-active'));
+  if(mode==='day') document.body.classList.add('theme-day');
+  else if(mode==='dim') document.body.classList.add('theme-dim');
+  if(btn) btn.classList.add('t-active');
   localStorage.setItem('dbtheme', mode);
 }
-// Load saved theme
 (function(){
-  const t = localStorage.getItem('dbtheme') || 'night';
-  const btn = document.getElementById('tbtn-' + t);
-  setTheme(t, btn);
+  const t=localStorage.getItem('dbtheme')||'night';
+  const btn=document.getElementById('tbtn-'+t);
+  setTheme(t,btn);
 })();
 
 </script>
+
+<!-- ══ BOTTOM NAV (Mobile) ══ -->
+<div class="bottom-nav" id="bottom-nav">
+  <button class="bn-btn active" id="bn-home" onclick="bnNav('home',this)">
+    <i class="fa-solid fa-house"></i><span>الرئيسية</span>
+  </button>
+  <button class="bn-btn" id="bn-article" onclick="bnNav('article',this)">
+    <i class="fa-solid fa-newspaper"></i><span>مقال</span>
+  </button>
+  <button class="bn-btn" id="bn-flash" onclick="bnNav('flash',this)">
+    <i class="fa-solid fa-bolt"></i><span>فلاش</span>
+  </button>
+  <button class="bn-btn" id="bn-audio" onclick="bnNav('audio',this)">
+    <i class="fa-solid fa-microphone-lines"></i><span>صوت</span>
+  </button>
+  <button class="bn-btn" id="bn-more" onclick="bnToggleDrawer()">
+    <i class="fa-solid fa-grip"></i><span>المزيد</span>
+  </button>
+</div>
+<div class="bn-drawer" id="bn-drawer">
+  <div class="bn-drawer-title">أدوات أخرى</div>
+  <div class="bn-drawer-grid">
+    <div class="bn-drawer-item" onclick="bnNav('headlines',this)"><i class="fa-solid fa-heading"></i><span>عناوين</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('rss',this)"><i class="fa-solid fa-globe"></i><span>أخبار</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('tools',this)"><i class="fa-solid fa-calendar-day"></i><span>أدوات</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('profile',this)"><i class="fa-solid fa-user-tie"></i><span>ملف</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('agenda',this)"><i class="fa-solid fa-calendar-days"></i><span>أجندة</span></div>
+    <div class="bn-drawer-item" onclick="bnNav('archive',this)"><i class="fa-solid fa-clock-rotate-left"></i><span>أرشيف</span></div>
+  </div>
+</div>
+
 </body>
 </html>
