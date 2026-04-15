@@ -479,6 +479,43 @@ label{
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--ln2);border-radius:10px}
 ::-webkit-scrollbar-thumb:hover{background:var(--g2)}
+
+/* وضع نهاري */
+body.day-mode {
+  --bg: #f0f2f5; --s1: #e5e8ef; --s2: #dde2ec; --s3: #d0d6e5;
+  --t0: #0a0f1e; --t1: #1a2340; --t2: #3a4a6b; --t3: #6a7a9b;
+  --ln1: rgba(100,130,200,0.15); --ln2: rgba(100,130,200,0.3); --ln3: rgba(100,130,200,0.5);
+  --glow: rgba(232,168,32,0.08); --glow2: rgba(232,168,32,0.05);
+  background: var(--bg); color: var(--t1);
+}
+body.day-mode .hdr { background: rgba(240,242,245,.97); }
+body.day-mode .sidebar { background: rgba(229,232,239,.97); }
+body.day-mode .card { background: rgba(255,255,255,.92); }
+body.day-mode .out-box { background: rgba(240,242,245,.8); }
+/* زر X لكل panel */
+.panel-close-btn {
+  position:absolute; top:14px; left:14px; z-index:20;
+  background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3);
+  color:#fca5a5; border-radius:8px; padding:5px 11px;
+  cursor:pointer; font-size:12px; font-family:Cairo,sans-serif;
+  display:inline-flex; align-items:center; gap:5px; transition:.2s;
+}
+.panel-close-btn:hover { background:rgba(239,68,68,.25); border-color:#ef4444; color:#fff; }
+.card { position:relative; }
+/* زر الوضع */
+#theme-btn { font-size:16px; padding:6px 12px; }
+/* quota visible */
+.quota-bar-wrap { display:flex !important; }
+/* autosave indicator */
+#autosave-indicator {
+  position:fixed; bottom:30px; right:20px; z-index:8888;
+  background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.3);
+  color:#86efac; border-radius:8px; padding:6px 14px;
+  font-size:11px; font-family:Cairo,sans-serif;
+  opacity:0; transition:opacity .5s; pointer-events:none;
+}
+#autosave-indicator.show { opacity:1; }
+
 </style>
 </head>
 <body>
@@ -506,6 +543,7 @@ label{
     <div class="quota-bar"><div class="quota-fill" id="quota-fill" style="width:0%"></div></div>
     <div class="quota-txt" id="quota-txt">0/1500</div>
   </div>
+  <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()" title="ليلي/نهاري">🌙</button>
   <button class="hdr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
 </header>
 
@@ -516,7 +554,7 @@ label{
   <nav class="sidebar">
     <div class="sb-sec">التحرير</div>
     <button class="nav-btn active" data-panel="home"><i class="fa-solid fa-house"></i> الرئيسية</button>
-    <button class="nav-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i> المحرر PRO</button>
+    <button class="nav-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i> داسك الاخبار</button>
     <button class="nav-btn" data-panel="article"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</button>
     <button class="nav-btn" data-panel="flash"><i class="fa-solid fa-bolt"></i> فلاش ديوان FM</button>
     <button class="nav-btn" data-panel="headlines"><i class="fa-solid fa-heading"></i> عناوين احترافية</button>
@@ -559,7 +597,7 @@ label{
         <div class="tool-grid">
           <div class="tool-btn" onclick="nav('editor')">
             <div class="tool-icon ic-gold"><i class="fa-solid fa-pen-nib"></i></div>
-            <div><div class="tool-name">المحرر PRO</div><div class="tool-desc">تحرير + إعادة صياغة + SEO + وات</div></div>
+            <div><div class="tool-name">داسك الاخبار</div><div class="tool-desc">تحرير + إعادة صياغة + SEO + وات</div></div>
           </div>
           <div class="tool-btn" onclick="nav('article')">
             <div class="tool-icon ic-blue"><i class="fa-solid fa-newspaper"></i></div>
@@ -588,7 +626,7 @@ label{
     <!-- ══ EDITOR ══ -->
     <section id="panel-editor" class="panel">
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-pen-nib"></i> المحرر الرقمي PRO — معيار وات</div>
+        <div class="card-title"><i class="fa-solid fa-pen-nib"></i> داسك الاخبار</div>
         <div class="card-sub">يُحوّل النص الخام إلى مادة إخبارية متكاملة وفق معايير وكالة تونس إفريقيا للأنباء وإذاعة ديوان أف أم</div>
         <label>النص الخام أو معطيات الخبر</label>
         <textarea id="editor-input" placeholder="الصق هنا النص الخام أو اكتب معطيات الخبر..."></textarea>
@@ -827,6 +865,7 @@ label{
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+<div id="autosave-indicator">💾 حُفظ تلقائياً</div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -1351,5 +1390,103 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!S.key) setTimeout(openSettings, 800);
 });
 </script>
+
+<script>
+// ── الوضع الليلي/النهاري ─────────────────────────────────────────
+(function initTheme() {
+  const saved = localStorage.getItem('db12_theme');
+  if (saved === 'day') {
+    document.body.classList.add('day-mode');
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = '☀️';
+  }
+})();
+
+function toggleTheme() {
+  const isDay = document.body.classList.toggle('day-mode');
+  localStorage.setItem('db12_theme', isDay ? 'day' : 'night');
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = isDay ? '☀️' : '🌙';
+}
+
+// ── حفظ تلقائي كل 30 ثانية ───────────────────────────────────────
+const AUTOSAVE_FIELDS = [
+  'editor-input', 'article-input', 'flash-input',
+  'headlines-input', 'profile-name', 'team-a', 'team-b',
+  'hist-day', 'hist-month'
+];
+
+function autoSaveAll() {
+  const data = {};
+  let hasData = false;
+  AUTOSAVE_FIELDS.forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el && el.value.trim()) {
+      data[id] = el.value;
+      hasData = true;
+    }
+  });
+  if (hasData) {
+    localStorage.setItem('db12_autosave', JSON.stringify({
+      data: data, time: new Date().toLocaleTimeString('ar-TN')
+    }));
+    // إظهار مؤشر الحفظ
+    const ind = document.getElementById('autosave-indicator');
+    if (ind) {
+      ind.classList.add('show');
+      setTimeout(() => ind.classList.remove('show'), 2000);
+    }
+  }
+}
+
+// استرجاع عند التحميل
+document.addEventListener('DOMContentLoaded', function() {
+  const saved = localStorage.getItem('db12_autosave');
+  if (saved) {
+    try {
+      const obj = JSON.parse(saved);
+      const hasContent = Object.values(obj.data).some(v => v.trim());
+      if (hasContent && confirm('💾 يوجد محتوى محفوظ تلقائياً من الجلسة السابقة (' + (obj.time || '') + ')
+هل تريد استرجاعه؟')) {
+        Object.entries(obj.data).forEach(function([id, val]) {
+          const el = document.getElementById(id);
+          if (el) el.value = val;
+        });
+        toast('تم استرجاع البيانات المحفوظة ✓', 's');
+      }
+    } catch(e) {}
+  }
+  // بدء الحفظ التلقائي
+  setInterval(autoSaveAll, 30000);
+
+  // ── أزرار إغلاق X لكل panel ──────────────────────────────────
+  document.querySelectorAll('.panel > .card').forEach(function(card) {
+    if (card.querySelector('.panel-close-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'panel-close-btn';
+    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> إغلاق';
+    btn.onclick = function() { nav('home'); };
+    card.appendChild(btn);
+  });
+
+  // ── ربط زر RSS ───────────────────────────────────────────────
+  const rssBtn = document.getElementById('btn-rss');
+  if (rssBtn && !rssBtn._bound) {
+    rssBtn.addEventListener('click', fetchRSS);
+    rssBtn._bound = true;
+  }
+});
+
+// ── تحديث quota بعد كل عملية ─────────────────────────────────────
+const _origCallGemini = window.callGemini;
+if (typeof callGemini === 'function') {
+  window.callGemini = async function(...args) {
+    const result = await callGemini.apply(this, args);
+    if (typeof updateQuota === 'function') updateQuota();
+    return result;
+  };
+}
+</script>
+
 </body>
 </html>
