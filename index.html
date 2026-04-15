@@ -430,7 +430,7 @@ label{
 
 /* ── TOAST ── */
 .toast{
-  position:fixed;bottom:calc(78px + env(safe-area-inset-bottom, 0px));left:50%;
+  position:fixed;bottom:24px;left:50%;
   transform:translateX(-50%) translateY(14px);
   background:rgba(15,24,48,.98);border:1px solid var(--ln2);
   padding:11px 20px;border-radius:12px;
@@ -480,8 +480,6 @@ label{
 ::-webkit-scrollbar-thumb{background:var(--ln2);border-radius:10px}
 ::-webkit-scrollbar-thumb:hover{background:var(--g2)}
 </style>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
 </head>
 <body>
 
@@ -696,7 +694,7 @@ label{
     <section id="panel-rss" class="panel">
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-globe"></i> آخر الأخبار — وطنية وعالمية</div>
-        <button class="btn btn-gold btn-full" id="btn-rss">
+        <button class="btn btn-gold btn-full" id="btn-rss" onclick="fetchRSS()">
           <i class="fa-solid fa-rotate-right"></i> تحديث الأخبار
         </button>
         <div id="stt-rss" class="stt" style="margin-top:10px"></div>
@@ -840,7 +838,7 @@ const S = {
   key:     localStorage.getItem('db12_gk') || '',
   archive: JSON.parse(localStorage.getItem('db12_arc') || '[]'),
   agenda:  JSON.parse(localStorage.getItem('db12_ag')  || '[]'),
-  today:   new Date().toLocaleDateString('ar-TN', {year:'numeric',month:'2-digit',day:'2-digit'}),
+  today:   new Date().toDateString(),
   req:     0
 };
 // reset daily counter
@@ -1111,31 +1109,12 @@ function clearTool(name) {
 }
 
 // ── COPY / SHARE ──
-
 function copyOut(id) {
-  const t = document.getElementById(id)?.innerText;
-  if (!t) return toast('خطأ', 'e');
-  if (navigator.clipboard?.writeText && window.isSecureContext) {
-    navigator.clipboard.writeText(t).then(() => toast('✓', 's')).catch(() => fallbackCopy(t));
-  } else {
-    fallbackCopy(t);
-  }
+  const t = document.getElementById(id)?.innerText || '';
+  if (!t) return toast('لا يوجد نص', 'w');
+  navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓', 's'));
 }
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed'; ta.style.left = '-9999px';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try {
-    document.execCommand('copy');
-    toast('✓', 's');
-  } catch {
-    toast('فشل النسخ', 'e');
-  }
-  document.body.removeChild(ta);
-}
-(id) {
+function waOut(id) {
   const t = document.getElementById(id)?.innerText || '';
   if (t) window.open('https://wa.me/?text=' + encodeURIComponent(t));
 }
@@ -1173,9 +1152,9 @@ function renderArchive(list) {
 }
 function cpArc(id) {
   const it = S.archive.find(x => x.id === id);
-  if (it) copyOutContent(it.content); function copyOutContent(c) { fallbackCopy(c); }(() => toast('تم النسخ ✓', 's'));
+  if (it) navigator.clipboard.writeText(it.content).then(() => toast('تم النسخ ✓', 's'));
 }
-function delArc(id) { if (!confirm("تأكيد الحذف؟")) return;
+function delArc(id) {
   S.archive = S.archive.filter(x => x.id !== id);
   localStorage.setItem('db12_arc', JSON.stringify(S.archive));
   renderArchive(); updateStats();
@@ -1219,7 +1198,7 @@ function renderAgenda(list) {
     </div>`;
   }).join('');
 }
-function delAg(id) { if (!confirm("تأكيد الحذف؟")) return;
+function delAg(id) {
   S.agenda = S.agenda.filter(x => x.id !== id);
   localStorage.setItem('db12_ag', JSON.stringify(S.agenda));
   renderAgenda(); updateStats();
@@ -1250,7 +1229,7 @@ async function fetchRSS() {
         link: (el.querySelector('link') || {}).textContent || '',
         pub: (el.querySelector('pubDate') || {}).textContent || '',
         src: f.s, intl: f.intl
-      })).filter(n => DOMPurify.sanitize(n.title).trim());
+      })).filter(n => n.title.trim());
     } catch { return []; }
   }
   let news = [];
@@ -1266,7 +1245,7 @@ async function fetchRSS() {
       const time = t && !isNaN(t) ? t.toLocaleTimeString('ar-TN', { hour: '2-digit', minute: '2-digit' }) : '';
       return `<div class="news-item" onclick="${n.link ? `window.open('${n.link.replace(/'/g,"\\'")}','_blank')` : ''}">
         <span class="news-src ${n.intl ? 'src-wld' : 'src-tn'}">${n.src}</span>
-        <span class="news-title">${DOMPurify.sanitize(n.title)}</span>
+        <span class="news-title">${n.title}</span>
         ${time ? `<span class="news-time">${time}</span>` : ''}
       </div>`;
     }).join('');
