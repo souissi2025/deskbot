@@ -585,12 +585,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   -webkit-user-select:none;
   user-select:none;
 }
-
-.btn-clear-editor{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.42);color:#fca5a5}
-.btn-clear-editor:hover{background:rgba(239,68,68,.28);border-color:#ef4444;color:#fff}
-.btn-copy-editor{background:rgba(59,130,246,.16);border:1px solid rgba(59,130,246,.42);color:#bfdbfe}
-.btn-copy-editor:hover{background:rgba(59,130,246,.28);border-color:#60a5fa;color:#fff}
-
+.btn-clear-editor{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.42);color:#fca5a5}.btn-clear-editor:hover{background:rgba(239,68,68,.28);border-color:#ef4444;color:#fff}
 </style>
 </head>
 <body>
@@ -722,20 +717,19 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         </div>
         <div id="stt-editor" class="stt"></div>
         <div id="out-editor" class="out-box rendered" style="display:none"></div>
-
-        <!-- ══ فضاءا التفريغ والتحرير ══ -->
+        <!-- فضاءا transcribe -->
         <div id="transcribe-wrap" style="display:none;flex-direction:column;gap:12px;margin-top:12px">
-          <div class="card" style="margin-bottom:0;padding:16px;position:relative">
+          <div class="card" style="margin-bottom:0;padding:16px">
             <div class="card-title" style="font-size:14px;margin-bottom:8px"><i class="fa-solid fa-microphone-lines"></i> التفريغ الحرفي</div>
-            <div id="out-transcribe" class="out-box rendered" style="min-height:80px"><span style="color:var(--t3);font-size:12px">سيظهر هنا النص المفرّغ حرفياً...</span></div>
+            <div id="out-transcribe" class="out-box rendered" style="min-height:80px;color:var(--t3);font-size:12px">سيظهر هنا النص المفرّغ حرفياً...</div>
             <div class="act-row" style="margin-top:8px">
               <button class="btn btn-ghost" onclick="cpSec('out-transcribe')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
               <button class="btn btn-wa" onclick="waOut('out-transcribe')"><i class="fa-brands fa-whatsapp"></i></button>
             </div>
           </div>
-          <div class="card" style="margin-bottom:0;padding:16px;position:relative">
+          <div class="card" style="margin-bottom:0;padding:16px">
             <div class="card-title" style="font-size:14px;margin-bottom:8px"><i class="fa-solid fa-pen-nib"></i> التحرير الصحفي — وات / ديوان FM</div>
-            <div id="out-editorial" class="out-box rendered" style="min-height:80px"><span style="color:var(--t3);font-size:12px">سيظهر هنا المقال المحرر...</span></div>
+            <div id="out-editorial" class="out-box rendered" style="min-height:80px;color:var(--t3);font-size:12px">سيظهر هنا المقال المحرر...</div>
             <div class="act-row" style="margin-top:8px">
               <button class="btn btn-ghost" onclick="cpSec('out-editorial')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
               <button class="btn btn-wa" onclick="waOut('out-editorial')"><i class="fa-brands fa-whatsapp"></i></button>
@@ -1444,68 +1438,51 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!S.key) setTimeout(openSettings, 600);
 });
 </script>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-
-  // ── إظهار/إخفاء فضاءي transcribe ────────────────────
-  const sel = document.getElementById('editor-mode');
-  const wrap = document.getElementById('transcribe-wrap');
-  const outEd = document.getElementById('out-editor');
-  const actsEd = document.getElementById('acts-editor');
-
-  function syncTranscribeUI() {
-    const isTr = sel && sel.value === 'transcribe';
-    if (wrap) wrap.style.display = isTr ? 'flex' : 'none';
-    if (outEd) outEd.style.display = isTr ? 'none' : '';
-    if (actsEd) actsEd.style.display = isTr ? 'none' : '';
+document.addEventListener("DOMContentLoaded", function() {
+  var sel = document.getElementById("editor-mode");
+  var wrap = document.getElementById("transcribe-wrap");
+  var outEd = document.getElementById("out-editor");
+  var actsEd = document.getElementById("acts-editor");
+  function syncUI() {
+    var isTr = sel && sel.value === "transcribe";
+    if (wrap) wrap.style.display = isTr ? "flex" : "none";
+    if (outEd) outEd.style.display = isTr ? "none" : "";
+    if (actsEd) actsEd.style.display = isTr ? "none" : "";
   }
-  if (sel) {
-    sel.addEventListener('change', syncTranscribeUI);
-    syncTranscribeUI();
-  }
+  if (sel) { sel.addEventListener("change", syncUI); syncUI(); }
 
-  // ── اعتراض showOut لفصل قسمَي transcribe ──────────────
-  const _orig = window.showOut;
+  var _orig = window.showOut;
   window.showOut = function(name, html) {
-    if (name === 'editor' && sel && sel.value === 'transcribe') {
-      const tMatch = html.match(/\[التفريغ الحرفي\]([\s\S]*?)\[المقال الإخباري\]/);
-      const aMatch = html.match(/\[المقال الإخباري\]([\s\S]*)/);
-      const outT = document.getElementById('out-transcribe');
-      const outA = document.getElementById('out-editorial');
-      if (outT) {
-        outT.innerHTML = tMatch
-          ? (typeof renderMD === 'function' ? renderMD(tMatch[1].trim()) : tMatch[1].trim())
-          : (typeof renderMD === 'function' ? renderMD(html) : html);
-      }
-      if (outA) {
-        outA.innerHTML = aMatch
-          ? (typeof renderMD === 'function' ? renderMD(aMatch[1].trim()) : aMatch[1].trim())
-          : '';
-      }
-      if (wrap) wrap.style.display = 'flex';
+    if (name === "editor" && sel && sel.value === "transcribe") {
+      var sep1 = html.indexOf("~~التفريغ الحرفي~~");
+      var sep2 = html.indexOf("~~المقال الإخباري~~");
+      var outT = document.getElementById("out-transcribe");
+      var outA = document.getElementById("out-editorial");
+      var render = (typeof renderMD === "function") ? renderMD : function(x){return x;};
+      if (outT) outT.innerHTML = render(sep1 >= 0 && sep2 >= 0 ? html.slice(sep1 + "~~التفريغ الحرفي~~".length, sep2).trim() : html);
+      if (outA) outA.innerHTML = render(sep2 >= 0 ? html.slice(sep2 + "~~المقال الإخباري~~".length).trim() : "");
+      if (wrap) wrap.style.display = "flex";
     } else {
       if (_orig) _orig(name, html);
     }
   };
 
-  // ── نسخ قسم محدد ─────────────────────────────────────
   window.cpSec = function(id) {
-    const t = (document.getElementById(id)?.innerText || '').trim();
-    if (!t || t.includes('سيظهر هنا')) return toast('لا يوجد نص', 'w');
+    var el = document.getElementById(id);
+    var t = el ? el.innerText.trim() : "";
+    if (!t || t.indexOf("سيظهر") === 0) return toast("لا يوجد نص", "w");
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓', 's'));
+      navigator.clipboard.writeText(t).then(function(){ toast("تم النسخ", "s"); });
     } else {
-      const ta = document.createElement('textarea');
-      ta.value = t; ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+      var ta = document.createElement("textarea");
+      ta.value = t; ta.style.cssText = "position:fixed;left:-9999px;opacity:0";
       document.body.appendChild(ta); ta.focus(); ta.select();
-      try { document.execCommand('copy'); toast('تم النسخ ✓', 's'); } catch {}
+      try { document.execCommand("copy"); toast("تم النسخ", "s"); } catch(e){}
       document.body.removeChild(ta);
     }
   };
-
 });
 </script>
-
 </body>
 </html>
