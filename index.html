@@ -586,6 +586,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   user-select:none;
 }
 .btn-clear-editor{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.42);color:#fca5a5}.btn-clear-editor:hover{background:rgba(239,68,68,.28);border-color:#ef4444;color:#fff}#transcribe-wrap .out-box{white-space:pre-wrap;word-break:break-word}
+#transcribe-wrap .out-box{white-space:pre-wrap;word-break:break-word}
 </style>
 </head>
 <body>
@@ -1175,14 +1176,22 @@ function runEditor() {
   const mode = document.getElementById('editor-mode')?.value || 'rewrite';
 
   if (mode === 'transcribe') {
-    // وضع التفريغ والتحرير — مرحلة 1: التفريغ الحرفي فقط
-    if (!inp) return toast('أدخل النص أولاً أو ارفق ملفاً', 'w');
-    const TRANSCRIBE_PROMPT = `أنت مكلف بتنفيذ مهمة التفريغ الحرفي فقط.
-استخرج وفرّغ المحتوى التالي كلمة بكلمة بدون أي تعديل أو حذف أو إضافة.
-يُمنع منعاً باتاً: التلخيص، التصرف في الصياغة، أو إضافة أي تعليق.
-أخرج النص المفرّغ فقط بين علامتَي: ~~التفريغ الحرفي~~ في البداية و ~~نهاية التفريغ~~ في النهاية.
+    // وضع التفريغ: إذا كان هناك نص أدخله المستخدم → أرسله للتحرير مباشرة
+    // إذا كان هناك ملف صوتي → استخدم Web Speech API أولاً
+    const attachedFile = document.getElementById('editor-file-inp')?.files?.[0];
+    if (attachedFile) {
+      // تشغيل الملف وتفريغه عبر Web Speech API
+      runSpeechTranscription(attachedFile);
+      return;
+    }
+    if (!inp) return toast('أدخل النص المراد تحريره أو ارفق ملفاً صوتياً', 'w');
+    // نص موجود → أرسله مباشرة للتفريغ/المراجعة بـGemini
+    const TRANSCRIBE_PROMPT = `أنت مكلف بمهمة التفريغ الحرفي للنص التالي.
+فرّغ المحتوى كلمة بكلمة بدون أي تعديل أو حذف أو إضافة.
+يُمنع: التلخيص، التصرف في الصياغة، أو أي تعليق.
+أخرج النص المفرّغ فقط بين علامتَي ~~التفريغ الحرفي~~ في البداية و ~~نهاية التفريغ~~ في النهاية.
 
-المحتوى المراد تفريغه:
+المحتوى:
 ${inp}`;
     runTranscribeStep1(TRANSCRIBE_PROMPT);
     return;
@@ -1295,6 +1304,87 @@ ${transcribed}`;
     updateQuota();
   }
 }
+
+// ━━ تفريغ الملف الصوتي عبر Web Speech API ━━
+function runSpeechTranscription(file) {
+  const wrap   = document.getElementById('transcribe-wrap');
+  const outT   = document.getElementById('out-transcribe');
+  const outA   = document.getElementById('out-editorial');
+  const stt    = document.getElementById('stt-editor');
+  const btn    = document.getElementById('btn-editor');
+  const editBtn= document.getElementById('btn-editorial-edit');
+  if (wrap)    wrap.style.display = 'flex';
+  if (editBtn) editBtn.style.display = 'none';
+  if (outA)    outA.innerHTML = '<span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>';
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    // المتصفح لا يدعم Web Speech API → نعطي توجيهات بديلة
+    if (outT) outT.innerHTML = [
+      '<div style="padding:14px;border-radius:10px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);">',
+      '<div style="color:#fbbf24;font-weight:700;margin-bottom:8px"><i class="fa-solid fa-triangle-exclamation"></i> ملاحظة تقنية</div>',
+      '<div style="font-size:12px;line-height:2;color:var(--t2)">',
+      'نماذج Gemini النصية <strong>لا تستطيع قراءة الملفات الصوتية مباشرة</strong> عبر الـAPI المستخدم هنا.',
+      '<br>للحصول على التفريغ الحرفي، استخدم أحد البدائل:',
+      '<ol style="margin:8px 0 0 0;padding-right:18px">',
+      '<li>افتح الملف في <strong>Google Chrome</strong> وفعّل إعداد "تحويل الكلام إلى نص" ثم الصق النص هنا</li>',
+      '<li>استخدم <a href="https://aistudio.google.com" target="_blank" style="color:#60a5fa">Google AI Studio</a> مباشرة لرفع الملف الصوتي</li>',
+      '<li>أو الصق النص المفرّغ مسبقاً في الحقل أعلاه واضغط تشغيل</li>',
+      '</ol></div></div>'
+    ].join('');
+    if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>المتصفح لا يدعم تفريغ الصوت محلياً</span>'; stt.style.display = 'flex'; }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
+    return;
+  }
+
+  // تشغيل الملف الصوتي وتفريغه
+  const audioURL = URL.createObjectURL(file);
+  const audio    = new Audio(audioURL);
+  const recog    = new SpeechRecognition();
+  recog.lang       = 'ar-TN';
+  recog.continuous = true;
+  recog.interimResults = true;
+  let fullText = '';
+
+  if (stt) { stt.className = 'stt loading'; stt.innerHTML = '<div class="spin"></div><span>جاري التفريغ الصوتي...</span>'; stt.style.display = 'flex'; }
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ...'; }
+  if (outT) outT.innerHTML = '<div class="spin"></div>';
+
+  recog.onresult = function(e) {
+    fullText = '';
+    for (var i = 0; i < e.results.length; i++) {
+      fullText += e.results[i][0].transcript + ' ';
+    }
+    if (outT) outT.textContent = fullText.trim();
+  };
+
+  recog.onend = function() {
+    audio.pause();
+    URL.revokeObjectURL(audioURL);
+    window._transcribedText = fullText.trim();
+    if (!window._transcribedText) {
+      if (outT) outT.innerHTML = '<span style="color:#fca5a5">لم يتم التعرف على كلام. تأكد من جودة الملف أو الصق النص يدوياً.</span>';
+      if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>لم يُكشف عن كلام في الملف</span>'; }
+    } else {
+      if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ — اضغط "بدء التحرير الصحفي"</span>'; }
+      if (editBtn) { editBtn.style.display = 'flex'; editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
+    updateQuota();
+  };
+
+  recog.onerror = function(e) {
+    audio.pause();
+    if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>خطأ في التفريغ: ' + e.error + '</span>'; }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
+  };
+
+  audio.play();
+  recog.start();
+
+  audio.onended = function() { recog.stop(); };
+}
+
 function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
   if (!inp) return toast('أدخل فكرة المقال', 'w');
