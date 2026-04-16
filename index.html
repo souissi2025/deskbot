@@ -756,18 +756,23 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
             <div class="act-row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
               <button class="btn btn-ghost" onclick="cpSec('out-transcribe')"><i class="fa-solid fa-clipboard"></i> نسخ التفريغ</button>
               <button class="btn btn-wa" onclick="waOut('out-transcribe')"><i class="fa-brands fa-whatsapp"></i></button>
-              <button id="btn-editorial-edit" class="btn" style="display:none;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;gap:7px" onclick="runEditorialStep2()">
-                <i class="fa-solid fa-pen-nib"></i> تحرير صحفي
-              </button>
             </div>
           </div>
           <div class="card" style="margin-bottom:0;padding:18px">
-            <div class="card-title" style="font-size:14px;margin-bottom:10px">
-              <i class="fa-solid fa-pen-nib"></i> التحرير الصحفي — وات / ديوان FM
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+              <div class="card-title" style="font-size:14px;margin-bottom:0">
+                <i class="fa-solid fa-pen-nib"></i> التحرير الصحفي — وات / ديوان FM
+              </div>
+              <button id="btn-editorial-edit"
+                class="btn"
+                style="display:none;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;padding:9px 20px;font-size:13px;gap:8px;box-shadow:0 4px 16px rgba(168,85,247,.4)"
+                onclick="runEditorialStep2()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> بدء التحرير الصحفي
+              </button>
             </div>
             <div id="out-editorial" class="out-box rendered"
               style="min-height:320px;max-height:600px;overflow-y:auto;font-size:14px;line-height:2.1">
-              <span style="color:var(--t3);font-size:12px">سيظهر هنا المقال المحرر وفق معايير وات...</span>
+              <span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>
             </div>
             <div class="act-row" style="margin-top:10px">
               <button class="btn btn-ghost" onclick="cpSec('out-editorial')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
@@ -1197,7 +1202,7 @@ async function runTranscribeStep1(prompt) {
   const editBtn = document.getElementById('btn-editorial-edit');
 
   if (outT) { outT.innerHTML = '<div class="spin"></div>'; }
-  if (outA) { outA.innerHTML = '<span style="color:var(--t3);font-size:12px">في انتظار اكتمال التفريغ...</span>'; }
+  if (outA) { outA.innerHTML = '<span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>'; }
   if (wrap) wrap.style.display = 'flex';
   if (editBtn) editBtn.style.display = 'none';
   if (stt)  { stt.className = 'stt loading'; stt.innerHTML = '<div class="spin"></div><span>جاري التفريغ الحرفي...</span>'; stt.style.display = 'flex'; }
@@ -1212,7 +1217,10 @@ async function runTranscribeStep1(prompt) {
     if (outT) outT.innerHTML = renderMD ? renderMD(transcribed) : transcribed;
     // حفظ النص المفرّغ للمرحلة الثانية
     window._transcribedText = transcribed;
-    if (editBtn) { editBtn.style.display = 'flex'; }
+    if (editBtn) {
+      editBtn.style.display = 'flex';
+      editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الحرفي — اضغط "تحرير صحفي" للمتابعة</span>'; }
   } catch(e) {
     if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + e.message + '</span>'; }
