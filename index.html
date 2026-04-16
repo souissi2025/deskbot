@@ -728,7 +728,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         </div>
         <label>نوع المعالجة</label>
         <select id="editor-mode">
-          <option value="editor">تحرير كامل — عنوان + شابو + Lead + جسم + SEO</option>
           <option value="rewrite">إعادة صياغة — هرم مقلوب + معايير وات</option>
           <option value="transcribe">تفريغ وتحرير — نص حرفي + تحرير وات</option>
           <option value="monitor">رصد إخباري — آخر 12 ساعة</option>
@@ -754,9 +753,12 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
               style="min-height:260px;max-height:520px;overflow-y:auto;font-size:14px;line-height:2.1">
               <span style="color:var(--t3);font-size:12px">سيظهر هنا النص المفرّغ حرفياً...</span>
             </div>
-            <div class="act-row" style="margin-top:10px">
-              <button class="btn btn-ghost" onclick="cpSec('out-transcribe')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+            <div class="act-row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
+              <button class="btn btn-ghost" onclick="cpSec('out-transcribe')"><i class="fa-solid fa-clipboard"></i> نسخ التفريغ</button>
               <button class="btn btn-wa" onclick="waOut('out-transcribe')"><i class="fa-brands fa-whatsapp"></i></button>
+              <button id="btn-editorial-edit" class="btn" style="display:none;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;gap:7px" onclick="runEditorialStep2()">
+                <i class="fa-solid fa-pen-nib"></i> تحرير صحفي
+              </button>
             </div>
           </div>
           <div class="card" style="margin-bottom:0;padding:18px">
@@ -1165,9 +1167,125 @@ async function run(name, promptKey, getPrompt, btnId) {
 // ── TOOL RUNNERS ──
 function runEditor() {
   const inp = (document.getElementById('editor-input')?.value || '').trim();
+  const mode = document.getElementById('editor-mode')?.value || 'rewrite';
+
+  if (mode === 'transcribe') {
+    // وضع التفريغ والتحرير — مرحلة 1: التفريغ الحرفي فقط
+    if (!inp) return toast('أدخل النص أولاً أو ارفق ملفاً', 'w');
+    const TRANSCRIBE_PROMPT = `أنت مكلف بتنفيذ مهمة التفريغ الحرفي فقط.
+استخرج وفرّغ المحتوى التالي كلمة بكلمة بدون أي تعديل أو حذف أو إضافة.
+يُمنع منعاً باتاً: التلخيص، التصرف في الصياغة، أو إضافة أي تعليق.
+أخرج النص المفرّغ فقط بين علامتَي: ~~التفريغ الحرفي~~ في البداية و ~~نهاية التفريغ~~ في النهاية.
+
+المحتوى المراد تفريغه:
+${inp}`;
+    runTranscribeStep1(TRANSCRIBE_PROMPT);
+    return;
+  }
+
   if (!inp) return toast('أدخل النص أولاً', 'w');
-  const mode = document.getElementById('editor-mode')?.value || 'editor';
   run('editor', mode, () => inp);
+}
+
+async function runTranscribeStep1(prompt) {
+  if (!S.key) { openSettings(); return; }
+  const wrap  = document.getElementById('transcribe-wrap');
+  const outT  = document.getElementById('out-transcribe');
+  const outA  = document.getElementById('out-editorial');
+  const stt   = document.getElementById('stt-editor');
+  const btn   = document.getElementById('btn-editor');
+  const editBtn = document.getElementById('btn-editorial-edit');
+
+  if (outT) { outT.innerHTML = '<div class="spin"></div>'; }
+  if (outA) { outA.innerHTML = '<span style="color:var(--t3);font-size:12px">في انتظار اكتمال التفريغ...</span>'; }
+  if (wrap) wrap.style.display = 'flex';
+  if (editBtn) editBtn.style.display = 'none';
+  if (stt)  { stt.className = 'stt loading'; stt.innerHTML = '<div class="spin"></div><span>جاري التفريغ الحرفي...</span>'; stt.style.display = 'flex'; }
+  if (btn)  { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ...'; }
+
+  try {
+    const model = (document.getElementById('editor-model') || {}).value || 'gemini-2.5-flash';
+    const res = await callGemini(prompt, model);
+    // استخراج النص المفرّغ
+    const m1 = res.match(/~~التفريغ الحرفي~~([\s\S]*?)~~نهاية التفريغ~~/);
+    const transcribed = m1 ? m1[1].trim() : res.trim();
+    if (outT) outT.innerHTML = renderMD ? renderMD(transcribed) : transcribed;
+    // حفظ النص المفرّغ للمرحلة الثانية
+    window._transcribedText = transcribed;
+    if (editBtn) { editBtn.style.display = 'flex'; }
+    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الحرفي — اضغط "تحرير صحفي" للمتابعة</span>'; }
+  } catch(e) {
+    if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + e.message + '</span>'; }
+    if (outT) outT.innerHTML = '<span style="color:#fca5a5">حدث خطأ: ' + e.message + '</span>';
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
+    updateQuota();
+  }
+}
+
+async function runEditorialStep2() {
+  const transcribed = window._transcribedText;
+  if (!transcribed) return toast('قم بالتفريغ الحرفي أولاً', 'w');
+  if (!S.key) { openSettings(); return; }
+
+  const outA  = document.getElementById('out-editorial');
+  const stt   = document.getElementById('stt-editor');
+  const editBtn = document.getElementById('btn-editorial-edit');
+  const model = (document.getElementById('editor-model') || {}).value || 'gemini-2.5-flash';
+
+  if (outA) outA.innerHTML = '<div class="spin"></div>';
+  if (editBtn) { editBtn.disabled = true; editBtn.innerHTML = '<div class="spin"></div> جاري التحرير...'; }
+  if (stt) { stt.className = 'stt loading'; stt.innerHTML = '<div class="spin"></div><span>جاري التحرير الصحفي وفق معايير وات...</span>'; stt.style.display = 'flex'; }
+
+  const EDITORIAL_PROMPT = `أنت محرر أخبار رئيسي (Senior News Editor) في وكالة تونس إفريقيا للأنباء (وات) وإذاعة ديوان أف أم.
+مهمتك: تحرير المقال الإخباري من النص المفرّغ أدناه وفق المعايير الصارمة التالية:
+
+**1. هندسة الاستهلال (Lead Paragraph):**
+ابدأ حصراً بفعل مبني للمعلوم متبوع بالجهة الفاعلة: (قرر / أكد / أعلنت / أفادت / نفى...).
+يُمنع: المبني للمجهول (تقرر/أُعلن/صُودق)، التمهيد الإنشائي، البادئات الكلاسيكية.
+أجب مباشرة: ماذا؟ متى؟ أين؟ لماذا؟
+
+**2. بروتوكول المصدر:**
+الفقرة الثانية حصراً: اذكر طبيعة الوثيقة (بلاغ/بيان/تصريح).
+مثال: "وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن..."
+
+**3. المعالجة الرقمية:**
+- العملات الأجنبية: حوّلها إلى الدينار التونسي بين قوسين.
+- الأشهر: جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر.
+
+**4. البناء الهيكلي:**
+هرم مقلوب: حدث رئيسي (ف1) → مصدر (ف2) → سياق (ف3+).
+حد أقصى 3 جمل للفقرة. روابط محايدة: (وفي سياق متصل / من جهة أخرى / وأضافت).
+يُمنع: استنتاج شخصي، خواتيم مفتوحة، تضخيم، انعقد، استقبل.
+
+**هيكل المخرجات الإلزامي (لا تضف أي نص خارجه):**
+~~المقال الإخباري~~ تحرير مقال جديد (حمدي)
+(العنوان المقترح 1)
+(العنوان المقترح 2)
+(العنوان المقترح 3)
+(العنوان المقترح 4)
+(العنوان المقترح 5)
+
+(الفقرة 1: الاستهلال — مبني للمعلوم)
+(الفقرة 2: بروتوكول المصدر)
+(الفقرة 3 وما يليها: السياق — هرم مقلوب)
+
+**النص المفرّغ:**
+${transcribed}`;
+
+  try {
+    const res = await callGemini(EDITORIAL_PROMPT, model);
+    const m = res.match(/~~المقال الإخباري~~([\s\S]*)/);
+    const editorial = m ? m[1].trim() : res.trim();
+    if (outA) outA.innerHTML = renderMD ? renderMD(editorial) : editorial;
+    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التحرير الصحفي</span>'; setTimeout(() => { if(stt) stt.style.display='none'; }, 3000); }
+  } catch(e) {
+    if (outA) outA.innerHTML = '<span style="color:#fca5a5">حدث خطأ: ' + e.message + '</span>';
+    if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + e.message + '</span>'; }
+  } finally {
+    if (editBtn) { editBtn.disabled = false; editBtn.innerHTML = '<i class="fa-solid fa-pen-nib"></i> تحرير صحفي'; }
+    updateQuota();
+  }
 }
 function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
@@ -1475,14 +1593,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!S.key) setTimeout(openSettings, 600);
 });
 </script>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-  // ── مزامنة UI عند تغيير نوع المعالجة ──
-  var sel   = document.getElementById("editor-mode");
-  var wrap  = document.getElementById("transcribe-wrap");
-  var outEd = document.getElementById("out-editor");
-  var actsEd= document.getElementById("acts-editor");
+  /* ── مزامنة UI mode ── */
+  var sel    = document.getElementById("editor-mode");
+  var wrap   = document.getElementById("transcribe-wrap");
+  var outEd  = document.getElementById("out-editor");
+  var actsEd = document.getElementById("acts-editor");
   function syncUI() {
     var isTr = sel && sel.value === "transcribe";
     if (wrap)   wrap.style.display   = isTr ? "flex" : "none";
@@ -1491,42 +1611,17 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   if (sel) { sel.addEventListener("change", syncUI); syncUI(); }
 
-  // ── اعتراض showOut لفصل القسمين ──
-  var _orig = window.showOut;
-  window.showOut = function(name, html) {
-    if (name === "editor" && sel && sel.value === "transcribe") {
-      var SEP1 = "~~التفريغ الحرفي~~";
-      var SEP2 = "~~المقال الإخباري~~";
-      var i1 = html.indexOf(SEP1);
-      var i2 = html.indexOf(SEP2);
-      var rnd = (typeof renderMD === "function") ? renderMD : function(x){return x;};
-      var outT = document.getElementById("out-transcribe");
-      var outA = document.getElementById("out-editorial");
-      if (outT) outT.innerHTML = rnd(i1>=0 && i2>=0 ? html.slice(i1+SEP1.length,i2).trim() : html);
-      if (outA) outA.innerHTML = rnd(i2>=0 ? html.slice(i2+SEP2.length).trim() : "");
-      if (wrap) wrap.style.display = "flex";
-    } else {
-      if (_orig) _orig(name, html);
-    }
-  };
-
-  // ── معالجة الملف المرفق ──
+  /* ── معالجة الملف المرفق ── */
   window.handleEditorFile = function(inp) {
     if (!inp.files || !inp.files[0]) return;
-    var f = inp.files[0];
+    var f  = inp.files[0];
     var nm = document.getElementById("editor-file-name");
     var aw = document.getElementById("editor-attach-wrap");
     if (nm) nm.textContent = f.name + "  (" + (f.size/1024/1024).toFixed(2) + " MB)";
     if (aw) aw.style.display = "block";
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var ta = document.getElementById("editor-input");
-      if (ta && !ta.value.trim()) {
-        ta.value = "[ملف مرفق: " + f.name + "] — أدخل النص المفرّغ من هذا الملف أو اترك الحقل فارغاً للمعالجة.";
-      }
-      window._editorAttachedFile = { name: f.name, type: f.type, data: e.target.result };
-    };
-    reader.readAsDataURL(f);
+    var ta = document.getElementById("editor-input");
+    if (ta && !ta.value.trim()) ta.value = "[ملف مرفق: " + f.name + "] — أدخل النص المفرّغ من هذا الملف أو اترك الحقل ليُعالج.";
+    window._editorAttachedFile = { name: f.name, type: f.type };
   };
   window.removeEditorFile = function() {
     window._editorAttachedFile = null;
@@ -1538,11 +1633,11 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fi) fi.value = "";
   };
 
-  // ── نسخ قسم محدد ──
+  /* ── نسخ قسم محدد ── */
   window.cpSec = function(id) {
     var el = document.getElementById(id);
-    var t = el ? el.innerText.trim() : "";
-    if (!t || t.indexOf("سيظهر") === 0) return toast("لا يوجد نص", "w");
+    var t  = el ? el.innerText.trim() : "";
+    if (!t || t.indexOf("سيظهر") === 0 || t.indexOf("في انتظار") === 0) return toast("لا يوجد نص", "w");
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(t).then(function(){ toast("تم النسخ ✓", "s"); });
     } else {
