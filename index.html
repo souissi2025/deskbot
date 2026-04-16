@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 /* ═══════════════════════════════════════════════════
-   DESK BOT v12 · THE PRESS ROOM — ENHANCED
+   DESK BOT v12 · THE PRESS ROOM
    المطبعة الذهبية — صحافة حقيقية، روح حقيقية
 ═══════════════════════════════════════════════════ */
 :root {
@@ -77,40 +77,6 @@ body::after{
 }
 #api-banner .bnr-btn:hover{background:rgba(239,68,68,.35)}
 
-/* ── BREAKING NEWS BAR ── */
-.breaking-bar{
-  position:fixed;top:62px;left:0;right:0;z-index:90;
-  background:linear-gradient(90deg,#dc2626,#b91c1c);
-  padding:10px 20px;
-  display:flex;align-items:center;gap:12px;
-  animation:slideDown .4s cubic-bezier(.4,0,.2,1);
-  box-shadow:0 4px 20px rgba(220,38,38,.4);
-}
-.breaking-bar.hidden{display:none}
-@keyframes slideDown{
-  from{transform:translateY(-100%);opacity:0}
-  to{transform:translateY(0);opacity:1}
-}
-.breaking-dot{
-  width:10px;height:10px;background:#fff;border-radius:50%;
-  animation:pulse 1s infinite;
-}
-@keyframes pulse{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:0.5;transform:scale(1.2)}
-}
-.breaking-label{
-  font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;
-  color:#fecaca;letter-spacing:2px;text-transform:uppercase;
-}
-.breaking-text{flex:1;color:#fff;font-weight:600;font-size:14px}
-.breaking-close{
-  background:rgba(255,255,255,.2);border:none;color:#fff;
-  width:28px;height:28px;border-radius:6px;cursor:pointer;
-  font-size:18px;transition:.2s;
-}
-.breaking-close:hover{background:rgba(255,255,255,.35)}
-
 /* ── HEADER ── */
 .hdr{
   position:sticky;top:0;z-index:100;
@@ -136,11 +102,6 @@ body::after{
   display:flex;align-items:center;justify-content:center;
   font-size:16px;color:#000;font-weight:900;
   box-shadow:0 4px 16px rgba(232,168,32,.45),0 0 0 1px rgba(232,168,32,.25);
-  animation:logo-glow 3s ease-in-out infinite;
-}
-@keyframes logo-glow{
-  0%,100%{box-shadow:0 4px 16px rgba(232,168,32,.45)}
-  50%{box-shadow:0 4px 24px rgba(232,168,32,.65),0 0 40px rgba(232,168,32,.2)}
 }
 .logo-txt{
   background:linear-gradient(135deg,var(--g3),var(--g6));
@@ -184,8 +145,6 @@ body::after{
   overflow-y:auto;padding:12px 8px;
   box-shadow:3px 0 20px rgba(0,0,0,.4);
 }
-.sidebar::-webkit-scrollbar{width:3px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--g2);border-radius:10px}
 .sb-sec{
   font-family:'Oswald',sans-serif;font-size:9px;
   letter-spacing:3px;color:var(--t3);
@@ -236,20 +195,12 @@ body::after{
   border-radius:2px;opacity:.5;
 }
 .card:hover{border-color:var(--ln2);box-shadow:var(--sh2),0 0 40px rgba(232,168,32,.05)}
-.card:focus-within{
-  border-color:var(--g3);
-  box-shadow:var(--sh2),0 0 0 3px rgba(232,168,32,.1);
-}
 .card-title{
   font-family:'Amiri',serif;font-size:19px;font-weight:700;
   color:var(--g4);margin-bottom:6px;
-  display:flex;align-items:center;gap:9px;position:relative;
+  display:flex;align-items:center;gap:9px;
 }
 .card-title i{font-size:15px;color:var(--g3);filter:drop-shadow(0 0 5px rgba(232,168,32,.5))}
-.card-title::after{
-  content:'';position:absolute;bottom:-4px;right:0;
-  width:40px;height:2px;background:linear-gradient(90deg,var(--g3),transparent);
-}
 .card-sub{font-size:12px;color:var(--t3);margin-bottom:14px;line-height:1.8}
 
 /* ── FORM ── */
@@ -284,15 +235,8 @@ label{
   display:inline-flex;align-items:center;gap:7px;
   padding:10px 18px;border-radius:12px;
   font-family:'Cairo',sans-serif;font-weight:700;font-size:13px;
-  cursor:pointer;transition:.22s;border:none;position:relative;overflow:hidden;
+  cursor:pointer;transition:.22s;border:none;
 }
-.btn::after{
-  content:'';position:absolute;inset:0;border-radius:inherit;
-  background:rgba(255,255,255,.3);transform:scale(0);opacity:0;
-  pointer-events:none;
-}
-.btn:active::after{animation:ripple .5s ease-out}
-@keyframes ripple{to{transform:scale(4);opacity:0}}
 .btn-gold{
   background:linear-gradient(135deg,var(--g1),var(--g3) 50%,var(--g2));
   color:#000;
@@ -305,11 +249,6 @@ label{
   background:linear-gradient(135deg,var(--g2),var(--g5),var(--g3));
 }
 .btn-gold:active{transform:translateY(0);box-shadow:0 2px 8px rgba(232,168,32,.3)}
-.btn-gold.loading{animation:pulse-gold 1.5s infinite}
-@keyframes pulse-gold{
-  0%,100%{box-shadow:0 4px 18px rgba(232,168,32,.42)}
-  50%{box-shadow:0 4px 30px rgba(232,168,32,.65)}
-}
 .btn-ghost{
   background:rgba(255,255,255,.03);border:1px solid var(--ln2);color:var(--t2);
 }
@@ -368,14 +307,6 @@ label{
 .out-box.rendered hr{border:none;border-top:1px solid var(--ln2);margin:12px 0}
 .out-box.rendered li{margin-bottom:5px;line-height:1.8}
 .out-box.rendered ul,.out-box.rendered ol{padding-right:18px;margin:6px 0 10px}
-.out-box.rendered p,.out-box.rendered li{
-  animation:typewriter .3s ease forwards;
-  animation-delay:calc(var(--i, 0) * 30ms);
-}
-@keyframes typewriter{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:translateY(0)}
-}
 
 .act-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
 
@@ -453,212 +384,6 @@ label{
   font-family:'Oswald',sans-serif;letter-spacing:.5px;
 }
 
-/* ── TEMPLATES BAR ── */
-.templates-bar{
-  display:flex;align-items:center;gap:6px;
-  flex-wrap:wrap;margin-bottom:12px;
-  padding:10px 12px;background:rgba(0,0,0,.25);
-  border-radius:10px;border:1px solid var(--ln1);
-}
-.tmpl-label{
-  font-size:11px;font-weight:700;color:var(--t3);margin-left:6px;
-}
-.tmpl-btn{
-  background:rgba(255,255,255,.04);border:1px solid var(--ln1);
-  color:var(--t2);padding:5px 11px;border-radius:8px;
-  font-size:11px;cursor:pointer;font-family:Cairo,sans-serif;
-  font-weight:600;display:flex;align-items:center;gap:5px;
-  transition:.2s;
-}
-.tmpl-btn:hover{
-  background:var(--glow);border-color:var(--g3);color:var(--g4);
-}
-.tmpl-btn i{font-size:10px}
-
-/* ── QUALITY METER ── */
-.quality-meter{
-  margin-top:-4px;margin-bottom:12px;
-  padding:10px 12px;background:rgba(0,0,0,.2);
-  border-radius:0 0 10px 10px;
-  border:1px solid var(--ln1);border-top:none;
-}
-.qm-bar{
-  height:3px;background:var(--ln1);
-  border-radius:3px;margin-bottom:8px;overflow:hidden;
-}
-.qm-fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--red),#fbbf24,var(--green));
-  border-radius:3px;transition:width .3s;
-}
-.qm-stats{
-  font-size:10px;color:var(--t3);
-  display:flex;align-items:center;gap:8px;
-}
-.qm-dot{opacity:.5}
-.qm-tips{
-  font-size:10px;color:#fbbf24;
-  margin-top:6px;display:none;
-}
-.qm-tips.show{display:block}
-
-/* ── ANALYTICS ── */
-.analytics-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:14px;margin-bottom:20px;
-}
-@media(max-width:900px){.analytics-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:500px){.analytics-grid{grid-template-columns:1fr}}
-.analytics-card{
-  background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
-  border:1px solid var(--ln1);border-radius:var(--r2);
-  padding:18px;transition:.25s;
-}
-.analytics-card:hover{
-  border-color:var(--ln2);transform:translateY(-3px);box-shadow:var(--sh1);
-}
-.ac-header{
-  display:flex;align-items:center;gap:12px;margin-bottom:10px;
-}
-.ac-icon{
-  width:42px;height:42px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;font-size:18px;
-}
-.ac-icon-blue{background:rgba(96,165,250,.15);color:var(--blue)}
-.ac-icon-green{background:rgba(34,197,94,.15);color:var(--green)}
-.ac-icon-purple{background:rgba(167,139,250,.15);color:var(--purple)}
-.ac-icon-amber{background:rgba(245,158,11,.15);color:#fbbf24}
-.ac-val{
-  font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;
-  background:linear-gradient(135deg,var(--g3),var(--g6));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.ac-label{font-size:12px;color:var(--t2);margin-bottom:6px}
-.ac-trend{
-  font-size:11px;font-weight:600;
-  display:flex;align-items:center;gap:4px;
-}
-.ac-trend.up{color:var(--green)}
-.ac-trend.down{color:var(--red)}
-.ac-trend.neutral{color:#fbbf24}
-
-/* ── CHART ── */
-.chart-container{
-  background:rgba(0,0,0,.3);border:1px solid var(--ln1);
-  border-radius:var(--r2);padding:20px;
-}
-.chart-header{
-  display:flex;justify-content:space-between;
-  align-items:center;margin-bottom:20px;
-}
-.chart-title{font-size:14px;font-weight:700;color:var(--t1)}
-.chart-tabs{display:flex;gap:4px}
-.chart-tab{
-  background:transparent;border:1px solid var(--ln1);
-  color:var(--t3);padding:5px 14px;border-radius:8px;
-  font-size:11px;cursor:pointer;font-family:Cairo,sans-serif;
-  transition:.2s;
-}
-.chart-tab.active,.chart-tab:hover{
-  background:var(--glow);border-color:var(--g3);color:var(--g4);
-}
-.chart-bars{
-  display:flex;align-items:flex-end;gap:8px;
-  height:160px;padding-top:20px;
-}
-.chart-bar{
-  flex:1;background:linear-gradient(180deg,var(--g3),var(--g1));
-  border-radius:6px 6px 0 0;position:relative;
-  transition:.3s;cursor:pointer;min-height:10px;
-}
-.chart-bar:hover{filter:brightness(1.2)}
-.chart-bar::after{
-  content:attr(data-val);position:absolute;
-  top:-22px;left:50%;transform:translateX(-50%);
-  font-size:11px;font-weight:700;color:var(--g4);
-  opacity:0;transition:.2s;
-}
-.chart-bar:hover::after{opacity:1}
-.chart-label{
-  text-align:center;font-size:10px;color:var(--t3);margin-top:8px;
-}
-
-/* ── VERIFY RESULT ── */
-.verify-result{
-  margin-top:16px;background:rgba(0,0,0,.3);
-  border:1px solid var(--ln1);border-radius:var(--r2);padding:18px;
-}
-.vr-header{
-  display:flex;align-items:center;gap:24px;
-  margin-bottom:18px;padding-bottom:18px;
-  border-bottom:1px solid var(--ln1);
-}
-.vr-score{text-align:center}
-.vrs-circle{
-  width:80px;height:80px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Oswald',sans-serif;font-size:28px;font-weight:700;
-  margin-bottom:8px;
-}
-.vrs-circle.high{
-  background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(34,197,94,.05));
-  border:3px solid var(--green);color:var(--green);
-}
-.vrs-circle.medium{
-  background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(245,158,11,.05));
-  border:3px solid #fbbf24;color:#fbbf24;
-}
-.vrs-circle.low{
-  background:linear-gradient(135deg,rgba(239,68,68,.2),rgba(239,68,68,.05));
-  border:3px solid var(--red);color:var(--red);
-}
-.vrs-label{font-size:11px;color:var(--t2)}
-.vr-badges{display:flex;flex-wrap:wrap;gap:8px}
-.vr-badge{
-  padding:5px 12px;border-radius:20px;
-  font-size:11px;font-weight:600;
-}
-.vr-badge.ok{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
-.vr-badge.warn{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
-.vr-badge.err{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
-.vr-section{margin-bottom:14px}
-.vrs-title{
-  font-size:12px;font-weight:700;color:var(--t1);
-  margin-bottom:8px;display:flex;align-items:center;gap:6px;
-}
-.vr-section ul{margin:0;padding-right:18px}
-.vr-section li{
-  font-size:12px;color:var(--t2);
-  margin-bottom:4px;line-height:1.7;
-}
-.vr-source-item{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 12px;background:rgba(255,255,255,.02);
-  border-radius:8px;margin-bottom:6px;font-size:12px;
-}
-.vr-source-status{width:8px;height:8px;border-radius:50%}
-.vr-source-status.ok{background:var(--green)}
-.vr-source-status.warn{background:#fbbf24}
-.vr-source-status.err{background:var(--red)}
-
-/* ── SHORTCUTS ── */
-.shortcut-grid{
-  display:flex;flex-direction:column;gap:6px;
-}
-.sc-row{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 10px;background:rgba(255,255,255,.02);
-  border-radius:8px;
-}
-.sc-row kbd{
-  background:var(--s3);border:1px solid var(--ln2);
-  padding:3px 8px;border-radius:5px;
-  font-family:'Oswald',monospace;font-size:11px;
-  color:var(--g4);min-width:28px;text-align:center;
-}
-.sc-row span:not(.sc-action){color:var(--t3);font-size:10px}
-.sc-action{margin-right:auto;font-size:12px;color:var(--t1)}
-
 /* ── MODAL ── */
 .overlay{
   position:fixed;inset:0;z-index:400;
@@ -725,7 +450,6 @@ label{
   .stats-grid{grid-template-columns:1fr 1fr}
   .tool-grid{grid-template-columns:1fr}
   .bottom-nav{display:flex!important}
-  .breaking-bar{top:62px}
 }
 @media(max-width:480px){
   .stats-grid{grid-template-columns:1fr}
@@ -819,7 +543,7 @@ body.day-mode .stat-card { background: linear-gradient(135deg, rgba(80,110,200,.
 body.day-mode .bottom-nav { background: rgba(238,241,247,.97); }
 body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 
-/* ─ـ زر إغلاق panels ── */
+/* ── زر إغلاق panels ── */
 .panel-close-btn {
   position: absolute; top: 14px; left: 14px; z-index: 20;
   background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.35);
@@ -840,12 +564,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 }
 #autosave-ind.show { opacity: 1; }
 
-/* ── دخول textarea ── */
-textarea.drop-active{
-  border-color: var(--g3) !important;
-  background: rgba(232,168,32,.1) !important;
-  box-shadow: 0 0 0 3px rgba(232,168,32,.2) !important;
-}
 </style>
 </head>
 <body>
@@ -855,14 +573,6 @@ textarea.drop-active{
   <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i>
   <span id="banner-msg">مفتاح Gemini غير مُدخَل — لن تعمل أي أداة حتى تُدخل المفتاح</span>
   <button class="bnr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> إدخال المفتاح الآن</button>
-</div>
-
-<!-- BREAKING NEWS BAR -->
-<div id="breaking-bar" class="breaking-bar hidden">
-  <div class="breaking-dot"></div>
-  <span class="breaking-label">عاجل</span>
-  <span class="breaking-text" id="breaking-text"></span>
-  <button class="breaking-close" onclick="closeBreaking()">×</button>
 </div>
 
 <!-- HEADER -->
@@ -901,10 +611,8 @@ textarea.drop-active{
     <button class="nav-btn" data-panel="rss"><i class="fa-solid fa-globe"></i> آخر الأخبار</button>
     <button class="nav-btn" data-panel="tools"><i class="fa-solid fa-calendar-day"></i> تاريخ / رياضة</button>
     <button class="nav-btn" data-panel="profile"><i class="fa-solid fa-user-tie"></i> ملف الشخصية</button>
-    <button class="nav-btn" data-panel="verify"><i class="fa-solid fa-shield-check"></i> مدقق المصادر</button>
     <div class="sb-div"></div>
     <div class="sb-sec">الإدارة</div>
-    <button class="nav-btn" data-panel="analytics"><i class="fa-solid fa-chart-line"></i> التحليلات</button>
     <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
     <button class="nav-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف</button>
   </nav>
@@ -951,13 +659,13 @@ textarea.drop-active{
             <div class="tool-icon ic-purple"><i class="fa-solid fa-heading"></i></div>
             <div><div class="tool-name">عناوين احترافية</div><div class="tool-desc">12 عنواناً في 4 فئات</div></div>
           </div>
-          <div class="tool-btn" onclick="nav('verify')">
-            <div class="tool-icon ic-green"><i class="fa-solid fa-shield-check"></i></div>
-            <div><div class="tool-name">مدقق المصادر</div><div class="tool-desc">تحقق من موثوقية الأخبار</div></div>
+          <div class="tool-btn" onclick="nav('tools')">
+            <div class="tool-icon ic-amber"><i class="fa-solid fa-calendar-day"></i></div>
+            <div><div class="tool-name">حدث اليوم</div><div class="tool-desc">تاريخ + أرشيف رياضي</div></div>
           </div>
-          <div class="tool-btn" onclick="nav('analytics')">
-            <div class="tool-icon ic-amber"><i class="fa-solid fa-chart-line"></i></div>
-            <div><div class="tool-name">لوحة التحليلات</div><div class="tool-desc">إحصائيات الإنتاج المتقدمة</div></div>
+          <div class="tool-btn" onclick="nav('profile')">
+            <div class="tool-icon ic-green"><i class="fa-solid fa-user-tie"></i></div>
+            <div><div class="tool-name">ملف الشخصية</div><div class="tool-desc">ملف صحفي تحقيقي كامل</div></div>
           </div>
         </div>
       </div>
@@ -968,33 +676,8 @@ textarea.drop-active{
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-pen-nib"></i> داسك الاخبار</div>
         <div class="card-sub">يُحوّل النص الخام إلى مادة إخبارية متكاملة وفق معايير وكالة تونس إفريقيا للأنباء وإذاعة ديوان أف أم</div>
-        
-        <!-- Templates Bar -->
-        <div class="templates-bar">
-          <span class="tmpl-label"><i class="fa-solid fa-bookmark"></i> قوالب:</span>
-          <button class="tmpl-btn" onclick="insertTemplate('press')"><i class="fa-solid fa-newspaper"></i> بيان صحفي</button>
-          <button class="tmpl-btn" onclick="insertTemplate('sport')"><i class="fa-solid fa-futbol"></i> خبر رياضي</button>
-          <button class="tmpl-btn" onclick="insertTemplate('economy')"><i class="fa-solid fa-coins"></i> اقتصادي</button>
-          <button class="tmpl-btn" onclick="insertTemplate('court')"><i class="fa-solid fa-gavel"></i> قضائي</button>
-          <button class="tmpl-btn" onclick="insertTemplate('weather')"><i class="fa-solid fa-cloud-sun"></i> طقس</button>
-        </div>
-        
         <label>النص الخام أو معطيات الخبر</label>
         <textarea id="editor-input" placeholder="الصق هنا النص الخام أو اكتب معطيات الخبر..."></textarea>
-        
-        <!-- Quality Meter -->
-        <div class="quality-meter">
-          <div class="qm-bar"><div class="qm-fill" id="qm-fill-editor" style="width:0%"></div></div>
-          <div class="qm-stats">
-            <span id="qm-chars-editor">0</span> حرف
-            <span class="qm-dot">•</span>
-            <span id="qm-words-editor">0</span> كلمة
-            <span class="qm-dot">•</span>
-            <span id="qm-read-editor">~0</span> ثانية قراءة
-          </div>
-          <div class="qm-tips" id="qm-tips-editor"></div>
-        </div>
-        
         <label>نوع المعالجة</label>
         <select id="editor-mode">
           <option value="editor">تحرير كامل — عنوان + شابو + Lead + جسم + SEO + ديوان FM</option>
@@ -1029,20 +712,6 @@ textarea.drop-active{
         <div class="card-sub">يكتب مقالاً صحفياً متكاملاً من فكرة أو نص أولي — بلغة رصينة وهيكل هرمي وفق معايير وات</div>
         <label>الفكرة الأساسية أو النص الأولي</label>
         <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
-        
-        <!-- Quality Meter -->
-        <div class="quality-meter">
-          <div class="qm-bar"><div class="qm-fill" id="qm-fill-article" style="width:0%"></div></div>
-          <div class="qm-stats">
-            <span id="qm-chars-article">0</span> حرف
-            <span class="qm-dot">•</span>
-            <span id="qm-words-article">0</span> كلمة
-            <span class="qm-dot">•</span>
-            <span id="qm-read-article">~0</span> ثانية قراءة
-          </div>
-          <div class="qm-tips" id="qm-tips-article"></div>
-        </div>
-        
         <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
           <button class="btn btn-gold" id="btn-article"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
           <select id="article-count" style="width:auto;margin:0;font-size:11px;padding:8px 28px 8px 10px">
@@ -1073,20 +742,6 @@ textarea.drop-active{
         <div class="card-sub">يكتب فلاشاً إذاعياً جاهزاً للإلقاء المباشر — 45 إلى 60 ثانية — مع علامات الوقف</div>
         <label>معطيات الخبر</label>
         <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
-        
-        <!-- Quality Meter -->
-        <div class="quality-meter">
-          <div class="qm-bar"><div class="qm-fill" id="qm-fill-flash" style="width:0%"></div></div>
-          <div class="qm-stats">
-            <span id="qm-chars-flash">0</span> حرف
-            <span class="qm-dot">•</span>
-            <span id="qm-words-flash">0</span> كلمة
-            <span class="qm-dot">•</span>
-            <span id="qm-read-flash">~0</span> ثانية قراءة
-          </div>
-          <div class="qm-tips" id="qm-tips-flash"></div>
-        </div>
-        
         <div style="display:flex;gap:7px;flex-wrap:wrap">
           <button class="btn btn-gold" id="btn-flash"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
           <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
@@ -1118,19 +773,6 @@ textarea.drop-active{
           <button class="btn btn-ghost" onclick="copyOut('out-headlines')"><i class="fa-solid fa-clipboard"></i><span> نسخ</span></button>
           <button class="btn btn-ok" onclick="arcOut('out-headlines','عناوين')"><i class="fa-solid fa-floppy-disk"></i><span> أرشفة</span></button>
         </div>
-      </div>
-    </section>
-
-    <!-- ══ VERIFY ══ -->
-    <section id="panel-verify" class="panel">
-      <div class="card">
-        <div class="card-title"><i class="fa-solid fa-shield-check"></i> مدقق المصادر</div>
-        <div class="card-sub">تحقق من موثوقية المصادر واكتشاف الأخبار الزائفة — أداة للتحقق المهني</div>
-        <label>رابط الخبر أو النص للتحقق</label>
-        <textarea id="verify-input" placeholder="الصق رابط الخبر أو النص الكامل للتحقق من مصادره..." style="min-height:100px"></textarea>
-        <button class="btn btn-gold btn-full" id="btn-verify"><i class="fa-solid fa-magnifying-glass-chart"></i> تحليل المصادر</button>
-        <div id="stt-verify" class="stt"></div>
-        <div id="out-verify" class="out-box rendered" style="display:none"></div>
       </div>
     </section>
 
@@ -1196,63 +838,6 @@ textarea.drop-active{
       </div>
     </section>
 
-    <!-- ══ ANALYTICS ══ -->
-    <section id="panel-analytics" class="panel">
-      <div class="card">
-        <div class="card-title"><i class="fa-solid fa-chart-line"></i> لوحة التحليلات</div>
-        
-        <div class="analytics-grid">
-          <div class="analytics-card">
-            <div class="ac-header">
-              <div class="ac-icon ac-icon-blue"><i class="fa-solid fa-file-lines"></i></div>
-              <div class="ac-val" id="ana-total">0</div>
-            </div>
-            <div class="ac-label">إجمالي المواد المنتجة</div>
-            <div class="ac-trend up"><i class="fa-solid fa-arrow-up"></i> +12% هذا الأسبوع</div>
-          </div>
-          
-          <div class="analytics-card">
-            <div class="ac-header">
-              <div class="ac-icon ac-icon-green"><i class="fa-solid fa-clock"></i></div>
-              <div class="ac-val" id="ana-time">0</div>
-            </div>
-            <div class="ac-label">متوسط وقت الإنتاج</div>
-            <div class="ac-trend down"><i class="fa-solid fa-arrow-down"></i> -8% (أسرع)</div>
-          </div>
-          
-          <div class="analytics-card">
-            <div class="ac-header">
-              <div class="ac-icon ac-icon-purple"><i class="fa-solid fa-microphone"></i></div>
-              <div class="ac-val" id="ana-flash">0</div>
-            </div>
-            <div class="ac-label">فلاشات ديوان FM</div>
-            <div class="ac-trend up"><i class="fa-solid fa-arrow-up"></i> +23%</div>
-          </div>
-          
-          <div class="analytics-card">
-            <div class="ac-header">
-              <div class="ac-icon ac-icon-amber"><i class="fa-solid fa-trophy"></i></div>
-              <div class="ac-val" id="ana-streak">0</div>
-            </div>
-            <div class="ac-label">أيام متتالية نشطة</div>
-            <div class="ac-trend neutral"><i class="fa-solid fa-fire"></i> استمر!</div>
-          </div>
-        </div>
-
-        <div class="chart-container">
-          <div class="chart-header">
-            <span class="chart-title">الإنتاج الأسبوعي</span>
-            <div class="chart-tabs">
-              <button class="chart-tab active" data-range="week">أسبوع</button>
-              <button class="chart-tab" data-range="month">شهر</button>
-            </div>
-          </div>
-          <div class="chart-bars" id="chart-bars"></div>
-        </div>
-        
-      </div>
-    </section>
-
     <!-- ══ AGENDA ══ -->
     <section id="panel-agenda" class="panel">
       <div class="card">
@@ -1291,7 +876,7 @@ textarea.drop-active{
   <button class="bn-btn active" data-panel="home"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
   <button class="bn-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
   <button class="bn-btn" data-panel="rss"><i class="fa-solid fa-globe"></i><span>أخبار</span></button>
-  <button class="bn-btn" data-panel="analytics"><i class="fa-solid fa-chart-line"></i><span>التحليلات</span></button>
+  <button class="bn-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i><span>الأجندة</span></button>
   <button class="bn-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i><span>الأرشيف</span></button>
 </nav>
 
@@ -1326,33 +911,13 @@ textarea.drop-active{
   </div>
 </div>
 
-<!-- SHORTCUTS MODAL -->
-<div class="overlay" id="shortcuts-modal" onclick="if(event.target===this)closeShortcuts()">
-  <div class="modal" style="max-width:420px">
-    <div class="m-head">
-      <div class="m-title"><i class="fa-solid fa-keyboard"></i> اختصارات لوحة المفاتيح</div>
-      <button class="m-close" onclick="closeShortcuts()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="m-body" style="padding:16px">
-      <div class="shortcut-grid">
-        <div class="sc-row"><kbd>Ctrl</kbd><span>+</span><kbd>Enter</kbd><span class="sc-action">تشغيل الأداة</span></div>
-        <div class="sc-row"><kbd>Ctrl</kbd><span>+</span><kbd>S</kbd><span class="sc-action">حفظ في الأرشيف</span></div>
-        <div class="sc-row"><kbd>Ctrl</kbd><span>+</span><kbd>C</kbd><span class="sc-action">نسخ النتيجة</span></div>
-        <div class="sc-row"><kbd>Ctrl</kbd><span>+</span><kbd>1-9</kbd><span class="sc-action">انتقل للوحة</span></div>
-        <div class="sc-row"><kbd>Esc</kbd><span></span><span class="sc-action">إغلاق / رئيسية</span></div>
-        <div class="sc-row"><kbd>?</kbd><span></span><span class="sc-action">عرض الاختصارات</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 <div id="autosave-ind">💾 حُفظ تلقائياً</div>
 
 <script>
 /* ═══════════════════════════════════════════════
-   DESK BOT v12 — BRAIN — ENHANCED
+   DESK BOT v12 — BRAIN
 ═══════════════════════════════════════════════ */
 
 // ── STATE ──
@@ -1458,97 +1023,8 @@ const PROMPTS = {
 💬 أبرز تصريحات رسمية موثّقة (2-3 اقتباسات بين " " + المناسبة + التاريخ + المصدر)
 ⚡ مواقف وملفات خلافية موثّقة (وقائع فقط — لا تقييم)
 🕐 آخر مستجد إخباري
-📻 تعريف إذاعي لديوان FM (15 كلمة — للبث المباشر)`,
-
-  verify: SYS + `## مهمتك: تحليل موثوقية الخبر والمصادر
-### 📊 تقييم الموثوقية (0-100)
-### ✅ نقاط القوة: [قائمة بالعناصر الإيجابية]
-### ⚠️ نقاط للمراجعة: [قائمة بالعناصر المشكوك فيها]
-### 🔗 المصادر المذكورة: [تحليل كل مصدر]
-### 🎯 التوصية: [هل يمكن النشر؟ نعم/لا/مع تعديل]
-### 📝 الملاحظات التحريرية: [نصائح للتحسين]`
+📻 تعريف إذاعي لديوان FM (15 كلمة — للبث المباشر)`
 };
-
-// ── TEMPLATES ──
-const TEMPLATES = {
-  press: `الجهة المصدرة: [اسم المؤسسة/الوزارة]
-التاريخ: [التاريخ]
-العنوان: [عنوان البيان]
-
-نص البيان:
-أصدرت [اسم الجهة] اليوم [التاريخ] بياناً أكدت فيه أن...
-
-النقاط الرئيسية:
-1. 
-2. 
-3. 
-
-للاستفسار: [رقم الاتصال/البريد]`,
-
-  sport: `البطولة: [اسم البطولة]
-المباراة: [الفريق الأول] × [الفريق الثاني]
-النتيجة: [النتيجة]
-الملعب: [اسم الملعب]
-الحضور: [عدد المتفرجين]
-
-ملخص المباراة:
-افتتح [اسم اللاعب] التسجيل في الدقيقة [..]...
-
-الهدافون: 
-- [اللاعب] ([الدقيقة])
-- [اللاعب] ([الدقيقة])
-
-تصريحات ما بعد المباراة:`,
-
-  economy: `المؤشر: [اسم المؤشر/الشركة]
-القيمة: [الرقم]
-نسبة التغيير: [+/- النسبة]
-
-ملخص:
-سجل [المؤشر] [ارتفاعاً/انخفاضاً] بنسبة [...] خلال...
-
-الأرقام الرئيسية:
-| المؤشر | القيمة | التغيير |
-|--------|--------|---------|
-| [...] | [...] | [...] |
-
-تحليل:`,
-
-  court: `القضية: [رقم القضية]
-المحكمة: [اسم المحكمة]
-الجلسة: [تاريخ الجلسة]
-
-الوقائع:
-تُنظر أمام [المحكمة] قضية [...] التي تعود أحداثها إلى...
-
-الطلبات:
-- 
-
-القرار المتوقع:`,
-
-  weather: `توقعات الطقس - [المنطقة]
-التاريخ: [التاريخ]
-
-درجة الحرارة:
-- العظمى: [..]°م
-- الصغرى: [..]°م
-
-حالة الطقس: [مشمس/غائم/ممطر]
-الرطوبة: [%]
-الرياح: [الاتجاه] بسرعة [..] كم/س
-
-تنبيهات:`
-};
-
-function insertTemplate(type) {
-  const ta = document.getElementById('editor-input');
-  if (ta && TEMPLATES[type]) {
-    ta.value = TEMPLATES[type];
-    ta.focus();
-    toast('تم إدراج القالب ✓', 's');
-    updateQualityMeter('editor');
-  }
-}
 
 // ── GEMINI API ──
 async function callGemini(prompt, model) {
@@ -1656,7 +1132,7 @@ async function run(name, promptKey, getPrompt, btnId) {
   hideOut(name);
   const btn = document.getElementById(btnId || 'btn-' + name);
   const origHTML = btn ? btn.innerHTML : '';
-  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#000;width:14px;height:14px;margin-left:4px"></div> جاري المعالجة...'; btn.classList.add('loading'); }
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin" style="border-color:rgba(0,0,0,.2);border-top-color:#000;width:14px;height:14px;margin-left:4px"></div> جاري المعالجة...'; }
   try {
     const model = (document.getElementById(name + '-model') || {}).value || 'gemini-2.5-flash';
     const prompt = getPrompt();
@@ -1664,11 +1140,10 @@ async function run(name, promptKey, getPrompt, btnId) {
     showOut(name, renderMD(res));
     setStt(name, '✅ اكتملت المعالجة بنجاح', 'ok');
     setTimeout(() => hideStt(name), 3000);
-    updateAnalytics();
   } catch(e) {
     setStt(name, '❌ ' + e.message, 'err');
   } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; btn.classList.remove('loading'); }
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
   }
 }
 
@@ -1713,95 +1188,18 @@ function runProfile() {
   if (!n) return toast('أدخل اسم الشخصية', 'w');
   run('profile', 'profile', () => `الشخصية: ${n}`);
 }
-function runVerify() {
-  const inp = (document.getElementById('verify-input')?.value || '').trim();
-  if (!inp) return toast('أدخل النص أو الرابط للتحقق', 'w');
-  run('verify', 'verify', () => inp);
-}
 
 function clearTool(name) {
   const inp = document.getElementById(name + '-input');
   if (inp) inp.value = '';
   hideOut(name); hideStt(name);
-  updateQualityMeter(name);
-}
-
-// ── QUALITY METER ──
-function updateQualityMeter(name) {
-  const ta = document.getElementById(name + '-input');
-  if (!ta) return;
-  
-  const text = ta.value;
-  const chars = text.length;
-  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const readTime = Math.ceil(words / 3);
-  
-  const charsEl = document.getElementById('qm-chars-' + name);
-  const wordsEl = document.getElementById('qm-words-' + name);
-  const readEl = document.getElementById('qm-read-' + name);
-  const fillEl = document.getElementById('qm-fill-' + name);
-  const tipsEl = document.getElementById('qm-tips-' + name);
-  
-  if (charsEl) charsEl.textContent = chars.toLocaleString();
-  if (wordsEl) wordsEl.textContent = words.toLocaleString();
-  if (readEl) readEl.textContent = readTime;
-  
-  let score = 0;
-  let tips = [];
-  
-  if (words >= 10) score += 20;
-  else if (words > 0) tips.push('أضف المزيد من المحتوى');
-  
-  if (words >= 30) score += 20;
-  if (/\d+/.test(text)) score += 15;
-  if (/(وأكد|صرح|أوضح|أفاد|حسب|وفق)/.test(text)) score += 15;
-  else if (words > 5) tips.push('أضف مصدراً رسمياً');
-  
-  if (/"[^"]{10,}"/.test(text)) score += 15;
-  
-  const repeatMatch = text.match(/(\b\w+\b)\s+\1/g);
-  if (repeatMatch && repeatMatch.length > 2) {
-    score -= 10;
-    tips.push('⚠️ تكرار في النص');
-  }
-  
-  score = Math.min(100, Math.max(0, score));
-  
-  if (fillEl) fillEl.style.width = score + '%';
-  
-  if (tipsEl) {
-    if (tips.length && words > 5) {
-      tipsEl.textContent = tips[0];
-      tipsEl.classList.add('show');
-    } else {
-      tipsEl.classList.remove('show');
-    }
-  }
-}
-
-function setupQualityMeters() {
-  ['editor', 'article', 'flash'].forEach(function(name) {
-    const ta = document.getElementById(name + '-input');
-    if (ta) {
-      ta.addEventListener('input', function() { updateQualityMeter(name); });
-    }
-  });
 }
 
 // ── COPY / SHARE ──
 function copyOut(id) {
   const t = document.getElementById(id)?.innerText || '';
   if (!t) return toast('لا يوجد نص', 'w');
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓', 's')).catch(() => fbCopy(t));
-  } else { fbCopy(t); }
-}
-function fbCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
-  document.body.appendChild(ta); ta.focus(); ta.select();
-  try { document.execCommand('copy'); toast('تم النسخ ✓', 's'); } catch { toast('فشل النسخ', 'e'); }
-  document.body.removeChild(ta);
+  navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓', 's'));
 }
 function waOut(id) {
   const t = document.getElementById(id)?.innerText || '';
@@ -1816,7 +1214,7 @@ function arcOut(id, type) {
   if (!c.trim()) return toast('لا يوجد نص للأرشفة', 'w');
   S.archive.unshift({ id: Date.now(), type, content: c, date: new Date().toLocaleDateString('ar-TN') });
   localStorage.setItem('db12_arc', JSON.stringify(S.archive));
-  renderArchive(); updateStats(); updateAnalytics();
+  renderArchive(); updateStats();
   toast('تم الحفظ في الأرشيف ✓', 's');
 }
 
@@ -1844,10 +1242,9 @@ function cpArc(id) {
   if (it) navigator.clipboard.writeText(it.content).then(() => toast('تم النسخ ✓', 's'));
 }
 function delArc(id) {
-  if (!confirm('هل تريد حذف هذا العنصر نهائياً؟')) return;
   S.archive = S.archive.filter(x => x.id !== id);
   localStorage.setItem('db12_arc', JSON.stringify(S.archive));
-  renderArchive(); updateStats(); updateAnalytics();
+  renderArchive(); updateStats();
 }
 function filterArchive() {
   const q = (document.getElementById('arc-search')?.value || '').toLowerCase();
@@ -1856,7 +1253,7 @@ function filterArchive() {
 function clearArchive() {
   if (!confirm('مسح الأرشيف نهائياً؟')) return;
   S.archive = []; localStorage.removeItem('db12_arc');
-  renderArchive(); updateStats(); updateAnalytics(); toast('تم مسح الأرشيف', 'w');
+  renderArchive(); updateStats(); toast('تم مسح الأرشيف', 'w');
 }
 
 // ── AGENDA ──
@@ -1889,7 +1286,6 @@ function renderAgenda(list) {
   }).join('');
 }
 function delAg(id) {
-  if (!confirm('هل تريد حذف هذا الموعد نهائياً؟')) return;
   S.agenda = S.agenda.filter(x => x.id !== id);
   localStorage.setItem('db12_ag', JSON.stringify(S.agenda));
   renderAgenda(); updateStats();
@@ -1946,46 +1342,6 @@ async function fetchRSS() {
   if (btn) btn.disabled = false;
 }
 
-// ── ANALYTICS ──
-function renderChart() {
-  const days = ['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
-  const data = [5, 8, 12, 7, 15, 9, 11]; // بيانات تجريبية
-  const max = Math.max(...data);
-  const container = document.getElementById('chart-bars');
-  if (!container) return;
-  
-  container.innerHTML = data.map((val, i) => `
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center">
-      <div class="chart-bar" style="height:${(val/max)*130}px" data-val="${val}"></div>
-      <div class="chart-label">${days[i]}</div>
-    </div>
-  `).join('');
-}
-
-function updateAnalytics() {
-  const total = S.archive.length + S.req;
-  const totalEl = document.getElementById('ana-total');
-  const flashEl = document.getElementById('ana-flash');
-  const streakEl = document.getElementById('ana-streak');
-  
-  if (totalEl) totalEl.textContent = total;
-  if (flashEl) flashEl.textContent = S.archive.filter(x => x.type.includes('فلاش')).length;
-  if (streakEl) streakEl.textContent = Math.min(30, Math.floor(total / 5));
-}
-
-// ── BREAKING NEWS ──
-function showBreaking(text) {
-  const bar = document.getElementById('breaking-bar');
-  const txt = document.getElementById('breaking-text');
-  if (bar && txt) {
-    txt.textContent = text;
-    bar.classList.remove('hidden');
-  }
-}
-function closeBreaking() {
-  document.getElementById('breaking-bar')?.classList.add('hidden');
-}
-
 // ── SETTINGS ──
 function openSettings() {
   const inp = document.getElementById('gemini-key-inp');
@@ -2010,11 +1366,6 @@ function updateKeyStt() {
 function updateBanner() {
   const b = document.getElementById('api-banner');
   if (b) S.key ? b.classList.add('hidden') : b.classList.remove('hidden');
-}
-
-// ── SHORTCUTS ──
-function closeShortcuts() {
-  document.getElementById('shortcuts-modal')?.classList.remove('open');
 }
 
 // ── NAV ──
@@ -2057,99 +1408,6 @@ function updateGreeting() {
   const el = document.getElementById('home-greeting'); if (el) el.textContent = g;
 }
 
-// ── DRAG & DROP ──
-function setupDragDrop() {
-  document.querySelectorAll('textarea').forEach(function(ta) {
-    ta.addEventListener('dragover', function(e) {
-      e.preventDefault();
-      this.classList.add('drop-active');
-    });
-    ta.addEventListener('dragleave', function(e) {
-      this.classList.remove('drop-active');
-    });
-    ta.addEventListener('drop', async function(e) {
-      e.preventDefault();
-      this.classList.remove('drop-active');
-      
-      const file = e.dataTransfer.files[0];
-      if (!file) return;
-      
-      if (file.type.startsWith('image/')) {
-        toast('جاري تحليل الصورة...', 'w');
-        this.value = '[تم إسقاط صورة: ' + file.name + ' - الحجم: ' + Math.round(file.size/1024) + 'KB]\n\n';
-        return;
-      }
-      
-      if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          this.value = ev.target.result;
-          toast('تم استيراد الملف ✓', 's');
-          const name = this.id.replace('-input', '');
-          updateQualityMeter(name);
-        };
-        reader.readAsText(file);
-        return;
-      }
-      
-      toast('نوع الملف: ' + file.type + ' - أدخل النص يدوياً', 'w');
-    });
-  });
-}
-
-// ── KEYBOARD SHORTCUTS ──
-function setupKeyboardShortcuts() {
-  document.addEventListener('keydown', function(e) {
-    if (e.key === '?' && !e.ctrlKey && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'INPUT') {
-      const m = document.getElementById('shortcuts-modal');
-      m.classList.toggle('open');
-      return;
-    }
-    
-    if (e.key === 'Escape') {
-      closeSettings();
-      closeShortcuts();
-      closeBreaking();
-      nav('home');
-      return;
-    }
-    
-    if (e.ctrlKey && e.key === 'Enter') {
-      e.preventDefault();
-      const activePanel = document.querySelector('.panel.active');
-      if (activePanel) {
-        const btn = activePanel.querySelector('.btn-gold[id^="btn-"]');
-        if (btn) btn.click();
-      }
-      return;
-    }
-    
-    if (e.ctrlKey && e.key === 's') {
-      e.preventDefault();
-      const activeOut = document.querySelector('.panel.active .out-box[style*="block"]');
-      if (activeOut) {
-        arcOut(activeOut.id, 'حفظ سريع');
-      }
-      return;
-    }
-    
-    if (e.ctrlKey && e.key >= '1' && e.key <= '9') {
-      e.preventDefault();
-      const panels = ['home','editor','article','flash','headlines','rss','tools','analytics','archive'];
-      const idx = parseInt(e.key) - 1;
-      if (panels[idx]) nav(panels[idx]);
-      return;
-    }
-    
-    if (e.ctrlKey && e.key === 'c' && !window.getSelection().toString()) {
-      const activeOut = document.querySelector('.panel.active .out-box[style*="block"]');
-      if (activeOut) {
-        copyOut(activeOut.id);
-      }
-    }
-  });
-}
-
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   tickClock(); setInterval(tickClock, 1000);
@@ -2158,12 +1416,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateBanner();
   renderArchive();
   renderAgenda();
-  renderChart();
   updateKeyStt();
-  updateAnalytics();
-  setupQualityMeters();
-  setupDragDrop();
-  setupKeyboardShortcuts();
 
   // NAV
   document.querySelectorAll('[data-panel]').forEach(btn => {
@@ -2178,27 +1431,16 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-hist')?.addEventListener('click', runHist);
   document.getElementById('btn-sports')?.addEventListener('click', runSports);
   document.getElementById('btn-profile')?.addEventListener('click', runProfile);
-  document.getElementById('btn-verify')?.addEventListener('click', runVerify);
   document.getElementById('btn-add-ag')?.addEventListener('click', addAgenda);
   document.getElementById('btn-rss')?.addEventListener('click', fetchRSS);
 
   // Open settings automatically if no key
   if (!S.key) setTimeout(openSettings, 800);
-  
-  // Add close buttons to cards
-  document.querySelectorAll('.panel > .card').forEach(function(card) {
-    if (card.querySelector('.panel-close-btn')) return;
-    const btn = document.createElement('button');
-    btn.className = 'panel-close-btn';
-    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> إغلاق';
-    btn.onclick = function() { nav('home'); };
-    card.appendChild(btn);
-  });
 });
 </script>
 
 <script>
-// ─ـ تطبيق الوضع عند التحميل ──────────────────────────────────────
+// ── تطبيق الوضع عند التحميل ──────────────────────────────────────
 (function() {
   if (localStorage.getItem('db12_theme') === 'day') {
     document.body.classList.add('day-mode');
@@ -2209,7 +1451,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })();
 
-// ─ـ تبديل الوضع ──────────────────────────────────────────────────
+// ── تبديل الوضع ──────────────────────────────────────────────────
 function toggleTheme() {
   const isDay = document.body.classList.toggle('day-mode');
   localStorage.setItem('db12_theme', isDay ? 'day' : 'night');
@@ -2217,7 +1459,7 @@ function toggleTheme() {
   if (btn) btn.textContent = isDay ? '☀️' : '🌙';
 }
 
-// ─ـ حفظ تلقائي كل 30 ثانية ───────────────────────────────────────
+// ── حفظ تلقائي كل 30 ثانية ───────────────────────────────────────
 const _AS_FIELDS = ['editor-input','article-input','flash-input','headlines-input','profile-name','team-a','team-b','hist-day','hist-month'];
 
 function autoSaveNow() {
@@ -2233,8 +1475,24 @@ function autoSaveNow() {
   if (ind) { ind.classList.add('show'); setTimeout(() => ind.classList.remove('show'), 2500); }
 }
 
-// ─ـ استرجاع ──────────────────────────────────────────────────────
+// ── إضافة أزرار إغلاق + ربط RSS + استرجاع ────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
+
+  // ربط btn-rss
+  const rssBtn = document.getElementById('btn-rss');
+  if (rssBtn) rssBtn.onclick = fetchRSS;
+
+  // أزرار إغلاق في كل card
+  document.querySelectorAll('.panel > .card').forEach(function(card) {
+    if (card.querySelector('.panel-close-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'panel-close-btn';
+    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> إغلاق';
+    btn.onclick = function() { nav('home'); };
+    card.appendChild(btn);
+  });
+
+  // استرجاع ذكي
   const saved = localStorage.getItem('db12_as');
   if (saved) {
     try {
@@ -2249,9 +1507,40 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     } catch(e) {}
   }
-  
+
   // حفظ تلقائي كل 30 ثانية
   setInterval(autoSaveNow, 30000);
+
+  // Clipboard fallback
+  window.copyOut = function(id) {
+    const t = (document.getElementById(id)?.innerText || '').trim();
+    if (!t) return toast('لا يوجد نص', 'w');
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(t).then(() => toast('تم النسخ ✓', 's')).catch(() => fbCopy(t));
+    } else { fbCopy(t); }
+  };
+  function fbCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); toast('تم النسخ ✓', 's'); } catch { toast('فشل النسخ', 'e'); }
+    document.body.removeChild(ta);
+  }
+
+  // تأكيد الحذف
+  window.delArc = function(id) {
+    if (!confirm('هل تريد حذف هذا العنصر نهائياً؟')) return;
+    S.archive = S.archive.filter(x => x.id !== id);
+    localStorage.setItem('db12_arc', JSON.stringify(S.archive));
+    renderArchive(); updateStats();
+  };
+  window.delAg = function(id) {
+    if (!confirm('هل تريد حذف هذا الموعد نهائياً؟')) return;
+    S.agenda = S.agenda.filter(x => x.id !== id);
+    localStorage.setItem('db12_ag', JSON.stringify(S.agenda));
+    renderAgenda(); updateStats();
+  };
+
 });
 </script>
 
