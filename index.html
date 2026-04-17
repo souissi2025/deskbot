@@ -659,6 +659,25 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 }
 .btn-wa-audio:hover{opacity:.85;}
 
+
+/* ── RADAR ── */
+@keyframes radarPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(239,68,68,.4); }
+  70%  { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+  100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+#btn-radar:not(:disabled) { animation: radarPulse 2s infinite; }
+#radar-timer {
+  background:rgba(239,68,68,.07);
+  border:1px solid rgba(239,68,68,.2);
+  border-radius:8px;
+  padding:6px 12px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  justify-content:center;
+}
+
 </style>
 </head>
 <body>
@@ -706,6 +725,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <button class="nav-btn" data-panel="rss"><i class="fa-solid fa-globe"></i> آخر الأخبار</button>
     <button class="nav-btn" data-panel="tools"><i class="fa-solid fa-calendar-day"></i> تاريخ / رياضة</button>
     <button class="nav-btn" data-panel="profile"><i class="fa-solid fa-user-tie"></i> ملف الشخصية</button>
+    <button class="nav-btn" data-panel="radar"><i class="fa-solid fa-satellite-dish"></i> رادار إخباري</button>
     <div class="sb-div"></div>
     <div class="sb-sec">الإدارة</div>
     <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
@@ -761,6 +781,10 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <div class="tool-btn" onclick="nav('profile')">
             <div class="tool-icon ic-green"><i class="fa-solid fa-user-tie"></i></div>
             <div><div class="tool-name">ملف الشخصية</div><div class="tool-desc">ملف صحفي</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('radar')">
+            <div class="tool-icon" style="background:rgba(239,68,68,.15);color:#f87171"><i class="fa-solid fa-satellite-dish"></i></div>
+            <div><div class="tool-name">رادار إخباري</div><div class="tool-desc">مسح حي كل ساعتين</div></div>
           </div>
         </div>
       </div>
@@ -1049,6 +1073,51 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div id="acts-profile" class="act-row" style="display:none">
           <button class="btn btn-ghost" onclick="copyOut('out-profile')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-profile','ملف شخصية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══ RADAR ══ -->
+    <section id="panel-radar" class="panel">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-satellite-dish" style="color:#f87171"></i> رادار إخباري</div>
+        <div class="card-sub">مسح حي للمواقع والإذاعات التونسية — أحدث المواضيع والزوايا الصحفية — يتجدد كل ساعتين</div>
+        <div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);line-height:1.7;display:flex;align-items:center;gap:8px">
+          <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i>
+          <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
+            <option value="all">🔴 كل الأخبار العاجلة</option>
+            <option value="politics">🏛️ سياسة وحكومة</option>
+            <option value="economy">💰 اقتصاد وأعمال</option>
+            <option value="security">🛡️ أمن وقضاء</option>
+            <option value="social">👥 مجتمع وبيئة</option>
+            <option value="sports">⚽ رياضة</option>
+            <option value="culture">🎭 ثقافة وفنون</option>
+            <option value="angles">💡 زوايا صحفية مبتكرة</option>
+          </select>
+          <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()">
+            <i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار
+          </button>
+          <button class="btn btn-ghost" onclick="clearTool('radar')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="radar-timer" style="display:none;font-size:10px;color:var(--t3);margin-bottom:8px;text-align:center">
+          <i class="fa-solid fa-clock"></i> <span id="radar-timer-txt">التحديث القادم خلال: ساعتان</span>
+        </div>
+        <div id="stt-radar" class="stt"></div>
+        <div id="out-radar" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-radar" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-radar')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-radar')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-radar','رادار')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
       </div>
     </section>
@@ -2144,6 +2213,121 @@ document.addEventListener('DOMContentLoaded', () => {
       window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
     }
   };
+
+
+// ══════════════════════════════════════════════════
+//  RADAR إخباري — PROMPTS + FUNCTIONS
+// ══════════════════════════════════════════════════
+const RADAR_PROMPTS = {
+  all: `أنت رادار إخباري متخصص في الإعلام التونسي. مهمتك مسح المواقع والإذاعات التونسية الآن عبر Google Search واستخراج أحدث الأخبار العاجلة.
+
+🔴 تعليمات المسح:
+- ابحث الآن في: موزاييك أف أم، ديوان أف أم، الشروق، التونسية، وات، بوابة تونس، الصحافة، كابيتال أف أم، إكسبريس أف أم، جوهرة أف أم، الحوار التونسي، نسمة، هاني بريس، تونس نيوز.
+- استخرج الأحداث التي وقعت خلال الساعات الأخيرة فقط
+- رتّب من الأكثر أهمية إلى الأقل
+
+📋 شكل المخرجات:
+
+## 🔴 أبرز 10 أخبار عاجلة الآن
+
+لكل خبر:
+**[رقم]. [عنوان الخبر]**
+- 📍 المصدر: [اسم الوسيلة الإعلامية]
+- 🕐 التوقيت: [الوقت أو "منذ X ساعة"]
+- 📝 الملخص: [جملتان موجزتان]
+- 🔗 الرابط: [إذا توفر]
+
+---
+
+## 💡 5 زوايا صحفية مبتكرة مقترحة
+لكل زاوية: [العنوان المقترح] + [السبب الذي يجعلها مثيرة للاهتمام]
+
+---
+
+## 📊 خلاصة المشهد الإخباري
+جملتان تُلخصان أبرز التيارات المهيمنة على المشهد الإخباري التونسي الآن.`,
+
+  politics: `أنت رادار إخباري. ابحث الآن عبر Google Search في المواقع التونسية عن: "تونس سياسة حكومة رئاسة 2026" و"قيس سعيد تصريح اليوم" و"حكومة تونس قرار اليوم".
+استخرج أحدث 8 أخبار سياسية وحكومية خلال الساعات الأخيرة بنفس التنسيق (مصدر + وقت + ملخص) + 3 زوايا صحفية سياسية مبتكرة.`,
+
+  economy: `أنت رادار إخباري. ابحث الآن عبر Google Search عن: "تونس اقتصاد دينار أسعار 2026" و"بنك مركزي تونس" و"استثمار تونس اليوم".
+استخرج أحدث 8 أخبار اقتصادية بنفس التنسيق + 3 زوايا اقتصادية مبتكرة.`,
+
+  security: `أنت رادار إخباري. ابحث الآن عبر Google Search عن: "أمن تونس اليوم" و"وزارة الداخلية تونس" و"قضاء تونس حكم اليوم".
+استخرج أحدث 8 أخبار أمنية وقضائية بنفس التنسيق + 3 زوايا مبتكرة.`,
+
+  social: `أنت رادار إخباري. ابحث الآن عبر Google Search عن: "مجتمع تونس اليوم" و"بيئة صحة تونس 2026" و"تونسيون اليوم".
+استخرج أحدث 8 أخبار اجتماعية وبيئية بنفس التنسيق + 3 زوايا مبتكرة.`,
+
+  sports: `أنت رادار إخباري. ابحث الآن عبر Google Search عن: "رياضة تونس اليوم" و"كرة قدم تونسية نتائج" و"المنتخب التونسي".
+استخرج أحدث 8 أخبار رياضية بنفس التنسيق + 3 زوايا رياضية مبتكرة.`,
+
+  culture: `أنت رادار إخباري. ابحث الآن عبر Google Search عن: "ثقافة فنون تونس اليوم" و"مهرجان تونسي 2026" و"فنان تونسي".
+استخرج أحدث 8 أخبار ثقافية وفنية بنفس التنسيق + 3 زوايا ثقافية مبتكرة.`,
+
+  angles: `أنت محرر تحقيقي خبير في الصحافة التونسية. ابحث الآن عبر Google Search في المواقع التونسية عن أبرز الأحداث الجارية.
+
+## 💡 10 زوايا صحفية مبتكرة وغير مألوفة
+
+لكل زاوية:
+**[رقم]. [عنوان الزاوية المقترح]**
+- 🎯 النوع: [تحقيق / ريبورتاج / استطلاع رأي / تقرير مقارن / مقابلة مع...]
+- 💬 الفكرة: [ما الذي يجعل هذه الزاوية مثيرة ومختلفة؟]
+- 📰 الحدث المحفّز: [ما الخبر الحالي الذي أوحى بهذه الزاوية؟ + مصدره]
+- 🔧 المقترب التحريري: [كيف تتناولها بشكل يخدم المستمع؟]`
+};
+
+let radarIntervalId = null;
+let radarNextUpdate = null;
+
+function startRadarTimer() {
+  const timerWrap = document.getElementById('radar-timer');
+  const timerTxt  = document.getElementById('radar-timer-txt');
+  if (!timerWrap || !timerTxt) return;
+  timerWrap.style.display = 'flex';
+  radarNextUpdate = Date.now() + 2 * 60 * 60 * 1000;
+  if (radarIntervalId) clearInterval(radarIntervalId);
+  radarIntervalId = setInterval(() => {
+    const remaining = radarNextUpdate - Date.now();
+    if (remaining <= 0) {
+      timerTxt.textContent = 'يجري التحديث التلقائي الآن...';
+      clearInterval(radarIntervalId);
+      runRadar(true);
+      return;
+    }
+    const h = Math.floor(remaining / 3600000);
+    const m = Math.floor((remaining % 3600000) / 60000);
+    const s = Math.floor((remaining % 60000) / 1000);
+    timerTxt.textContent = 'التحديث القادم خلال: ' + h + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }, 1000);
+}
+
+async function runRadar(isAuto) {
+  isAuto = isAuto || false;
+  if (!S.key) { openSettings(); return; }
+  const cat   = document.getElementById('radar-category')?.value || 'all';
+  const model = document.getElementById('radar-model')?.value    || 'gemini-2.5-flash';
+  const btn   = document.getElementById('btn-radar');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المسح...'; }
+  setStt('radar', isAuto ? '⏱️ تحديث تلقائي جارٍ...' : '📡 جارٍ مسح المواقع الإخبارية التونسية عبر Google Search...', 'loading');
+  hideOut('radar');
+  const now = new Date().toLocaleString('ar-TN', {weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'});
+  const prompt = RADAR_PROMPTS[cat] + '\n\n> ⏰ تاريخ ووقت المسح: ' + now + ' — استخرج فقط الأخبار التي نُشرت خلال الساعات الأخيرة. رتّب من الأحدث والأهم.';
+  try {
+    const res = await callGeminiWithSearch(prompt, model);
+    showOut('radar', renderMD(res));
+    setStt('radar', '✅ اكتمل المسح الإخباري', 'ok');
+    setTimeout(() => hideStt('radar'), 3000);
+    document.getElementById('acts-radar').style.display = 'flex';
+    updateStats();
+    startRadarTimer();
+  } catch(e) {
+    setStt('radar', e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
+}
 
 </script>
 
