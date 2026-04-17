@@ -587,6 +587,48 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 }
 .btn-clear-editor{background:rgba(239,68,68,.16);border:1px solid rgba(239,68,68,.42);color:#fca5a5}.btn-clear-editor:hover{background:rgba(239,68,68,.28);border-color:#ef4444;color:#fff}#transcribe-wrap .out-box{white-space:pre-wrap;word-break:break-word}
 #transcribe-wrap .out-box{white-space:pre-wrap;word-break:break-word}
+
+/* ── RSS TABS ── */
+.rss-tab{
+  background:rgba(255,255,255,.04);border:1px solid var(--ln1);
+  color:var(--t3);border-radius:16px;padding:5px 12px;
+  font-size:10px;font-weight:700;font-family:'Cairo',sans-serif;
+  cursor:pointer;transition:.15s;white-space:nowrap;
+}
+.rss-tab.active,.rss-tab:hover{
+  background:rgba(232,168,32,.15);border-color:var(--g3);color:var(--g4);
+}
+.news-time-badge{
+  font-size:8px;color:var(--t3);white-space:nowrap;
+  background:rgba(255,255,255,.05);border-radius:8px;padding:1px 5px;
+}
+.news-cat-badge{
+  font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;
+  background:rgba(167,139,250,.12);color:var(--purple);white-space:nowrap;
+}
+.news-send-btn{
+  background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);
+  color:var(--blue);border-radius:6px;padding:4px 7px;
+  font-size:10px;font-family:'Cairo',sans-serif;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;transition:.15s;line-height:1;
+}
+.news-send-btn:hover{background:rgba(96,165,250,.22);border-color:var(--blue)}
+.news-open-btn{
+  background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);
+  color:var(--green);border-radius:6px;padding:4px 7px;
+  font-size:10px;font-family:'Cairo',sans-serif;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;transition:.15s;line-height:1;
+}
+.news-open-btn:hover{background:rgba(34,197,94,.18)}
+.rss-header-row{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;
+}
+.rss-count-badge{
+  background:rgba(232,168,32,.12);border:1px solid var(--ln2);
+  color:var(--g4);border-radius:10px;padding:2px 9px;
+  font-size:9px;font-weight:700;white-space:nowrap;
+}
+#rss-last-update{font-size:9px;color:var(--t3);margin-right:auto}
 </style>
 </head>
 <body>
@@ -865,12 +907,29 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <!-- ══ RSS ══ -->
     <section id="panel-rss" class="panel">
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-globe"></i> آخر الأخبار</div>
-        <button class="btn btn-gold btn-full" id="btn-rss" onclick="fetchRSS()">
-          <i class="fa-solid fa-rotate-right"></i> تحديث الأخبار
-        </button>
-        <div id="stt-rss" class="stt" style="margin-top:8px"></div>
-        <div id="news-list" style="margin-top:10px"></div>
+        <div class="card-title"><i class="fa-solid fa-satellite-dish"></i> رصد الأخبار الوطنية</div>
+        <div class="card-sub">مؤسسات إعلامية تونسية — أخبار حية مُرتَّبة من الأحدث</div>
+
+        <!-- شريط الإجراءات -->
+        <div class="rss-header-row">
+          <button class="btn btn-gold" id="btn-rss" onclick="fetchRSS()" style="flex:1;min-width:0">
+            <i class="fa-solid fa-rotate-right"></i> تحديث الأخبار
+          </button>
+          <span id="rss-count-badge" class="rss-count-badge" style="display:none">0 خبر</span>
+          <span id="rss-last-update"></span>
+        </div>
+
+        <!-- فلاتر التصنيف -->
+        <div id="rss-tabs" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="rss-tab active" onclick="filterNews(this,'كل')">🗞 الكل</button>
+          <button class="rss-tab" onclick="filterNews(this,'عام')">📰 عام</button>
+          <button class="rss-tab" onclick="filterNews(this,'اقتصاد')">💰 اقتصاد</button>
+          <button class="rss-tab" onclick="filterNews(this,'سياسة')">🏛 سياسة</button>
+          <button class="rss-tab" onclick="filterNews(this,'رياضة')">⚽ رياضة</button>
+        </div>
+
+        <div id="stt-rss" class="stt"></div>
+        <div id="news-list" style="margin-top:6px"></div>
       </div>
     </section>
 
@@ -1552,44 +1611,160 @@ function delAg(id) {
 }
 
 // ── RSS ──
+window._allNews      = [];
+window._displayedNews = [];
+
+const TN_FEEDS = [
+  // ── إذاعات ──
+  { u:'https://www.mosaiquefm.net/ar/feed',                  s:'موزاييك FM',   cat:'عام',    intl:false },
+  { u:'https://www.shemsfm.net/ar/feed',                     s:'شمس FM',       cat:'عام',    intl:false },
+  { u:'https://www.ifm.tn/feed/',                            s:'IFM',          cat:'عام',    intl:false },
+  // ── صحف وبوابات ──
+  { u:'https://www.alchourouk.com/feed/',                    s:'الشروق',       cat:'عام',    intl:false },
+  { u:'https://www.assabah.com.tn/feed/',                    s:'الصباح',       cat:'عام',    intl:false },
+  { u:'https://lapresse.tn/feed/',                           s:'La Presse',    cat:'عام',    intl:false },
+  { u:'https://www.webdo.tn/feed/',                          s:'ويبدو',        cat:'عام',    intl:false },
+  { u:'https://www.babnet.net/rss.php',                      s:'بابنت',        cat:'عام',    intl:false },
+  // ── اقتصاد ──
+  { u:'https://www.businessnews.com.tn/rss.xml',             s:'بيزنس نيوز',   cat:'اقتصاد', intl:false },
+  { u:'https://leaders.com.tn/feed/',                        s:'ليدرز',        cat:'اقتصاد', intl:false },
+  { u:'https://directinfo.webmanagercenter.com/feed/',       s:'دايركت إنفو',  cat:'اقتصاد', intl:false },
+  // ── سياسة ──
+  { u:'https://kapitalis.com/tunisie/feed/',                 s:'كابيتاليس',    cat:'سياسة',  intl:false },
+  // ── رياضة ──
+  { u:'https://www.tunisiesport.com/feed/',                  s:'تونيزي سبور',  cat:'رياضة',  intl:false },
+  { u:'https://www.espn.com/espn/rss/soccer/news',           s:'ESPN كرة القدم', cat:'رياضة', intl:true  },
+];
+
 async function fetchRSS() {
   const btn = document.getElementById('btn-rss');
-  if (btn) btn.disabled = true;
-  setStt('rss', 'جاري جلب الأخبار...', 'loading');
-  const FEEDS = [
-    { u:'https://www.mosaiquefm.net/ar/feed', s:'موزاييك', intl:false },
-    { u:'https://www.aljazeera.net/xml/rss/all.xml', s:'الجزيرة', intl:true }
-  ];
-  async function ff(f) {
-    try {
-      const r = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(f.u), { signal: AbortSignal.timeout(7000) });
-      if (!r.ok) return [];
-      const d = await r.json();
-      if (!d?.contents) return [];
-      const doc = new DOMParser().parseFromString(d.contents, 'text/xml');
-      return Array.from(doc.querySelectorAll('item')).slice(0, 5).map(el => ({
-        title: (el.querySelector('title') || {}).textContent || '',
-        link: (el.querySelector('link') || {}).textContent || '',
-        src: f.s, intl: f.intl
-      })).filter(n => n.title.trim());
-    } catch { return []; }
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري الجلب...'; }
+  setStt('rss', `جاري جلب الأخبار من ${TN_FEEDS.length} مصدر...`, 'loading');
+
+  async function fetchFeed(f) {
+    const proxies = [
+      'https://api.allorigins.win/get?url=',
+      'https://corsproxy.io/?'
+    ];
+    for (const proxy of proxies) {
+      try {
+        const r = await fetch(proxy + encodeURIComponent(f.u), { signal: AbortSignal.timeout(9000) });
+        if (!r.ok) continue;
+        const raw = proxy.includes('allorigins')
+          ? (await r.json()).contents
+          : await r.text();
+        if (!raw || raw.length < 50) continue;
+        const doc = new DOMParser().parseFromString(raw, 'text/xml');
+        const items = Array.from(doc.querySelectorAll('item')).slice(0, 7);
+        return items.map(el => {
+          const title   = (el.querySelector('title')   || {}).textContent?.replace(/<!\[CDATA\[|\]\]>/g,'').trim() || '';
+          const link    = (el.querySelector('link')    || {}).textContent?.trim() || '';
+          const pubStr  = (el.querySelector('pubDate') || {}).textContent || '';
+          const pubDate = pubStr ? new Date(pubStr) : null;
+          return { title, link, src: f.s, cat: f.cat, intl: f.intl, pubDate };
+        }).filter(n => n.title.length > 5);
+      } catch { continue; }
+    }
+    return [];
   }
+
+  const results = await Promise.allSettled(TN_FEEDS.map(f => fetchFeed(f)));
   let news = [];
-  await Promise.allSettled(FEEDS.map(f => ff(f).then(a => a.forEach(n => news.push(n)))));
-  const c = document.getElementById('news-list');
+  results.forEach(r => { if (r.status === 'fulfilled') r.value.forEach(n => news.push(n)); });
+
+  // ترتيب من الأحدث للأقدم
+  news.sort((a, b) => {
+    if (!a.pubDate && !b.pubDate) return 0;
+    if (!a.pubDate) return 1;
+    if (!b.pubDate) return -1;
+    return b.pubDate - a.pubDate;
+  });
+
+  window._allNews = news;
+
   if (!news.length) {
-    c.innerHTML = '<p style="text-align:center;color:var(--t3);padding:20px">تعذّر جلب الأخبار</p>';
+    document.getElementById('news-list').innerHTML =
+      '<p style="text-align:center;color:var(--t3);padding:24px;font-size:11px"><i class="fa-solid fa-triangle-exclamation"></i> تعذّر جلب الأخبار — تأكد من الاتصال بالإنترنت</p>';
     setStt('rss', 'فشل جلب الأخبار', 'err');
   } else {
-    c.innerHTML = news.slice(0, 15).map(n => `
-      <div class="news-item" onclick="window.open('${n.link}','_blank')">
-        <span class="news-src ${n.intl ? 'src-wld' : 'src-tn'}">${n.src}</span>
-        <span class="news-title">${n.title}</span>
-      </div>`).join('');
-    setStt('rss', '✅ ' + news.length + ' خبر', 'ok');
-    setTimeout(() => hideStt('rss'), 2500);
+    renderNews(news);
+    const srcCount = new Set(news.map(n => n.src)).size;
+    setStt('rss', `✅ ${news.length} خبر من ${srcCount} مصدر`, 'ok');
+    setTimeout(() => hideStt('rss'), 3500);
+    // شارة العدد
+    const badge = document.getElementById('rss-count-badge');
+    if (badge) { badge.textContent = news.length + ' خبر'; badge.style.display = 'inline'; }
+    // وقت آخر تحديث
+    const rt = document.getElementById('rss-last-update');
+    if (rt) rt.textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-TN', { hour:'2-digit', minute:'2-digit' });
+    // إعادة تفعيل الفلتر النشط
+    const activeTab = document.querySelector('.rss-tab.active');
+    if (activeTab) filterNews(activeTab, activeTab.textContent.replace(/^[^\s]+\s/,'').trim());
   }
-  if (btn) btn.disabled = false;
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> تحديث الأخبار'; }
+}
+
+function formatTimeAgo(date) {
+  if (!date) return '';
+  const diff = Math.floor((Date.now() - date) / 60000);
+  if (diff < 1)   return 'الآن';
+  if (diff < 60)  return `منذ ${diff} د`;
+  const h = Math.floor(diff / 60);
+  if (h < 24)     return `منذ ${h} س`;
+  return `منذ ${Math.floor(h / 24)} ي`;
+}
+
+function renderNews(list) {
+  const c = document.getElementById('news-list');
+  if (!c) return;
+  const shown = list.slice(0, 35);
+  window._displayedNews = shown;
+  if (!shown.length) {
+    c.innerHTML = '<p style="text-align:center;color:var(--t3);padding:16px;font-size:11px">لا توجد أخبار في هذا التصنيف</p>';
+    return;
+  }
+  // تحديد ألوان التصنيف
+  const catColor = { 'اقتصاد':'rgba(250,204,21,.12);color:#fde047', 'سياسة':'rgba(96,165,250,.12);color:var(--blue)', 'رياضة':'rgba(34,197,94,.12);color:var(--green)' };
+  c.innerHTML = shown.map((n, i) => {
+    const ago   = formatTimeAgo(n.pubDate);
+    const cStyle= catColor[n.cat] ? `background:${catColor[n.cat].split(';')[0]};${catColor[n.cat].split(';')[1]}` : '';
+    return `
+    <div class="news-item" style="flex-direction:column;gap:0">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;flex-wrap:wrap">
+        <span class="news-src src-tn">${n.src}</span>
+        ${n.cat !== 'عام' ? `<span class="news-cat-badge" style="${cStyle}">${n.cat}</span>` : ''}
+        ${ago ? `<span class="news-time-badge">${ago}</span>` : ''}
+        <div style="margin-right:auto;display:flex;gap:4px">
+          <button class="news-send-btn" onclick="sendToEditor(${i})" title="إرسال للمحرر">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button class="news-open-btn" onclick="window.open('${n.link.replace(/'/g,"\\'")}','_blank')" title="فتح الخبر">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </button>
+        </div>
+      </div>
+      <span class="news-title">${n.title}</span>
+    </div>`;
+  }).join('');
+}
+
+function filterNews(btn, cat) {
+  document.querySelectorAll('.rss-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const filtered = (cat === 'كل') ? window._allNews : window._allNews.filter(n => n.cat === cat);
+  renderNews(filtered);
+}
+
+function sendToEditor(idx) {
+  const n = window._displayedNews && window._displayedNews[idx];
+  if (!n) return;
+  const inp = document.getElementById('editor-input');
+  if (inp) {
+    inp.value = n.title;
+    nav('editor');
+    toast('✅ تم إرسال الخبر للمحرر', 's');
+    setTimeout(() => inp.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+  }
 }
 
 // ── SETTINGS ──
