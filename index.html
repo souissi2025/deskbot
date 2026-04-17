@@ -726,6 +726,9 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <button class="nav-btn" data-panel="tools"><i class="fa-solid fa-calendar-day"></i> تاريخ / رياضة</button>
     <button class="nav-btn" data-panel="profile"><i class="fa-solid fa-user-tie"></i> ملف الشخصية</button>
     <button class="nav-btn" data-panel="radar"><i class="fa-solid fa-satellite-dish"></i> رادار إخباري</button>
+    <button class="nav-btn" data-panel="hidden-angle"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> الزاوية الخفية</button>
+    <button class="nav-btn" data-panel="trend"><i class="fa-solid fa-fire-flame-curved"></i> الترند التونسي</button>
+    <button class="nav-btn" data-panel="compare"><i class="fa-solid fa-code-compare"></i> مقارن الأخبار</button>
     <div class="sb-div"></div>
     <div class="sb-sec">الإدارة</div>
     <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
@@ -785,6 +788,18 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <div class="tool-btn" onclick="nav('radar')">
             <div class="tool-icon" style="background:rgba(239,68,68,.15);color:#f87171"><i class="fa-solid fa-satellite-dish"></i></div>
             <div><div class="tool-name">رادار إخباري</div><div class="tool-desc">مسح حي كل ساعتين</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('hidden-angle')">
+            <div class="tool-icon" style="background:rgba(168,85,247,.15);color:#c084fc"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></div>
+            <div><div class="tool-name">الزاوية الخفية</div><div class="tool-desc">تحليل تحقيقي عميق</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('trend')">
+            <div class="tool-icon" style="background:rgba(249,115,22,.15);color:#fb923c"><i class="fa-solid fa-fire-flame-curved"></i></div>
+            <div><div class="tool-name">الترند التونسي</div><div class="tool-desc">Google Search حي</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('compare')">
+            <div class="tool-icon" style="background:rgba(20,184,166,.15);color:#2dd4bf"><i class="fa-solid fa-code-compare"></i></div>
+            <div><div class="tool-name">مقارن الأخبار</div><div class="tool-desc">عربي × دولي</div></div>
           </div>
         </div>
       </div>
@@ -1118,6 +1133,109 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-ghost" onclick="copyOut('out-radar')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-wa" onclick="waOut('out-radar')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-radar','رادار')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══ HIDDEN ANGLE — الزاوية الخفية ══ -->
+    <section id="panel-hidden-angle" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-magnifying-glass-arrow-right" style="color:#c084fc"></i> الزاوية الخفية
+        </div>
+        <div class="card-sub">يكشف ما وراء الخبر — من المستفيد؟ من المتضرر؟ ما الصامت عنه؟ — أداة تحقيقية لا مثيل لها</div>
+        <label>الخبر أو النص المراد تحليله</label>
+        <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()">
+            <i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية
+          </button>
+          <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-angle" class="stt"></div>
+        <div id="out-angle" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-angle" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-angle')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-angle')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-angle','زاوية خفية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ TREND — الترند التونسي ══ -->
+    <section id="panel-trend" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-fire-flame-curved" style="color:#fb923c"></i> الترند التونسي
+        </div>
+        <div class="card-sub">مسح حي عبر Google Search لأكثر المواضيع تداولاً الآن — مع تحليل إذاعي وتحويله لمادة صحفية</div>
+        <div style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px">
+          <i class="fa-brands fa-google" style="color:#fb923c"></i>
+          <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
+            <option value="all">📡 كل المنصات والمواقع التونسية</option>
+            <option value="facebook">📘 فيسبوك التونسي</option>
+            <option value="youtube">▶️ يوتيوب التونسي</option>
+            <option value="news">📰 المواقع الإخبارية</option>
+            <option value="radio">📻 الإذاعات التونسية</option>
+          </select>
+          <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()">
+            <i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن
+          </button>
+          <button class="btn btn-ghost" onclick="clearTool('trend')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-trend" class="stt"></div>
+        <div id="out-trend" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-trend" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-trend')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-trend')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-trend','ترند')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ COMPARE — مقارن الأخبار ══ -->
+    <section id="panel-compare" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-code-compare" style="color:#2dd4bf"></i> مقارن الأخبار العربية والدولية
+        </div>
+        <div class="card-sub">يأخذ خبراً تونسياً ويكشف كيف غطّته وسائل الإعلام العربية والدولية — الفجوات والتأطيرات المختلفة</div>
+        <div style="background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px">
+          <i class="fa-brands fa-google" style="color:#2dd4bf"></i>
+          <span><strong style="color:#2dd4bf">Google Search Grounding مُفعَّل</strong> — يبحث في وسائل الإعلام العربية والدولية الحية.</span>
+        </div>
+        <label>الخبر التونسي المراد مقارنته</label>
+        <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()">
+            <i class="fa-solid fa-code-compare"></i> تشغيل المقارنة
+          </button>
+          <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-compare" class="stt"></div>
+        <div id="out-compare" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-compare" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-compare')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-compare')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-compare','مقارنة')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
       </div>
     </section>
@@ -2324,6 +2442,197 @@ async function runRadar(isAuto) {
     startRadarTimer();
   } catch(e) {
     setStt('radar', e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
+}
+
+
+// ══════════════════════════════════════════════════
+//  الزاوية الخفية — HIDDEN ANGLE
+// ══════════════════════════════════════════════════
+const PROMPT_HIDDEN_ANGLE = `أنت محقق صحفي خبير متخصص في تحليل الخطاب الإعلامي وكشف الحقائق غير المرئية.
+مهمتك تحليل الخبر التالي بعمق استثنائي وكشف كل ما هو غير مرئي على السطح.
+
+## 🔍 التحليل التحقيقي المطلوب:
+
+### 1. 👤 من المستفيد؟
+حدد بدقة الجهات والأشخاص والمؤسسات التي تستفيد من هذا الخبر أو من توقيت نشره — مادياً، سياسياً، معنوياً.
+
+### 2. 📉 من المتضرر؟
+من يتضرر من هذا الخبر أو من توقيته؟ من الطرف الصامت غائب عن الخبر رغم أنه معني مباشرة؟
+
+### 3. 🔇 ما الصامت عنه؟
+ما الذي لم يُقَل؟ ما المعلومات المحذوفة؟ ما الأسئلة التي يثيرها الخبر دون أن يجيب عنها؟ ما السياق الذي غاب عمداً أو سهواً؟
+
+### 4. ⏰ توقيت النشر — لماذا الآن؟
+هل لتوقيت هذا الخبر دلالة؟ ما الذي يحدث في الفضاء السياسي/الاقتصادي/الاجتماعي الآن ويجعل نشره في هذا الوقت بالذات مثيراً للتساؤل؟
+
+### 5. 🎭 الإطار التأويلي (Framing)
+كيف صِيغ الخبر؟ ما الكلمات المحمّلة؟ ما الفاعل؟ ما المفعول؟ هل هناك تحيّز في الصياغة؟ قارن بين ما قيل وما كان يمكن قوله.
+
+### 6. 🔗 الروابط الخفية
+هل يرتبط هذا الخبر بملفات أخرى لم تُذكر؟ ما القضايا العالقة التي تتصل به؟ من الفاعلون خلف الكواليس؟
+
+### 7. 💡 الزاوية الصحفية الاستثنائية
+بناءً على هذا التحليل، اقترح **زاوية تحقيقية واحدة** غير مسبوقة يمكن أن تبنيها من هذا الخبر — مع الخطوات العملية الأولى للتحقيق.
+
+### 8. ❓ الأسئلة الحارقة (5 أسئلة)
+الأسئلة التي يجب أن يطرحها كل صحفي على نفسه قبل نشر أو تناول هذا الخبر.
+
+---
+⚠️ كن حاداً، نقدياً، موضوعياً. لا مجاملة. هذا تحليل صحفي احترافي وليس قراءة عادية.
+
+الخبر المُدخل:`;
+
+// ══════════════════════════════════════════════════
+//  الترند التونسي — TUNISIAN TREND
+// ══════════════════════════════════════════════════
+const PROMPT_TREND = {
+  all: `أنت محلل إعلامي رقمي متخصص في الفضاء التونسي. ابحث الآن عبر Google Search عن أكثر المواضيع تداولاً في تونس.
+
+🔍 ابحث في: فيسبوك تونسي، يوتيوب تونسي، المواقع الإخبارية، تريندينغ تونس، الإذاعات التونسية.
+
+## 🔥 أبرز 10 مواضيع تتصدر الترند التونسي الآن
+
+لكل موضوع:
+**[رقم]. [عنوان الموضوع المتداول]**
+- 📊 مستوى التداول: [منخفض / متوسط / عالٍ / متفجر]
+- 🕐 منذ: [متى بدأ التداول؟]
+- 💬 لماذا يتداول: [الأسباب الحقيقية وراء الانتشار]
+- 📍 المصادر: [أين يُتداول بشكل أكبر؟]
+- 📻 **الزاوية الإذاعية المقترحة:** [كيف تحوّله لمادة صحفية لديوان FM؟ ما الزاوية؟ من نستضيف؟]
+- ⚠️ **تحذير تحريري:** [هل فيه معلومات مضللة؟ هل يحتاج تدقيقاً قبل التناول؟]
+
+---
+
+## 🎯 توصية تحريرية
+الموضوع الأولى بالتناول الإذاعي الفوري مع تبرير قصير.
+
+## 🗓️ المواضيع القادمة
+مواضيع ستشتعل خلال الـ 24 ساعة القادمة بناءً على المؤشرات الحالية.`,
+
+  facebook: `أنت محلل إعلامي رقمي. ابحث الآن عبر Google Search عن: "تونسيون فيسبوك ترند اليوم" و"تونس فيرال" و"منشور فيسبوك تونسي يتداول".
+أبرز 8 مواضيع تتصدر فيسبوك التونسي الآن مع الزاوية الإذاعية لكل منها.`,
+
+  youtube: `أنت محلل إعلامي رقمي. ابحث الآن عبر Google Search عن: "يوتيوب تونس الأكثر مشاهدة اليوم" و"فيديو تونسي فيرال".
+أبرز 8 مقاطع تتصدر يوتيوب التونسي الآن مع الزاوية الإذاعية لكل منها.`,
+
+  news: `أنت محلل إعلامي رقمي. ابحث الآن عبر Google Search في: موزاييك، الشروق، التونسية، بوابة تونس، الصحافة.
+أكثر 8 أخبار قراءةً وتفاعلاً الآن في المواقع الإخبارية التونسية مع الزاوية الإذاعية.`,
+
+  radio: `أنت محلل إعلامي رقمي. ابحث الآن عبر Google Search عن: "ديوان أف أم اليوم" و"موزاييك برنامج اليوم" و"إذاعة تونسية حلقة".
+أبرز المواضيع التي تتناولها الإذاعات التونسية اليوم مع مقترح للتناول المختلف.`
+};
+
+// ══════════════════════════════════════════════════
+//  مقارن الأخبار — NEWS COMPARATOR
+// ══════════════════════════════════════════════════
+const PROMPT_COMPARE = `أنت محلل إعلامي مقارن متخصص في رصد التغطية الإعلامية المتعددة. مهمتك مقارنة التغطية الإعلامية لخبر تونسي عبر وسائل إعلام عربية ودولية مختلفة.
+
+ابحث الآن عبر Google Search عن هذا الخبر في المصادر التالية:
+- المصادر التونسية: وات، الشروق، التونسية، موزاييك
+- المصادر العربية: الجزيرة، العربية، بي بي سي عربي، فرانس 24 عربي، الأناضول
+- المصادر الدولية (بالعربية أو الفرنسية): AFP، Reuters، Le Monde، Le Figaro
+
+## 🗺️ خريطة التغطية المقارنة
+
+### 1. 📍 التغطية التونسية
+كيف تناولت وسائل الإعلام التونسية هذا الخبر؟ ما الإطار؟ ما الكلمات المستخدمة؟ من استُشهد به؟
+
+### 2. 🌍 التغطية العربية
+كيف تناولته الوسائل العربية الكبرى؟ هل هناك اختلاف في الإطار والأولويات؟
+
+### 3. 🌐 التغطية الدولية
+هل تناولت وسائل الإعلام الدولية هذا الخبر؟ كيف؟ ما الزاوية؟ ما ما أثار اهتمامها تحديداً؟
+
+### 4. 🔍 تحليل الفجوات
+| ما قالته وسائل الإعلام التونسية | ما أضافته الوسائل العربية | ما أبرزته الوسائل الدولية |
+|----------------------------------|--------------------------|--------------------------|
+| | | |
+
+### 5. ⚖️ التأطيرات المتباينة
+أبرز الاختلافات الجوهرية في كيفية تأطير الخبر — من يُقدَّم بطلاً؟ من يُقدَّم خصماً؟ ما الرواية المهيمنة في كل فضاء؟
+
+### 6. 🔇 ما غاب عن الجميع؟
+هل هناك جانب مهم في هذه القضية لم تتناوله أي وسيلة إعلامية؟
+
+### 7. 💡 الزاوية الصحفية المضافة
+ما الإضافة التي يمكن لديوان FM تقديمها انطلاقاً من هذه المقارنة — الزاوية التي لم يسبق إليها أحد؟
+
+---
+الخبر التونسي المُدخل:`;
+
+// ══════════════════════════════════════════════════
+//  RUNNER FUNCTIONS
+// ══════════════════════════════════════════════════
+async function runHiddenAngle() {
+  const inp = (document.getElementById('angle-input')?.value || '').trim();
+  if (!inp) return toast('أدخل نص الخبر للتحليل', 'w');
+  const model = document.getElementById('angle-model')?.value || 'gemini-2.5-flash';
+  const btn = document.getElementById('btn-angle');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكشف...'; }
+  setStt('angle', '🔍 جارٍ التحليل التحقيقي العميق...', 'loading');
+  hideOut('angle');
+  try {
+    const res = await callGemini(PROMPT_HIDDEN_ANGLE + '\n\n' + inp, model);
+    showOut('angle', renderMD(res));
+    setStt('angle', '✅ اكتمل التحليل', 'ok');
+    setTimeout(() => hideStt('angle'), 3000);
+    document.getElementById('acts-angle').style.display = 'flex';
+    updateStats();
+  } catch(e) {
+    setStt('angle', e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
+}
+
+async function runTrend() {
+  const platform = document.getElementById('trend-platform')?.value || 'all';
+  const model = document.getElementById('trend-model')?.value || 'gemini-2.5-flash';
+  const btn = document.getElementById('btn-trend');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الرصد...'; }
+  const now = new Date().toLocaleString('ar-TN', {weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'});
+  setStt('trend', '🔥 جارٍ رصد الترند التونسي عبر Google Search...', 'loading');
+  hideOut('trend');
+  const prompt = PROMPT_TREND[platform] + '\n\n> ⏰ وقت الرصد: ' + now + ' — ركّز على ما هو متداول الآن فعلاً.';
+  try {
+    const res = await callGeminiWithSearch(prompt, model);
+    showOut('trend', renderMD(res));
+    setStt('trend', '✅ اكتمل رصد الترند', 'ok');
+    setTimeout(() => hideStt('trend'), 3000);
+    document.getElementById('acts-trend').style.display = 'flex';
+    updateStats();
+  } catch(e) {
+    setStt('trend', e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
+}
+
+async function runCompare() {
+  const inp = (document.getElementById('compare-input')?.value || '').trim();
+  if (!inp) return toast('أدخل نص الخبر للمقارنة', 'w');
+  const model = document.getElementById('compare-model')?.value || 'gemini-2.5-flash';
+  const btn = document.getElementById('btn-compare');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المقارنة...'; }
+  setStt('compare', '🌍 جارٍ البحث في وسائل الإعلام العربية والدولية...', 'loading');
+  hideOut('compare');
+  const now = new Date().toLocaleString('ar-TN', {year:'numeric', month:'long', day:'numeric'});
+  const prompt = PROMPT_COMPARE + '\n\n' + inp + '\n\n> تاريخ البحث: ' + now;
+  try {
+    const res = await callGeminiWithSearch(prompt, model);
+    showOut('compare', renderMD(res));
+    setStt('compare', '✅ اكتملت المقارنة', 'ok');
+    setTimeout(() => hideStt('compare'), 3000);
+    document.getElementById('acts-compare').style.display = 'flex';
+    updateStats();
+  } catch(e) {
+    setStt('compare', e.message, 'err');
   } finally {
     if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
   }
