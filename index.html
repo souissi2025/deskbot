@@ -629,6 +629,36 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   font-size:9px;font-weight:700;white-space:nowrap;
 }
 #rss-last-update{font-size:9px;color:var(--t3);margin-right:auto}
+
+/* ── AUDIO PLAYER ── */
+.audio-player-wrap {
+  display:none;
+  background:rgba(96,165,250,.07);
+  border:1.5px solid rgba(96,165,250,.25);
+  border-radius:12px;
+  padding:12px 14px;
+  margin:8px 0 10px 0;
+  gap:10px;
+  flex-direction:column;
+}
+.audio-player-wrap.visible { display:flex; }
+.audio-player-wrap audio {
+  width:100%;border-radius:8px;outline:none;
+  accent-color:var(--g3);
+}
+.audio-player-label {
+  font-size:11px;color:var(--t2);
+  display:flex;align-items:center;gap:6px;
+}
+.btn-wa-audio {
+  background:linear-gradient(135deg,#128C7E,#25D366);
+  color:#fff;border:none;padding:9px 18px;
+  border-radius:10px;font-size:12px;font-family:'Cairo',sans-serif;
+  font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;
+  transition:opacity .2s;
+}
+.btn-wa-audio:hover{opacity:.85;}
+
 </style>
 </head>
 <body>
@@ -759,6 +789,20 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
             </button>
           </div>
         </div>
+        <!-- مشغّل الصوت — داسك الاخبار -->
+        <div class="audio-player-wrap" id="editor-audio-wrap">
+          <div class="audio-player-label">
+            <i class="fa-solid fa-headphones" style="color:#60a5fa"></i>
+            <span id="editor-audio-label">استمع للتسجيل المرفق</span>
+          </div>
+          <audio id="editor-audio-player" controls></audio>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button class="btn-wa-audio" onclick="waAudioFile('editor')">
+              <i class="fa-brands fa-whatsapp"></i> إرسال التسجيل بالواتساب
+            </button>
+            <span style="font-size:10px;color:var(--t3)">سيُفتح واتساب مع رابط التسجيل</span>
+          </div>
+        </div>
         <!-- زر إرفاق + input مخفي -->
         <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center">
           <input type="file" id="editor-file-inp" accept="audio/*,video/*,.mp3,.mp4,.wav,.ogg,.m4a,.webm,.aac"
@@ -788,6 +832,20 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div id="out-editor" class="out-box rendered" style="display:none"></div>
         <!-- فضاءا transcribe -->
         <div id="transcribe-wrap" style="display:none;flex-direction:column;gap:14px;margin-top:14px">
+          <!-- مشغّل الصوت — تفريغ وتحرير -->
+          <div class="audio-player-wrap" id="transcribe-audio-wrap">
+            <div class="audio-player-label">
+              <i class="fa-solid fa-headphones" style="color:#60a5fa"></i>
+              <span id="transcribe-audio-label">استمع للتسجيل المرفق</span>
+            </div>
+            <audio id="transcribe-audio-player" controls></audio>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <button class="btn-wa-audio" onclick="waAudioFile('transcribe')">
+                <i class="fa-brands fa-whatsapp"></i> إرسال التسجيل بالواتساب
+              </button>
+              <span style="font-size:10px;color:var(--t3)">سيُفتح واتساب مع رابط التسجيل</span>
+            </div>
+          </div>
           <div class="card" style="margin-bottom:0;padding:18px">
             <div class="card-title" style="font-size:14px;margin-bottom:10px">
               <i class="fa-solid fa-microphone-lines"></i> التفريغ الحرفي
@@ -1886,6 +1944,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!S.key) setTimeout(openSettings, 600);
 });
+
+  /* ── إرسال التسجيل بالواتساب ── */
+  window.waAudioFile = function(src) {
+    var f = window._editorAttachedFile;
+    if (!f || !f.file) { alert('لا يوجد ملف صوتي مرفق.'); return; }
+    // محاولة مشاركة الملف عبر Web Share API (يدعمها الموبايل)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [f.file] })) {
+      navigator.share({
+        title: 'تسجيل صوتي — DESK BOT',
+        text: f.name,
+        files: [f.file]
+      }).catch(function(e){ console.log('share cancelled', e); });
+    } else {
+      // فتح واتساب مع نص يحمل اسم الملف
+      var msg = '🎙️ تسجيل صوتي: ' + f.name + '\n📎 يرجى إرسال الملف يدوياً عبر واتساب';
+      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    }
+  };
+
 </script>
 
 
@@ -1915,7 +1992,24 @@ document.addEventListener("DOMContentLoaded", function() {
     if (aw) aw.style.display = "block";
     var ta = document.getElementById("editor-input");
     if (ta && !ta.value.trim()) ta.value = "[ملف مرفق: " + f.name + "] — أدخل النص المفرّغ من هذا الملف أو اترك الحقل ليُعالج.";
-    window._editorAttachedFile = { name: f.name, type: f.type };
+    window._editorAttachedFile = { name: f.name, type: f.type, file: f };
+
+    // تحميل المشغّل الصوتي
+    if (f.type.startsWith('audio') || f.type.startsWith('video')) {
+      var objUrl = URL.createObjectURL(f);
+      var ap1 = document.getElementById('editor-audio-player');
+      var aw1 = document.getElementById('editor-audio-wrap');
+      if (ap1) { ap1.src = objUrl; }
+      if (aw1) { aw1.classList.add('visible'); }
+      var lbl1 = document.getElementById('editor-audio-label');
+      if (lbl1) { lbl1.textContent = f.name; }
+      var ap2 = document.getElementById('transcribe-audio-player');
+      var aw2 = document.getElementById('transcribe-audio-wrap');
+      if (ap2) { ap2.src = objUrl; }
+      if (aw2) { aw2.classList.add('visible'); }
+      var lbl2 = document.getElementById('transcribe-audio-label');
+      if (lbl2) { lbl2.textContent = f.name; }
+    }
   };
   window.removeEditorFile = function() {
     window._editorAttachedFile = null;
@@ -1925,6 +2019,15 @@ document.addEventListener("DOMContentLoaded", function() {
     if (aw) aw.style.display = "none";
     if (nm) nm.textContent = "لا يوجد ملف مرفق";
     if (fi) fi.value = "";
+    // إخفاء المشغّل الصوتي
+    var aw1 = document.getElementById('editor-audio-wrap');
+    var ap1 = document.getElementById('editor-audio-player');
+    if (aw1) { aw1.classList.remove('visible'); }
+    if (ap1) { ap1.src = ''; }
+    var aw2 = document.getElementById('transcribe-audio-wrap');
+    var ap2 = document.getElementById('transcribe-audio-player');
+    if (aw2) { aw2.classList.remove('visible'); }
+    if (ap2) { ap2.src = ''; }
   };
 
   /* ── نسخ قسم محدد ── */
