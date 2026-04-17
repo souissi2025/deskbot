@@ -1029,9 +1029,21 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-user-tie"></i> ملف الشخصية الصحفي</div>
         <div class="card-sub">يُعدّ ملفاً تحقيقياً كاملاً: بطاقة رسمية، مسار مهني، اقتباسات موثّقة</div>
-        <label>اسم الشخصية</label>
-        <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي">
-        <button class="btn btn-gold btn-full" id="btn-profile"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
+        <label>اسم الشخصية أو المسؤول</label>
+        <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()">
+            <i class="fa-solid fa-magnifying-glass"></i> استخراج الملف
+          </button>
+          <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
+          <i class="fa-brands fa-google" style="color:#60a5fa"></i>
+          <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
+        </div>
         <div id="stt-profile" class="stt"></div>
         <div id="out-profile" class="out-box rendered" style="display:none"></div>
         <div id="acts-profile" class="act-row" style="display:none">
@@ -1188,76 +1200,116 @@ const PROMPTS = {
   today: SYS + `\n## مهمتك: "في مثل هذا اليوم" لوكالة وات`,
   sports: SYS + `\n## مهمتك: ملف المواجهات المباشرة\n| التاريخ | البطولة | النتيجة | الهداف |`,
   profile: `
-أنت DESK BOT، نظام غرفة الأخبار الرقمية. مهمتك إعداد ملف صحفي تحقيقي شامل ومُحيَّن بالكامل.
+أنت DESK BOT — نظام غرفة الأخبار الرقمية. مهمتك إعداد ملف صحفي تحقيقي موثّق بالكامل.
 
-⚡ تعليمات جوهرية قبل البدء:
-- تاريخ اليوم: أبريل 2026
-- ابحث في ذاكرتك عن أحدث المعطيات المتاحة حتى تاريخ قطع معرفتك
-- المعلومات المطلوبة يجب أن تكون من 2024 و2025 و2026 بشكل أساسي
-- إذا كانت معلومة قديمة جداً (قبل 2023) أشر إلى ذلك صراحة
-- لا تخترع أي معلومة — إذا لم تجد تصريحاً حديثاً قل ذلك بوضوح
-- ابدأ البحث من المصادر الأحدث نحو الأقدم
+🔴 قواعد صارمة لمكافحة الهلوسة:
+1. استخدم Google Search للبحث الآن عن أحدث المعلومات الحقيقية
+2. لا تكتب أي تصريح أو معلومة لا تجدها في نتائج البحث — قل "لم أجد" بدل الاختراع
+3. كل تصريح يجب أن يكون اقتباساً حرفياً موثّقاً بمصدره وتاريخه الدقيق
+4. إذا لم تجد 10 تصريحات حديثة موثّقة، اذكر ما وجدته فقط
+5. درجة التوكيد: استخدم "وفق ما أفادت [مصدر]" أو "بحسب [مصدر]" لكل معلومة
 
 ---
 
-## 🧾 أولاً — البطاقة الرسمية (مُحيَّنة أبريل 2026)
-| الحقل | المعلومة |
-|-------|----------|
+## 🧾 أولاً — البطاقة الرسمية
+ابحث الآن في Google عن: "[الاسم] منصب 2025 2026"
+| الحقل | المعلومة الموثّقة |
+|-------|------------------|
 | الاسم الكامل | |
 | تاريخ ومكان الولادة | |
 | الجنسية | |
-| **المنصب الحالي** (2025-2026) | |
-| المؤسسة / الهيئة الحالية | |
+| **المنصب الحالي 2025-2026** | |
+| المؤسسة / الهيئة | |
 | المسار الأكاديمي | |
-| الأحزاب / الانتماءات الحالية | |
-| آخر تحديث للمعلومات | أبريل 2026 |
+| الانتماء الحزبي / السياسي | |
 
 ---
 
-## 📚 ثانياً — أبرز محطات المسار (التركيز على 2022-2026)
-سرد زمني مفصّل مع التركيز على آخر 4 سنوات. لكل محطة: التاريخ الدقيق + الحدث + الأثر.
+## 📚 ثانياً — المسار المهني (التركيز على 2020-2026)
+ابحث في Google عن: "[الاسم] سيرة ذاتية مسار"
+سرد زمني موثّق — لكل محطة: التاريخ + الحدث + المصدر.
 
 ---
 
-## 🏆 ثالثاً — الإنجازات الموثّقة (الأحدث أولاً)
-قائمة مرقّمة — ابدأ من 2026 نحو الخلف — مع التاريخ والسياق وتأثير كل إنجاز.
+## 🏆 ثالثاً — الإنجازات الموثّقة (2022-2026 أولاً)
+ابحث في Google عن: "[الاسم] إنجازات قرارات 2024 2025"
+قائمة مرقّمة — كل إنجاز بتاريخه ومصدره.
 
 ---
 
-## 🎙️ رابعاً — آخر 10 تصريحات رسمية (الأحدث أولاً)
-⚠️ اشترط التصريحات من 2024 و2025 و2026 فقط — لا تقبل ما هو أقدم إلا في حال الضرورة القصوى مع الإشارة.
+## 🎙️ رابعاً — آخر 10 تصريحات رسمية موثّقة
+ابحث في Google عن: "[الاسم] تصريح 2025" و"[الاسم] تصريح 2024"
 
-لكل تصريح:
-**[رقم] — [تاريخ دقيق: يوم/شهر/سنة]**
-> "نص الاقتباس المباشر بالعربية"
-- 📺 **المصدر:** اسم الوسيلة الإعلامية (قناة / جريدة / وكالة)
-- 🔗 **المناسبة:** السياق الذي قيل فيه التصريح (مؤتمر / برنامج / بيان رسمي...)
-- 📌 **الموضوع:** الملف أو القضية التي يتناولها التصريح
+⚠️ شرط: اقتباس حرفي فقط — لا صياغة بالمعنى — لا اختراع.
 
----
+**[1] — [يوم/شهر/سنة]**
+> "الاقتباس الحرفي"
+- 📺 **المصدر:** اسم الوسيلة الإعلامية
+- 🔗 **المناسبة:** السياق
+- 📌 **الموضوع:** الملف
 
-## ⚖️ خامساً — تحليل المواقف والتحولات (2023-2026)
-- ما المواقف التي تغيّرت منذ 2023؟
-- أين التناقضات بين التصريحات القديمة والحديثة؟
-- ما الملفات التي صمت عنها الشخصية مؤخراً؟
-- ما المحاور الثابتة في خطابها؟
+(كرر للتصريحات 2 إلى 10 — إذا لم تجد، قل: "لم أعثر على تصريحات موثّقة أخرى")
 
 ---
 
-## ❓ سادساً — 10 أسئلة صحفية احترافية (مبنية على التصريحات الحديثة)
-أسئلة حادة ومباشرة مبنية على تحليل ما قاله/قالته في 2024-2026. لكل سؤال:
-- نص السؤال
-- [مرجعه: التصريح أو الموقف الذي يبرّر السؤال + تاريخه]
+## ⚖️ خامساً — تحليل المواقف والتحولات
+بناءً على ما وجدته في البحث فقط:
+- المواقف التي تغيّرت منذ 2023 مع الدليل
+- التناقضات الموثّقة بين تصريحين مختلفين
+- الملفات التي صمت عنها الشخصية مؤخراً
 
 ---
 
-## ⚠️ إشعار شفافية
-اختم الملف بجملة تحدّد: "أحدث معلومة متاحة في هذا الملف تعود إلى: [تاريخ]" — وأشر إلى أي فجوات في المعطيات.
+## ❓ سادساً — 10 أسئلة صحفية احترافية
+مبنية حصراً على التصريحات والمواقف التي وجدتها في البحث. لكل سؤال:
+- نص السؤال الصحفي الحاد
+- [المرجع: التصريح أو الموقف + تاريخه + مصدره]
+
+---
+
+## 📎 المصادر المستخدمة
+اذكر جميع المصادر التي استندت إليها في هذا الملف مع روابطها.
 
 الشخصية المطلوبة:`
 };
 
 // ── GEMINI API ──
+// ── Gemini with Google Search Grounding (for profile) ──
+async function callGeminiWithSearch(prompt, model) {
+  if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
+  if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
+  const mdl = model || 'gemini-2.5-flash';
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 8192, topP: 0.9 },
+      tools: [{ googleSearch: {} }]
+    })
+  });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    if (r.status === 401) throw new Error('مفتاح API غير صحيح');
+    if (r.status === 429) throw new Error('تجاوزت حد الاستخدام');
+    // fallback to regular if search grounding not supported
+    if (r.status === 400) return callGemini(prompt, model);
+    throw new Error(e.error?.message || `خطأ ${r.status}`);
+  }
+  const d = await r.json();
+  S.req++;
+  localStorage.setItem('db12_req', S.req);
+  updateQuota();
+  // Extract grounding sources if available
+  const text = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  const grounds = d.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+  if (grounds.length > 0) {
+    const sources = grounds.map((g,i) => `[${i+1}] ${g.web?.title || ''} — ${g.web?.uri || ''}`).join('\n');
+    return text + '\n\n---\n**📎 المصادر المستخدمة في البحث:**\n' + sources;
+  }
+  return text;
+}
+
 async function callGemini(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
   if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
@@ -1623,7 +1675,28 @@ function runProfile() {
   const n = (document.getElementById('profile-name')?.value || '').trim();
   if (!n) return toast('أدخل اسم الشخصية', 'w');
   const today = new Date().toLocaleDateString('ar-TN', {year:'numeric', month:'long', day:'numeric'});
-  run('profile', 'profile', () => PROMPTS.profile + ' **' + n + '**\n\n> تاريخ الطلب: ' + today + ' — اجعل جميع التصريحات والمعلومات من 2024 إلى أبريل 2026 قدر المستطاع.');
+  const model = document.getElementById('profile-model')?.value || 'gemini-2.5-flash';
+  const btn = document.getElementById('btn-profile');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ البحث...'; }
+  setStt('profile', 'جارٍ البحث عبر Google Search...', 'loading');
+  hideOut('profile');
+  const fullPrompt = PROMPTS.profile + ' **' + n + '**\n\n> تاريخ الطلب: ' + today;
+  callGeminiWithSearch(fullPrompt, model)
+    .then(res => {
+      showOut('profile', renderMD(res));
+      setStt('profile', 'تم استخراج الملف بنجاح ✓', 'ok');
+      setTimeout(() => hideStt('profile'), 3000);
+      document.getElementById('acts-profile').style.display = 'flex';
+      S.req++;
+      updateStats();
+    })
+    .catch(e => {
+      setStt('profile', e.message, 'err');
+    })
+    .finally(() => {
+      if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+    });
 }
 function clearTool(name) {
   const inp = document.getElementById(name + '-input');
