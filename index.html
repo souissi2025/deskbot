@@ -934,31 +934,11 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <section id="panel-article" class="panel">
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</div>
-        <div class="card-sub">يكتب مقالاً صحفياً متكاملاً — يعالج النص الأولي والمرفقات معاً في آنٍ واحد</div>
-
-        <label>النص الأولي للمقال <span style="color:var(--t3);font-size:11px">(إلزامي)</span></label>
+        <div class="card-sub">يكتب مقالاً صحفياً متكاملاً من فكرة أو نص أولي</div>
+        <label>الفكرة الأساسية أو النص الأولي</label>
         <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
-
-        <!-- منطقة المرفقات -->
-        <div id="article-attach-zone" style="border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.03)">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <label for="article-file" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--blue);transition:.2s" onmouseover="this.style.background='rgba(96,165,250,.22)'" onmouseout="this.style.background='rgba(96,165,250,.12)'">
-              <i class="fa-solid fa-paperclip"></i> إرفاق ملف
-            </label>
-            <input type="file" id="article-file" accept=".txt,.pdf,.doc,.docx,audio/*,video/*" style="display:none" onchange="handleArticleFile(this)">
-            <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4...</span>
-            <button id="article-file-clear" onclick="clearArticleFile()" style="display:none;background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:4px"><i class="fa-solid fa-xmark"></i></button>
-          </div>
-          <div id="article-file-preview" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(96,165,250,.08);border-radius:8px;font-size:11px;color:var(--t2)"></div>
-        </div>
-
-        <div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);display:flex;align-items:flex-start;gap:7px">
-          <i class="fa-solid fa-circle-info" style="color:#fbbf24;margin-top:2px"></i>
-          <span>النص الأولي والملف المرفق يُعالَجان معاً في نفس الوقت — الملف يُقرأ ويُدمج مع النص قبل إرسال الطلب لـ Gemini.</span>
-        </div>
-
         <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-          <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
+          <button class="btn btn-gold" id="btn-article" style="flex:1"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
           <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
             <option value="1">واحد</option>
             <option value="2">اثنان</option>
@@ -987,8 +967,12 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div class="card-sub">يكتب فلاشاً إذاعياً جاهزاً للإلقاء المباشر — 45 إلى 60 ثانية</div>
         <label>معطيات الخبر</label>
         <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn btn-gold" id="btn-flash" style="flex:1"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
+          <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
           <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
         </div>
         <div id="stt-flash" class="stt"></div>
@@ -1444,48 +1428,43 @@ const PROMPTS = {
   - ممنوع الأخطاء الشهرية (استخدم أفريل وليس أبريل، ماي وليس مايو).
 **ملاحظة ختامية:** ابدأ الكتابة فوراً بالعنوان الرئيسي دون أي مقدمة أو تعليق جانبي.
 **تحذير مهم جداً:** عناوين الأقسام الهيكلية (الاستهلال، فقرة المصدر والوثيقة، التفاصيل والسياق، الخلفية/الأفق) هي أدلة داخلية للكتابة فقط — لا تُدرجها إطلاقاً في النص المنشور. اكتب المقال كنص إخباري متدفق ومتواصل بفقرات متكاملة بلا أي عناوين فرعية في الوسط.`,
-  flash: `أنت "رئيس تحرير" و"مدقق لغوي" في قسم أخبار إذاعة ديوان أف أم (Diwan FM).
-مهمتك صياغة الأخبار بـ "هوية ديوان" (سرعة، دقة، حيوية) مع الحفاظ على كافة تفاصيل النص الأصلي.
+  flash: `أنت "رئيس تحرير متمرس" و"مدقق لغوي خبير" في قسم الأخبار بإذاعة "ديوان أف أم" (Diwan FM). مهمتك معالجة النصوص الإخبارية الخام وتحويلها إلى "فلاش إخباري إذاعي" احترافي، يطابق الهوية التحريرية للإذاعة بدقة متناهية، وفقاً للمعايير التالية:
 
-1. هوية ديوان أف أم (Tone & Voice):
-السرعة والمباشرتية: ادخل في "الحدث" فوراً. تجنب المقدمات الرسمية.
-القارئ هو الهدف: صياغة تجعل المستمع يشعر أن الخبر يعنيه.
-الأسلوب: فصحى حديثة، رشيقة، خالية من التعقيد.
+[1] الهوية التحريرية والأسلوب (Tone & Voice):
+- المباشرتية: ادخل في صلب الحدث فوراً دون مقدمات كلاسيكية أو إنشائية.
+- الإيقاع: سريع، رشيق، وحيوي. استخدم فصحى معاصرة ومبسطة للمستمع.
+- الألقاب: تُحذف الألقاب الشرفية (السيد، السيدة) ويُكتفى بالصفة المهنية، الوظيفية، أو السياسية.
+- التواريخ: تجاهل تواريخ الإصدار الروتينية للبلاغات والبيانات.
 
-2. قواعد التشكيل الصارمة (Vocalization Rules):
-العدد والمعدود (تشكيل كامل 100%): يجب تشكيل الأرقام (المكتوبة بالحروف) والكلمة التي تليها (المعدود) تشكيلاً تاماً لضمان النطق السليم (مثال: "ثَلَاثَةُ آلَافِ مُوَاطِنٍ").
-باقي النص (تشكيل الحرف الأخير فقط): يُمنع تشكيل بنية الكلمة الداخلية. ضع الحركة الإعرابية على الحرف الأخير فقط من كل كلمة (الضمة، الفتحة، الكسرة، السكون). مثال: "وِزَارَةُ" (خطأ) -> "وزارةُ" (صح).
+[2] الهيكلة والمحتوى (Structure & Content):
+- الطول الإلزامي: من 100 إلى 150 كلمة. لا تقبل بأقل من ذلك لضمان الإشباع الخبري.
+- تكامل البيانات (Data Integrity): يُمنع الاختصار المخل. يجب دمج كافة الأسماء، الأرقام، المواقع، الحيثيات، والأسباب الواردة في النص المصدري داخل الصياغة النهائية.
+- الفقرة الأولى (Lead): يجب أن تكون "جملة اسمية" حصراً (تبدأ باسم، مبتدأ، أو حرف ناسخ مثل إنّ). تخصص لأهم معلومة ونتيجة.
+- الفقرة الثانية (Flow): يجب أن تكون "جملة فعلية" حصراً (تبدأ بفعل مثل: أكدَ، كشفَ، أوضحَ). تخصص لسرد التفاصيل، الأرقام، والحيثيات.
 
-3. الهيكلة الفنية والمحتوى (Structure & Content):
-تكامل التفاصيل (Data Integrity): يجب دمج كافة المعلومات الهامة الواردة في النص الأصلي (أسماء، أرقام دقيقة، مواقع، حيثيات، أسباب) داخل الصياغة النهائية. يُمنع الاختصار المخل الذي يُسقط الحقائق.
-الطول (Length): يجب أن يتراوح طول الخبر النهائي بين 100 و150 كلمة؛ لضمان سرد كافة التفاصيل بأسلوب إذاعي مشبع.
-الفقرة الأولى (Lead - Nominal): تبدأ بجملة اسمية حصراً (المبتدأ/الفاعل).
-الفقرة الثانية (Flow - Verbal): تبدأ بجملة فعلية حصراً (الفعل). استخدم روابط مثل: (وأكدَ، وكشفَ).
-الأرقام: تُكتب بالحروف دائماً.
-الألقاب: يُحذف اللقب (السيد، السيدة) ويُكتفى بالصفة.
+[3] المعالجة الرقمية وقواعد التشكيل (Numbers & Vocalization):
+- تحويل الأرقام: تُكتب جميع الأرقام بالحروف العربية دائماً، ويُمنع استخدام الأرقام الحسابية.
+- قاعدة التشكيل المزدوجة (تطبيق صارم):
+  أ. الأعداد والمعدود: تشكيل كامل (100%) لجميع حروف العدد والكلمة التي تليه (المعدود). (مثال: ثَلَاثَةُ آلَافِ مُوَاطِنٍ).
+  ب. باقي النص: تشكيل "إعرابي أخير" فقط. توضع الحركة الإعرابية (ضمة، فتحة، كسرة، سكون) على الحرف الأخير من الكلمة مع ترك بنية الكلمة الداخلية خالية من الحركات. (مثال: أعلنتْ وزارةُ الداخليةِ).
 
-4. المخرجات المطلوبة:
+[4] آلية العمل الداخلية (Think Step-by-Step):
+قبل كتابة المخرج النهائي، قم بتحليل النص المصدري داخلياً:
+- استخرج كل الأرقام وحولها إلى حروف مع تشكيلها الكامل.
+- استخرج الحقائق الرئيسية لتكوين الجملة الاسمية.
+- استخرج التفاصيل لتكوين الجملة الفعلية.
+- قم بتطبيق قاعدة التشكيل الجزئي على الكلمات العادية.
 
-أولاً: عناوين بأسلوب "ديوان" (3 مقترحات):
-عناوين قصيرة، ذكية (Catchy)، وغير مشكولة.
+[5] المخرجات المطلوبة (Output Format):
+أولاً: عناوين "ديوان" (3 مقترحات)
+- عناوين قصيرة، ذكية (Catchy)، جذابة، وغير مشكولة.
 
-ثانياً: الخبر الإذاعي المفصل (بين 100 - 150 كلمة):
-هيكلة (اسمية ثم فعلية).
-تطبيق قاعدة "الشكل الأخير فقط" + "شكل كامل للأعداد".
-خالٍ من تواريخ البلاغات الروتينية.
-شامل لجميع جزئيات النص المصدري.
+ثانياً: النص الإخباري
+- يكتب في فقرتين (اسمية ثم فعلية).
+- يطبق قواعد التشكيل المذكورة بدقة.
+- يتراوح بين 100 و150 كلمة.
 
-مثال للمحاكاة (لاحظ كثافة التفاصيل وخفة التشكيل):
-العناوين:
-القصرين: إحباط تهريب بضائع بنصف مليار
-الحرس الوطني يطيح بـ 19 مفتشاً عنهم
-ضربة موجعة للمهربين في القصرين
-
-نص الخبر:
-وحداتُ الحرسِ الوطنيِّ بالقصرينِ تنجحُ في إحباطِ خَمْسِ عَمَلِيَّاتِ تَهْرِيبٍ كبرى، وحجزِ بضائعَ مجهولةِ المصدرِ قُدرتْ قيمتُها الجمليةُ بنحوِ خَمْسِمِائَةِ أَلْفِ دِينَارٍ، وذلكَ عقبَ رصدِ تحركاتٍ مشبوهةٍ بالمسالكِ الحدوديةِ وتكثيفِ الدورياتِ الأمنيةِ بالمنطقةِ.
-وأفادَ مصدرٌ أمنيٌّ لمراسلِ "ديوان أف أم" بأنَّ الحملةَ الأمنيةَ الموسعةَ التي شملتْ تمشيطَ النقاطِ السوداءِ أسفرتْ أيضاً عن إيقافِ تِسْعَةَ عَشَرَ شَخْصًا مفتشًا عنهمْ في قضايا حقٍ عامٍّ مختلفةٍ، مؤكداً أنَّ النيابةَ العموميةَ أذنتْ باتخاذِ الإجراءاتِ القانونيةِ الفوريةِ في شأنهمْ وتحريرِ محاضرَ جبائيةٍ في الغرضِ.
-
-النص المُدخل للمعالجة:`,
+النص المصدري المطلوب معالجته:`,
   headlines: SYS + `\n## مهمتك: 12 عنواناً في 4 فئات\n## 🔵 وات [3]\n## 🟡 ديوان FM [3]\n## 🟢 SEO [3]\n## 🔴 شبكات التواصل [3]`,
   today: SYS + `\n## مهمتك: "في مثل هذا اليوم" لوكالة وات`,
   sports: SYS + `\n## مهمتك: ملف المواجهات المباشرة\n| التاريخ | البطولة | النتيجة | الهداف |`,
@@ -1932,129 +1911,11 @@ function runSpeechTranscription(file) {
   reader.readAsDataURL(file);
 }
 
-// ── Article file state ──
-let articleFileData = null; // { type, mimeType, data, name }
-
-function handleArticleFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const nameEl   = document.getElementById('article-file-name');
-  const clearBtn = document.getElementById('article-file-clear');
-  const preview  = document.getElementById('article-file-preview');
-  const isAudio  = file.type.startsWith('audio/');
-  const isVideo  = file.type.startsWith('video/');
-  const isText   = file.type === 'text/plain' || file.name.endsWith('.txt');
-
-  nameEl.textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)';
-  nameEl.style.color = 'var(--blue)';
-  clearBtn.style.display = 'inline-flex';
-
-  const reader = new FileReader();
-
-  if (isText) {
-    reader.onload = e => {
-      articleFileData = { type: 'text', mimeType: 'text/plain', data: e.target.result, name: file.name };
-      preview.style.display = 'block';
-      preview.innerHTML = '<i class="fa-solid fa-file-lines" style="color:var(--blue)"></i> <strong>ملف نصي جاهز:</strong> ' + e.target.result.substring(0,150) + (e.target.result.length > 150 ? '...' : '');
-    };
-    reader.readAsText(file, 'utf-8');
-  } else if (isAudio || isVideo) {
-    reader.onload = e => {
-      const b64 = e.target.result.split(',')[1];
-      articleFileData = { type: isAudio ? 'audio' : 'video', mimeType: file.type, data: b64, name: file.name };
-      preview.style.display = 'block';
-      preview.innerHTML = '<i class="fa-solid fa-' + (isAudio ? 'music' : 'film') + '" style="color:var(--blue)"></i> <strong>' + (isAudio ? 'ملف صوتي' : 'ملف فيديو') + ' جاهز:</strong> ' + file.name;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    // PDF/DOC — read as base64
-    reader.onload = e => {
-      const b64 = e.target.result.split(',')[1];
-      articleFileData = { type: 'document', mimeType: file.type || 'application/octet-stream', data: b64, name: file.name };
-      preview.style.display = 'block';
-      preview.innerHTML = '<i class="fa-solid fa-file-pdf" style="color:var(--blue)"></i> <strong>ملف وثيقة جاهز:</strong> ' + file.name;
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-function clearArticleFile() {
-  articleFileData = null;
-  document.getElementById('article-file').value = '';
-  document.getElementById('article-file-name').textContent = 'نص، صوت، فيديو — PDF، TXT، MP3، MP4...';
-  document.getElementById('article-file-name').style.color = 'var(--t3)';
-  document.getElementById('article-file-clear').style.display = 'none';
-  document.getElementById('article-file-preview').style.display = 'none';
-}
-
-async function runArticle() {
-  const inp   = (document.getElementById('article-input')?.value || '').trim();
-  if (!inp) return toast('أدخل النص الأولي للمقال', 'w');
-  const cnt   = document.getElementById('article-count')?.value || '1';
-  const model = document.getElementById('article-model')?.value || 'gemini-2.5-flash';
-  const btn   = document.getElementById('btn-article');
-  const origHTML = btn ? btn.innerHTML : '';
-
-  if (!S.key) { openSettings(); return; }
-  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
-
-  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكتابة...'; }
-  setStt('article', articleFileData ? '📎 جارٍ معالجة النص والملف المرفق معاً...' : '✍️ جارٍ كتابة المقال...', 'loading');
-  hideOut('article');
-
-  try {
-    const articlePrompt = PROMPTS.article;
-    const userText = 'اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً عن:\n' + inp;
-    let result;
-
-    if (articleFileData) {
-      // ── Multimodal: text + file together ──
-      const parts = [];
-
-      // System prompt + user text first
-      parts.push({ text: articlePrompt + '\n\n' + userText + '\n\n⚠️ المرفق أدناه جزء من المادة الأولية — اقرأه وادمجه مع النص أعلاه في المعالجة معاً في آنٍ واحد:' });
-
-      // Add file part
-      if (articleFileData.type === 'text') {
-        parts.push({ text: '\n--- محتوى الملف المرفق (' + articleFileData.name + ') ---\n' + articleFileData.data });
-      } else {
-        parts.push({ inlineData: { mimeType: articleFileData.mimeType, data: articleFileData.data } });
-      }
-
-      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + S.key, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 8192, topP: 0.9 }
-        })
-      });
-      if (!r.ok) {
-        const e = await r.json().catch(() => ({}));
-        if (r.status === 401) throw new Error('مفتاح API غير صحيح');
-        if (r.status === 429) throw new Error('تجاوزت حد الاستخدام — انتظر قليلاً');
-        throw new Error(e.error?.message || 'خطأ ' + r.status);
-      }
-      const d = await r.json();
-      result = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      S.req++;
-      localStorage.setItem('db12_req', S.req);
-      updateQuota();
-    } else {
-      // ── Text only ──
-      result = await callGemini(articlePrompt + '\n\n' + userText, model);
-    }
-
-    showOut('article', renderMD(result));
-    setStt('article', articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال', 'ok');
-    setTimeout(() => hideStt('article'), 3000);
-    document.getElementById('acts-article').style.display = 'flex';
-    updateStats();
-  } catch(e) {
-    setStt('article', e.message, 'err');
-  } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
-  }
+function runArticle() {
+  const inp = (document.getElementById('article-input')?.value || '').trim();
+  if (!inp) return toast('أدخل فكرة المقال', 'w');
+  const cnt = document.getElementById('article-count')?.value || '1';
+  run('article', 'article', () => `اكتب ${cnt} مقالاً إخبارياً عن:\n${inp}`);
 }
 function runFlash() {
   const inp = (document.getElementById('flash-input')?.value || '').trim();
