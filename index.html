@@ -934,11 +934,31 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <section id="panel-article" class="panel">
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</div>
-        <div class="card-sub">يكتب مقالاً صحفياً متكاملاً من فكرة أو نص أولي</div>
-        <label>الفكرة الأساسية أو النص الأولي</label>
+        <div class="card-sub">يكتب مقالاً صحفياً متكاملاً — يعالج النص الأولي والمرفقات معاً في آنٍ واحد</div>
+
+        <label>النص الأولي للمقال <span style="color:var(--t3);font-size:11px">(إلزامي)</span></label>
         <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
+
+        <!-- منطقة المرفقات -->
+        <div id="article-attach-zone" style="border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.03)">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <label for="article-file" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--blue);transition:.2s" onmouseover="this.style.background='rgba(96,165,250,.22)'" onmouseout="this.style.background='rgba(96,165,250,.12)'">
+              <i class="fa-solid fa-paperclip"></i> إرفاق ملف
+            </label>
+            <input type="file" id="article-file" accept=".txt,.pdf,.doc,.docx,audio/*,video/*" style="display:none" onchange="handleArticleFile(this)">
+            <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4...</span>
+            <button id="article-file-clear" onclick="clearArticleFile()" style="display:none;background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:4px"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div id="article-file-preview" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(96,165,250,.08);border-radius:8px;font-size:11px;color:var(--t2)"></div>
+        </div>
+
+        <div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);display:flex;align-items:flex-start;gap:7px">
+          <i class="fa-solid fa-circle-info" style="color:#fbbf24;margin-top:2px"></i>
+          <span>النص الأولي والملف المرفق يُعالَجان معاً في نفس الوقت — الملف يُقرأ ويُدمج مع النص قبل إرسال الطلب لـ Gemini.</span>
+        </div>
+
         <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-          <button class="btn btn-gold" id="btn-article" style="flex:1"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
+          <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
           <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
             <option value="1">واحد</option>
             <option value="2">اثنان</option>
@@ -1912,11 +1932,129 @@ function runSpeechTranscription(file) {
   reader.readAsDataURL(file);
 }
 
-function runArticle() {
-  const inp = (document.getElementById('article-input')?.value || '').trim();
-  if (!inp) return toast('أدخل فكرة المقال', 'w');
-  const cnt = document.getElementById('article-count')?.value || '1';
-  run('article', 'article', () => `اكتب ${cnt} مقالاً إخبارياً عن:\n${inp}`);
+// ── Article file state ──
+let articleFileData = null; // { type, mimeType, data, name }
+
+function handleArticleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const nameEl   = document.getElementById('article-file-name');
+  const clearBtn = document.getElementById('article-file-clear');
+  const preview  = document.getElementById('article-file-preview');
+  const isAudio  = file.type.startsWith('audio/');
+  const isVideo  = file.type.startsWith('video/');
+  const isText   = file.type === 'text/plain' || file.name.endsWith('.txt');
+
+  nameEl.textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)';
+  nameEl.style.color = 'var(--blue)';
+  clearBtn.style.display = 'inline-flex';
+
+  const reader = new FileReader();
+
+  if (isText) {
+    reader.onload = e => {
+      articleFileData = { type: 'text', mimeType: 'text/plain', data: e.target.result, name: file.name };
+      preview.style.display = 'block';
+      preview.innerHTML = '<i class="fa-solid fa-file-lines" style="color:var(--blue)"></i> <strong>ملف نصي جاهز:</strong> ' + e.target.result.substring(0,150) + (e.target.result.length > 150 ? '...' : '');
+    };
+    reader.readAsText(file, 'utf-8');
+  } else if (isAudio || isVideo) {
+    reader.onload = e => {
+      const b64 = e.target.result.split(',')[1];
+      articleFileData = { type: isAudio ? 'audio' : 'video', mimeType: file.type, data: b64, name: file.name };
+      preview.style.display = 'block';
+      preview.innerHTML = '<i class="fa-solid fa-' + (isAudio ? 'music' : 'film') + '" style="color:var(--blue)"></i> <strong>' + (isAudio ? 'ملف صوتي' : 'ملف فيديو') + ' جاهز:</strong> ' + file.name;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    // PDF/DOC — read as base64
+    reader.onload = e => {
+      const b64 = e.target.result.split(',')[1];
+      articleFileData = { type: 'document', mimeType: file.type || 'application/octet-stream', data: b64, name: file.name };
+      preview.style.display = 'block';
+      preview.innerHTML = '<i class="fa-solid fa-file-pdf" style="color:var(--blue)"></i> <strong>ملف وثيقة جاهز:</strong> ' + file.name;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function clearArticleFile() {
+  articleFileData = null;
+  document.getElementById('article-file').value = '';
+  document.getElementById('article-file-name').textContent = 'نص، صوت، فيديو — PDF، TXT، MP3، MP4...';
+  document.getElementById('article-file-name').style.color = 'var(--t3)';
+  document.getElementById('article-file-clear').style.display = 'none';
+  document.getElementById('article-file-preview').style.display = 'none';
+}
+
+async function runArticle() {
+  const inp   = (document.getElementById('article-input')?.value || '').trim();
+  if (!inp) return toast('أدخل النص الأولي للمقال', 'w');
+  const cnt   = document.getElementById('article-count')?.value || '1';
+  const model = document.getElementById('article-model')?.value || 'gemini-2.5-flash';
+  const btn   = document.getElementById('btn-article');
+  const origHTML = btn ? btn.innerHTML : '';
+
+  if (!S.key) { openSettings(); return; }
+  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
+
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكتابة...'; }
+  setStt('article', articleFileData ? '📎 جارٍ معالجة النص والملف المرفق معاً...' : '✍️ جارٍ كتابة المقال...', 'loading');
+  hideOut('article');
+
+  try {
+    const articlePrompt = PROMPTS.article;
+    const userText = 'اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً عن:\n' + inp;
+    let result;
+
+    if (articleFileData) {
+      // ── Multimodal: text + file together ──
+      const parts = [];
+
+      // System prompt + user text first
+      parts.push({ text: articlePrompt + '\n\n' + userText + '\n\n⚠️ المرفق أدناه جزء من المادة الأولية — اقرأه وادمجه مع النص أعلاه في المعالجة معاً في آنٍ واحد:' });
+
+      // Add file part
+      if (articleFileData.type === 'text') {
+        parts.push({ text: '\n--- محتوى الملف المرفق (' + articleFileData.name + ') ---\n' + articleFileData.data });
+      } else {
+        parts.push({ inlineData: { mimeType: articleFileData.mimeType, data: articleFileData.data } });
+      }
+
+      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + S.key, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 8192, topP: 0.9 }
+        })
+      });
+      if (!r.ok) {
+        const e = await r.json().catch(() => ({}));
+        if (r.status === 401) throw new Error('مفتاح API غير صحيح');
+        if (r.status === 429) throw new Error('تجاوزت حد الاستخدام — انتظر قليلاً');
+        throw new Error(e.error?.message || 'خطأ ' + r.status);
+      }
+      const d = await r.json();
+      result = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      S.req++;
+      localStorage.setItem('db12_req', S.req);
+      updateQuota();
+    } else {
+      // ── Text only ──
+      result = await callGemini(articlePrompt + '\n\n' + userText, model);
+    }
+
+    showOut('article', renderMD(result));
+    setStt('article', articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال', 'ok');
+    setTimeout(() => hideStt('article'), 3000);
+    document.getElementById('acts-article').style.display = 'flex';
+    updateStats();
+  } catch(e) {
+    setStt('article', e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
 }
 function runFlash() {
   const inp = (document.getElementById('flash-input')?.value || '').trim();
