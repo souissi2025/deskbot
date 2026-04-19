@@ -691,7 +691,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 
 <!-- HEADER -->
 <header class="hdr">
-  <div class="logo">
+  <div class="logo" style="direction:ltr">
     <div class="logo-box"><i class="fa-solid fa-newspaper"></i></div>
     DESK <span class="logo-txt">BOT</span>
     <span class="logo-ver">v12</span>
@@ -1290,7 +1290,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف الذكي</div>
         <input type="text" id="arc-search" placeholder="بحث في الأرشيف..." oninput="filterArchive()" style="margin-bottom:8px">
         <div id="arc-list"></div>
-        <button class="btn btn-danger btn-full" onclick="clearArchive()" style="margin-top:8px"><i class="fa-solid fa-trash"></i> مسح الأرشيف</button>
+        <p style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px"><i class="fa-regular fa-clock"></i> تُحذف العمليات تلقائياً بعد 24 ساعة</p>
       </div>
     </section>
 
@@ -2135,30 +2135,56 @@ function waOut(id) {
 function arcOut(id, type) {
   const c = document.getElementById(id)?.innerText || '';
   if (!c.trim()) return toast('لا يوجد نص للأرشفة', 'w');
-  S.archive.unshift({ id: Date.now(), type, content: c, date: new Date().toLocaleDateString('ar-TN') });
+  const now = Date.now();
+  const months = ['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const d = new Date(now);
+  const dateStr = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} — ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+  S.archive.unshift({ id: now, type, content: c, date: dateStr, ts: now });
   localStorage.setItem('db12_arc', JSON.stringify(S.archive));
+  cleanOldArchive();
   renderArchive(); updateStats();
   toast('تم الحفظ ✓', 's');
+}
+
+// تنظيف تلقائي: حذف كل عملية مرت عليها 24 ساعة
+function cleanOldArchive() {
+  const limit = 24 * 60 * 60 * 1000;
+  const before = S.archive.length;
+  S.archive = S.archive.filter(it => {
+    const ts = it.ts || it.id;
+    return (Date.now() - ts) < limit;
+  });
+  if (S.archive.length !== before) {
+    localStorage.setItem('db12_arc', JSON.stringify(S.archive));
+  }
 }
 
 // ── ARCHIVE ──
 function renderArchive(list) {
   const el = document.getElementById('arc-list');
   if (!el) return;
+  cleanOldArchive();
   const data = list || S.archive;
-  if (!data.length) { el.innerHTML = '<p style="text-align:center;color:var(--t3);padding:20px">لا توجد مواد مؤرشفة</p>'; return; }
-  el.innerHTML = data.map(it => `
+  if (!data.length) { el.innerHTML = '<p style="text-align:center;color:var(--t3);padding:20px;font-size:12px"><i class="fa-solid fa-clock-rotate-left" style="display:block;font-size:24px;margin-bottom:8px;opacity:.3"></i>لا توجد مواد مؤرشفة<br><span style="font-size:10px;color:var(--t3)">تُحفظ العمليات تلقائياً لمدة 24 ساعة</span></p>'; return; }
+  el.innerHTML = data.map(it => {
+    const ts = it.ts || it.id;
+    const remaining = Math.max(0, 24*60*60*1000 - (Date.now() - ts));
+    const hLeft = Math.floor(remaining / 3600000);
+    const mLeft = Math.floor((remaining % 3600000) / 60000);
+    const timeLabel = remaining > 0 ? `تُحذف بعد ${hLeft}س ${mLeft}د` : 'تُحذف قريباً';
+    return `
     <div class="arc-item">
       <div class="arc-meta">
         <span class="arc-type">${it.type}</span>
         <span class="arc-date">${it.date}</span>
+        <span style="font-size:9px;color:var(--t3);margin-right:auto"><i class="fa-regular fa-clock"></i> ${timeLabel}</span>
       </div>
-      <div class="arc-prev">${it.content.substring(0, 100)}...</div>
+      <div class="arc-prev">${it.content.substring(0, 120)}...</div>
       <div class="act-row" style="margin-top:6px">
         <button class="btn btn-ghost" style="font-size:10px;padding:6px 8px" onclick="cpArc(${it.id})"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-        <button class="btn btn-danger" style="font-size:10px;padding:6px 8px" onclick="delArc(${it.id})"><i class="fa-solid fa-trash"></i></button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function cpArc(id) {
   const it = S.archive.find(x => x.id === id);
@@ -2175,9 +2201,8 @@ function filterArchive() {
   renderArchive(q ? S.archive.filter(x => (x.content + x.type).toLowerCase().includes(q)) : S.archive);
 }
 function clearArchive() {
-  if (!confirm('مسح الأرشيف نهائياً؟')) return;
-  S.archive = []; localStorage.removeItem('db12_arc');
-  renderArchive(); updateStats(); toast('تم مسح الأرشيف', 'w');
+  // مُعطَّل — الحذف يتم تلقائياً بعد 24 ساعة
+  cleanOldArchive(); renderArchive(); updateStats();
 }
 
 // ── AGENDA ──
@@ -2428,11 +2453,11 @@ function updateQuota() {
 function tickClock() {
   const n = new Date();
   const days = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-  const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const months = ['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
   const tc = document.getElementById('hdr-time');
   const dc = document.getElementById('hdr-date');
   if (tc) tc.textContent = n.getHours().toString().padStart(2,'0') + ':' + n.getMinutes().toString().padStart(2,'0');
-  if (dc) dc.textContent = `${days[n.getDay()]} ${n.getDate()} ${months[n.getMonth()]}`;
+  if (dc) dc.textContent = `${days[n.getDay()]} ${n.getDate()} ${months[n.getMonth()]} ${n.getFullYear()}`;
 }
 
 // ── WELCOME ──
@@ -2452,6 +2477,7 @@ function toggleTheme() {
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
+  cleanOldArchive();
   // Theme
   if (localStorage.getItem('db12_theme') === 'day') {
     document.body.classList.add('day-mode');
