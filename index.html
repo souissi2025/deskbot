@@ -722,7 +722,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <button class="nav-btn" data-panel="headlines"><i class="fa-solid fa-heading"></i> عناوين احترافية</button>
     <div class="sb-div"></div>
     <div class="sb-sec">الأدوات</div>
-    <button class="nav-btn" data-panel="rss"><i class="fa-solid fa-globe"></i> آخر الأخبار</button>
     <button class="nav-btn" data-panel="tools"><i class="fa-solid fa-calendar-day"></i> تاريخ / رياضة</button>
     <button class="nav-btn" data-panel="profile"><i class="fa-solid fa-user-tie"></i> ملف الشخصية</button>
     <button class="nav-btn" data-panel="radar"><i class="fa-solid fa-satellite-dish"></i> رادار إخباري</button>
@@ -1301,7 +1300,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 <nav class="bottom-nav">
   <button class="bn-btn active" data-panel="home"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
   <button class="bn-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
-  <button class="bn-btn" data-panel="rss"><i class="fa-solid fa-globe"></i><span>أخبار</span></button>
   <button class="bn-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i><span>الأجندة</span></button>
   <button class="bn-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i><span>الأرشيف</span></button>
 </nav>
@@ -2433,6 +2431,8 @@ function nav(id) {
   if (p) p.classList.add('active');
   document.querySelectorAll(`[data-panel="${id}"]`).forEach(b => b.classList.add('active'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'archive') { cleanOldArchive(); renderArchive(); updateStats(); }
+  if (id === 'agenda') renderAgenda();
 }
 
 // ── STATS ──
