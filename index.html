@@ -850,7 +850,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
             onclick="document.getElementById('editor-file-inp').click()">
             <i class="fa-solid fa-paperclip"></i> إرفاق ملف صوتي / مرئي
           </button>
-          <span style="font-size:10px;color:var(--t3)">MP3 · MP4 · WAV · AAC · M4A</span>
+          <span style="font-size:10px;color:var(--t3)">MP3 · MP4 · WAV · AAC · M4A · الحجم الأقصى: 100MB</span>
         </div>
         <label>نوع المعالجة</label>
         <select id="editor-mode">
@@ -946,7 +946,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
               <i class="fa-solid fa-paperclip"></i> إرفاق ملف
             </label>
             <input type="file" id="article-file" accept=".txt,.pdf,.doc,.docx,audio/*,video/*" style="display:none" onchange="handleArticleFile(this)">
-            <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4...</span>
+            <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4 — الحجم الأقصى: 100MB</span>
             <button id="article-file-clear" onclick="clearArticleFile()" style="display:none;background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:4px"><i class="fa-solid fa-xmark"></i></button>
           </div>
           <div id="article-file-preview" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:11px;color:var(--t2)"></div>
@@ -1868,9 +1868,9 @@ function runSpeechTranscription(file) {
   const btn     = document.getElementById('btn-editor');
   const editBtn = document.getElementById('btn-editorial-edit');
 
-  // حجم أقصى 20MB (حد Gemini inlineData)
-  if (file.size > 20 * 1024 * 1024) {
-    toast('الملف أكبر من 20MB — استخدم ملفاً أصغر', 'w');
+  // حجم أقصى 100MB (حد Gemini inlineData)
+  if (file.size > 100 * 1024 * 1024) {
+    toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
     return;
   }
 
@@ -1938,6 +1938,11 @@ let articleFileData = null;
 function handleArticleFile(input) {
   const file = input.files[0];
   if (!file) return;
+  if (file.size > 100 * 1024 * 1024) {
+    toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
+    input.value = '';
+    return;
+  }
   const nameEl   = document.getElementById('article-file-name');
   const clearBtn = document.getElementById('article-file-clear');
   const preview  = document.getElementById('article-file-preview');
@@ -2836,6 +2841,11 @@ document.addEventListener("DOMContentLoaded", function() {
   window.handleEditorFile = function(inp) {
     if (!inp.files || !inp.files[0]) return;
     var f  = inp.files[0];
+    if (f.size > 100 * 1024 * 1024) {
+      toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
+      inp.value = '';
+      return;
+    }
     var nm = document.getElementById("editor-file-name");
     var aw = document.getElementById("editor-attach-wrap");
     if (nm) nm.textContent = f.name + "  (" + (f.size/1024/1024).toFixed(2) + " MB)";
