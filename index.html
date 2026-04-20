@@ -125,98 +125,35 @@ body::before{
 /* ─ـ LAYOUT ── */
 .layout{display:flex;position:relative;z-index:1;min-height:calc(100vh - 54px)}
 
-/* ══ NAV RAIL (Desktop) ══ */
-.nav-rail{
-  width:54px;flex-shrink:0;
-  background:rgba(6,10,18,.98);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+/* ── SIDEBAR ── */
+.sidebar{
+  width:200px;flex-shrink:0;
+  background:rgba(10,16,32,.97);
+  backdrop-filter:blur(20px);
   border-left:1px solid var(--ln2);
   position:sticky;top:54px;height:calc(100vh - 54px);
-  overflow:hidden;
-  transition:width .32s cubic-bezier(.4,0,.2,1);
-  display:flex;flex-direction:column;z-index:50;
+  overflow-y:auto;padding:10px 6px;
 }
-.nav-rail.expanded{width:220px}
-
-.rail-toggle{
-  display:flex;align-items:center;justify-content:center;
-  min-width:54px;height:46px;flex-shrink:0;
-  color:var(--t3);cursor:pointer;
-  border-bottom:1px solid var(--ln1);
-  transition:.15s;background:none;border-right:none;border-top:none;border-left:none;
-  font-size:15px;padding:0;
+.sb-sec{
+  font-family:'Oswald',sans-serif;font-size:8px;
+  letter-spacing:2px;color:var(--t3);
+  padding:8px 10px 4px;text-transform:uppercase;
 }
-.rail-toggle:hover{color:var(--g4);background:var(--glow2)}
-
-.rail-inner{
-  flex:1;overflow-y:auto;overflow-x:hidden;
-  padding:6px 0 10px;scrollbar-width:none;
+.nav-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;margin-bottom:1px;
+  border-radius:8px;color:var(--t2);
+  cursor:pointer;transition:.15s;font-weight:600;font-size:12px;
+  border:1px solid transparent;background:none;
+  width:100%;text-align:right;font-family:'Cairo',sans-serif;
 }
-.rail-inner::-webkit-scrollbar{display:none}
-
-.rail-sec-label{
-  font-family:'Oswald',sans-serif;font-size:7px;letter-spacing:2.5px;
-  color:var(--t3);padding:8px 0 2px 18px;text-transform:uppercase;
-  white-space:nowrap;overflow:hidden;opacity:0;height:0;pointer-events:none;
-  transition:opacity .15s,height .3s;
+.nav-btn:hover{background:var(--s3);color:var(--t1)}
+.nav-btn.active{
+  background:linear-gradient(135deg,rgba(212,146,42,.15),rgba(245,192,80,.06));
+  border-color:var(--ln2);color:var(--g4);
 }
-.nav-rail.expanded .rail-sec-label{opacity:1;height:20px}
-
-.rail-btn{
-  display:flex;align-items:center;gap:0;
-  width:100%;height:42px;padding:0;
-  background:none;border:none;color:var(--t3);
-  cursor:pointer;transition:.15s;
-  position:relative;font-family:'Cairo',sans-serif;
-  font-weight:700;font-size:11.5px;white-space:nowrap;overflow:hidden;
-  text-align:right;direction:rtl;
-}
-.rail-btn::before{
-  content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);
-  width:3px;height:0;background:var(--g4);
-  border-radius:3px 0 0 3px;transition:height .2s;
-}
-.rail-btn.active::before{height:26px}
-.rail-btn:hover{background:var(--s2);color:var(--t1)}
-.rail-btn.active{
-  background:linear-gradient(270deg,rgba(232,168,32,.13),transparent);
-  color:var(--g4);
-}
-.rail-btn .ri{
-  width:54px;min-width:54px;text-align:center;
-  font-size:15px;transition:.15s;flex-shrink:0;
-}
-.rail-btn .rl{
-  opacity:0;transform:translateX(6px);
-  transition:opacity .18s,transform .18s;
-  pointer-events:none;
-}
-.nav-rail.expanded .rail-btn .rl{opacity:1;transform:translateX(0)}
-
-.rail-div{height:1px;background:var(--ln1);margin:4px 10px}
-
-/* Rail tooltip — visible only when collapsed */
-.nav-rail:not(.expanded) .rail-btn[title]:hover::after{
-  content:attr(title);
-  position:absolute;left:-8px;transform:translateX(-100%);
-  background:rgba(15,24,48,.98);border:1px solid var(--ln2);
-  color:var(--t1);padding:6px 10px;border-radius:8px;
-  font-size:11px;white-space:nowrap;pointer-events:none;
-  box-shadow:var(--sh2);z-index:99;
-}
-
-/* Rail pin indicator */
-.rail-pin-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--g4);position:absolute;
-  top:50%;right:5px;transform:translateY(-50%);
-  opacity:0;transition:opacity .2s;
-}
-.nav-rail.pinned .rail-pin-dot{opacity:1}
-
-/* ── Sidebar compat (unused, kept for JS selectors) ── */
-.sidebar{display:none!important}
-.nav-btn,.sb-sec,.sb-div{display:none!important}
+.nav-btn i{width:14px;text-align:center;font-size:11px}
+.sb-div{height:1px;background:var(--ln1);margin:5px 8px}
 
 /* ── MAIN ── */
 .main{flex:1;padding:12px;padding-bottom:80px;animation:fadeUp .3s ease}
@@ -465,121 +402,26 @@ label{
 .toast.e{color:#fca5a5;border-color:rgba(239,68,68,.35)}
 .toast.w{color:#fbbf24;border-color:rgba(245,158,11,.35)}
 
-/* ══ HUB BUTTON (Mobile FAB) ══ */
-.hub-btn{
-  display:none;
-  position:fixed;
-  bottom:calc(18px + var(--safe-bottom));
-  left:50%;transform:translateX(-50%);
-  z-index:300;width:58px;height:58px;border-radius:50%;
-  background:linear-gradient(135deg,var(--g1),var(--g4));
-  border:none;cursor:pointer;
-  box-shadow:0 4px 22px rgba(232,168,32,.5),0 0 0 5px rgba(232,168,32,.12);
-  color:#000;font-size:20px;
-  align-items:center;justify-content:center;
-  transition:transform .2s,box-shadow .2s;
+/* ── MOBILE NAV ── */
+.bottom-nav{
+  display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,16,32,.98);backdrop-filter:blur(20px);
+  border-top:1px solid var(--ln2);
+  padding:6px 4px calc(6px + var(--safe-bottom));
+  justify-content:space-around;align-items:stretch;
+  box-shadow:0 -4px 20px rgba(0,0,0,.5);
+}
+.bn-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;padding:8px 4px;border-radius:8px;cursor:pointer;
+  color:var(--t3);font-size:9px;font-weight:700;
+  font-family:'Cairo',sans-serif;transition:.15s;
+  border:none;background:none;flex:1;min-height:48px;
   -webkit-tap-highlight-color:transparent;
 }
-.hub-btn:active{transform:translateX(-50%) scale(0.9);box-shadow:0 2px 10px rgba(232,168,32,.4)}
-@keyframes hubPulse{
-  0%,100%{box-shadow:0 4px 22px rgba(232,168,32,.5),0 0 0 5px rgba(232,168,32,.12)}
-  50%{box-shadow:0 4px 22px rgba(232,168,32,.5),0 0 0 10px rgba(232,168,32,.06)}
-}
-.hub-btn{animation:hubPulse 3s ease infinite}
-
-/* ══ NAV LAUNCHER (Mobile Overlay) ══ */
-.nav-launcher{
-  display:none;position:fixed;inset:0;z-index:500;
-  background:rgba(4,8,16,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  flex-direction:column;
-}
-.nav-launcher.open{display:flex;animation:launcherIn .22s cubic-bezier(.4,0,.2,1)}
-@keyframes launcherIn{
-  from{opacity:0;transform:translateY(18px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.launcher-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px 10px;
-  border-bottom:1px solid var(--ln1);flex-shrink:0;
-}
-.launcher-logo-row{display:flex;align-items:center;gap:10px}
-.launcher-logo-box{
-  width:32px;height:32px;border-radius:9px;
-  background:linear-gradient(135deg,var(--g1),var(--g4));
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;color:#000;font-weight:900;
-  box-shadow:0 3px 10px rgba(232,168,32,.4);
-}
-.launcher-title{
-  font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;
-  letter-spacing:1.5px;
-  background:linear-gradient(135deg,var(--g3),var(--g6));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.launcher-sub{font-size:9px;color:var(--t3);margin-top:1px}
-.launcher-close{
-  width:34px;height:34px;border-radius:50%;
-  background:rgba(255,255,255,.07);border:1px solid var(--ln2);
-  color:var(--t2);font-size:15px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.launcher-cats{
-  display:flex;gap:6px;padding:10px 14px 8px;
-  overflow-x:auto;scrollbar-width:none;flex-shrink:0;
-}
-.launcher-cats::-webkit-scrollbar{display:none}
-.launcher-cat{
-  padding:5px 14px;border-radius:20px;
-  background:rgba(255,255,255,.05);border:1px solid var(--ln1);
-  color:var(--t2);font-size:10.5px;font-weight:700;
-  font-family:'Cairo',sans-serif;cursor:pointer;white-space:nowrap;
-  transition:.12s;flex-shrink:0;-webkit-tap-highlight-color:transparent;
-}
-.launcher-cat.active{background:rgba(232,168,32,.18);border-color:var(--g3);color:var(--g4)}
-
-.launcher-grid{
-  flex:1;overflow-y:auto;padding:6px 10px 80px;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-  align-content:start;-webkit-overflow-scrolling:touch;
-}
-.launcher-item{
-  background:rgba(12,20,40,.95);border:1px solid var(--ln1);
-  border-radius:16px;padding:14px 8px 12px;
-  cursor:pointer;display:flex;flex-direction:column;
-  align-items:center;gap:7px;text-align:center;
-  transition:.12s;-webkit-tap-highlight-color:transparent;
-  position:relative;overflow:hidden;
-}
-.launcher-item::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--ln2),transparent);
-}
-.launcher-item:active{transform:scale(0.94);background:rgba(232,168,32,.08);border-color:var(--g3)}
-.launcher-item.active{background:rgba(232,168,32,.11);border-color:var(--ln2)}
-.launcher-icon{
-  width:44px;height:44px;border-radius:13px;
-  display:flex;align-items:center;justify-content:center;font-size:19px;
-}
-.launcher-name{font-size:10px;font-weight:700;color:var(--t1);line-height:1.3}
-.launcher-desc{font-size:8px;color:var(--t3);line-height:1.4;display:none}
-
-/* current panel breadcrumb in header */
-#hdr-panel-name{
-  font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;
-  color:var(--t2);
-  background:rgba(255,255,255,.05);border:1px solid var(--ln1);
-  border-radius:7px;padding:4px 10px;flex-shrink:0;
-  transition:color .2s;display:none;
-}
-
-/* ── MOBILE NAV (compat alias, hidden) ── */
-.bottom-nav{display:none!important}
-.bn-btn{display:none!important}
+.bn-btn i{font-size:18px}
+.bn-btn.active{color:var(--g4)}
+.bn-btn:active{transform:scale(0.92)}
 
 /* ── زر إغلاق panels ── */
 .panel-close-btn {
@@ -641,9 +483,8 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
    TABLET & DESKTOP
 ═══════════════════════════════════════════════════ */
 @media (min-width: 768px) {
-  .nav-rail{display:flex!important}
-  .hub-btn{display:none!important}
-  .nav-launcher{display:none!important}
+  .sidebar{display:block!important}
+  .bottom-nav{display:none!important}
   .main{padding:20px;padding-bottom:20px}
   .hdr{height:62px;padding:0 16px;gap:12px}
   .logo{font-size:18px;gap:8px}
@@ -690,13 +531,8 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   html,body{overflow-x:hidden;max-width:100vw}
   .layout,.main,.panel,.card{max-width:100vw;overflow-x:hidden}
   
-  /* إظهار hub وإخفاء rail */
-  .nav-rail{display:none!important}
-  .hub-btn{display:flex!important}
-  #hdr-panel-name{display:flex!important}
-  
-  /* حشوة إضافية للـFAB */
-  .main{padding-bottom:90px}
+  /* إخفاء عناصر غير ضرورية */
+  .sidebar{display:none!important}
   
   /* تحسين الأزرار */
   .btn{min-height:44px;font-size:13px}
@@ -870,77 +706,32 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <div class="quota-txt" id="quota-txt">0/1500</div>
   </div>
   <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
-  <div id="hdr-panel-name">الرئيسية</div>
   <button class="hdr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
 </header>
 
 <!-- LAYOUT -->
 <div class="layout">
 
-  <!-- NAV RAIL -->
-  <nav class="nav-rail" id="nav-rail">
-    <button class="rail-toggle" id="rail-toggle-btn" onclick="toggleRail()" title="توسيع / طي">
-      <i class="fa-solid fa-bars-staggered"></i>
-    </button>
-    <div class="rail-inner">
-      <div class="rail-sec-label">التحرير</div>
-      <button class="rail-btn active" data-panel="home" title="الرئيسية">
-        <span class="ri"><i class="fa-solid fa-house"></i></span>
-        <span class="rl">الرئيسية</span>
-      </button>
-      <button class="rail-btn" data-panel="editor" title="داسك الاخبار">
-        <span class="ri"><i class="fa-solid fa-pen-nib"></i></span>
-        <span class="rl">داسك الاخبار</span>
-      </button>
-      <button class="rail-btn" data-panel="article" title="المقال الإخباري">
-        <span class="ri"><i class="fa-solid fa-newspaper"></i></span>
-        <span class="rl">المقال الإخباري</span>
-      </button>
-      <button class="rail-btn" data-panel="flash" title="فلاش ديوان FM">
-        <span class="ri"><i class="fa-solid fa-bolt"></i></span>
-        <span class="rl">فلاش ديوان FM</span>
-      </button>
-      <button class="rail-btn" data-panel="headlines" title="عناوين احترافية">
-        <span class="ri"><i class="fa-solid fa-heading"></i></span>
-        <span class="rl">عناوين احترافية</span>
-      </button>
-      <div class="rail-div"></div>
-      <div class="rail-sec-label">الأدوات</div>
-      <button class="rail-btn" data-panel="tools" title="تاريخ / رياضة">
-        <span class="ri"><i class="fa-solid fa-calendar-day"></i></span>
-        <span class="rl">تاريخ / رياضة</span>
-      </button>
-      <button class="rail-btn" data-panel="profile" title="ملف الشخصية">
-        <span class="ri"><i class="fa-solid fa-user-tie"></i></span>
-        <span class="rl">ملف الشخصية</span>
-      </button>
-      <button class="rail-btn" data-panel="radar" title="رادار إخباري">
-        <span class="ri"><i class="fa-solid fa-satellite-dish"></i></span>
-        <span class="rl">رادار إخباري</span>
-      </button>
-      <button class="rail-btn" data-panel="hidden-angle" title="الزاوية الخفية">
-        <span class="ri"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></span>
-        <span class="rl">الزاوية الخفية</span>
-      </button>
-      <button class="rail-btn" data-panel="trend" title="الترند التونسي">
-        <span class="ri"><i class="fa-solid fa-fire-flame-curved"></i></span>
-        <span class="rl">الترند التونسي</span>
-      </button>
-      <button class="rail-btn" data-panel="compare" title="مقارن الأخبار">
-        <span class="ri"><i class="fa-solid fa-code-compare"></i></span>
-        <span class="rl">مقارن الأخبار</span>
-      </button>
-      <div class="rail-div"></div>
-      <div class="rail-sec-label">الإدارة</div>
-      <button class="rail-btn" data-panel="agenda" title="الأجندة">
-        <span class="ri"><i class="fa-solid fa-calendar-days"></i></span>
-        <span class="rl">الأجندة</span>
-      </button>
-      <button class="rail-btn" data-panel="archive" title="الأرشيف">
-        <span class="ri"><i class="fa-solid fa-clock-rotate-left"></i></span>
-        <span class="rl">الأرشيف</span>
-      </button>
-    </div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sb-sec">التحرير</div>
+    <button class="nav-btn active" data-panel="home"><i class="fa-solid fa-house"></i> الرئيسية</button>
+    <button class="nav-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i> داسك الاخبار</button>
+    <button class="nav-btn" data-panel="article"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</button>
+    <button class="nav-btn" data-panel="flash"><i class="fa-solid fa-bolt"></i> فلاش ديوان FM</button>
+    <button class="nav-btn" data-panel="headlines"><i class="fa-solid fa-heading"></i> عناوين احترافية</button>
+    <div class="sb-div"></div>
+    <div class="sb-sec">الأدوات</div>
+    <button class="nav-btn" data-panel="tools"><i class="fa-solid fa-calendar-day"></i> تاريخ / رياضة</button>
+    <button class="nav-btn" data-panel="profile"><i class="fa-solid fa-user-tie"></i> ملف الشخصية</button>
+    <button class="nav-btn" data-panel="radar"><i class="fa-solid fa-satellite-dish"></i> رادار إخباري</button>
+    <button class="nav-btn" data-panel="hidden-angle"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> الزاوية الخفية</button>
+    <button class="nav-btn" data-panel="trend"><i class="fa-solid fa-fire-flame-curved"></i> الترند التونسي</button>
+    <button class="nav-btn" data-panel="compare"><i class="fa-solid fa-code-compare"></i> مقارن الأخبار</button>
+    <div class="sb-div"></div>
+    <div class="sb-sec">الإدارة</div>
+    <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
+    <button class="nav-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف</button>
   </nav>
 
   <!-- MAIN -->
@@ -1505,33 +1296,13 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   </main>
 </div>
 
-<!-- HUB BUTTON (Mobile) -->
-<button class="hub-btn" id="hub-btn" onclick="openLauncher()" aria-label="قائمة الأدوات">
-  <i class="fa-solid fa-grip"></i>
-</button>
-
-<!-- NAV LAUNCHER (Mobile) -->
-<div class="nav-launcher" id="nav-launcher">
-  <div class="launcher-head">
-    <div class="launcher-logo-row">
-      <div class="launcher-logo-box"><i class="fa-solid fa-newspaper"></i></div>
-      <div>
-        <div class="launcher-title">DESK BOT</div>
-        <div class="launcher-sub">غرفة الأخبار الرقمية</div>
-      </div>
-    </div>
-    <button class="launcher-close" onclick="closeLauncher()"><i class="fa-solid fa-xmark"></i></button>
-  </div>
-  <div class="launcher-cats" id="launcher-cats">
-    <button class="launcher-cat active" data-cat="all" onclick="filterLauncher(this,'all')">الكل</button>
-    <button class="launcher-cat" data-cat="editorial" onclick="filterLauncher(this,'editorial')">التحرير</button>
-    <button class="launcher-cat" data-cat="tools" onclick="filterLauncher(this,'tools')">الأدوات</button>
-    <button class="launcher-cat" data-cat="mgmt" onclick="filterLauncher(this,'mgmt')">الإدارة</button>
-  </div>
-  <div class="launcher-grid" id="launcher-grid">
-    <!-- filled by JS -->
-  </div>
-</div>
+<!-- MOBILE NAV -->
+<nav class="bottom-nav">
+  <button class="bn-btn active" data-panel="home"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
+  <button class="bn-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
+  <button class="bn-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i><span>الأجندة</span></button>
+  <button class="bn-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i><span>الأرشيف</span></button>
+</nav>
 
 <!-- SETTINGS MODAL -->
 <div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
@@ -2653,86 +2424,15 @@ function updateBanner() {
 }
 
 // ── NAV ──
-const PANEL_META = {
-  'home':         { name:'الرئيسية',        icon:'fa-house',                       color:'ic-gold',  cat:'all'      },
-  'editor':       { name:'داسك الاخبار',     icon:'fa-pen-nib',                     color:'ic-gold',  cat:'editorial'},
-  'article':      { name:'المقال الإخباري',  icon:'fa-newspaper',                   color:'ic-blue',  cat:'editorial'},
-  'flash':        { name:'فلاش ديوان FM',    icon:'fa-bolt',                        color:'ic-red',   cat:'editorial'},
-  'headlines':    { name:'عناوين احترافية',  icon:'fa-heading',                     color:'ic-purple',cat:'editorial'},
-  'tools':        { name:'تاريخ / رياضة',    icon:'fa-calendar-day',               color:'ic-amber', cat:'tools'    },
-  'profile':      { name:'ملف الشخصية',      icon:'fa-user-tie',                    color:'ic-green', cat:'tools'    },
-  'radar':        { name:'رادار إخباري',      icon:'fa-satellite-dish',              color:'ic-red',   cat:'tools'    },
-  'hidden-angle': { name:'الزاوية الخفية',   icon:'fa-magnifying-glass-arrow-right',color:'ic-purple',cat:'tools'    },
-  'trend':        { name:'الترند التونسي',   icon:'fa-fire-flame-curved',           color:'ic-amber', cat:'tools'    },
-  'compare':      { name:'مقارن الأخبار',    icon:'fa-code-compare',               color:'ic-blue',  cat:'tools'    },
-  'agenda':       { name:'الأجندة',          icon:'fa-calendar-days',               color:'ic-gold',  cat:'mgmt'     },
-  'archive':      { name:'الأرشيف',          icon:'fa-clock-rotate-left',           color:'ic-blue',  cat:'mgmt'     },
-};
-
 function nav(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.rail-btn, .launcher-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn, .bn-btn').forEach(b => b.classList.remove('active'));
   const p = document.getElementById('panel-' + id);
   if (p) p.classList.add('active');
   document.querySelectorAll(`[data-panel="${id}"]`).forEach(b => b.classList.add('active'));
-  // Update header breadcrumb
-  const nameEl = document.getElementById('hdr-panel-name');
-  if (nameEl && PANEL_META[id]) nameEl.textContent = PANEL_META[id].name;
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'archive') { cleanOldArchive(); renderArchive(); updateStats(); }
   if (id === 'agenda') renderAgenda();
-  closeLauncher();
-}
-
-// ── RAIL TOGGLE ──
-function toggleRail() {
-  const rail = document.getElementById('nav-rail');
-  if (!rail) return;
-  rail.classList.toggle('expanded');
-  const btn = document.getElementById('rail-toggle-btn');
-  if (btn) {
-    const exp = rail.classList.contains('expanded');
-    btn.innerHTML = exp
-      ? '<i class="fa-solid fa-xmark"></i>'
-      : '<i class="fa-solid fa-bars-staggered"></i>';
-  }
-}
-
-// ── LAUNCHER ──
-function openLauncher() {
-  buildLauncher('all');
-  document.getElementById('nav-launcher').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  // reset cats
-  document.querySelectorAll('.launcher-cat').forEach(c => c.classList.remove('active'));
-  const allCat = document.querySelector('.launcher-cat[data-cat="all"]');
-  if (allCat) allCat.classList.add('active');
-}
-function closeLauncher() {
-  const el = document.getElementById('nav-launcher');
-  if (el) el.classList.remove('open');
-  document.body.style.overflow = '';
-}
-function filterLauncher(btn, cat) {
-  document.querySelectorAll('.launcher-cat').forEach(c => c.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  buildLauncher(cat);
-}
-function buildLauncher(cat) {
-  const grid = document.getElementById('launcher-grid');
-  if (!grid) return;
-  const entries = Object.entries(PANEL_META);
-  const filtered = cat === 'all' ? entries : entries.filter(([,m]) => m.cat === cat);
-  // current active panel
-  const activePanelEl = document.querySelector('.panel.active');
-  const activePanelId = activePanelEl ? activePanelEl.id.replace('panel-','') : 'home';
-  grid.innerHTML = filtered.map(([id, m]) => {
-    const isActive = id === activePanelId;
-    return `<div class="launcher-item${isActive?' active':''}" onclick="nav('${id}')">
-      <div class="launcher-icon ${m.color}"><i class="fa-solid ${m.icon}"></i></div>
-      <div class="launcher-name">${m.name}</div>
-    </div>`;
-  }).join('');
 }
 
 // ── STATS ──
@@ -2796,25 +2496,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-panel]').forEach(btn => {
     btn.addEventListener('click', () => nav(btn.dataset.panel));
   });
-  
-  // Close launcher on backdrop tap
-  document.getElementById('nav-launcher')?.addEventListener('click', function(e) {
-    if (e.target === this) closeLauncher();
-  });
-  
-  // Expand rail on hover (desktop)
-  const rail = document.getElementById('nav-rail');
-  if (rail) {
-    let hoverTimer;
-    rail.addEventListener('mouseenter', () => {
-      if (rail.classList.contains('expanded')) return;
-      hoverTimer = setTimeout(() => rail.classList.add('expanded'), 200);
-    });
-    rail.addEventListener('mouseleave', () => {
-      clearTimeout(hoverTimer);
-      if (!rail.dataset.pinned) rail.classList.remove('expanded');
-    });
-  }
 
   // BUTTONS
   document.getElementById('btn-editor')?.addEventListener('click', runEditor);
