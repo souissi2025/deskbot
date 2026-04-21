@@ -2282,47 +2282,76 @@ function runArticleChat() {
   setStt('article', '✏️ جارٍ تعديل المقال...', 'loading');
   if (chatInp) chatInp.value = '';
 
-  // إضافة رسالة المستخدم للسجل
   S.articleChatHistory.push({ role: 'user', text: userMsg });
   renderArticleChatHistory();
 
-  // البرومبت المدمج: قواعد المقال الأصلية + طلب التعديل
   const basePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
 
-  const editPrompt = basePrompt + `
+  // بناء multi-turn: system instruction + محادثة حقيقية
+  const systemInstruction = basePrompt + `
 
-## مهمة التعديل
-لديك المقال التالي الذي أنتجته سابقاً:
+قواعد التعديل التفاعلي:
+- عند كل طلب تعديل أعِد كتابة المقال كاملاً بنفس الهيكل (عنوان رئيسي + 5 عناوين بديلة + نص المقال).
+- طبّق جميع قواعد الكتابة الصارمة.
+- لا تُعلّق على ما غيّرت — ابدأ بالعنوان الرئيسي مباشرةً.`;
 
----
+  // بناء contents متعدد الأدوار
+  const contents = [
+    {
+      role: 'user',
+      parts: [{ text: `هذا هو المقال الحالي:
+
 ${S.articleCurrentText}
----
 
-طلب الصحفي: "${userMsg}"
-
-## التعليمات:
-1. نفّذ التعديل المطلوب بدقة على المقال.
-2. أعِد إنتاج المقال كاملاً بنفس الهيكل المطلوب في قواعد الكتابة أعلاه:
-   - العنوان الرئيسي
-   - 5 عناوين بديلة مقترحة
-   - نص المقال الإخباري الكامل (هرم مقلوب، فقرات متدفقة بلا عناوين فرعية)
-3. طبّق جميع قواعد الكتابة الصارمة المذكورة أعلاه.
-4. لا تُعلّق على ما غيّرت — أعطِ المقال المعدَّل مباشرةً.
-5. ابدأ بالعنوان الرئيسي فوراً.`;
+طلب التعديل: ${userMsg}` }]
+    }
+  ];
 
   (async () => {
     try {
-      const result = await callGemini(editPrompt, model);
-      // تحديث المقال في الواجهة بعرض markdown احترافي
-      showOut('article', renderMD(result));
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.key}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: systemInstruction }] },
+            contents,
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 8192,
+              topP: 0.9,
+              thinkingConfig: { thinkingBudget: 0 }
+            }
+          })
+        }
+      );
+      if (!r.ok) {
+        const e = await r.json().catch(() => ({}));
+        if (r.status === 401) throw new Error('مفتاح API غير صحيح');
+        if (r.status === 429) throw new Error('تجاوزت حد الاستخدام — انتظر قليلاً');
+        throw new Error(e.error?.message || 'خطأ ' + r.status);
+      }
+      const d = await r.json();
+      const result = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (!result) throw new Error('لم يصل رد من النموذج');
+
+      // عرض المقال المعدَّل
+      const outEl = document.getElementById('out-article');
+      if (outEl) {
+        outEl.innerHTML = renderMD(result);
+        outEl.style.display = 'block';
+        outEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
       document.getElementById('acts-article').style.display = 'flex';
-      // حفظ النص الخام (قبل renderMD) للتعديلات اللاحقة
+
       S.articleCurrentText = result;
       S.articleChatHistory.push({ role: 'assistant', text: result });
       renderArticleChatHistory();
-      setStt('article', '✅ تم تعديل المقال بالهيكل الكامل', 'ok');
+      setStt('article', '✅ تم تعديل المقال', 'ok');
       setTimeout(() => hideStt('article'), 2500);
-      S.req++; localStorage.setItem('db12_req', S.req); updateQuota && updateQuota();
+      S.req++; localStorage.setItem('db12_req', S.req);
+      updateQuota && updateQuota();
       updateStats && updateStats();
     } catch(e) {
       setStt('article', '❌ ' + e.message, 'err');
