@@ -790,35 +790,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 .btn-ghost:hover { background:var(--glow2); border-color:var(--ln3); color:var(--t1); }
 .hdr-btn { transition:border-color .15s, color .15s, background .15s; }
 
-
-  /* ── ARTICLE CHAT ── */
-  .chat-msg {
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-size: 12px;
-    line-height: 1.6;
-    animation: fadeUp .2s ease;
-  }
-  .chat-msg.user {
-    background: rgba(167,139,250,.12);
-    border: 1px solid rgba(167,139,250,.25);
-    color: var(--purple);
-    align-self: flex-end;
-    max-width: 85%;
-    text-align: right;
-  }
-  .chat-msg.assistant {
-    background: rgba(34,197,94,.07);
-    border: 1px solid rgba(34,197,94,.2);
-    color: var(--t2);
-    align-self: flex-start;
-    max-width: 95%;
-    font-size: 11px;
-  }
-  .chat-msg.assistant strong { color: var(--green); }
-  #article-chat-history::-webkit-scrollbar { width: 3px; }
-  #article-chat-history::-webkit-scrollbar-thumb { background: var(--ln2); border-radius: 10px; }
-
 </style>
 </head>
 <body>
@@ -1117,36 +1088,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-article')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-article','مقال')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-
-        <!-- ── منطقة المحادثة التفاعلية ── -->
-        <div id="article-chat-zone" style="display:none;margin-top:12px">
-          <div style="background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:11px;color:var(--purple);display:flex;align-items:center;gap:7px">
-            <i class="fa-solid fa-comments"></i>
-            <span>يمكنك الآن تعديل المقال — اطلب حذف فقرة، إضافة موضوع، أو أي تعديل تريده</span>
-          </div>
-
-          <!-- سجل المحادثة -->
-          <div id="article-chat-history" style="max-height:200px;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:6px"></div>
-
-          <!-- حقل الطلب -->
-          <div style="display:flex;gap:6px;align-items:flex-end">
-            <textarea id="article-chat-input"
-              placeholder="مثال: احذف الفقرة الأخيرة | أضف فقرة عن الأسباب | اجعل المقال أقصر..."
-              style="flex:1;min-height:54px;max-height:120px;resize:vertical;font-size:13px;margin-bottom:0"></textarea>
-            <button class="btn btn-gold" id="btn-article-chat" onclick="runArticleChat()" style="min-width:52px;padding:12px;align-self:flex-end">
-              <i class="fa-solid fa-paper-plane"></i>
-            </button>
-          </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
-            <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="quickChat('اجعل المقال أقصر بنسبة 30%')">أقصر</button>
-            <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="quickChat('أضف مقدمة جذابة أقوى')">مقدمة أقوى</button>
-            <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="quickChat('احذف الفقرة الأخيرة')">احذف الأخيرة</button>
-            <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="quickChat('أضف خاتمة قوية')">خاتمة قوية</button>
-            <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="quickChat('اجعل الأسلوب أكثر رسمية')">أكثر رسمية</button>
-            <button class="btn btn-ghost" style="font-size:10px;padding:5px 10px" onclick="resetArticleChat()" style="color:var(--red)"><i class="fa-solid fa-rotate-right"></i> بدء من جديد</button>
-          </div>
-        </div>
-
       </div>
     </section>
 
@@ -1523,8 +1464,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 // ── STATE ──
 const S = {
   key:     localStorage.getItem('db12_gk') || '',
-  articleChatHistory: [],   // سجل محادثة المقال التفاعلية
-  articleCurrentText: '',   // النص الحالي للمقال
   archive: JSON.parse(localStorage.getItem('db12_arc') || '[]'),
   agenda:  JSON.parse(localStorage.getItem('db12_ag')  || '[]'),
   today:   new Date().toDateString(),
@@ -2225,11 +2164,6 @@ function runArticle() {
       setStt('article', articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال', 'ok');
       setTimeout(() => hideStt('article'), 3000);
       document.getElementById('acts-article').style.display = 'flex';
-      // تفعيل المحادثة التفاعلية
-      S.articleCurrentText = result;
-      S.articleChatHistory = [{ role: 'user', text: inp }, { role: 'assistant', text: result }];
-      document.getElementById('article-chat-zone').style.display = 'block';
-      renderArticleChatHistory();
       updateStats && updateStats();
     } catch(e) {
       setStt('article', '❌ ' + e.message, 'err');
@@ -2237,143 +2171,6 @@ function runArticle() {
       if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
     }
   })();
-}
-
-
-// ── ARTICLE CHAT: عرض سجل المحادثة ──
-function renderArticleChatHistory() {
-  const hist = document.getElementById('article-chat-history');
-  if (!hist) return;
-  if (S.articleChatHistory.length <= 2) {
-    hist.innerHTML = '';
-    return;
-  }
-  // عرض فقط رسائل ما بعد المقال الأول
-  const msgs = S.articleChatHistory.slice(2);
-  hist.innerHTML = msgs.map(m => {
-    if (m.role === 'user') {
-      return `<div class="chat-msg user"><i class="fa-solid fa-pen-to-square"></i> ${m.text}</div>`;
-    } else {
-      const preview = m.text.length > 120 ? m.text.substring(0, 120) + '...' : m.text;
-      return `<div class="chat-msg assistant"><i class="fa-solid fa-check-circle"></i> تم التعديل — <span>${preview}</span></div>`;
-    }
-  }).join('');
-  hist.scrollTop = hist.scrollHeight;
-}
-
-// ── ARTICLE CHAT: إدراج طلب سريع ──
-function quickChat(text) {
-  const inp = document.getElementById('article-chat-input');
-  if (inp) { inp.value = text; inp.focus(); }
-}
-
-// ── ARTICLE CHAT: تشغيل التعديل التفاعلي ──
-function runArticleChat() {
-  const chatInp = document.getElementById('article-chat-input');
-  const userMsg = (chatInp?.value || '').trim();
-  if (!userMsg) return toast('أدخل طلب التعديل', 'w');
-  if (!S.articleCurrentText) return toast('أنتج مقالاً أولاً', 'w');
-  if (!S.key) { openSettings(); return; }
-  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
-
-  const model = document.getElementById('article-model')?.value || 'gemini-2.5-flash';
-  const btn = document.getElementById('btn-article-chat');
-  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div>'; }
-  setStt('article', '✏️ جارٍ تعديل المقال...', 'loading');
-  if (chatInp) chatInp.value = '';
-
-  S.articleChatHistory.push({ role: 'user', text: userMsg });
-  renderArticleChatHistory();
-
-  const basePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
-
-  // بناء multi-turn: system instruction + محادثة حقيقية
-  const systemInstruction = basePrompt + `
-
-قواعد التعديل التفاعلي:
-- عند كل طلب تعديل أعِد كتابة المقال كاملاً بنفس الهيكل (عنوان رئيسي + 5 عناوين بديلة + نص المقال).
-- طبّق جميع قواعد الكتابة الصارمة.
-- لا تُعلّق على ما غيّرت — ابدأ بالعنوان الرئيسي مباشرةً.`;
-
-  // بناء contents متعدد الأدوار
-  const contents = [
-    {
-      role: 'user',
-      parts: [{ text: `هذا هو المقال الحالي:
-
-${S.articleCurrentText}
-
-طلب التعديل: ${userMsg}` }]
-    }
-  ];
-
-  (async () => {
-    try {
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.key}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            system_instruction: { parts: [{ text: systemInstruction }] },
-            contents,
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 8192,
-              topP: 0.9,
-              thinkingConfig: { thinkingBudget: 0 }
-            }
-          })
-        }
-      );
-      if (!r.ok) {
-        const e = await r.json().catch(() => ({}));
-        if (r.status === 401) throw new Error('مفتاح API غير صحيح');
-        if (r.status === 429) throw new Error('تجاوزت حد الاستخدام — انتظر قليلاً');
-        throw new Error(e.error?.message || 'خطأ ' + r.status);
-      }
-      const d = await r.json();
-      const result = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      if (!result) throw new Error('لم يصل رد من النموذج');
-
-      // عرض المقال المعدَّل
-      const outEl = document.getElementById('out-article');
-      if (outEl) {
-        outEl.innerHTML = renderMD(result);
-        outEl.style.display = 'block';
-        outEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      document.getElementById('acts-article').style.display = 'flex';
-
-      S.articleCurrentText = result;
-      S.articleChatHistory.push({ role: 'assistant', text: result });
-      renderArticleChatHistory();
-      setStt('article', '✅ تم تعديل المقال', 'ok');
-      setTimeout(() => hideStt('article'), 2500);
-      S.req++; localStorage.setItem('db12_req', S.req);
-      updateQuota && updateQuota();
-      updateStats && updateStats();
-    } catch(e) {
-      setStt('article', '❌ ' + e.message, 'err');
-      S.articleChatHistory.pop();
-      renderArticleChatHistory();
-    } finally {
-      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>'; }
-    }
-  })();
-}
-
-// ── ARTICLE CHAT: بدء من جديد ──
-function resetArticleChat() {
-  S.articleChatHistory = [];
-  S.articleCurrentText = '';
-  document.getElementById('article-chat-zone').style.display = 'none';
-  document.getElementById('article-chat-history').innerHTML = '';
-  document.getElementById('article-chat-input').value = '';
-  hideOut('article');
-  document.getElementById('acts-article').style.display = 'none';
-  hideStt('article');
-  toast('تم إعادة الضبط — يمكنك كتابة مقال جديد', 's');
 }
 
 
@@ -2885,16 +2682,6 @@ function toggleTheme() {
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  // Enter في حقل محادثة المقال يُرسل الطلب (Shift+Enter لسطر جديد)
-  const chatInp = document.getElementById('article-chat-input');
-  if (chatInp) {
-    chatInp.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        runArticleChat();
-      }
-    });
-  }
   cleanOldArchive();
   // Theme
   if (localStorage.getItem('db12_theme') === 'day') {
