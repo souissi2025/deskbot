@@ -1398,10 +1398,15 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <!-- ══ ARCHIVE ══ -->
     <section id="panel-archive" class="panel">
       <div class="card">
-        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف الذكي</div>
-        <input type="text" id="arc-search" placeholder="بحث في الأرشيف..." oninput="filterArchive()" style="margin-bottom:8px">
+        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف الذكي
+          <span id="arc-count-badge" style="font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;background:rgba(232,168,32,.15);color:var(--g4);border:1px solid var(--ln2);border-radius:10px;padding:2px 8px;margin-right:auto"></span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
+          <input type="text" id="arc-search" placeholder="🔍 بحث في الأرشيف..." oninput="filterArchive()" style="flex:1;margin:0">
+          <button class="btn btn-danger" style="font-size:10px;padding:8px 10px;white-space:nowrap" onclick="clearAllArchive()"><i class="fa-solid fa-trash"></i> مسح الكل</button>
+        </div>
         <div id="arc-list"></div>
-        <p style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px"><i class="fa-regular fa-clock"></i> تُحذف العمليات تلقائياً بعد 24 ساعة</p>
+        <p style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px"><i class="fa-regular fa-clock"></i> تُحذف العمليات تلقائياً بعد 24 ساعة — الأرشفة تتم تلقائياً فور اكتمال كل عملية</p>
       </div>
     </section>
 
@@ -1796,6 +1801,7 @@ async function run(name, promptKey, getPrompt, btnId) {
     const prompt = getPrompt();
     const res = await callGemini((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
     showOut(name, renderMD(res));
+    autoArchive(res, name);
     setStt(name, '✅ اكتملت المعالجة', 'ok');
     setTimeout(() => hideStt(name), 2500);
   } catch(e) {
@@ -1888,6 +1894,7 @@ async function runTranscribeStep1(prompt) {
     const m1 = res.match(/~~التفريغ الحرفي~~([\s\S]*?)~~نهاية التفريغ~~/);
     const transcribed = m1 ? m1[1].trim() : res.trim();
     if (outT) outT.innerHTML = renderMD ? renderMD(transcribed) : transcribed;
+    autoArchive(transcribed, 'transcribe');
     // حفظ النص المفرّغ للمرحلة الثانية
     window._transcribedText = transcribed;
     if (editBtn) {
@@ -1959,6 +1966,7 @@ ${transcribed}`;
     const m = res.match(/~~المقال الإخباري~~([\s\S]*)/);
     const editorial = m ? m[1].trim() : res.trim();
     if (outA) outA.innerHTML = renderMD ? renderMD(editorial) : editorial;
+    autoArchive(editorial, 'editorial');
     if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التحرير الصحفي</span>'; setTimeout(() => { if(stt) stt.style.display='none'; }, 3000); }
   } catch(e) {
     if (outA) outA.innerHTML = '<span style="color:#fca5a5">حدث خطأ: ' + e.message + '</span>';
@@ -2242,6 +2250,27 @@ function waOut(id) {
   const t = document.getElementById(id)?.innerText || '';
   if (t) window.open('https://wa.me/?text=' + encodeURIComponent(t));
 }
+// ── أرشفة تلقائية (تُستدعى بعد كل عملية ناجحة) ──
+const TYPE_LABELS = {
+  editor:'داسك الأخبار', article:'مقال إخباري', flash:'فلاش FM',
+  headlines:'عناوين', hist:'حدث اليوم', sports:'رياضي',
+  profile:'ملف شخصية', radar:'رادار', angle:'زاوية خفية',
+  trend:'ترند', compare:'مقارنة', transcribe:'تفريغ', editorial:'تحرير'
+};
+function autoArchive(text, nameOrType) {
+  if (!text || !text.trim()) return;
+  const now = Date.now();
+  const months = ['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const d = new Date(now);
+  const dateStr = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} — ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+  const type = TYPE_LABELS[nameOrType] || nameOrType;
+  S.archive.unshift({ id: now, type, content: text, date: dateStr, ts: now });
+  if (S.archive.length > 200) S.archive = S.archive.slice(0, 200);
+  localStorage.setItem('db12_arc', JSON.stringify(S.archive));
+  cleanOldArchive();
+  updateStats();
+}
+
 function arcOut(id, type) {
   const c = document.getElementById(id)?.innerText || '';
   if (!c.trim()) return toast('لا يوجد نص للأرشفة', 'w');
@@ -2270,49 +2299,111 @@ function cleanOldArchive() {
 }
 
 // ── ARCHIVE ──
+const ARC_COLORS = {
+  'داسك الأخبار':'rgba(232,168,32,.15);color:var(--g4)',
+  'مقال إخباري':'rgba(96,165,250,.15);color:var(--blue)',
+  'فلاش FM':'rgba(239,68,68,.15);color:#f87171',
+  'عناوين':'rgba(167,139,250,.15);color:var(--purple)',
+  'حدث اليوم':'rgba(245,158,11,.15);color:#fbbf24',
+  'رياضي':'rgba(34,197,94,.15);color:var(--green)',
+  'ملف شخصية':'rgba(34,197,94,.15);color:var(--green)',
+  'رادار':'rgba(239,68,68,.15);color:#f87171',
+  'زاوية خفية':'rgba(168,85,247,.15);color:#c084fc',
+  'ترند':'rgba(249,115,22,.15);color:#fb923c',
+  'مقارنة':'rgba(20,184,166,.15);color:#2dd4bf',
+  'تفريغ':'rgba(96,165,250,.15);color:var(--blue)',
+  'تحرير':'rgba(232,168,32,.15);color:var(--g4)'
+};
 function renderArchive(list) {
   const el = document.getElementById('arc-list');
   if (!el) return;
   cleanOldArchive();
   const data = list || S.archive;
-  if (!data.length) { el.innerHTML = '<p style="text-align:center;color:var(--t3);padding:20px;font-size:12px"><i class="fa-solid fa-clock-rotate-left" style="display:block;font-size:24px;margin-bottom:8px;opacity:.3"></i>لا توجد مواد مؤرشفة<br><span style="font-size:10px;color:var(--t3)">تُحفظ العمليات تلقائياً لمدة 24 ساعة</span></p>'; return; }
+  if (!data.length) {
+    el.innerHTML = `<div style="text-align:center;padding:28px 0">
+      <i class="fa-solid fa-clock-rotate-left" style="font-size:28px;color:var(--t3);opacity:.3;display:block;margin-bottom:10px"></i>
+      <div style="color:var(--t3);font-size:12px">لا توجد مواد مؤرشفة</div>
+      <div style="color:var(--t3);font-size:10px;margin-top:4px">تُحفظ جميع العمليات تلقائياً هنا فور اكتمالها</div>
+    </div>`;
+    return;
+  }
   el.innerHTML = data.map(it => {
     const ts = it.ts || it.id;
     const remaining = Math.max(0, 24*60*60*1000 - (Date.now() - ts));
     const hLeft = Math.floor(remaining / 3600000);
     const mLeft = Math.floor((remaining % 3600000) / 60000);
-    const timeLabel = remaining > 0 ? `تُحذف بعد ${hLeft}س ${mLeft}د` : 'تُحذف قريباً';
+    const timeLabel = remaining > 0 ? `${hLeft}س ${mLeft}د` : 'تُحذف قريباً';
+    const urgency = remaining < 2*3600000 ? 'color:#fca5a5' : 'color:var(--t3)';
+    const col = ARC_COLORS[it.type] || 'rgba(232,168,32,.15);color:var(--g4)';
+    const preview = it.content.replace(/<[^>]*>/g,'').substring(0, 140).trim();
     return `
-    <div class="arc-item">
+    <div class="arc-item" id="arcitem-${it.id}">
       <div class="arc-meta">
-        <span class="arc-type">${it.type}</span>
+        <span class="arc-type" style="background:${col.split(';')[0]};${col.split(';')[1]}">${it.type}</span>
         <span class="arc-date">${it.date}</span>
-        <span style="font-size:9px;color:var(--t3);margin-right:auto"><i class="fa-regular fa-clock"></i> ${timeLabel}</span>
+        <span style="font-size:9px;${urgency};display:flex;align-items:center;gap:3px;margin-right:auto">
+          <i class="fa-regular fa-clock"></i> ${timeLabel}
+        </span>
       </div>
-      <div class="arc-prev">${it.content.substring(0, 120)}...</div>
-      <div class="act-row" style="margin-top:6px">
-        <button class="btn btn-ghost" style="font-size:10px;padding:6px 8px" onclick="cpArc(${it.id})"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+      <div class="arc-prev" id="arcprev-${it.id}" style="cursor:pointer" onclick="toggleArc(${it.id})">${preview}${it.content.length > 140 ? '...' : ''}</div>
+      <div id="arcfull-${it.id}" style="display:none;margin-top:8px;font-size:12px;line-height:1.8;color:var(--t1);white-space:pre-wrap;max-height:320px;overflow-y:auto;background:rgba(0,0,0,.25);border-radius:8px;padding:10px">${it.content.replace(/</g,'&lt;')}</div>
+      <div class="act-row" style="margin-top:8px">
+        <button class="btn btn-ghost" style="font-size:10px;padding:6px 10px;flex:2" onclick="toggleArc(${it.id})">
+          <i class="fa-solid fa-eye" id="arceyeicon-${it.id}"></i> <span id="arceyetxt-${it.id}">عرض</span>
+        </button>
+        <button class="btn btn-ghost" style="font-size:10px;padding:6px 10px;flex:2" onclick="cpArc(${it.id})">
+          <i class="fa-solid fa-clipboard"></i> نسخ
+        </button>
+        <button class="btn btn-danger" style="font-size:10px;padding:6px 10px;flex:1" onclick="delArc(${it.id})">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </div>
     </div>`;
   }).join('');
 }
+function toggleArc(id) {
+  const full = document.getElementById('arcfull-' + id);
+  const icon = document.getElementById('arceyeicon-' + id);
+  const txt  = document.getElementById('arceyetxt-' + id);
+  if (!full) return;
+  const open = full.style.display !== 'none';
+  full.style.display = open ? 'none' : 'block';
+  if (icon) icon.className = open ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+  if (txt)  txt.textContent = open ? 'عرض' : 'طي';
+}
 function cpArc(id) {
   const it = S.archive.find(x => x.id === id);
-  if (it && navigator.clipboard) navigator.clipboard.writeText(it.content).then(() => toast('تم النسخ ✓', 's'));
+  if (!it) return;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(it.content).then(() => toast('تم النسخ ✓', 's'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = it.content; ta.style.cssText = 'position:fixed;left:-9999px';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); toast('تم النسخ ✓', 's'); } catch(e){}
+    document.body.removeChild(ta);
+  }
 }
 function delArc(id) {
-  if (!confirm('حذف هذا العنصر؟')) return;
   S.archive = S.archive.filter(x => x.id !== id);
   localStorage.setItem('db12_arc', JSON.stringify(S.archive));
-  renderArchive(); updateStats();
+  const el = document.getElementById('arcitem-' + id);
+  if (el) { el.style.transition = 'opacity .2s,transform .2s'; el.style.opacity = '0'; el.style.transform = 'translateX(20px)'; setTimeout(() => { renderArchive(); updateStats(); }, 220); }
+  else { renderArchive(); updateStats(); }
 }
 function filterArchive() {
   const q = (document.getElementById('arc-search')?.value || '').toLowerCase();
   renderArchive(q ? S.archive.filter(x => (x.content + x.type).toLowerCase().includes(q)) : S.archive);
 }
 function clearArchive() {
-  // مُعطَّل — الحذف يتم تلقائياً بعد 24 ساعة
   cleanOldArchive(); renderArchive(); updateStats();
+}
+function clearAllArchive() {
+  if (!confirm('هل تريد مسح جميع عناصر الأرشيف؟')) return;
+  S.archive = [];
+  localStorage.setItem('db12_arc', JSON.stringify(S.archive));
+  renderArchive(); updateStats();
+  toast('تم مسح الأرشيف ✓', 's');
 }
 
 // ── AGENDA ──
@@ -2552,6 +2643,8 @@ function updateStats() {
   const r = document.getElementById('st-req'); if (r) r.textContent = S.req;
   const a = document.getElementById('st-arc'); if (a) a.textContent = S.archive.length;
   const g = document.getElementById('st-ag'); if (g) g.textContent = S.agenda.length;
+  const badge = document.getElementById('arc-count-badge');
+  if (badge) badge.textContent = S.archive.length > 0 ? S.archive.length + ' مادة' : '';
 }
 function updateQuota() {
   const pct = Math.min((S.req / 1500) * 100, 100);
@@ -2753,6 +2846,7 @@ async function runRadar(isAuto) {
   try {
     const res = await callGeminiWithSearch(prompt, model);
     showOut('radar', renderMD(res));
+    autoArchive(res, 'radar');
     setStt('radar', '✅ اكتمل المسح الإخباري', 'ok');
     setTimeout(() => hideStt('radar'), 3000);
     document.getElementById('acts-radar').style.display = 'flex';
@@ -2896,6 +2990,7 @@ async function runHiddenAngle() {
   try {
     const res = await callGemini(PROMPT_HIDDEN_ANGLE + '\n\n' + inp, model);
     showOut('angle', renderMD(res));
+    autoArchive(res, 'angle');
     setStt('angle', '✅ اكتمل التحليل', 'ok');
     setTimeout(() => hideStt('angle'), 3000);
     document.getElementById('acts-angle').style.display = 'flex';
@@ -2920,6 +3015,7 @@ async function runTrend() {
   try {
     const res = await callGeminiWithSearch(prompt, model);
     showOut('trend', renderMD(res));
+    autoArchive(res, 'trend');
     setStt('trend', '✅ اكتمل رصد الترند', 'ok');
     setTimeout(() => hideStt('trend'), 3000);
     document.getElementById('acts-trend').style.display = 'flex';
@@ -2945,6 +3041,7 @@ async function runCompare() {
   try {
     const res = await callGeminiWithSearch(prompt, model);
     showOut('compare', renderMD(res));
+    autoArchive(res, 'compare');
     setStt('compare', '✅ اكتملت المقارنة', 'ok');
     setTimeout(() => hideStt('compare'), 3000);
     document.getElementById('acts-compare').style.display = 'flex';
