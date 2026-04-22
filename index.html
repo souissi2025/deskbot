@@ -1049,14 +1049,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 
         <label>النص الأولي للمقال <span style="color:var(--t3);font-size:11px">(إلزامي)</span></label>
         <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
-<label style="font-size:11px;color:var(--t3);">ملاحظاتك لإعادة الصياغة (اختيارية)</label>
-<textarea id="article-notes" placeholder="مثال: اختصر الفقرة الأولى، اجعل الأسلوب أكثر حيادية، أضف عنوانًا فرعيًا، احذف التكرار، ركز على الحقائق..." style="min-height:80px;margin-bottom:10px;"></textarea>
-
-<div style="background:rgba(232,168,32,0.07);border:1px solid rgba(232,168,32,0.2);border-radius:8px;padding:8px 12px;font-size:11px;color:var(--t2);line-height:1.6;">
-  <i class="fa-solid fa-lightbulb" style="color:var(--g3);margin-left:4px;"></i>
-  اكتب هنا ملاحظاتك الخاصة. ستُرسل مع النص لـ Gemini لإعادة الصياغة بدقة.
-</div>
-
 
         <!-- منطقة المرفقات -->
         <div id="article-attach-zone" style="border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.03)">
@@ -2135,15 +2127,7 @@ function runArticle() {
   hideOut('article');
 
   const articlePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
-  const notes = document.getElementById(\'article-notes\')?.value.trim();
-    let userText = cnt + inp;
-    if (notes) {
-      userText += `
-
---- [ملاحظات التحرير الخاصة بك] ---
-${notes}
----`;
-    };const userText = 'اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً عن:\n' + inp;
+  const userText = 'اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً عن:\n' + inp;
 
   (async () => {
     try {
