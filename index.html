@@ -1088,6 +1088,26 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-article')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-article','مقال')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
+
+        <!-- ── منطقة الملاحظات والتعديل ── -->
+        <div id="article-revise-zone" style="display:none;margin-top:12px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.25);border-radius:12px;padding:14px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+            <div style="width:26px;height:26px;border-radius:8px;background:rgba(167,139,250,.18);display:flex;align-items:center;justify-content:center;font-size:12px;color:#c4b5fd;flex-shrink:0"><i class="fa-solid fa-comment-pen"></i></div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#c4b5fd">ملاحظات للتعديل</div>
+              <div style="font-size:10px;color:var(--t3)">أضف ملاحظاتك لإعادة صياغة المقال أو إدراج معلومات إضافية</div>
+            </div>
+          </div>
+          <textarea id="article-notes" placeholder="مثال: أضف تصريحاً للوزير في الفقرة الثانية... أو: اجعل اللغة أكثر رسمية... أو: اختصر المقال في فقرتين..." style="min-height:80px;margin-bottom:8px;border-color:rgba(167,139,250,.3);font-size:13px"></textarea>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+            <button class="btn" id="btn-article-revise" style="flex:1;background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(167,139,250,.12));border:1px solid rgba(167,139,250,.4);color:#c4b5fd;min-height:44px" onclick="runArticleRevise()">
+              <i class="fa-solid fa-rotate-right"></i> إعادة الصياغة بناءً على الملاحظات
+            </button>
+            <button class="btn btn-ghost" onclick="document.getElementById('article-notes').value=''" style="padding:10px 12px;min-height:44px" title="مسح الملاحظات"><i class="fa-solid fa-eraser"></i></button>
+          </div>
+          <div id="stt-article-revise" class="stt"></div>
+        </div>
+
       </div>
     </section>
 
@@ -2164,6 +2184,7 @@ function runArticle() {
       setStt('article', articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال', 'ok');
       setTimeout(() => hideStt('article'), 3000);
       document.getElementById('acts-article').style.display = 'flex';
+      document.getElementById('article-revise-zone').style.display = 'block';
       updateStats && updateStats();
     } catch(e) {
       setStt('article', '❌ ' + e.message, 'err');
@@ -2173,6 +2194,56 @@ function runArticle() {
   })();
 }
 
+
+async function runArticleRevise() {
+  const notes = (document.getElementById('article-notes')?.value || '').trim();
+  if (!notes) return toast('أدخل ملاحظاتك أولاً', 'w');
+
+  const currentArticle = document.getElementById('out-article')?.innerText?.trim();
+  if (!currentArticle || currentArticle.indexOf('سيظهر') === 0) return toast('لا يوجد مقال لتعديله', 'w');
+
+  if (!S.key) { openSettings(); return; }
+  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
+
+  const btn = document.getElementById('btn-article-revise');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ التعديل...'; }
+
+  const sttRevise = document.getElementById('stt-article-revise');
+  if (sttRevise) { sttRevise.className = 'stt loading'; sttRevise.style.display = 'flex'; sttRevise.innerHTML = '<div class="spin"></div> جارٍ إعادة الصياغة بناءً على ملاحظاتك...'; }
+
+  const model = document.getElementById('article-model')?.value || 'gemini-2.5-flash';
+  const articlePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
+
+  const revisePrompt = articlePrompt + `
+
+## مهمة التعديل
+المقال التالي تم توليده مسبقاً. لديك ملاحظات من المحرر تستوجب تعديله وإعادة صياغته مع الحفاظ على المعايير الصحفية لوكالة وات وإذاعة ديوان أف أم.
+
+### المقال الأصلي:
+${currentArticle}
+
+### ملاحظات المحرر للتعديل:
+${notes}
+
+### التعليمات:
+- طبّق الملاحظات بدقة دون الخروج عن معايير التحرير الإخباري
+- احتفظ بهيكل الهرم المقلوب وجميع القواعد الصحفية المحددة
+- أنتج النص المعدّل كاملاً جاهزاً للنشر`;
+
+  try {
+    const result = await callGemini(revisePrompt, model);
+    showOut('article', renderMD(result));
+    if (sttRevise) { sttRevise.className = 'stt ok'; sttRevise.innerHTML = '✅ تم التعديل بناءً على ملاحظاتك'; }
+    setTimeout(() => { if (sttRevise) sttRevise.style.display = 'none'; }, 3000);
+    document.getElementById('article-notes').value = '';
+    updateStats && updateStats();
+  } catch(e) {
+    if (sttRevise) { sttRevise.className = 'stt err'; sttRevise.innerHTML = '❌ ' + e.message; }
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
+}
 
 function runFlash() {
   const inp = (document.getElementById('flash-input')?.value || '').trim();
@@ -2228,6 +2299,15 @@ function clearTool(name) {
   const inp = document.getElementById(name + '-input');
   if (inp) inp.value = '';
   hideOut(name); hideStt(name);
+  // إخفاء منطقة الملاحظات عند المسح
+  if (name === 'article') {
+    const rz = document.getElementById('article-revise-zone');
+    const notes = document.getElementById('article-notes');
+    const sttR = document.getElementById('stt-article-revise');
+    if (rz) rz.style.display = 'none';
+    if (notes) notes.value = '';
+    if (sttR) sttR.style.display = 'none';
+  }
 }
 
 // ── COPY / SHARE ──
