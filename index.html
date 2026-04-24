@@ -841,7 +841,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <button class="nav-btn" data-panel="trend"><i class="fa-solid fa-fire-flame-curved"></i> الترند التونسي</button>
     <button class="nav-btn" data-panel="compare"><i class="fa-solid fa-code-compare"></i> مقارن الأخبار</button>
     <button class="nav-btn" data-panel="timeline"><i class="fa-solid fa-calendar-week"></i> الجدول الزمني</button>
-    <button class="nav-btn" data-panel="radiomon"><i class="fa-solid fa-radio"></i> راصد الموجات</button>
     <div class="sb-div"></div>
     <div class="sb-sec">الإدارة</div>
     <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
@@ -1427,33 +1426,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-ghost" onclick="copyOut('out-timeline')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-timeline', 'جدول زمني')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-      </div>
-    </section>
-
-    <!-- ══ RADIO MONITOR ══ -->
-    <section id="panel-radiomon" class="panel">
-      <div class="card">
-        <div class="card-title">
-          <i class="fa-solid fa-radio" style="color:#60a5fa"></i> راصد الموجات الإذاعية
-        </div>
-        <div class="card-sub">
-          آخر ما تبثه الإذاعات التونسية على مواقعها – موجز حي من مصادر متعددة.
-        </div>
-
-        <div class="rss-header-row">
-          <button class="btn btn-gold" id="btn-radiomon" onclick="fetchRadioRSS()" style="flex:1">
-            <i class="fa-solid fa-rotate-right"></i> تحديث الموجات
-          </button>
-          <span id="radiomon-count-badge" class="rss-count-badge" style="display:none">0 خبر</span>
-          <span id="radiomon-last-update" style="font-size:9px; color:var(--t3)"></span>
-        </div>
-
-        <div id="radiomon-tabs" style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px">
-          <button class="rss-tab active" onclick="filterRadioNews(this, 'كل')">📻 الكل</button>
-        </div>
-
-        <div id="stt-radiomon" class="stt"></div>
-        <div id="radiomon-list" style="margin-top:6px"></div>
       </div>
     </section>
 
