@@ -840,6 +840,8 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <button class="nav-btn" data-panel="hidden-angle"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> الزاوية الخفية</button>
     <button class="nav-btn" data-panel="trend"><i class="fa-solid fa-fire-flame-curved"></i> الترند التونسي</button>
     <button class="nav-btn" data-panel="compare"><i class="fa-solid fa-code-compare"></i> مقارن الأخبار</button>
+    <button class="nav-btn" data-panel="timeline"><i class="fa-solid fa-calendar-week"></i> الجدول الزمني</button>
+    <button class="nav-btn" data-panel="radiomon"><i class="fa-solid fa-radio"></i> راصد الموجات</button>
     <div class="sb-div"></div>
     <div class="sb-sec">الإدارة</div>
     <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
@@ -1392,6 +1394,66 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-compare')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-compare','مقارنة')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
+      </div>
+    </section>
+
+    <!-- ══ STORY TIMELINE ══ -->
+    <section id="panel-timeline" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-calendar-week" style="color:#fbbf24"></i> الجدول الزمني التفاعلي
+        </div>
+        <div class="card-sub">
+          يحلل النص المتراكم عن قضية معينة ويستخرج تلقائياً التواريخ والأحداث المهمة لبناء تسلسل زمني احترافي.
+        </div>
+
+        <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label>
+        <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
+
+        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
+          <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()">
+            <i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني
+          </button>
+          <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px">
+            <option value="gemini-2.5-flash">Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+
+        <div id="stt-timeline" class="stt"></div>
+        <div id="out-timeline" class="out-box rendered" style="display:none"></div>
+        <div id="acts-timeline" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-timeline')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-ok" onclick="arcOut('out-timeline', 'جدول زمني')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ RADIO MONITOR ══ -->
+    <section id="panel-radiomon" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-radio" style="color:#60a5fa"></i> راصد الموجات الإذاعية
+        </div>
+        <div class="card-sub">
+          آخر ما تبثه الإذاعات التونسية على مواقعها – موجز حي من مصادر متعددة.
+        </div>
+
+        <div class="rss-header-row">
+          <button class="btn btn-gold" id="btn-radiomon" onclick="fetchRadioRSS()" style="flex:1">
+            <i class="fa-solid fa-rotate-right"></i> تحديث الموجات
+          </button>
+          <span id="radiomon-count-badge" class="rss-count-badge" style="display:none">0 خبر</span>
+          <span id="radiomon-last-update" style="font-size:9px; color:var(--t3)"></span>
+        </div>
+
+        <div id="radiomon-tabs" style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px">
+          <button class="rss-tab active" onclick="filterRadioNews(this, 'كل')">📻 الكل</button>
+        </div>
+
+        <div id="stt-radiomon" class="stt"></div>
+        <div id="radiomon-list" style="margin-top:6px"></div>
       </div>
     </section>
 
@@ -2758,6 +2820,7 @@ function nav(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'archive') { cleanOldArchive(); renderArchive(); updateStats(); }
   if (id === 'agenda') renderAgenda();
+  if (id === 'radiomon') { if (window._radioNews.length === 0) fetchRadioRSS(); }
 }
 
 // ── STATS ──
@@ -3264,6 +3327,193 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
 });
+
+// ══════════════════════════════════════════════════
+//  الجدول الزمني التفاعلي — STORY TIMELINE
+// ══════════════════════════════════════════════════
+const PROMPT_TIMELINE = `أنت محلل صحفي متخصص في بناء الجداول الزمنية. من النص المقدم، استخرج جميع التواريخ والأحداث المهمة ورتبها زمنياً تصاعدياً. إذا لم تذكر تواريخ دقيقة، استخدم الترتيب النسبي.
+
+أخرج النتيجة بالشكل التالي دون أي مقدمة:
+
+## 📅 التسلسل الزمني للقضية
+
+| التاريخ | الحدث | التفاصيل |
+|----------|--------|-----------|
+(املأ الجدول بأكبر قدر من التفاصيل)
+
+## 📌 أبرز المحطات
+- لخّص أهم 3 إلى 5 نقاط تحول في القضية.
+
+## 🔮 المسار المستقبلي المحتمل
+- بناءً على المعطيات، ما السيناريوهات المتوقعة للفترة القادمة؟ اذكرها باختصار.
+
+النص:`;
+
+async function runTimeline() {
+  const inp = (document.getElementById('timeline-input')?.value || '').trim();
+  if (!inp) return toast('أدخل النص المتراكم للقضية أولاً', 'w');
+  if (!S.key) { openSettings(); return; }
+  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
+
+  const model = document.getElementById('timeline-model')?.value || 'gemini-2.5-flash';
+  const btn = document.getElementById('btn-timeline');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ بناء الجدول الزمني...'; }
+  setStt('timeline', '📅 جارٍ استخراج التواريخ والأحداث...', 'loading');
+  hideOut('timeline');
+
+  try {
+    const res = await callGemini(PROMPT_TIMELINE + '\n\n' + inp, model);
+    showOut('timeline', renderMD(res));
+    autoArchive(res, 'timeline');
+    setStt('timeline', '✅ تم إنشاء الجدول الزمني', 'ok');
+    setTimeout(() => hideStt('timeline'), 3000);
+    document.getElementById('acts-timeline').style.display = 'flex';
+    updateStats();
+  } catch(e) {
+    setStt('timeline', e.message, 'err');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = origHTML; }
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  راصد الموجات الإذاعية — RADIO MONITOR
+// ══════════════════════════════════════════════════
+const RADIO_FEEDS = [
+  { u: 'https://www.mosaiquefm.net/ar/feed',       s: 'موزاييك FM',  cat:'عام' },
+  { u: 'https://www.jawharafm.net/ar/feed',         s: 'جوهرة FM',    cat:'عام' },
+  { u: 'https://www.diwanfm.tn/feed/',              s: 'ديوان FM',    cat:'عام' },
+  { u: 'https://www.radioexpressfm.com/feed/',      s: 'إكسبريس FM', cat:'عام' },
+];
+
+window._radioNews = [];
+window._displayedRadioNews = [];
+
+async function fetchRadioRSS() {
+  const btn = document.getElementById('btn-radiomon');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري جلب الموجات...'; }
+  setStt('radiomon', `جاري مسح ${RADIO_FEEDS.length} إذاعة...`, 'loading');
+
+  async function fetchFeed(f) {
+    const proxies = [
+      'https://api.allorigins.win/get?url=',
+      'https://corsproxy.io/?'
+    ];
+    for (const proxy of proxies) {
+      try {
+        const r = await fetch(proxy + encodeURIComponent(f.u), { signal: AbortSignal.timeout(9000) });
+        if (!r.ok) continue;
+        const raw = proxy.includes('allorigins')
+          ? (await r.json()).contents
+          : await r.text();
+        if (!raw || raw.length < 50) continue;
+        const doc = new DOMParser().parseFromString(raw, 'text/xml');
+        const items = Array.from(doc.querySelectorAll('item')).slice(0, 7);
+        return items.map(el => {
+          const title  = (el.querySelector('title')   || {}).textContent?.replace(/<!\[CDATA\[|\]\]>/g,'').trim() || '';
+          const link   = (el.querySelector('link')    || {}).textContent?.trim() || '';
+          const pubStr = (el.querySelector('pubDate') || {}).textContent || '';
+          const pubDate = pubStr ? new Date(pubStr) : null;
+          return { title, link, src: f.s, cat: f.cat, pubDate };
+        }).filter(n => n.title.length > 5);
+      } catch { continue; }
+    }
+    return [];
+  }
+
+  const results = await Promise.allSettled(RADIO_FEEDS.map(f => fetchFeed(f)));
+  let news = [];
+  results.forEach(r => { if (r.status === 'fulfilled') r.value.forEach(n => news.push(n)); });
+
+  news.sort((a, b) => {
+    if (!a.pubDate && !b.pubDate) return 0;
+    if (!a.pubDate) return 1;
+    if (!b.pubDate) return -1;
+    return b.pubDate - a.pubDate;
+  });
+
+  window._radioNews = news;
+
+  if (!news.length) {
+    document.getElementById('radiomon-list').innerHTML =
+      '<p style="text-align:center; color:var(--t3); padding:24px; font-size:11px"><i class="fa-solid fa-triangle-exclamation"></i> تعذر جلب أخبار الإذاعات — تأكد من الاتصال</p>';
+    setStt('radiomon', 'فشل جلب الموجات', 'err');
+  } else {
+    renderRadioNews(news);
+    const srcCount = new Set(news.map(n => n.src)).size;
+    setStt('radiomon', `✅ ${news.length} خبر من ${srcCount} إذاعة`, 'ok');
+    setTimeout(() => hideStt('radiomon'), 3500);
+    const badge = document.getElementById('radiomon-count-badge');
+    if (badge) { badge.textContent = news.length + ' خبر'; badge.style.display = 'inline'; }
+    const rt = document.getElementById('radiomon-last-update');
+    if (rt) rt.textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-TN', { hour:'2-digit', minute:'2-digit' });
+    renderRadioTabs();
+  }
+
+  if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> تحديث الموجات'; }
+}
+
+function renderRadioTabs() {
+  const container = document.getElementById('radiomon-tabs');
+  if (!container) return;
+  const stations = [...new Set(window._radioNews.map(n => n.src))].sort();
+  let html = '<button class="rss-tab active" onclick="filterRadioNews(this, \'كل\')">📻 الكل</button>';
+  stations.forEach(s => {
+    html += `<button class="rss-tab" onclick="filterRadioNews(this, '${s}')">${s}</button>`;
+  });
+  container.innerHTML = html;
+}
+
+function filterRadioNews(btn, station) {
+  document.querySelectorAll('#radiomon-tabs .rss-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const filtered = station === 'كل' ? window._radioNews : window._radioNews.filter(n => n.src === station);
+  renderRadioNews(filtered);
+}
+
+function renderRadioNews(list) {
+  const c = document.getElementById('radiomon-list');
+  if (!c) return;
+  const shown = list.slice(0, 35);
+  window._displayedRadioNews = shown;
+  if (!shown.length) {
+    c.innerHTML = '<p style="text-align:center; color:var(--t3); padding:16px; font-size:11px">لا توجد أخبار في هذا التصنيف</p>';
+    return;
+  }
+  c.innerHTML = shown.map((n, i) => {
+    const ago = formatTimeAgo(n.pubDate);
+    return `
+    <div class="news-item" style="flex-direction:column; gap:0">
+      <div style="display:flex; align-items:center; gap:5px; margin-bottom:5px; flex-wrap:wrap">
+        <span class="news-src src-tn">${n.src}</span>
+        ${ago ? `<span class="news-time-badge">${ago}</span>` : ''}
+        <div style="margin-right:auto; display:flex; gap:4px">
+          <button class="news-send-btn" onclick="sendRadioToEditor(${i})" title="إرسال للمحرر">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button class="news-open-btn" onclick="window.open('${n.link.replace(/'/g,"\\'")}','_blank')" title="فتح الخبر">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </button>
+        </div>
+      </div>
+      <span class="news-title">${n.title}</span>
+    </div>`;
+  }).join('');
+}
+
+function sendRadioToEditor(idx) {
+  const n = window._displayedRadioNews && window._displayedRadioNews[idx];
+  if (!n) return;
+  const inp = document.getElementById('editor-input');
+  if (inp) {
+    inp.value = n.title;
+    nav('editor');
+    toast('✅ تم إرسال الخبر للمحرر', 's');
+    setTimeout(() => inp.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+  }
+}
+
 </script>
 
 </body>
