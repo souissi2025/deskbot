@@ -278,7 +278,7 @@ label{
 .out-box.rendered ul,.out-box.rendered ol{padding-right:16px;margin:5px 0 8px}
 
 .act-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.act-row .btn{flex:1;min-width:0;padding:10px 8px;font-size:12px;min-height:40px}
+.act-row .btn{flex:1;min-width:80px;padding:10px 8px;font-size:12px;min-height:40px}
 
 /* ── HOME STATS ── */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
@@ -413,13 +413,13 @@ label{
 }
 .bn-btn{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;padding:8px 4px;border-radius:8px;cursor:pointer;
-  color:var(--t3);font-size:9px;font-weight:700;
+  gap:2px;padding:6px 2px;border-radius:8px;cursor:pointer;
+  color:var(--t3);font-size:8px;font-weight:700;
   font-family:'Cairo',sans-serif;transition:.15s;
   border:none;background:none;flex:1;min-height:48px;
   -webkit-tap-highlight-color:transparent;
 }
-.bn-btn i{font-size:18px}
+.bn-btn i{font-size:16px}
 .bn-btn.active{color:var(--g4)}
 .bn-btn:active{transform:scale(0.92)}
 
@@ -536,7 +536,10 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   
   /* تحسين الأزرار */
   .btn{min-height:44px;font-size:13px}
-  .act-row .btn{min-height:40px;font-size:11px;padding:8px 6px}
+  .act-row .btn{min-height:40px;font-size:11px;padding:8px 6px;min-width:72px}
+  /* إصلاح صفوف الأزرار المتعددة */
+  div[style*="display:flex"][style*="gap:6px"]{flex-wrap:wrap}
+  div[style*="display:flex"][style*="flex-wrap:wrap"]{flex-wrap:wrap}
   
   /* تحسين الحقول */
   textarea,input,select{font-size:16px;padding:12px}
@@ -789,6 +792,45 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 .btn-ghost { transition:background .15s, border-color .15s, color .15s; }
 .btn-ghost:hover { background:var(--glow2); border-color:var(--ln3); color:var(--t1); }
 .hdr-btn { transition:border-color .15s, color .15s, background .15s; }
+
+/* ── MORE MENU OVERLAY ── */
+#more-menu-overlay{
+  position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.7);
+  display:none;align-items:flex-end;
+  backdrop-filter:blur(6px);
+}
+#more-menu-overlay.open{display:flex;animation:fadeUp .2s ease}
+#more-menu{
+  width:100%;background:rgba(10,16,32,.99);
+  border-top:1px solid var(--ln2);border-radius:20px 20px 0 0;
+  padding:16px 12px calc(16px + var(--safe-bottom));
+  box-shadow:0 -8px 32px rgba(0,0,0,.6);
+  animation:slideUp .25s cubic-bezier(.22,1,.36,1);
+  max-height:75vh;overflow-y:auto;
+}
+.mm-title{
+  font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:2px;
+  color:var(--t3);text-transform:uppercase;padding:0 4px 10px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mm-close{background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;padding:0}
+.mm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mm-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:12px 6px;border-radius:12px;cursor:pointer;
+  background:rgba(255,255,255,.04);border:1px solid var(--ln1);
+  color:var(--t2);font-size:10px;font-weight:700;
+  font-family:'Cairo',sans-serif;transition:.15s;
+  -webkit-tap-highlight-color:transparent;min-height:72px;
+}
+.mm-btn i{font-size:20px;color:var(--g3)}
+.mm-btn:active{background:var(--glow2);border-color:var(--g3);transform:scale(0.95)}
+.mm-btn.mm-active{background:rgba(232,168,32,.12);border-color:var(--ln2);color:var(--g4)}
+.mm-btn.mm-active i{color:var(--g4)}
+
+/* ── Bottom nav active dot fix ── */
+.bn-btn.active{color:var(--g4)}
+.bn-btn#bn-more.open{color:var(--g4)}
 
 </style>
 </head>
@@ -1471,9 +1513,34 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 <nav class="bottom-nav">
   <button class="bn-btn active" data-panel="home"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
   <button class="bn-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
-  <button class="bn-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i><span>الأجندة</span></button>
+  <button class="bn-btn" data-panel="flash"><i class="fa-solid fa-bolt"></i><span>فلاش</span></button>
   <button class="bn-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i><span>الأرشيف</span></button>
+  <button class="bn-btn" id="bn-more" onclick="toggleMoreMenu()"><i class="fa-solid fa-grid-2"></i><span>المزيد</span></button>
 </nav>
+
+<!-- MORE MENU -->
+<div id="more-menu-overlay" onclick="if(event.target===this)closeMoreMenu()">
+  <div id="more-menu">
+    <div class="mm-title">
+      <span>جميع الأقسام</span>
+      <button class="mm-close" onclick="closeMoreMenu()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mm-grid">
+      <button class="mm-btn" onclick="navFromMore('article')"><i class="fa-solid fa-newspaper"></i>المقال</button>
+      <button class="mm-btn" onclick="navFromMore('headlines')"><i class="fa-solid fa-heading"></i>العناوين</button>
+      <button class="mm-btn" onclick="navFromMore('tools')"><i class="fa-solid fa-calendar-day"></i>تاريخ/رياضة</button>
+      <button class="mm-btn" onclick="navFromMore('profile')"><i class="fa-solid fa-user-tie"></i>ملف الشخصية</button>
+      <button class="mm-btn" onclick="navFromMore('radar')"><i class="fa-solid fa-satellite-dish"></i>الرادار</button>
+      <button class="mm-btn" onclick="navFromMore('hidden-angle')"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>الزاوية الخفية</button>
+      <button class="mm-btn" onclick="navFromMore('trend')"><i class="fa-solid fa-fire-flame-curved"></i>الترند</button>
+      <button class="mm-btn" onclick="navFromMore('compare')"><i class="fa-solid fa-code-compare"></i>مقارن الأخبار</button>
+      <button class="mm-btn" onclick="navFromMore('timeline')"><i class="fa-solid fa-calendar-week"></i>الجدول الزمني</button>
+      <button class="mm-btn" onclick="navFromMore('rss')"><i class="fa-solid fa-rss"></i>رصد الأخبار</button>
+      <button class="mm-btn" onclick="navFromMore('radiomon')"><i class="fa-solid fa-radio"></i>راصد الموجات</button>
+      <button class="mm-btn" onclick="navFromMore('agenda')"><i class="fa-solid fa-calendar-days"></i>الأجندة</button>
+    </div>
+  </div>
+</div>
 
 <!-- SETTINGS MODAL -->
 <div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
@@ -3298,10 +3365,32 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   };
 
-});
+function toggleMoreMenu(){
+  const ov = document.getElementById('more-menu-overlay');
+  const btn = document.getElementById('bn-more');
+  if(ov.classList.contains('open')){
+    closeMoreMenu();
+  } else {
+    ov.classList.add('open');
+    btn.classList.add('open');
+    // highlight active panel in more menu
+    const cur = document.querySelector('.panel.active')?.id?.replace('panel-','');
+    document.querySelectorAll('.mm-btn').forEach(b => {
+      const pn = b.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+      b.classList.toggle('mm-active', pn === cur);
+    });
+  }
+}
+function closeMoreMenu(){
+  document.getElementById('more-menu-overlay').classList.remove('open');
+  document.getElementById('bn-more').classList.remove('open');
+}
+function navFromMore(panel){
+  closeMoreMenu();
+  nav(panel);
+}
 
-// ══════════════════════════════════════════════════
-//  الجدول الزمني التفاعلي — STORY TIMELINE
+
 // ══════════════════════════════════════════════════
 const PROMPT_TIMELINE = `أنت محلل صحفي متخصص في بناء الجداول الزمنية. من النص المقدم، استخرج جميع التواريخ والأحداث المهمة ورتبها زمنياً تصاعدياً. إذا لم تذكر تواريخ دقيقة، استخدم الترتيب النسبي.
 
