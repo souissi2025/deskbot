@@ -2231,7 +2231,7 @@ async function callGeminiAudio(prompt, base64Data, mimeType, model) {
   return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
-async function runTranscribeStep1(prompt) {
+async async function runTranscribeStep1(prompt) {
   if (!S.key) { openSettings(); return; }
   const wrap  = document.getElementById('transcribe-wrap');
   const outT  = document.getElementById('out-transcribe');
@@ -2364,7 +2364,7 @@ ${transcribed}`;
 }
 
 // ━━ تفريغ الملف الصوتي عبر Gemini Audio API (inlineData Base64) ━━
-function runSpeechTranscription(file) {
+async function runSpeechTranscription(file) {
   const wrap    = document.getElementById('transcribe-wrap');
   const outT    = document.getElementById('out-transcribe');
   const outA    = document.getElementById('out-editorial');
