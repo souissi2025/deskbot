@@ -3553,6 +3553,32 @@ document.addEventListener("DOMContentLoaded", function() {
       if (lbl2) { lbl2.textContent = f.name; }
     }
   };
+
+  window.handleEditorFile = function(input) {
+    var f = input && input.files && input.files[0];
+    if (!f) return;
+    var aw = document.getElementById("editor-attach-wrap");
+    var nm = document.getElementById("editor-file-name");
+    var ta = document.getElementById("editor-input");
+    window._editorAttachedFile = { name: f.name, type: f.type || '', file: f };
+    if (nm) nm.textContent = f.name + " (" + (f.size/1024/1024).toFixed(2) + " MB)";
+    if (aw) aw.style.display = "block";
+    if (ta && !ta.value.trim()) ta.value = "[ملف مرفق: " + f.name + "]";
+    var objUrl = URL.createObjectURL(f);
+    var ap1 = document.getElementById('editor-audio-player');
+    var aw1 = document.getElementById('editor-audio-wrap');
+    var lbl1 = document.getElementById('editor-audio-label');
+    if (ap1 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { ap1.src = objUrl; }
+    if (aw1 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { aw1.classList.add('visible'); }
+    if (lbl1) lbl1.textContent = f.name;
+    var ap2 = document.getElementById('transcribe-audio-player');
+    var aw2 = document.getElementById('transcribe-audio-wrap');
+    var lbl2 = document.getElementById('transcribe-audio-label');
+    if (ap2 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { ap2.src = objUrl; }
+    if (aw2 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { aw2.classList.add('visible'); }
+    if (lbl2) lbl2.textContent = f.name;
+  };
+
   window.removeEditorFile = function() {
     window._editorAttachedFile = null;
     var aw = document.getElementById("editor-attach-wrap");
