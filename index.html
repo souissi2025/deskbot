@@ -1008,7 +1008,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         </div>
         <input type="hidden" id="editor-mode" value="transcribe">
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-gold" id="btn-editor" style="flex:1"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
+          <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
           <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
           <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
@@ -1181,7 +1181,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <label>نص الخبر</label>
         <textarea id="headlines-input" placeholder="الصق النص هنا..."></textarea>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <button class="btn btn-gold" id="btn-headlines" style="flex:1"><i class="fa-solid fa-list"></i> توليد العناوين</button>
+          <button class="btn btn-gold" id="btn-headlines" style="flex:1" onclick="runHeadlines()"><i class="fa-solid fa-list"></i> توليد العناوين</button>
           <button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
         </div>
         <div id="stt-headlines" class="stt"></div>
@@ -2172,7 +2172,7 @@ async function run(name, promptKey, getPrompt, btnId) {
 }
 
 // ── TOOL RUNNERS ──
-function runEditor() {
+async function runEditor() {
   const inp = (document.getElementById('editor-input')?.value || '').trim();
   const mode = document.getElementById('editor-mode')?.value || 'transcribe';
 
