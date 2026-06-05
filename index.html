@@ -3577,6 +3577,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (ap2 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { ap2.src = objUrl; }
     if (aw2 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { aw2.classList.add('visible'); }
     if (lbl2) lbl2.textContent = f.name;
+    if ((f.type || '').startsWith('audio') || (f.type || '').startsWith('video')) {
+      runSpeechTranscription(f);
+    }
   };
 
   window.removeEditorFile = function() {
