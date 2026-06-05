@@ -2007,7 +2007,7 @@ async function callGeminiWithSearch(prompt, model) {
   const mdl = model || 'gemini-3.5-flash';
   const isFlash35 = mdl.includes('3.5');
   const genConfig = isFlash35
-    ? { thinkingConfig: { thinkingLevel: 'none' }, maxOutputTokens: 8192 }
+    ? { maxOutputTokens: 8192 }
     : { temperature: 0.3, maxOutputTokens: 8192, topP: 0.9 };
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
     method: 'POST',
@@ -2046,7 +2046,7 @@ async function callGemini(prompt, model) {
   const mdl = model || 'gemini-3.5-flash';
   const isFlash35 = mdl.includes('3.5');
   const genConfig = isFlash35
-    ? { thinkingConfig: { thinkingLevel: 'none' }, maxOutputTokens: 8192 }
+    ? { maxOutputTokens: 8192 }
     : { temperature: 0.7, maxOutputTokens: 8192, topP: 0.9 };
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
     method: 'POST',
@@ -2217,7 +2217,7 @@ async function callGeminiAudio(prompt, base64Data, mimeType, model) {
           { inlineData: { mimeType: mimeType, data: base64Data } }
         ]
       }],
-      generationConfig: { thinkingConfig: { thinkingLevel: 'none' }, maxOutputTokens: 8192 }
+      generationConfig: { maxOutputTokens: 8192 }
     })
   });
   if (!r.ok) {
