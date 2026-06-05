@@ -2202,11 +2202,27 @@ async function callGemini(prompt, model) {
   const isFlash35 = mdl.includes('3.5');
   const genConfig = isFlash35
     ? { thinkingConfig: { thinkingLevel: 'none' }, maxOutputTokens: 8192 }
-    : { temperature: 0.4, maxOutputTokens: 8192, topP: 0.9 };
+    : { temperature: 0.7, maxOutputTokens: 8192, topP: 0.9 };
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      system_instruction: {
+        parts: [{ text: `الدور:
+محرر أخبار رئيسي (Senior News Editor) يطبق معايير وكالة تونس إفريقيا للأنباء "وات" وإذاعة "ديوان أف أم".
+المخرجات الإلزامية (بالترتيب الصارم):
+السطر الأول حصراً: تحرير مقال جديد (حمدي).
+5 عناوين مقترحة: تقريرية، دقيقة، خالية من الإثارة.
+النص الإخباري المهيكل.
+(يُمنع توليد أي نص إضافي قبل أو بعد هذه المخرجات).
+1. هندسة الاستهلال: البدء حصراً بأفعال مبنية للمعلوم متبوعة بالجهة الفاعلة. يُمنع المبني للمجهول في بداية الخبر. الإجابة على: ماذا، متى، أين، لماذا.
+2. بروتوكول المصدر: الفقرة الثانية حصراً — وأوضحت [الجهة]، وفق بلاغ صادر عنها، أن...
+3. الأشهر: جانفي · فيفري · مارس · أفريل · ماي · جوان · جويلية · أوت · سبتمبر · أكتوبر · نوفمبر · ديسمبر.
+4. العملات الأجنبية: أضف مقابلها بالدينار التونسي بين قوسين.
+5. الهرم المقلوب: قرار رئيسي (ف1) → مصدر + وثيقة (ف2) → تفاصيل وأرقام (ف3) → سياق (ف4).
+6. كل فقرة: جملة إلى 3 جمل كحد أقصى — 20 كلمة للجملة.
+7. ممنوع مطلقاً: تم / صودق / أُقر / انعقد / استقبل / الجدير بالذكر / تجدر الإشارة.`}]
+      },
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: genConfig
     })
