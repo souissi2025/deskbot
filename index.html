@@ -900,7 +900,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
             <i class="fa-solid fa-newspaper"></i>
           </div>
           <div style="flex:1;min-width:0">
-            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--t0)">DESK BOT</div><div class="m-sec-sub" style="margin-top:4px">Gemini للرصد والبحث، وQwen للأدوات التحريرية اليومية</div>
+            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--t0)">DESK BOT</div>
             <div style="font-size:9px;color:var(--t2)">غرفة الأخبار الرقمية</div>
           </div>
           <div id="home-greeting" style="font-size:11px;font-weight:700;color:var(--g4);white-space:nowrap"></div>
@@ -1013,7 +1013,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div id="stt-editor" class="stt"></div>
@@ -1116,7 +1115,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1162,7 +1160,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1185,7 +1182,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <textarea id="headlines-input" placeholder="الصق النص هنا..."></textarea>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn btn-gold" id="btn-headlines" style="flex:1" onclick="runHeadlines()"><i class="fa-solid fa-list"></i> توليد العناوين</button>
-          <select id="headlines-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"><option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option><option value="gemini-2.5-pro">Pro 🧠</option><option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option></select><button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
+          <button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
         </div>
         <div id="stt-headlines" class="stt"></div>
         <div id="out-headlines" class="out-box rendered" style="display:none"></div>
@@ -1272,7 +1269,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
@@ -1312,7 +1308,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div style="display:flex;gap:6px;margin-bottom:10px">
@@ -1351,7 +1346,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1387,7 +1381,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div style="display:flex;gap:6px;margin-bottom:10px">
@@ -1426,7 +1419,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1460,7 +1452,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
-            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1569,27 +1560,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           احصل على مفتاحك المجاني من:
           <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
         </div>
-        <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Gemini</button>
-            </div>
-
-            <div class="m-section">
-              <div class="m-sec-head">
-                <div class="m-sec-icon" style="background:rgba(124,58,237,.16);color:#c4b5fd"><i class="fa-solid fa-rotate"></i></div>
-                <div>
-                  <div class="m-sec-title">OpenRouter / Qwen API</div>
-                  <div class="m-sec-sub">بديل اقتصادي للأدوات التحريرية</div>
-                </div>
-              </div>
-              <div id="or-key-stt" class="key-stt"></div>
-              <label>OpenRouter API</label>
-              <input type="password" id="openrouter-key-inp" placeholder="sk-or-...">
-              <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.18);border-radius:8px;padding:10px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.6">
-                <i class="fa-solid fa-circle-info" style="color:#a78bfa"></i>
-                خذ المفتاح من
-                <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" style="color:#a78bfa;font-weight:700;text-decoration:none">openrouter.ai/keys</a>
-                ثم اختر Qwen داخل الأدوات التحريرية.
-              </div>
-              <button class="btn btn-full" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;border:none" onclick="saveOpenRouterKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح OpenRouter</button>
+        <button class="btn btn-gold btn-full" onclick="saveAnyKey('gemini')"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
       </div>
       <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
@@ -1608,7 +1579,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 // ── STATE ──
 const S = {
   key:     localStorage.getItem('db12_gk') || '',
-  orKey:   localStorage.getItem('db12_ork') || '',
   archive: JSON.parse(localStorage.getItem('db12_arc') || '[]'),
   agenda:  JSON.parse(localStorage.getItem('db12_ag')  || '[]'),
   today:   new Date().toDateString(),
@@ -1620,7 +1590,6 @@ if (savedDate !== S.today) {
   localStorage.setItem('db12_req', '0');
 }
 S.req = parseInt(localStorage.getItem('db12_req') || '0');
-window.addEventListener('load',()=>{ const g=document.getElementById('gemini-key-inp'); if(g&&S.key) g.value=S.key; const o=document.getElementById('openrouter-key-inp'); if(o&&S.orKey) o.value=S.orKey; });
 
 // ── PROMPTS ──
 const SYS = `أنت DESK BOT — نظام غرفة الأخبار الرقمية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم.
@@ -3085,6 +3054,32 @@ function openSettings() {
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
+
+function saveAnyKey(kind){
+  const gem = document.getElementById('gemini-key-inp');
+  const orr = document.getElementById('openrouter-key-inp');
+  if(kind==='gemini'){
+    const v=(gem&&gem.value?gem.value:'').trim();
+    if(!v){ toast('أدخل مفتاح Gemini','w'); return; }
+    try{ localStorage.setItem('db12gk', v); }catch(e){ toast('تعذر حفظ Gemini','e'); return; }
+    S.key=v;
+    if(gem) gem.value=v;
+    toast('تم حفظ المفتاح','s');
+    setTimeout(()=>{ if(window.closeSettings) closeSettings(); }, 450);
+    return;
+  }
+  if(kind==='openrouter'){
+    const v=(orr&&orr.value?orr.value:'').trim();
+    if(!v){ toast('أدخل مفتاح OpenRouter','w'); return; }
+    try{ localStorage.setItem('db12ork', v); }catch(e){ toast('تعذر حفظ OpenRouter','e'); return; }
+    S.orKey=v;
+    if(orr) orr.value=v;
+    toast('تم حفظ المفتاح','s');
+    setTimeout(()=>{ if(window.closeSettings) closeSettings(); }, 450);
+    return;
+  }
+}
+
 function saveKey() {
   const k = (document.getElementById('gemini-key-inp')?.value || '').trim();
   if (!k) return toast('أدخل المفتاح أولاً', 'w');
