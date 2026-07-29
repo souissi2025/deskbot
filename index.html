@@ -1013,6 +1013,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div id="stt-editor" class="stt"></div>
@@ -1115,6 +1116,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1160,6 +1162,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1182,7 +1185,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <textarea id="headlines-input" placeholder="الصق النص هنا..."></textarea>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn btn-gold" id="btn-headlines" style="flex:1" onclick="runHeadlines()"><i class="fa-solid fa-list"></i> توليد العناوين</button>
-          <button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
+          <select id="headlines-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"><option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option><option value="gemini-2.5-pro">Pro 🧠</option><option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option></select><button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
         </div>
         <div id="stt-headlines" class="stt"></div>
         <div id="out-headlines" class="out-box rendered" style="display:none"></div>
@@ -1269,6 +1272,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
@@ -1308,6 +1312,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div style="display:flex;gap:6px;margin-bottom:10px">
@@ -1346,6 +1351,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1381,6 +1387,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
         </div>
         <div style="display:flex;gap:6px;margin-bottom:10px">
@@ -1419,6 +1426,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1452,6 +1460,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px">
             <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
             <option value="gemini-2.5-pro">Pro 🧠</option>
+            <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option>
           </select>
           <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
         </div>
@@ -1599,6 +1608,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 // ── STATE ──
 const S = {
   key:     localStorage.getItem('db12_gk') || '',
+  orKey:   localStorage.getItem('db12_ork') || '',
   archive: JSON.parse(localStorage.getItem('db12_arc') || '[]'),
   agenda:  JSON.parse(localStorage.getItem('db12_ag')  || '[]'),
   today:   new Date().toDateString(),
@@ -1610,6 +1620,7 @@ if (savedDate !== S.today) {
   localStorage.setItem('db12_req', '0');
 }
 S.req = parseInt(localStorage.getItem('db12_req') || '0');
+window.addEventListener('load',()=>{ const g=document.getElementById('gemini-key-inp'); if(g&&S.key) g.value=S.key; const o=document.getElementById('openrouter-key-inp'); if(o&&S.orKey) o.value=S.orKey; });
 
 // ── PROMPTS ──
 const SYS = `أنت DESK BOT — نظام غرفة الأخبار الرقمية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم.
