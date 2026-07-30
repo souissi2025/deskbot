@@ -832,6 +832,69 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 .bn-btn.active{color:var(--g4)}
 .bn-btn#bn-more.open{color:var(--g4)}
 
+
+
+/* SETTINGS ULTRA POLISH */
+.m-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.m-head .m-title{font-size:15px;font-weight:900;color:#f7e1a8}
+.m-head .m-sub{font-size:10px;color:#a99972;line-height:1.5;margin-top:3px}
+.m-section{
+  position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:1px solid rgba(212,166,58,.14);
+  border-radius:20px;
+  padding:14px;
+  margin-bottom:14px;
+  box-shadow:0 14px 32px rgba(0,0,0,.2);
+}
+.m-section::before{
+  content:'';position:absolute;inset:0;border-radius:20px;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.04),transparent 40%,rgba(212,166,58,.03));
+}
+.m-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;position:relative;z-index:1}
+.m-sec-icon{
+  width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,rgba(212,166,58,.18),rgba(124,140,255,.08));
+  border:1px solid rgba(255,255,255,.08);font-size:16px;flex:0 0 auto;
+}
+.m-sec-title{font-size:14px;font-weight:900;color:#f7dfaa;line-height:1.45}
+.m-sec-sub{font-size:11px;color:#b7a37a;line-height:1.55;margin-top:2px}
+.key-stt{min-height:20px;font-size:11px;color:#9db2d9;display:flex;align-items:center;gap:6px;margin:0 0 10px}
+.label-compact{font-size:11px;color:#cfb27a;font-weight:800;margin:0 0 7px}
+.input-wrap{position:relative;margin-bottom:10px}
+.input-wrap input{
+  width:100%;margin:0;padding:14px 14px 14px 44px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(6,10,18,.92),rgba(12,18,31,.95));
+  border:1px solid rgba(212,166,58,.16);color:#fff;outline:none;
+}
+.input-wrap input::placeholder{color:#7d88a8}
+.input-wrap .in-icon{
+  position:absolute;inset:50% auto auto 14px;transform:translateY(-50%);
+  color:#9fb4ff;font-size:12px;opacity:.95
+}
+.api-help{
+  background:rgba(96,165,250,.07);
+  border:1px solid rgba(96,165,250,.14);
+  border-radius:14px;
+  padding:10px 11px;
+  margin-bottom:11px;
+  font-size:11px;line-height:1.8;color:#c9d7ff
+}
+.api-help a{color:#8ab4ff;font-weight:800;text-decoration:none}
+.api-help .small{display:block;color:#9bb0da;font-size:10px;margin-top:2px}
+.btn-full{
+  width:100%;min-height:46px;border-radius:14px;font-weight:900;letter-spacing:.2px;
+  box-shadow:0 12px 24px rgba(0,0,0,.2)
+}
+.btn-gold{background:linear-gradient(135deg,#a56b10,#d99f1d 48%,#f0b93a);color:#1c1203}
+.btn-ghost{background:rgba(255,255,255,.03);border:1px solid rgba(212,166,58,.14);color:#e9d6aa}
+.settings-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(212,166,58,.18),transparent);margin:14px 0}
+
+@media (max-width:420px){
+  .m-section{padding:12px;border-radius:18px}
+  .m-sec-title{font-size:13px}
+}
+
 </style>
 </head>
 <body>
@@ -1560,7 +1623,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           احصل على مفتاحك المجاني من:
           <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
         </div>
-        <button class="btn btn-gold btn-full" onclick="saveAnyKey('gemini')"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
+        <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
       </div>
       <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
@@ -3054,32 +3117,6 @@ function openSettings() {
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
-
-function saveAnyKey(kind){
-  const gem = document.getElementById('gemini-key-inp');
-  const orr = document.getElementById('openrouter-key-inp');
-  if(kind==='gemini'){
-    const v=(gem&&gem.value?gem.value:'').trim();
-    if(!v){ toast('أدخل مفتاح Gemini','w'); return; }
-    try{ localStorage.setItem('db12gk', v); }catch(e){ toast('تعذر حفظ Gemini','e'); return; }
-    S.key=v;
-    if(gem) gem.value=v;
-    toast('تم حفظ المفتاح','s');
-    setTimeout(()=>{ if(window.closeSettings) closeSettings(); }, 450);
-    return;
-  }
-  if(kind==='openrouter'){
-    const v=(orr&&orr.value?orr.value:'').trim();
-    if(!v){ toast('أدخل مفتاح OpenRouter','w'); return; }
-    try{ localStorage.setItem('db12ork', v); }catch(e){ toast('تعذر حفظ OpenRouter','e'); return; }
-    S.orKey=v;
-    if(orr) orr.value=v;
-    toast('تم حفظ المفتاح','s');
-    setTimeout(()=>{ if(window.closeSettings) closeSettings(); }, 450);
-    return;
-  }
-}
-
 function saveKey() {
   const k = (document.getElementById('gemini-key-inp')?.value || '').trim();
   if (!k) return toast('أدخل المفتاح أولاً', 'w');
