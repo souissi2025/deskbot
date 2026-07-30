@@ -1513,23 +1513,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
      </div>
-     <div class="m-section" id="qwen-settings-card">
-      <div class="m-sec-head">
-       <div class="m-sec-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(124,140,255,.12));color:#ddd6fe">
-        <i class="fa-solid fa-rotate"></i>
-       </div>
-       <div>
-        <div class="m-sec-title">OpenRouter / Qwen API</div>
-        <div class="m-sec-sub">مفتاح مستقل لتشغيل Qwen</div>
-       </div>
-      </div>
-      <div id="or-key-stt" class="key-stt">جاهز لاستقبال مفتاح OpenRouter</div>
-      <div class="label-compact">OpenRouter API</div>
-      <div class="input-wrap">
-       <i class="fa-solid fa-key in-icon" style="color:#c4b5fd"></i><input type="password" id="openrouter-key-inp" placeholder="sk-or-...">
-      </div>
-      <button class="btn btn-gold btn-full" type="button" onclick="saveQwenKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح Qwen</button>
-     </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
    </div>
@@ -1538,6 +1521,15 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   <div class="toast" id="toast"></div>
   <div id="autosave-ind">💾 حُفظ تلقائياً</div>
   <script>
+const OR_KEY_STORAGE='db12ork';
+function getQwenKey(){ return (localStorage.getItem(OR_KEY_STORAGE) || S.orKey || '').trim(); }
+function setQwenKey(v){ localStorage.setItem(OR_KEY_STORAGE, v); S.orKey = v; }
+function saveQwenKey(){ const i=document.getElementById('openrouter-key-inp'); const s=document.getElementById('or-key-stt'); const v=(i?.value||'').trim(); if(!v){ if(s) s.innerHTML='<span style="color:#fbbf24">أدخل مفتاح OpenRouter</span>'; toast('أدخل مفتاح OpenRouter','w'); return false; } setQwenKey(v); if(s) s.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; toast('تم حفظ المفتاح','s'); return true; }
+function restoreQwenKey(){ const i=document.getElementById('openrouter-key-inp'); const s=document.getElementById('or-key-stt'); const v=getQwenKey(); if(i) i.value=v; if(s && v) s.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; }
+function isQwenModel(m){ const x=String(m||'').toLowerCase(); return x.includes('qwen') || x.includes('openrouter') || x.includes(':free'); }
+async function callOpenRouter(prompt, model){ const key=getQwenKey(); if(!key) throw new Error('مفتاح OpenRouter غير محفوظ'); const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':location.href,'X-OpenRouter-Title':'DESK BOT'},body:JSON.stringify({model:model||'qwen/qwen3.6-plus:free',messages:[{role:'system',content:'You are an Arabic newsroom assistant specialized in editing, headlines, and article polishing.'},{role:'user',content:prompt}],temperature:0.35})}); if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message || ('OpenRouter '+r.status)); } const d=await r.json(); return d?.choices?.[0]?.message?.content || ''; }
+function modelRunner(model){ return isQwenModel(model) ? callOpenRouter : callGemini; }
+
 /* ═══════════════════════════════════════════════
    DESK BOT v12 — BRAIN
 ═══════════════════════════════════════════════ */
@@ -3466,6 +3458,8 @@ async function runCompare() {
   }
 }
 
+
+window.addEventListener('load', restoreQwenKey);
 </script>
   <script>
 document.addEventListener("DOMContentLoaded", function() {
