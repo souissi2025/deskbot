@@ -1126,7 +1126,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
-       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-article" class="stt"></div>
@@ -1166,7 +1166,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-flash" class="stt"></div>
@@ -1276,7 +1276,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
        <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
@@ -1300,7 +1300,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
@@ -1328,7 +1328,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-angle" class="stt"></div>
@@ -1351,7 +1351,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
@@ -1379,7 +1379,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-compare" class="stt"></div>
@@ -1401,7 +1401,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-timeline" class="stt"></div>
@@ -1513,6 +1513,27 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
      </div>
+     <div class="settings-divider"></div>
+     <div class="m-section">
+      <div class="m-sec-head">
+       <div class="m-sec-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(124,140,255,.12));color:#ddd6fe">
+        <i class="fa-solid fa-rotate"></i>
+       </div>
+       <div>
+        <div class="m-sec-title">OpenRouter / Qwen API</div>
+        <div class="m-sec-sub">هذه النافذة هي التي تتيح استخدام Qwen</div>
+       </div>
+      </div>
+      <div id="or-key-stt" class="key-stt">جاهز لاستقبال مفتاح OpenRouter</div>
+      <div class="label-compact">OpenRouter API</div>
+      <div class="input-wrap">
+       <i class="fa-solid fa-key in-icon" style="color:#c4b5fd"></i><input type="password" id="openrouter-key-inp" placeholder="sk-or-...">
+      </div>
+      <div class="api-help" style="background:linear-gradient(135deg,rgba(124,58,237,.10),rgba(255,255,255,.02));border-color:rgba(124,58,237,.18);color:#e2d8ff">
+       <i class="fa-solid fa-circle-info"></i> احصل على المفتاح من <a href="https://openrouter.ai/keys" target="_blank" style="color:#c4b5fd">openrouter.ai/keys</a>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="saveAnyKey('openrouter')"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
+     </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
    </div>
@@ -1539,6 +1560,7 @@ if (savedDate !== S.today) {
   localStorage.setItem('db12_req', '0');
 }
 S.req = parseInt(localStorage.getItem('db12_req') || '0');
+window.addEventListener('load',()=>{ const g=document.getElementById('gemini-key-inp'); if(g) g.value = localStorage.getItem('db12gk') || S.key || ''; const o=document.getElementById('openrouter-key-inp'); if(o) o.value = localStorage.getItem('db12ork') || S.orKey || ''; const gs=document.getElementById('key-stt'); if(gs && (localStorage.getItem('db12gk') || S.key)) gs.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; const os=document.getElementById('or-key-stt'); if(os && (localStorage.getItem('db12ork') || S.orKey)) os.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; });
 
 // ── PROMPTS ──
 const SYS = `أنت DESK BOT — نظام غرفة الأخبار الرقمية لوكالة تونس إفريقيا للأنباء "وات" وإذاعة ديوان أف أم.
@@ -3003,6 +3025,20 @@ function openSettings() {
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
+function saveAnyKey(kind){
+  const g=document.getElementById('gemini-key-inp');
+  const o=document.getElementById('openrouter-key-inp');
+  const gs=document.getElementById('key-stt');
+  const os=document.getElementById('or-key-stt');
+  if(kind==='gemini'){
+    const v=(g?.value||'').trim();
+    if(!v){ if(gs) gs.innerHTML='<span style="color:#fbbf24">أدخل مفتاح Gemini</span>'; return toast('أدخل مفتاح Gemini','w'); }
+    localStorage.setItem('db12gk',v); S.key=v; if(gs) gs.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; toast('تم حفظ المفتاح','s'); setTimeout(()=>{ if(window.closeSettings) closeSettings(); },250); return;
+  }
+  const v=(o?.value||'').trim();
+  if(!v){ if(os) os.innerHTML='<span style="color:#fbbf24">أدخل مفتاح OpenRouter</span>'; return toast('أدخل مفتاح OpenRouter','w'); }
+  localStorage.setItem('db12ork',v); S.orKey=v; if(os) os.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; toast('تم حفظ المفتاح','s'); setTimeout(()=>{ if(window.closeSettings) closeSettings(); },250); return;
+}
 function saveKey() {
   const k = (document.getElementById('gemini-key-inp')?.value || '').trim();
   if (!k) return toast('أدخل المفتاح أولاً', 'w');
