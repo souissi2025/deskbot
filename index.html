@@ -3870,25 +3870,20 @@ function sendRadioToEditor(idx) {
 (function(){
   const KEY='db12ork';
   const QMODEL='qwen/qwen3.6-plus-free';
-  const ids=['article-model','flash-model','transcribe-model','headlines-model'];
-  const saved=()=>!!(localStorage.getItem(KEY)||'').trim();
+  const SEL=['article-model','flash-model','transcribe-model','headlines-model'];
+  const hasQ=()=>!!(localStorage.getItem(KEY)||'').trim();
   function sync(){
-    ids.forEach(id=>{
+    for(const id of SEL){
       const el=document.getElementById(id);
-      if(!el) return;
-      if(el.tagName==='SELECT'){
-        if(!el.querySelector(`option[value="${QMODEL}"]`)){
-          const o=document.createElement('option');
-          o.value=QMODEL;
-          o.textContent='Qwen 3.6 Plus (OpenRouter)';
-          el.appendChild(o);
-        }
-        if(saved()) el.value=QMODEL;
+      if(!el || el.tagName!=='SELECT') continue;
+      if(!el.querySelector(`option[value="${QMODEL}"]`)){
+        const o=document.createElement('option'); o.value=QMODEL; o.textContent='Qwen 3.6 Plus (OpenRouter)'; el.appendChild(o);
       }
-    });
+      if(hasQ()) el.value=QMODEL;
+    }
   }
-  function hook(name){ const old=window[name]; if(typeof old!=='function') return; window[name]=async function(){ sync(); try{ return await old.apply(this, arguments); } catch(e){ const msg=String(e?.message||e||''); if(/failed to fetch|cors|network/i.test(msg)){ const out=document.getElementById('out-transcribe')||document.getElementById('out-article')||document.getElementById('out-flash')||document.getElementById('out-headlines'); if(out) out.innerHTML='<div style="padding:12px;border:1px solid #f59e0b;border-radius:10px;background:rgba(245,158,11,.08)">❌ Failed to fetch: المشكلة غالبًا من الاستدعاء المباشر من المتصفح (CORS) أو من دالة التشغيل نفسها، وليس فقط من مفتاح كوين المخزن.</div>'; } throw e; } }; }
-  document.addEventListener('DOMContentLoaded',()=>{ sync(); ['runArticle','runFlash','runTranscribe','runHeadlines','runAudioTranscribe','runTranscribeEdit'].forEach(hook); });
+  function wrap(name){ const fn=window[name]; if(typeof fn!=='function') return; window[name]=async function(){ sync(); try{return await fn.apply(this,arguments);} catch(e){ const m=String(e?.message||e||''); if(/failed to fetch|cors|network/i.test(m)){ const ids=['out-article','out-flash','out-transcribe','out-headlines']; for(const id of ids){ const el=document.getElementById(id); if(el){ el.innerHTML='<div style="padding:12px;border:1px solid #f59e0b;border-radius:10px;background:rgba(245,158,11,.08)">❌ Failed to fetch: غالبًا استدعاء المتصفح المباشر يواجه CORS أو أن دالة الزر لا تمرر النموذج إلى OpenRouter بشكل صحيح.</div>'; break; } } } throw e; } }; }
+  document.addEventListener('DOMContentLoaded',()=>{ sync(); ['runArticle','runFlash','runTranscribe','runHeadlines','runAudioTranscribe','runTranscribeEdit'].forEach(wrap); });
   new MutationObserver(sync).observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
