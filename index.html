@@ -1,15 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#060a12">
-  <title>DESK BOT — غرفة الأخبار الرقمية</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Amiri:wght@400;700&amp;family=Oswald:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#060a12">
+<title>DESK BOT — غرفة الأخبار الرقمية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
 /* ═══════════════════════════════════════════════════
    DESK BOT v12 · MOBILE OPTIMIZED
 ═══════════════════════════════════════════════════ */
@@ -833,40 +833,41 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 .bn-btn#bn-more.open{color:var(--g4)}
 
 </style>
-  <style>.key-wrap{display:flex;gap:8px;align-items:center}.key-wrap input{flex:1}.key-toggle{min-width:44px;height:44px;border:1px solid var(--ln2);background:rgba(255,255,255,.05);border-radius:10px;color:var(--t1)}.key-actions{display:flex;gap:8px;margin:8px 0 0}.key-actions .btn{flex:1}.msi-o{background:rgba(249,115,22,.14)}</style>
- </head>
- <body>
-  <!-- API BANNER -->
-  <div id="api-banner" class="hidden">
-   <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i> <span id="banner-msg">مفتاح Gemini غير مُدخَل</span>
-   <button class="bnr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> إدخال المفتاح</button>
+</head>
+<body>
+
+<!-- API BANNER -->
+<div id="api-banner" class="hidden">
+  <i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i>
+  <span id="banner-msg">مفتاح Gemini غير مُدخَل</span>
+  <button class="bnr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> إدخال المفتاح</button>
+</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="logo" style="direction:ltr">
+    <div class="logo-box"><i class="fa-solid fa-newspaper"></i></div>
+    DESK <span class="logo-txt">BOT</span>
+    <span class="logo-ver">v12</span>
   </div>
-  <!-- HEADER -->
-  <header class="hdr">
-   <div class="logo" style="direction:ltr">
-    <div class="logo-box">
-     <i class="fa-solid fa-newspaper"></i>
-    </div>
-    DESK <span class="logo-txt">BOT</span> <span class="logo-ver">v12</span>
-   </div>
-   <div class="hdr-spacer"></div>
-   <div class="hdr-clock">
+  <div class="hdr-spacer"></div>
+  <div class="hdr-clock">
     <div id="hdr-time">--:--</div>
     <div class="hdr-clock-date" id="hdr-date">--</div>
-   </div>
-   <div class="quota-bar-wrap">
-    <div class="quota-bar">
-     <div class="quota-fill" id="quota-fill" style="width:0%"></div>
-    </div>
+  </div>
+  <div class="quota-bar-wrap">
+    <div class="quota-bar"><div class="quota-fill" id="quota-fill" style="width:0%"></div></div>
     <div class="quota-txt" id="quota-txt">0/1500</div>
-   </div>
-   <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
-   <button class="hdr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
-  </header>
-  <!-- LAYOUT -->
-  <div class="layout">
-   <!-- SIDEBAR -->
-   <nav class="sidebar">
+  </div>
+  <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
+  <button class="hdr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
     <div class="sb-sec">التحرير</div>
     <button class="nav-btn active" data-panel="home"><i class="fa-solid fa-house"></i> الرئيسية</button>
     <button class="nav-btn" data-panel="editor"><i class="fa-solid fa-microphone-lines"></i> تفريغ وتحرير</button>
@@ -886,642 +887,706 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <div class="sb-sec">الإدارة</div>
     <button class="nav-btn" data-panel="agenda"><i class="fa-solid fa-calendar-days"></i> الأجندة</button>
     <button class="nav-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف</button>
-   </nav>
-   <!-- MAIN -->
-   <main class="main">
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
     <!-- ══ HOME ══ -->
     <section id="panel-home" class="panel active">
-     <div class="card" style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-       <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(232,168,32,.4);flex-shrink:0">
-        <i class="fa-solid fa-newspaper"></i>
-       </div>
-       <div style="flex:1;min-width:0">
-        <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--t0)">DESK BOT</div>
-        <div style="font-size:9px;color:var(--t2)">غرفة الأخبار الرقمية</div>
-       </div>
-       <div id="home-greeting" style="font-size:11px;font-weight:700;color:var(--g4);white-space:nowrap"></div>
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(232,168,32,.4);flex-shrink:0">
+            <i class="fa-solid fa-newspaper"></i>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--t0)">DESK BOT</div>
+            <div style="font-size:9px;color:var(--t2)">غرفة الأخبار الرقمية</div>
+          </div>
+          <div id="home-greeting" style="font-size:11px;font-weight:700;color:var(--g4);white-space:nowrap"></div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-val" id="st-req">0</div><div class="stat-lbl">طلبات اليوم</div></div>
+          <div class="stat-card"><div class="stat-val" id="st-arc">0</div><div class="stat-lbl">مواد مؤرشفة</div></div>
+          <div class="stat-card"><div class="stat-val" id="st-ag">0</div><div class="stat-lbl">أحداث الأجندة</div></div>
+        </div>
       </div>
-      <div class="stats-grid">
-       <div class="stat-card">
-        <div class="stat-val" id="st-req">0</div>
-        <div class="stat-lbl">طلبات اليوم</div>
-       </div>
-       <div class="stat-card">
-        <div class="stat-val" id="st-arc">0</div>
-        <div class="stat-lbl">مواد مؤرشفة</div>
-       </div>
-       <div class="stat-card">
-        <div class="stat-val" id="st-ag">0</div>
-        <div class="stat-lbl">أحداث الأجندة</div>
-       </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> الأدوات المتاحة</div>
+        <div class="tool-grid">
+          <div class="tool-btn" onclick="nav('editor')">
+            <div class="tool-icon ic-gold"><i class="fa-solid fa-pen-nib"></i></div>
+            <div><div class="tool-name">داسك الاخبار</div><div class="tool-desc">تحرير + صياغة + SEO</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('article')">
+            <div class="tool-icon ic-blue"><i class="fa-solid fa-newspaper"></i></div>
+            <div><div class="tool-name">المقال الإخباري</div><div class="tool-desc">إعادة صياغة احترافية</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('flash')">
+            <div class="tool-icon ic-red"><i class="fa-solid fa-bolt"></i></div>
+            <div><div class="tool-name">فلاش ديوان FM</div><div class="tool-desc">جاهز للإلقاء</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('headlines')">
+            <div class="tool-icon ic-purple"><i class="fa-solid fa-heading"></i></div>
+            <div><div class="tool-name">عناوين احترافية</div><div class="tool-desc">12 عنواناً</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('tools')">
+            <div class="tool-icon ic-amber"><i class="fa-solid fa-calendar-day"></i></div>
+            <div><div class="tool-name">حدث اليوم</div><div class="tool-desc">تاريخ + رياضة</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('profile')">
+            <div class="tool-icon ic-green"><i class="fa-solid fa-user-tie"></i></div>
+            <div><div class="tool-name">ملف الشخصية</div><div class="tool-desc">ملف صحفي</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('radar')">
+            <div class="tool-icon" style="background:rgba(239,68,68,.15);color:#f87171"><i class="fa-solid fa-satellite-dish"></i></div>
+            <div><div class="tool-name">رادار إخباري</div><div class="tool-desc">مسح حي كل ساعتين</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('hidden-angle')">
+            <div class="tool-icon" style="background:rgba(168,85,247,.15);color:#c084fc"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></div>
+            <div><div class="tool-name">الزاوية الخفية</div><div class="tool-desc">تحليل تحقيقي عميق</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('trend')">
+            <div class="tool-icon" style="background:rgba(249,115,22,.15);color:#fb923c"><i class="fa-solid fa-fire-flame-curved"></i></div>
+            <div><div class="tool-name">الترند التونسي</div><div class="tool-desc">Google Search حي</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('compare')">
+            <div class="tool-icon" style="background:rgba(20,184,166,.15);color:#2dd4bf"><i class="fa-solid fa-code-compare"></i></div>
+            <div><div class="tool-name">مقارن الأخبار</div><div class="tool-desc">عربي × دولي</div></div>
+          </div>
+        </div>
       </div>
-     </div>
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-wand-magic-sparkles"></i> الأدوات المتاحة
-      </div>
-      <div class="tool-grid">
-       <div class="tool-btn" onclick="nav('editor')">
-        <div class="tool-icon ic-gold">
-         <i class="fa-solid fa-pen-nib"></i>
-        </div>
-        <div>
-         <div class="tool-name">داسك الاخبار</div>
-         <div class="tool-desc">تحرير + صياغة + SEO</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('article')">
-        <div class="tool-icon ic-blue">
-         <i class="fa-solid fa-newspaper"></i>
-        </div>
-        <div>
-         <div class="tool-name">المقال الإخباري</div>
-         <div class="tool-desc">إعادة صياغة احترافية</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('flash')">
-        <div class="tool-icon ic-red">
-         <i class="fa-solid fa-bolt"></i>
-        </div>
-        <div>
-         <div class="tool-name">فلاش ديوان FM</div>
-         <div class="tool-desc">جاهز للإلقاء</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('headlines')">
-        <div class="tool-icon ic-purple">
-         <i class="fa-solid fa-heading"></i>
-        </div>
-        <div>
-         <div class="tool-name">عناوين احترافية</div>
-         <div class="tool-desc">12 عنواناً</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('tools')">
-        <div class="tool-icon ic-amber">
-         <i class="fa-solid fa-calendar-day"></i>
-        </div>
-        <div>
-         <div class="tool-name">حدث اليوم</div>
-         <div class="tool-desc">تاريخ + رياضة</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('profile')">
-        <div class="tool-icon ic-green">
-         <i class="fa-solid fa-user-tie"></i>
-        </div>
-        <div>
-         <div class="tool-name">ملف الشخصية</div>
-         <div class="tool-desc">ملف صحفي</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('radar')">
-        <div class="tool-icon" style="background:rgba(239,68,68,.15);color:#f87171">
-         <i class="fa-solid fa-satellite-dish"></i>
-        </div>
-        <div>
-         <div class="tool-name">رادار إخباري</div>
-         <div class="tool-desc">مسح حي كل ساعتين</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('hidden-angle')">
-        <div class="tool-icon" style="background:rgba(168,85,247,.15);color:#c084fc">
-         <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
-        </div>
-        <div>
-         <div class="tool-name">الزاوية الخفية</div>
-         <div class="tool-desc">تحليل تحقيقي عميق</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('trend')">
-        <div class="tool-icon" style="background:rgba(249,115,22,.15);color:#fb923c">
-         <i class="fa-solid fa-fire-flame-curved"></i>
-        </div>
-        <div>
-         <div class="tool-name">الترند التونسي</div>
-         <div class="tool-desc">Google Search حي</div>
-        </div>
-       </div>
-       <div class="tool-btn" onclick="nav('compare')">
-        <div class="tool-icon" style="background:rgba(20,184,166,.15);color:#2dd4bf">
-         <i class="fa-solid fa-code-compare"></i>
-        </div>
-        <div>
-         <div class="tool-name">مقارن الأخبار</div>
-         <div class="tool-desc">عربي × دولي</div>
-        </div>
-       </div>
-      </div>
-     </div>
     </section>
+
     <!-- ══ EDITOR ══ -->
     <section id="panel-editor" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-microphone-lines"></i> تفريغ وتحرير
-      </div>
-      <div class="card-sub">تفريغ حرفي للمواد الصوتية والمرئية وتحريرها صحفياً وفق معايير وات وديوان FM</div>
-      <label>النص المراد تفريغه وتحريره</label> <textarea id="editor-input" placeholder="الصق هنا النص الحرفي أو أرفق ملفاً صوتياً / مرئياً للتفريغ التلقائي..."></textarea> <!-- منطقة المرفقات الصوتية/المرئية -->
-      <div id="editor-attach-wrap" style="display:none;margin:-4px 0 10px 0">
-       <div id="editor-attach-box" style="
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-microphone-lines"></i> تفريغ وتحرير</div>
+        <div class="card-sub">تفريغ حرفي للمواد الصوتية والمرئية وتحريرها صحفياً وفق معايير وات وديوان FM</div>
+        <label>النص المراد تفريغه وتحريره</label>
+        <textarea id="editor-input" placeholder="الصق هنا النص الحرفي أو أرفق ملفاً صوتياً / مرئياً للتفريغ التلقائي..."></textarea>
+        <!-- منطقة المرفقات الصوتية/المرئية -->
+        <div id="editor-attach-wrap" style="display:none;margin:-4px 0 10px 0">
+          <div id="editor-attach-box" style="
             background:rgba(96,165,250,.07);border:1.5px dashed rgba(96,165,250,.4);
             border-radius:12px;padding:10px 14px;font-size:12px;
             color:var(--t2);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <i class="fa-solid fa-file-audio" style="color:#60a5fa;font-size:16px"></i> <span id="editor-file-name" style="flex:1;font-size:12px">لا يوجد ملف مرفق</span>
-        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="document.getElementById('editor-file-inp').click()"><i class="fa-solid fa-upload"></i> تغيير</button>
-        <button class="btn btn-danger" style="font-size:11px;padding:5px 10px" onclick="removeEditorFile()"><i class="fa-solid fa-xmark"></i></button>
-       </div>
+            <i class="fa-solid fa-file-audio" style="color:#60a5fa;font-size:16px"></i>
+            <span id="editor-file-name" style="flex:1;font-size:12px">لا يوجد ملف مرفق</span>
+            <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="document.getElementById('editor-file-inp').click()">
+              <i class="fa-solid fa-upload"></i> تغيير
+            </button>
+            <button class="btn btn-danger" style="font-size:11px;padding:5px 10px" onclick="removeEditorFile()">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+        <!-- مشغّل الصوت — داسك الاخبار -->
+        <div class="audio-player-wrap" id="editor-audio-wrap">
+          <div class="audio-player-label">
+            <i class="fa-solid fa-headphones" style="color:#60a5fa"></i>
+            <span id="editor-audio-label">استمع للتسجيل المرفق</span>
+          </div>
+          <audio id="editor-audio-player" controls></audio>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button class="btn-wa-audio" onclick="waAudioFile('editor')">
+              <i class="fa-brands fa-whatsapp"></i> إرسال التسجيل بالواتساب
+            </button>
+            <span style="font-size:10px;color:var(--t3)">سيُفتح واتساب مع رابط التسجيل</span>
+          </div>
+        </div>
+        <!-- زر إرفاق + input مخفي -->
+        <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center">
+          <input type="file" id="editor-file-inp" accept="audio/*,video/*,.mp3,.mp4,.wav,.ogg,.m4a,.webm,.aac"
+            style="display:none" onchange="handleEditorFile(this)">
+          <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px;color:#93c5fd;border-color:rgba(96,165,250,.35)"
+            onclick="document.getElementById('editor-file-inp').click()">
+            <i class="fa-solid fa-paperclip"></i> إرفاق ملف صوتي / مرئي
+          </button>
+          <span style="font-size:10px;color:var(--t3)">MP3 · MP4 · WAV · AAC · M4A · الحجم الأقصى: 100MB</span>
+        </div>
+        <input type="hidden" id="editor-mode" value="transcribe">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
+          <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
+          <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div id="stt-editor" class="stt"></div>
+        <div id="out-editor" class="out-box rendered" style="display:none"></div>
+        <!-- فضاءا transcribe -->
+        <div id="transcribe-wrap" style="display:none;flex-direction:column;gap:14px;margin-top:14px">
+          <!-- مشغّل الصوت — تفريغ وتحرير -->
+          <div class="audio-player-wrap" id="transcribe-audio-wrap">
+            <div class="audio-player-label">
+              <i class="fa-solid fa-headphones" style="color:#60a5fa"></i>
+              <span id="transcribe-audio-label">استمع للتسجيل المرفق</span>
+            </div>
+            <audio id="transcribe-audio-player" controls></audio>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <button class="btn-wa-audio" onclick="waAudioFile('transcribe')">
+                <i class="fa-brands fa-whatsapp"></i> إرسال التسجيل بالواتساب
+              </button>
+              <span style="font-size:10px;color:var(--t3)">سيُفتح واتساب مع رابط التسجيل</span>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:0;padding:18px">
+            <div class="card-title" style="font-size:14px;margin-bottom:10px">
+              <i class="fa-solid fa-microphone-lines"></i> التفريغ الحرفي
+            </div>
+            <div id="out-transcribe" class="out-box rendered"
+              style="min-height:260px;max-height:520px;overflow-y:auto;font-size:14px;line-height:2.1">
+              <span style="color:var(--t3);font-size:12px">سيظهر هنا النص المفرّغ حرفياً...</span>
+            </div>
+            <div class="act-row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
+              <button class="btn btn-ghost" onclick="cpSec('out-transcribe')"><i class="fa-solid fa-clipboard"></i> نسخ التفريغ</button>
+              <button class="btn btn-wa" onclick="waOut('out-transcribe')"><i class="fa-brands fa-whatsapp"></i></button>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:0;padding:18px">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+              <div class="card-title" style="font-size:14px;margin-bottom:0">
+                <i class="fa-solid fa-pen-nib"></i> التحرير الصحفي — وات / ديوان FM
+              </div>
+              <button id="btn-editorial-edit"
+                class="btn"
+                style="display:none;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;padding:9px 20px;font-size:13px;gap:8px;box-shadow:0 4px 16px rgba(168,85,247,.4)"
+                onclick="runEditorialStep2()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> بدء التحرير الصحفي
+              </button>
+            </div>
+            <div id="out-editorial" class="out-box rendered"
+              style="min-height:320px;max-height:600px;overflow-y:auto;font-size:14px;line-height:2.1">
+              <span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>
+            </div>
+            <div class="act-row" style="margin-top:10px">
+              <button class="btn btn-ghost" onclick="cpSec('out-editorial')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+              <button class="btn btn-wa" onclick="waOut('out-editorial')"><i class="fa-brands fa-whatsapp"></i></button>
+              <button class="btn btn-ok" onclick="arcOut('out-editorial','تفريغ+تحرير')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="acts-editor" class="act-row" style="display:none">
+          <button class="btn btn-copy-editor" onclick="copyOut('out-editor')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-editor')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-editor','محرر')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <!-- مشغّل الصوت — داسك الاخبار -->
-      <div class="audio-player-wrap" id="editor-audio-wrap">
-       <div class="audio-player-label">
-        <i class="fa-solid fa-headphones" style="color:#60a5fa"></i> <span id="editor-audio-label">استمع للتسجيل المرفق</span>
-       </div>
-       <audio id="editor-audio-player" controls></audio>
-       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <button class="btn-wa-audio" onclick="waAudioFile('editor')"><i class="fa-brands fa-whatsapp"></i> إرسال التسجيل بالواتساب</button>
-        <span style="font-size:10px;color:var(--t3)">سيُفتح واتساب مع رابط التسجيل</span>
-       </div>
-      </div>
-      <!-- زر إرفاق + input مخفي -->
-      <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center">
-       <input type="file" id="editor-file-inp" accept="audio/*,video/*,.mp3,.mp4,.wav,.ogg,.m4a,.webm,.aac" style="display:none" onchange="handleEditorFile(this)">
-       <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px;color:#93c5fd;border-color:rgba(96,165,250,.35)" onclick="document.getElementById('editor-file-inp').click()"><i class="fa-solid fa-paperclip"></i> إرفاق ملف صوتي / مرئي</button>
-       <span style="font-size:10px;color:var(--t3)">MP3 · MP4 · WAV · AAC · M4A · الحجم الأقصى: 100MB</span>
-      </div>
-      <input type="hidden" id="editor-mode" value="transcribe">
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-       <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
-       <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-      </div>
-      <div id="stt-editor" class="stt"></div>
-      <div id="out-editor" class="out-box rendered" style="display:none"></div>
-      <!-- فضاءا transcribe -->
-      <div id="transcribe-wrap" style="display:none;flex-direction:column;gap:14px;margin-top:14px">
-       <!-- مشغّل الصوت — تفريغ وتحرير -->
-       <div class="audio-player-wrap" id="transcribe-audio-wrap">
-        <div class="audio-player-label">
-         <i class="fa-solid fa-headphones" style="color:#60a5fa"></i> <span id="transcribe-audio-label">استمع للتسجيل المرفق</span>
-        </div>
-        <audio id="transcribe-audio-player" controls></audio>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-         <button class="btn-wa-audio" onclick="waAudioFile('transcribe')"><i class="fa-brands fa-whatsapp"></i> إرسال التسجيل بالواتساب</button>
-         <span style="font-size:10px;color:var(--t3)">سيُفتح واتساب مع رابط التسجيل</span>
-        </div>
-       </div>
-       <div class="card" style="margin-bottom:0;padding:18px">
-        <div class="card-title" style="font-size:14px;margin-bottom:10px">
-         <i class="fa-solid fa-microphone-lines"></i> التفريغ الحرفي
-        </div>
-        <div id="out-transcribe" class="out-box rendered" style="min-height:260px;max-height:520px;overflow-y:auto;font-size:14px;line-height:2.1">
-         <span style="color:var(--t3);font-size:12px">سيظهر هنا النص المفرّغ حرفياً...</span>
-        </div>
-        <div class="act-row" style="margin-top:10px;flex-wrap:wrap;gap:8px">
-         <button class="btn btn-ghost" onclick="cpSec('out-transcribe')"><i class="fa-solid fa-clipboard"></i> نسخ التفريغ</button>
-         <button class="btn btn-wa" onclick="waOut('out-transcribe')"><i class="fa-brands fa-whatsapp"></i></button>
-        </div>
-       </div>
-       <div class="card" style="margin-bottom:0;padding:18px">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
-         <div class="card-title" style="font-size:14px;margin-bottom:0">
-          <i class="fa-solid fa-pen-nib"></i> التحرير الصحفي — وات / ديوان FM
-         </div>
-         <button id="btn-editorial-edit" class="btn" style="display:none;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;padding:9px 20px;font-size:13px;gap:8px;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runEditorialStep2()"><i class="fa-solid fa-wand-magic-sparkles"></i> بدء التحرير الصحفي</button>
-        </div>
-        <div id="out-editorial" class="out-box rendered" style="min-height:320px;max-height:600px;overflow-y:auto;font-size:14px;line-height:2.1">
-         <span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>
-        </div>
-        <div class="act-row" style="margin-top:10px">
-         <button class="btn btn-ghost" onclick="cpSec('out-editorial')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-         <button class="btn btn-wa" onclick="waOut('out-editorial')"><i class="fa-brands fa-whatsapp"></i></button>
-         <button class="btn btn-ok" onclick="arcOut('out-editorial','تفريغ+تحرير')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-        </div>
-       </div>
-      </div>
-      <div id="acts-editor" class="act-row" style="display:none">
-       <button class="btn btn-copy-editor" onclick="copyOut('out-editor')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-editor')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-editor','محرر')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ ARTICLE ══ -->
     <section id="panel-article" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-newspaper"></i> المقال الإخباري
-      </div>
-      <div class="card-sub">يكتب مقالاً صحفياً متكاملاً — يعالج النص الأولي والمرفقات معاً في آنٍ واحد</div>
-      <label>النص الأولي للمقال <span style="color:var(--t3);font-size:11px">(إلزامي)</span></label> <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea> <!-- منطقة المرفقات -->
-      <div id="article-attach-zone" style="border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.03)">
-       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <label for="article-file" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--blue);transition:.2s" onmouseover="this.style.background='rgba(96,165,250,.22)'" onmouseout="this.style.background='rgba(96,165,250,.12)'"> <i class="fa-solid fa-paperclip"></i> إرفاق ملف </label> <input type="file" id="article-file" accept=".txt,.pdf,.doc,.docx,audio/*,video/*" style="display:none" onchange="handleArticleFile(this)"> <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4 — الحجم الأقصى: 100MB</span>
-        <button id="article-file-clear" onclick="clearArticleFile()" style="display:none;background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:4px"><i class="fa-solid fa-xmark"></i></button>
-       </div>
-       <div id="article-file-preview" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:11px;color:var(--t2)"></div>
-      </div>
-      <div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);display:flex;align-items:flex-start;gap:7px">
-       <i class="fa-solid fa-circle-info" style="color:#fbbf24;margin-top:2px"></i> <span>النص الأولي والملف المرفق يُعالَجان معاً في نفس الطلب — الملف يُدمج مع النص قبل الإرسال لـ Gemini في آنٍ واحد.</span>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-       <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
-       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-       <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-article" class="stt"></div>
-      <div id="out-article" class="out-box rendered" style="display:none"></div>
-      <div id="acts-article" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-article')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-article')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-article','مقال')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-      <!-- ── منطقة الملاحظات والتعديل ── -->
-      <div id="article-revise-zone" style="display:none;margin-top:12px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.25);border-radius:12px;padding:14px">
-       <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-        <div style="width:26px;height:26px;border-radius:8px;background:rgba(167,139,250,.18);display:flex;align-items:center;justify-content:center;font-size:12px;color:#c4b5fd;flex-shrink:0">
-         <i class="fa-solid fa-comment-pen"></i>
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-newspaper"></i> المقال الإخباري</div>
+        <div class="card-sub">يكتب مقالاً صحفياً متكاملاً — يعالج النص الأولي والمرفقات معاً في آنٍ واحد</div>
+
+        <label>النص الأولي للمقال <span style="color:var(--t3);font-size:11px">(إلزامي)</span></label>
+        <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea>
+
+        <!-- منطقة المرفقات -->
+        <div id="article-attach-zone" style="border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.03)">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <label for="article-file" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--blue);transition:.2s" onmouseover="this.style.background='rgba(96,165,250,.22)'" onmouseout="this.style.background='rgba(96,165,250,.12)'">
+              <i class="fa-solid fa-paperclip"></i> إرفاق ملف
+            </label>
+            <input type="file" id="article-file" accept=".txt,.pdf,.doc,.docx,audio/*,video/*" style="display:none" onchange="handleArticleFile(this)">
+            <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4 — الحجم الأقصى: 100MB</span>
+            <button id="article-file-clear" onclick="clearArticleFile()" style="display:none;background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:4px"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div id="article-file-preview" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:11px;color:var(--t2)"></div>
         </div>
-        <div>
-         <div style="font-size:12px;font-weight:700;color:#c4b5fd">ملاحظات للتعديل</div>
-         <div style="font-size:10px;color:var(--t3)">أضف ملاحظاتك لإعادة صياغة المقال أو إدراج معلومات إضافية</div>
+
+        <div style="background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);display:flex;align-items:flex-start;gap:7px">
+          <i class="fa-solid fa-circle-info" style="color:#fbbf24;margin-top:2px"></i>
+          <span>النص الأولي والملف المرفق يُعالَجان معاً في نفس الطلب — الملف يُدمج مع النص قبل الإرسال لـ Gemini في آنٍ واحد.</span>
         </div>
-       </div>
-       <textarea id="article-notes" placeholder="مثال: أضف تصريحاً للوزير في الفقرة الثانية... أو: اجعل اللغة أكثر رسمية... أو: اختصر المقال في فقرتين..." style="min-height:80px;margin-bottom:8px;border-color:rgba(167,139,250,.3);font-size:13px"></textarea>
-       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-        <button class="btn" id="btn-article-revise" style="flex:1;background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(167,139,250,.12));border:1px solid rgba(167,139,250,.4);color:#c4b5fd;min-height:44px" onclick="runArticleRevise()"><i class="fa-solid fa-rotate-right"></i> إعادة الصياغة بناءً على الملاحظات</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('article-notes').value=''" style="padding:10px 12px;min-height:44px" title="مسح الملاحظات"><i class="fa-solid fa-eraser"></i></button>
-       </div>
-       <div id="stt-article-revise" class="stt"></div>
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
+          <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
+            <option value="1">واحد</option>
+            <option value="2">اثنان</option>
+            <option value="3">ثلاثة</option>
+          </select>
+          <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-article" class="stt"></div>
+        <div id="out-article" class="out-box rendered" style="display:none"></div>
+        <div id="acts-article" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-article')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-article')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-article','مقال')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
+
+        <!-- ── منطقة الملاحظات والتعديل ── -->
+        <div id="article-revise-zone" style="display:none;margin-top:12px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.25);border-radius:12px;padding:14px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+            <div style="width:26px;height:26px;border-radius:8px;background:rgba(167,139,250,.18);display:flex;align-items:center;justify-content:center;font-size:12px;color:#c4b5fd;flex-shrink:0"><i class="fa-solid fa-comment-pen"></i></div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#c4b5fd">ملاحظات للتعديل</div>
+              <div style="font-size:10px;color:var(--t3)">أضف ملاحظاتك لإعادة صياغة المقال أو إدراج معلومات إضافية</div>
+            </div>
+          </div>
+          <textarea id="article-notes" placeholder="مثال: أضف تصريحاً للوزير في الفقرة الثانية... أو: اجعل اللغة أكثر رسمية... أو: اختصر المقال في فقرتين..." style="min-height:80px;margin-bottom:8px;border-color:rgba(167,139,250,.3);font-size:13px"></textarea>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+            <button class="btn" id="btn-article-revise" style="flex:1;background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(167,139,250,.12));border:1px solid rgba(167,139,250,.4);color:#c4b5fd;min-height:44px" onclick="runArticleRevise()">
+              <i class="fa-solid fa-rotate-right"></i> إعادة الصياغة بناءً على الملاحظات
+            </button>
+            <button class="btn btn-ghost" onclick="document.getElementById('article-notes').value=''" style="padding:10px 12px;min-height:44px" title="مسح الملاحظات"><i class="fa-solid fa-eraser"></i></button>
+          </div>
+          <div id="stt-article-revise" class="stt"></div>
+        </div>
+
       </div>
-     </div>
     </section>
+
     <!-- ══ FLASH ══ -->
     <section id="panel-flash" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-bolt"></i> فلاش ديوان FM
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-bolt"></i> فلاش ديوان FM</div>
+        <div class="card-sub">يكتب فلاشاً إذاعياً جاهزاً للإلقاء المباشر — 45 إلى 60 ثانية</div>
+        <label>معطيات الخبر</label>
+        <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
+          <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-flash" class="stt"></div>
+        <div id="out-flash" class="out-box rendered" style="display:none"></div>
+        <div id="acts-flash" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-flash')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-flash')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-flash','فلاش')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">يكتب فلاشاً إذاعياً جاهزاً للإلقاء المباشر — 45 إلى 60 ثانية</div>
-      <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-       <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-       <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-flash" class="stt"></div>
-      <div id="out-flash" class="out-box rendered" style="display:none"></div>
-      <div id="acts-flash" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-flash')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-flash')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-flash','فلاش')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ HEADLINES ══ -->
     <section id="panel-headlines" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-heading"></i> العناوين الاحترافية
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-heading"></i> العناوين الاحترافية</div>
+        <div class="card-sub">يولّد 12 عنواناً صحفياً في 4 فئات مع مبرر تحريري</div>
+        <label>نص الخبر</label>
+        <textarea id="headlines-input" placeholder="الصق النص هنا..."></textarea>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn btn-gold" id="btn-headlines" style="flex:1" onclick="runHeadlines()"><i class="fa-solid fa-list"></i> توليد العناوين</button>
+          <button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-headlines" class="stt"></div>
+        <div id="out-headlines" class="out-box rendered" style="display:none"></div>
+        <div id="acts-headlines" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-headlines')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-ok" onclick="arcOut('out-headlines','عناوين')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">يولّد 12 عنواناً صحفياً في 4 فئات مع مبرر تحريري</div>
-      <label>نص الخبر</label> <textarea id="headlines-input" placeholder="الصق النص هنا..."></textarea>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-       <button class="btn btn-gold" id="btn-headlines" style="flex:1" onclick="runHeadlines()"><i class="fa-solid fa-list"></i> توليد العناوين</button>
-       <button class="btn btn-ghost" onclick="clearTool('headlines')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-headlines" class="stt"></div>
-      <div id="out-headlines" class="out-box rendered" style="display:none"></div>
-      <div id="acts-headlines" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-headlines')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-ok" onclick="arcOut('out-headlines','عناوين')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ RSS ══ -->
     <section id="panel-rss" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-satellite-dish"></i> رصد الأخبار الوطنية
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-satellite-dish"></i> رصد الأخبار الوطنية</div>
+        <div class="card-sub">مؤسسات إعلامية تونسية — أخبار حية مُرتَّبة من الأحدث</div>
+
+        <!-- شريط الإجراءات -->
+        <div class="rss-header-row">
+          <button class="btn btn-gold" id="btn-rss" onclick="fetchRSS()" style="flex:1;min-width:0">
+            <i class="fa-solid fa-rotate-right"></i> تحديث الأخبار
+          </button>
+          <span id="rss-count-badge" class="rss-count-badge" style="display:none">0 خبر</span>
+          <span id="rss-last-update"></span>
+        </div>
+
+        <!-- فلاتر التصنيف -->
+        <div id="rss-tabs" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <button class="rss-tab active" onclick="filterNews(this,'كل')">🗞 الكل</button>
+          <button class="rss-tab" onclick="filterNews(this,'عام')">📰 عام</button>
+          <button class="rss-tab" onclick="filterNews(this,'اقتصاد')">💰 اقتصاد</button>
+          <button class="rss-tab" onclick="filterNews(this,'سياسة')">🏛 سياسة</button>
+          <button class="rss-tab" onclick="filterNews(this,'رياضة')">⚽ رياضة</button>
+        </div>
+
+        <div id="stt-rss" class="stt"></div>
+        <div id="news-list" style="margin-top:6px"></div>
       </div>
-      <div class="card-sub">مؤسسات إعلامية تونسية — أخبار حية مُرتَّبة من الأحدث</div>
-      <!-- شريط الإجراءات -->
-      <div class="rss-header-row">
-       <button class="btn btn-gold" id="btn-rss" onclick="fetchRSS()" style="flex:1;min-width:0"><i class="fa-solid fa-rotate-right"></i> تحديث الأخبار</button>
-       <span id="rss-count-badge" class="rss-count-badge" style="display:none">0 خبر</span> <span id="rss-last-update"></span>
-      </div>
-      <!-- فلاتر التصنيف -->
-      <div id="rss-tabs" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
-       <button class="rss-tab active" onclick="filterNews(this,'كل')">🗞 الكل</button>
-       <button class="rss-tab" onclick="filterNews(this,'عام')">📰 عام</button>
-       <button class="rss-tab" onclick="filterNews(this,'اقتصاد')">💰 اقتصاد</button>
-       <button class="rss-tab" onclick="filterNews(this,'سياسة')">🏛 سياسة</button>
-       <button class="rss-tab" onclick="filterNews(this,'رياضة')">⚽ رياضة</button>
-      </div>
-      <div id="stt-rss" class="stt"></div>
-      <div id="news-list" style="margin-top:6px"></div>
-     </div>
     </section>
+
     <!-- ══ TOOLS ══ -->
     <section id="panel-tools" class="panel">
-     <div class="card" style="margin-bottom:12px">
-      <div class="card-title">
-       <i class="fa-solid fa-calendar-day"></i> حدث اليوم في التاريخ
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-title"><i class="fa-solid fa-calendar-day"></i> حدث اليوم في التاريخ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><label>اليوم (1-31)</label><input type="number" id="hist-day" min="1" max="31" placeholder="7"></div>
+          <div><label>الشهر (1-12)</label><input type="number" id="hist-month" min="1" max="12" placeholder="4"></div>
+        </div>
+        <button class="btn btn-gold btn-full" id="btn-hist"><i class="fa-solid fa-magnifying-glass"></i> بحث في التاريخ</button>
+        <div id="stt-hist" class="stt"></div>
+        <div id="out-hist" class="out-box rendered" style="display:none"></div>
+        <div id="acts-hist" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-hist')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-ok" onclick="arcOut('out-hist','حدث اليوم')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-       <div>
-        <label>اليوم (1-31)</label><input type="number" id="hist-day" min="1" max="31" placeholder="7">
-       </div>
-       <div>
-        <label>الشهر (1-12)</label><input type="number" id="hist-month" min="1" max="12" placeholder="4">
-       </div>
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-futbol"></i> أرشيف المواجهات الرياضية</div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;margin-bottom:10px">
+          <div><label>الفريق الأول</label><input type="text" id="team-a" placeholder="الترجي" style="margin:0"></div>
+          <div style="color:var(--t2);font-weight:900;font-size:14px;padding-bottom:4px;text-align:center">ضد</div>
+          <div><label>الفريق الثاني</label><input type="text" id="team-b" placeholder="الإفريقي" style="margin:0"></div>
+        </div>
+        <button class="btn btn-gold btn-full" id="btn-sports"><i class="fa-solid fa-trophy"></i> بحث عن المواجهات</button>
+        <div id="stt-sports" class="stt"></div>
+        <div id="out-sports" class="out-box rendered" style="display:none"></div>
+        <div id="acts-sports" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-sports')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-ok" onclick="arcOut('out-sports','أرشيف رياضي')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <button class="btn btn-gold btn-full" id="btn-hist"><i class="fa-solid fa-magnifying-glass"></i> بحث في التاريخ</button>
-      <div id="stt-hist" class="stt"></div>
-      <div id="out-hist" class="out-box rendered" style="display:none"></div>
-      <div id="acts-hist" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-hist')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-ok" onclick="arcOut('out-hist','حدث اليوم')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-futbol"></i> أرشيف المواجهات الرياضية
-      </div>
-      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;margin-bottom:10px">
-       <div>
-        <label>الفريق الأول</label><input type="text" id="team-a" placeholder="الترجي" style="margin:0">
-       </div>
-       <div style="color:var(--t2);font-weight:900;font-size:14px;padding-bottom:4px;text-align:center">ضد</div>
-       <div>
-        <label>الفريق الثاني</label><input type="text" id="team-b" placeholder="الإفريقي" style="margin:0">
-       </div>
-      </div>
-      <button class="btn btn-gold btn-full" id="btn-sports"><i class="fa-solid fa-trophy"></i> بحث عن المواجهات</button>
-      <div id="stt-sports" class="stt"></div>
-      <div id="out-sports" class="out-box rendered" style="display:none"></div>
-      <div id="acts-sports" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-sports')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-ok" onclick="arcOut('out-sports','أرشيف رياضي')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ PROFILE ══ -->
     <section id="panel-profile" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-user-tie"></i> ملف الشخصية الصحفي
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-user-tie"></i> ملف الشخصية الصحفي</div>
+        <div class="card-sub">يُعدّ ملفاً تحقيقياً كاملاً: بطاقة رسمية، مسار مهني، اقتباسات موثّقة</div>
+        <label>اسم الشخصية أو المسؤول</label>
+        <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+          <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()">
+            <i class="fa-solid fa-magnifying-glass"></i> استخراج الملف
+          </button>
+          <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
+          <i class="fa-brands fa-google" style="color:#60a5fa"></i>
+          <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
+        </div>
+        <div id="stt-profile" class="stt"></div>
+        <div id="out-profile" class="out-box rendered" style="display:none"></div>
+        <div id="acts-profile" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-profile')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-ok" onclick="arcOut('out-profile','ملف شخصية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">يُعدّ ملفاً تحقيقياً كاملاً: بطاقة رسمية، مسار مهني، اقتباسات موثّقة</div>
-      <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
-       <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-      </div>
-      <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
-       <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
-      </div>
-      <div id="stt-profile" class="stt"></div>
-      <div id="out-profile" class="out-box rendered" style="display:none"></div>
-      <div id="acts-profile" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-profile')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-ok" onclick="arcOut('out-profile','ملف شخصية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
+
     <!-- ══ RADAR ══ -->
     <section id="panel-radar" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-satellite-dish" style="color:#f87171"></i> رادار إخباري
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-satellite-dish" style="color:#f87171"></i> رادار إخباري</div>
+        <div class="card-sub">مسح حي للمواقع والإذاعات التونسية — أحدث المواضيع والزوايا الصحفية — يتجدد كل ساعتين</div>
+        <div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);line-height:1.7;display:flex;align-items:center;gap:8px">
+          <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i>
+          <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
+            <option value="all">🔴 كل الأخبار العاجلة</option>
+            <option value="politics">🏛️ سياسة وحكومة</option>
+            <option value="economy">💰 اقتصاد وأعمال</option>
+            <option value="security">🛡️ أمن وقضاء</option>
+            <option value="social">👥 مجتمع وبيئة</option>
+            <option value="sports">⚽ رياضة</option>
+            <option value="culture">🎭 ثقافة وفنون</option>
+            <option value="angles">💡 زوايا صحفية مبتكرة</option>
+          </select>
+          <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()">
+            <i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار
+          </button>
+          <button class="btn btn-ghost" onclick="clearTool('radar')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="radar-timer" style="display:none;font-size:10px;color:var(--t3);margin-bottom:8px;text-align:center">
+          <i class="fa-solid fa-clock"></i> <span id="radar-timer-txt">التحديث القادم خلال: ساعتان</span>
+        </div>
+        <div id="stt-radar" class="stt"></div>
+        <div id="out-radar" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-radar" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-radar')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-radar')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-radar','رادار')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">مسح حي للمواقع والإذاعات التونسية — أحدث المواضيع والزوايا الصحفية — يتجدد كل ساعتين</div>
-      <div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);line-height:1.7;display:flex;align-items:center;gap:8px">
-       <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-      </div>
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-       <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
-       <button class="btn btn-ghost" onclick="clearTool('radar')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="radar-timer" style="display:none;font-size:10px;color:var(--t3);margin-bottom:8px;text-align:center">
-       <i class="fa-solid fa-clock"></i> <span id="radar-timer-txt">التحديث القادم خلال: ساعتان</span>
-      </div>
-      <div id="stt-radar" class="stt"></div>
-      <div id="out-radar" class="out-box rendered" style="display:none;min-height:300px"></div>
-      <div id="acts-radar" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-radar')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-radar')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-radar','رادار')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
+
     <!-- ══ HIDDEN ANGLE — الزاوية الخفية ══ -->
     <section id="panel-hidden-angle" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-magnifying-glass-arrow-right" style="color:#c084fc"></i> الزاوية الخفية
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-magnifying-glass-arrow-right" style="color:#c084fc"></i> الزاوية الخفية
+        </div>
+        <div class="card-sub">يكشف ما وراء الخبر — من المستفيد؟ من المتضرر؟ ما الصامت عنه؟ — أداة تحقيقية لا مثيل لها</div>
+        <label>الخبر أو النص المراد تحليله</label>
+        <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()">
+            <i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية
+          </button>
+          <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-angle" class="stt"></div>
+        <div id="out-angle" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-angle" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-angle')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-angle')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-angle','زاوية خفية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">يكشف ما وراء الخبر — من المستفيد؟ من المتضرر؟ ما الصامت عنه؟ — أداة تحقيقية لا مثيل لها</div>
-      <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-       <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-       <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-angle" class="stt"></div>
-      <div id="out-angle" class="out-box rendered" style="display:none;min-height:300px"></div>
-      <div id="acts-angle" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-angle')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-angle')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-angle','زاوية خفية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ TREND — الترند التونسي ══ -->
     <section id="panel-trend" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-fire-flame-curved" style="color:#fb923c"></i> الترند التونسي
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-fire-flame-curved" style="color:#fb923c"></i> الترند التونسي
+        </div>
+        <div class="card-sub">مسح حي عبر Google Search لأكثر المواضيع تداولاً الآن — مع تحليل إذاعي وتحويله لمادة صحفية</div>
+        <div style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px">
+          <i class="fa-brands fa-google" style="color:#fb923c"></i>
+          <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px">
+            <option value="all">📡 كل المنصات والمواقع التونسية</option>
+            <option value="facebook">📘 فيسبوك التونسي</option>
+            <option value="youtube">▶️ يوتيوب التونسي</option>
+            <option value="news">📰 المواقع الإخبارية</option>
+            <option value="radio">📻 الإذاعات التونسية</option>
+          </select>
+          <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()">
+            <i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن
+          </button>
+          <button class="btn btn-ghost" onclick="clearTool('trend')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-trend" class="stt"></div>
+        <div id="out-trend" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-trend" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-trend')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-trend')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-trend','ترند')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">مسح حي عبر Google Search لأكثر المواضيع تداولاً الآن — مع تحليل إذاعي وتحويله لمادة صحفية</div>
-      <div style="background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px">
-       <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-      </div>
-      <div style="display:flex;gap:6px;margin-bottom:10px">
-       <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
-       <button class="btn btn-ghost" onclick="clearTool('trend')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-trend" class="stt"></div>
-      <div id="out-trend" class="out-box rendered" style="display:none;min-height:300px"></div>
-      <div id="acts-trend" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-trend')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-trend')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-trend','ترند')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ COMPARE — مقارن الأخبار ══ -->
     <section id="panel-compare" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-code-compare" style="color:#2dd4bf"></i> مقارن الأخبار العربية والدولية
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-code-compare" style="color:#2dd4bf"></i> مقارن الأخبار العربية والدولية
+        </div>
+        <div class="card-sub">يأخذ خبراً تونسياً ويكشف كيف غطّته وسائل الإعلام العربية والدولية — الفجوات والتأطيرات المختلفة</div>
+        <div style="background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px">
+          <i class="fa-brands fa-google" style="color:#2dd4bf"></i>
+          <span><strong style="color:#2dd4bf">Google Search Grounding مُفعَّل</strong> — يبحث في وسائل الإعلام العربية والدولية الحية.</span>
+        </div>
+        <label>الخبر التونسي المراد مقارنته</label>
+        <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()">
+            <i class="fa-solid fa-code-compare"></i> تشغيل المقارنة
+          </button>
+          <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div id="stt-compare" class="stt"></div>
+        <div id="out-compare" class="out-box rendered" style="display:none;min-height:300px"></div>
+        <div id="acts-compare" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-compare')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-wa" onclick="waOut('out-compare')"><i class="fa-brands fa-whatsapp"></i></button>
+          <button class="btn btn-ok" onclick="arcOut('out-compare','مقارنة')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">يأخذ خبراً تونسياً ويكشف كيف غطّته وسائل الإعلام العربية والدولية — الفجوات والتأطيرات المختلفة</div>
-      <div style="background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--t2);display:flex;align-items:center;gap:8px">
-       <i class="fa-brands fa-google" style="color:#2dd4bf"></i> <span><strong style="color:#2dd4bf">Google Search Grounding مُفعَّل</strong> — يبحث في وسائل الإعلام العربية والدولية الحية.</span>
-      </div>
-      <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-       <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-       <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-compare" class="stt"></div>
-      <div id="out-compare" class="out-box rendered" style="display:none;min-height:300px"></div>
-      <div id="acts-compare" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-compare')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-wa" onclick="waOut('out-compare')"><i class="fa-brands fa-whatsapp"></i></button>
-       <button class="btn btn-ok" onclick="arcOut('out-compare','مقارنة')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ STORY TIMELINE ══ -->
     <section id="panel-timeline" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-calendar-week" style="color:#fbbf24"></i> الجدول الزمني التفاعلي
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-calendar-week" style="color:#fbbf24"></i> الجدول الزمني التفاعلي
+        </div>
+        <div class="card-sub">
+          يحلل النص المتراكم عن قضية معينة ويستخرج تلقائياً التواريخ والأحداث المهمة لبناء تسلسل زمني احترافي.
+        </div>
+
+        <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label>
+        <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
+
+        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
+          <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()">
+            <i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني
+          </button>
+          <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px">
+            <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option>
+            <option value="gemini-2.5-pro">Pro 🧠</option>
+          </select>
+          <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+
+        <div id="stt-timeline" class="stt"></div>
+        <div id="out-timeline" class="out-box rendered" style="display:none"></div>
+        <div id="acts-timeline" class="act-row" style="display:none">
+          <button class="btn btn-ghost" onclick="copyOut('out-timeline')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
+          <button class="btn btn-ok" onclick="arcOut('out-timeline', 'جدول زمني')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
+        </div>
       </div>
-      <div class="card-sub">يحلل النص المتراكم عن قضية معينة ويستخرج تلقائياً التواريخ والأحداث المهمة لبناء تسلسل زمني احترافي.</div>
-      <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
-      <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
-       <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
-       <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
-      </div>
-      <div id="stt-timeline" class="stt"></div>
-      <div id="out-timeline" class="out-box rendered" style="display:none"></div>
-      <div id="acts-timeline" class="act-row" style="display:none">
-       <button class="btn btn-ghost" onclick="copyOut('out-timeline')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
-       <button class="btn btn-ok" onclick="arcOut('out-timeline', 'جدول زمني')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-      </div>
-     </div>
     </section>
+
     <!-- ══ AGENDA ══ -->
     <section id="panel-agenda" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-calendar-days"></i> الأجندة المشتركة
-      </div>
-      <div style="background:rgba(232,168,32,.08);border:1px solid var(--ln2);border-radius:var(--r);padding:12px;margin-bottom:12px">
-       <div style="font-size:11px;font-weight:700;color:var(--g3);margin-bottom:10px">
-        <i class="fa-solid fa-plus"></i> إضافة حدث جديد
-       </div>
-       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div>
-         <label>التاريخ</label><input type="date" id="ag-date" style="margin:0">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-calendar-days"></i> الأجندة المشتركة</div>
+        <div style="background:rgba(232,168,32,.08);border:1px solid var(--ln2);border-radius:var(--r);padding:12px;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:700;color:var(--g3);margin-bottom:10px"><i class="fa-solid fa-plus"></i> إضافة حدث جديد</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div><label>التاريخ</label><input type="date" id="ag-date" style="margin:0"></div>
+            <div><label>الوصف</label><input type="text" id="ag-desc" placeholder="مثال: مؤتمر صحفي" style="margin:0"></div>
+          </div>
+          <button class="btn btn-gold btn-full" id="btn-add-ag" style="margin-top:8px"><i class="fa-solid fa-floppy-disk"></i> حفظ</button>
         </div>
-        <div>
-         <label>الوصف</label><input type="text" id="ag-desc" placeholder="مثال: مؤتمر صحفي" style="margin:0">
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <input type="date" id="ag-search" style="flex:1;margin:0">
+          <button class="btn btn-ghost" onclick="searchAgenda()">بحث</button>
         </div>
-       </div>
-       <button class="btn btn-gold btn-full" id="btn-add-ag" style="margin-top:8px"><i class="fa-solid fa-floppy-disk"></i> حفظ</button>
+        <div id="ag-list" style="margin-top:8px"></div>
       </div>
-      <div style="display:flex;gap:6px;margin-bottom:8px">
-       <input type="date" id="ag-search" style="flex:1;margin:0">
-       <button class="btn btn-ghost" onclick="searchAgenda()">بحث</button>
-      </div>
-      <div id="ag-list" style="margin-top:8px"></div>
-     </div>
     </section>
+
     <!-- ══ ARCHIVE ══ -->
     <section id="panel-archive" class="panel">
-     <div class="card">
-      <div class="card-title">
-       <i class="fa-solid fa-clock-rotate-left"></i> الأرشيف الذكي <span id="arc-count-badge" style="font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;background:rgba(232,168,32,.15);color:var(--g4);border:1px solid var(--ln2);border-radius:10px;padding:2px 8px;margin-right:auto"></span>
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> الأرشيف الذكي
+          <span id="arc-count-badge" style="font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;background:rgba(232,168,32,.15);color:var(--g4);border:1px solid var(--ln2);border-radius:10px;padding:2px 8px;margin-right:auto"></span>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
+          <input type="text" id="arc-search" placeholder="🔍 بحث في الأرشيف..." oninput="filterArchive()" style="flex:1;margin:0">
+          <button class="btn btn-danger" style="font-size:10px;padding:8px 10px;white-space:nowrap" onclick="clearAllArchive()"><i class="fa-solid fa-trash"></i> مسح الكل</button>
+        </div>
+        <div id="arc-list"></div>
+        <p style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px"><i class="fa-regular fa-clock"></i> تُحذف العمليات تلقائياً بعد 24 ساعة — الأرشفة تتم تلقائياً فور اكتمال كل عملية</p>
       </div>
-      <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
-       <input type="text" id="arc-search" placeholder="🔍 بحث في الأرشيف..." oninput="filterArchive()" style="flex:1;margin:0">
-       <button class="btn btn-danger" style="font-size:10px;padding:8px 10px;white-space:nowrap" onclick="clearAllArchive()"><i class="fa-solid fa-trash"></i> مسح الكل</button>
-      </div>
-      <div id="arc-list"></div>
-      <p style="font-size:10px;color:var(--t3);text-align:center;margin-top:8px"><i class="fa-regular fa-clock"></i> تُحذف العمليات تلقائياً بعد 24 ساعة — الأرشفة تتم تلقائياً فور اكتمال كل عملية</p>
-     </div>
     </section>
-   </main>
-  </div>
-  <!-- MOBILE NAV -->
-  <nav class="bottom-nav">
-   <button class="bn-btn active" data-panel="home"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
-   <button class="bn-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
-   <button class="bn-btn" data-panel="flash"><i class="fa-solid fa-bolt"></i><span>فلاش</span></button>
-   <button class="bn-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i><span>الأرشيف</span></button>
-   <button class="bn-btn" id="bn-more" onclick="toggleMoreMenu()"><i class="fa-solid fa-grip"></i><span>المزيد</span></button>
-  </nav>
-  <!-- MORE MENU -->
-  <div id="more-menu-overlay" onclick="if(event.target===this)closeMoreMenu()">
-   <div id="more-menu">
+
+  </main>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="bottom-nav">
+  <button class="bn-btn active" data-panel="home"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
+  <button class="bn-btn" data-panel="editor"><i class="fa-solid fa-pen-nib"></i><span>المحرر</span></button>
+  <button class="bn-btn" data-panel="flash"><i class="fa-solid fa-bolt"></i><span>فلاش</span></button>
+  <button class="bn-btn" data-panel="archive"><i class="fa-solid fa-clock-rotate-left"></i><span>الأرشيف</span></button>
+  <button class="bn-btn" id="bn-more" onclick="toggleMoreMenu()"><i class="fa-solid fa-grip"></i><span>المزيد</span></button>
+</nav>
+
+<!-- MORE MENU -->
+<div id="more-menu-overlay" onclick="if(event.target===this)closeMoreMenu()">
+  <div id="more-menu">
     <div class="mm-title">
-     <span>جميع الأقسام</span>
-     <button class="mm-close" onclick="closeMoreMenu()"><i class="fa-solid fa-xmark"></i></button>
+      <span>جميع الأقسام</span>
+      <button class="mm-close" onclick="closeMoreMenu()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="mm-grid">
-     <button class="mm-btn" onclick="navFromMore('article')"><i class="fa-solid fa-newspaper"></i>المقال</button>
-     <button class="mm-btn" onclick="navFromMore('headlines')"><i class="fa-solid fa-heading"></i>العناوين</button>
-     <button class="mm-btn" onclick="navFromMore('tools')"><i class="fa-solid fa-calendar-day"></i>تاريخ/رياضة</button>
-     <button class="mm-btn" onclick="navFromMore('profile')"><i class="fa-solid fa-user-tie"></i>ملف الشخصية</button>
-     <button class="mm-btn" onclick="navFromMore('radar')"><i class="fa-solid fa-satellite-dish"></i>الرادار</button>
-     <button class="mm-btn" onclick="navFromMore('hidden-angle')"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>الزاوية الخفية</button>
-     <button class="mm-btn" onclick="navFromMore('trend')"><i class="fa-solid fa-fire-flame-curved"></i>الترند</button>
-     <button class="mm-btn" onclick="navFromMore('compare')"><i class="fa-solid fa-code-compare"></i>مقارن الأخبار</button>
-     <button class="mm-btn" onclick="navFromMore('timeline')"><i class="fa-solid fa-calendar-week"></i>الجدول الزمني</button>
-     <button class="mm-btn" onclick="navFromMore('rss')"><i class="fa-solid fa-rss"></i>رصد الأخبار</button>
-     <button class="mm-btn" onclick="navFromMore('radiomon')"><i class="fa-solid fa-tower-broadcast"></i>راصد الموجات</button>
-     <button class="mm-btn" onclick="navFromMore('agenda')"><i class="fa-solid fa-calendar-days"></i>الأجندة</button>
+      <button class="mm-btn" onclick="navFromMore('article')"><i class="fa-solid fa-newspaper"></i>المقال</button>
+      <button class="mm-btn" onclick="navFromMore('headlines')"><i class="fa-solid fa-heading"></i>العناوين</button>
+      <button class="mm-btn" onclick="navFromMore('tools')"><i class="fa-solid fa-calendar-day"></i>تاريخ/رياضة</button>
+      <button class="mm-btn" onclick="navFromMore('profile')"><i class="fa-solid fa-user-tie"></i>ملف الشخصية</button>
+      <button class="mm-btn" onclick="navFromMore('radar')"><i class="fa-solid fa-satellite-dish"></i>الرادار</button>
+      <button class="mm-btn" onclick="navFromMore('hidden-angle')"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>الزاوية الخفية</button>
+      <button class="mm-btn" onclick="navFromMore('trend')"><i class="fa-solid fa-fire-flame-curved"></i>الترند</button>
+      <button class="mm-btn" onclick="navFromMore('compare')"><i class="fa-solid fa-code-compare"></i>مقارن الأخبار</button>
+      <button class="mm-btn" onclick="navFromMore('timeline')"><i class="fa-solid fa-calendar-week"></i>الجدول الزمني</button>
+      <button class="mm-btn" onclick="navFromMore('rss')"><i class="fa-solid fa-rss"></i>رصد الأخبار</button>
+      <button class="mm-btn" onclick="navFromMore('radiomon')"><i class="fa-solid fa-tower-broadcast"></i>راصد الموجات</button>
+      <button class="mm-btn" onclick="navFromMore('agenda')"><i class="fa-solid fa-calendar-days"></i>الأجندة</button>
     </div>
-   </div>
   </div>
-  <!-- SETTINGS MODAL -->
-  <div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
-   <div class="modal">
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="settings-overlay" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
     <div class="m-head">
-     <div class="m-title">
-      <i class="fa-solid fa-gear"></i> إعدادات DESK BOT
-     </div>
-     <button class="m-close" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="m-title"><i class="fa-solid fa-gear"></i> إعدادات DESK BOT</div>
+      <button class="m-close" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="m-body">
-     <div class="m-section">
-      <div class="m-sec-head">
-       <div class="m-sec-icon msi-g">
-        <i class="fa-brands fa-google"></i>
-       </div>
-       <div>
-        <div class="m-sec-title">Google Gemini API</div>
-        <div class="m-sec-sub">Flash: 1500 طلب/يوم · Pro: 50 طلب/يوم — مجاناً</div>
-       </div>
+      <div class="m-section">
+        <div class="m-sec-head">
+          <div class="m-sec-icon msi-g"><i class="fa-brands fa-google"></i></div>
+          <div>
+            <div class="m-sec-title">Google Gemini API</div>
+            <div class="m-sec-sub">Flash: 1500 طلب/يوم · Pro: 50 طلب/يوم — مجاناً</div>
+          </div>
+        </div>
+        <div id="key-stt" class="key-stt"></div>
+        <label>مفتاح Gemini API</label>
+        <input type="password" id="gemini-key-inp" placeholder="AIzaSy...">
+        <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.15);border-radius:8px;padding:10px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.6">
+          <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i>
+          احصل على مفتاحك المجاني من:
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
+        </div>
+        <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
       </div>
-      <div id="key-stt" class="key-stt"></div>
-      <label>مفتاح Gemini API</label> <input type="password" id="gemini-key-inp" placeholder="AIzaSy...">
-      <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.15);border-radius:8px;padding:10px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.6">
-       <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> احصل على مفتاحك المجاني من: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
-      </div>
-      <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
-     </div>
-     <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
-   </div>
   </div>
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
-  <div id="autosave-ind">💾 حُفظ تلقائياً</div>
-  <script>
+</div>
+
+
+<script>
+/* Qwen/OpenRouter settings repair */
+(function(){
+ const KEY='db12ork', MODEL='qwen/qwen3.6-plus-free';
+ window.getQwenKey=()=>localStorage.getItem(KEY)||'';
+ window.saveQwenKey=function(){const i=document.getElementById('openrouter-key-inp'),s=document.getElementById('or-key-stt'),v=(i?.value||'').trim();if(!v){if(s)s.textContent='أدخل مفتاح OpenRouter أولاً';return false;}localStorage.setItem(KEY,v);if(window.S)S.orKey=v;if(s)s.textContent='✓ تم حفظ مفتاح كوين على هذا الجهاز';return true;};
+ window.clearQwenKey=function(){localStorage.removeItem(KEY);if(window.S)S.orKey='';const i=document.getElementById('openrouter-key-inp'),s=document.getElementById('or-key-stt');if(i)i.value='';if(s)s.textContent='تم حذف المفتاح';};
+ window.toggleQwenKey=function(){const i=document.getElementById('openrouter-key-inp');if(i)i.type=i.type==='password'?'text':'password';};
+ function mount(){const modal=document.querySelector('#settings-overlay .m-body')||document.querySelector('#settings-overlay .modal');if(!modal||document.getElementById('qwen-settings-card'))return;const d=document.createElement('div');d.id='qwen-settings-card';d.className='m-section';d.style.cssText='margin-top:14px;border:1px solid rgba(249,115,22,.45);border-radius:12px;padding:12px;background:rgba(249,115,22,.06)';d.innerHTML='<div class="m-sec-head"><div class="m-sec-icon" style="background:rgba(249,115,22,.18);color:#fb923c"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><div class="m-sec-title">Qwen / OpenRouter</div><div class="m-sec-sub">مفتاح كوين — حفظ محلي على جهازك</div></div></div><div id="or-key-stt" class="key-stt" style="margin:8px 0;color:#22c55e"></div><label>OpenRouter API Key</label><div style="display:flex;gap:8px"><input type="password" id="openrouter-key-inp" placeholder="sk-or-..." style="flex:1"><button type="button" class="btn btn-ghost" onclick="toggleQwenKey()"><i class="fa-solid fa-eye"></i></button></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn btn-gold" style="flex:1" onclick="saveQwenKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح كوين</button><button class="btn btn-ghost" onclick="clearQwenKey()"><i class="fa-solid fa-trash"></i></button></div>';modal.appendChild(d);const i=d.querySelector('#openrouter-key-inp'),s=d.querySelector('#or-key-stt'),v=localStorage.getItem(KEY)||'';i.value=v;if(v)s.textContent='✓ مفتاح كوين محفوظ';}
+ document.addEventListener('DOMContentLoaded',mount);
+ const old=window.openSettings;window.openSettings=function(){if(old)old();setTimeout(mount,0);};
+})();
+</script>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<div id="autosave-ind">💾 حُفظ تلقائياً</div>
+
+<script>
 const OR_KEY_STORAGE='db12ork';
 function getQwenKey(){ return (localStorage.getItem(OR_KEY_STORAGE) || S.orKey || '').trim(); }
 function setQwenKey(v){ localStorage.setItem(OR_KEY_STORAGE, v); S.orKey = v; }
@@ -3462,7 +3527,9 @@ async function runCompare() {
 
 window.addEventListener('load', restoreQwenKey);
 </script>
-  <script>
+
+
+<script>
 document.addEventListener("DOMContentLoaded", function() {
 
   /* ── مزامنة UI mode ── */
@@ -3797,5 +3864,6 @@ function sendRadioToEditor(idx) {
 }
 
 </script>
- </body>
+
+</body>
 </html>
