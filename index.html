@@ -1513,27 +1513,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
      </div>
-     <div class="settings-divider"></div>
-     <div class="m-section">
-      <div class="m-sec-head">
-       <div class="m-sec-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.20),rgba(124,140,255,.10));color:#ddd6fe">
-        <i class="fa-solid fa-rotate"></i>
-       </div>
-       <div>
-        <div class="m-sec-title">OpenRouter / Qwen API</div>
-        <div class="m-sec-sub">بديل احترافي للأدوات التحريرية اليومية</div>
-       </div>
-      </div>
-      <div id="or-key-stt" class="key-stt">جاهز لاستقبال مفتاح OpenRouter</div>
-      <div class="label-compact">OpenRouter API</div>
-      <div class="input-wrap">
-       <i class="fa-solid fa-key in-icon" style="color:#c4b5fd"></i><input type="password" id="openrouter-key-inp" placeholder="sk-or-...">
-      </div>
-      <div class="api-help" style="background:linear-gradient(135deg,rgba(124,58,237,.09),rgba(255,255,255,.02));border-color:rgba(124,58,237,.16);color:#e2d8ff">
-       <i class="fa-solid fa-circle-info"></i> احصل على المفتاح من <a href="https://openrouter.ai/keys" target="_blank" style="color:#c4b5fd">openrouter.ai/keys</a>
-      </div>
-      <button class="btn btn-gold btn-full" onclick="saveAnyKey('openrouter')"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
-     </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
    </div>
@@ -3024,6 +3003,27 @@ function openSettings() {
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
+function saveAnyKey(kind){
+  const g=document.getElementById('gemini-key-inp');
+  const o=document.getElementById('openrouter-key-inp');
+  const gs=document.getElementById('key-stt');
+  const os=document.getElementById('or-key-stt');
+  if(kind==='gemini'){
+    const v=(g?.value||'').trim();
+    if(!v){ if(gs) gs.innerHTML='<span style="color:#fbbf24">أدخل مفتاح Gemini</span>'; return toast('أدخل مفتاح Gemini','w'); }
+    localStorage.setItem('db12gk', v); S.key = v;
+    if(gs) gs.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>';
+    toast('تم حفظ المفتاح','s');
+    setTimeout(()=>{ if(window.closeSettings) closeSettings(); }, 300);
+    return;
+  }
+  const v=(o?.value||'').trim();
+  if(!v){ if(os) os.innerHTML='<span style="color:#fbbf24">أدخل مفتاح OpenRouter</span>'; return toast('أدخل مفتاح OpenRouter','w'); }
+  localStorage.setItem('db12ork', v); S.orKey = v;
+  if(os) os.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>';
+  toast('تم حفظ المفتاح','s');
+  setTimeout(()=>{ if(window.closeSettings) closeSettings(); }, 300);
+}
 function saveKey() {
   const k = (document.getElementById('gemini-key-inp')?.value || '').trim();
   if (!k) return toast('أدخل المفتاح أولاً', 'w');
