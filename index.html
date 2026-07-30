@@ -3865,5 +3865,35 @@ function sendRadioToEditor(idx) {
 
 </script>
 
+
+<script>
+(function(){
+  const KEY='db12ork';
+  const MODEL='qwen/qwen3.6-plus-free';
+  const ids=['article-model','flash-model','transcribe-model','headlines-model'];
+  const keySaved=()=>!!(localStorage.getItem(KEY)||'').trim();
+  function sync(){
+    if(!keySaved()) return;
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el) return;
+      if(el.tagName==='SELECT'){
+        if(!el.querySelector('option[value="'+MODEL+'"]')){
+          const opt=document.createElement('option'); opt.value=MODEL; opt.textContent='Qwen 3.6 Plus (OpenRouter)'; el.appendChild(opt);
+        }
+        el.value=MODEL;
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded',sync);
+  const _open=window.openSettings;
+  window.openSettings=function(){ if(_open) _open(); setTimeout(sync,0); };
+  const _save=window.saveQwenKey;
+  window.saveQwenKey=function(){ const ok=_save? _save():false; setTimeout(sync,0); return ok; };
+  const _clear=window.clearQwenKey;
+  window.clearQwenKey=function(){ const ok=_clear? _clear():false; ids.forEach(id=>{const el=document.getElementById(id); if(el && el.dataset.qwenprev){ el.value=el.dataset.qwenprev; }}); return ok; };
+})();
+</script>
+
 </body>
 </html>
