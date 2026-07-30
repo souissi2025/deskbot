@@ -2130,7 +2130,7 @@ async function run(name, promptKey, getPrompt, btnId) {
   try {
     const model = (document.getElementById(name + '-model') || {}).value || 'gemini-3.5-flash';
     const prompt = getPrompt();
-    const res = await callGemini((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
+    const res = await getModelRunner(model)((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
     showOut(name, renderMD(res));
     autoArchive(res, name);
     setStt(name, '✅ اكتملت المعالجة', 'ok');
@@ -2220,7 +2220,7 @@ async function runTranscribeStep1(prompt) {
 
   try {
     const model = (document.getElementById('editor-model') || {}).value || 'gemini-3.5-flash';
-    const res = await callGemini(prompt, model);
+    const res = await getModelRunner(model)(prompt, model);
     // استخراج النص المفرّغ
     const m1 = res.match(/~~التفريغ الحرفي~~([\s\S]*?)~~نهاية التفريغ~~/);
     const transcribed = m1 ? m1[1].trim() : res.trim();
@@ -2319,7 +2319,7 @@ async function runEditorialStep2() {
 ${transcribed}`;
 
   try {
-    const res = await callGemini(EDITORIAL_PROMPT, model);
+    const res = await getModelRunner(model)(EDITORIAL_PROMPT, model);
     const m = res.match(/~~المقال الإخباري~~([\s\S]*)/);
     const editorial = m ? m[1].trim() : res.trim();
     if (outA) outA.innerHTML = renderMD ? renderMD(editorial) : editorial;
@@ -2515,7 +2515,7 @@ function runArticle() {
         result = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
         S.req++; localStorage.setItem('db12_req', S.req); updateQuota();
       } else {
-        result = await callGemini(articlePrompt + '\n\n' + userText, model);
+        result = await getModelRunner(model)(articlePrompt + '\n\n' + userText, model);
       }
       showOut('article', renderMD(result));
       setStt('article', articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال', 'ok');
@@ -2569,7 +2569,7 @@ ${notes}
 - أنتج النص المعدّل كاملاً جاهزاً للنشر`;
 
   try {
-    const result = await callGemini(revisePrompt, model);
+    const result = await getModelRunner(model)(revisePrompt, model);
     showOut('article', renderMD(result));
     if (sttRevise) { sttRevise.className = 'stt ok'; sttRevise.innerHTML = '✅ تم التعديل بناءً على ملاحظاتك'; }
     setTimeout(() => { if (sttRevise) sttRevise.style.display = 'none'; }, 3000);
@@ -3420,7 +3420,7 @@ async function runHiddenAngle() {
   setStt('angle', '🔍 جارٍ التحليل التحقيقي العميق...', 'loading');
   hideOut('angle');
   try {
-    const res = await callGemini(PROMPT_HIDDEN_ANGLE + '\n\n' + inp, model);
+    const res = await getModelRunner(model)(PROMPT_HIDDEN_ANGLE + '\n\n' + inp, model);
     showOut('angle', renderMD(res));
     autoArchive(res, 'angle');
     setStt('angle', '✅ اكتمل التحليل', 'ok');
@@ -3669,7 +3669,7 @@ async function runTimeline() {
   hideOut('timeline');
 
   try {
-    const res = await callGemini(PROMPT_TIMELINE + '\n\n' + inp, model);
+    const res = await getModelRunner(model)(PROMPT_TIMELINE + '\n\n' + inp, model);
     showOut('timeline', renderMD(res));
     autoArchive(res, 'timeline');
     setStt('timeline', '✅ تم إنشاء الجدول الزمني', 'ok');
