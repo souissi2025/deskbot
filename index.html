@@ -1571,12 +1571,12 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 <script>
 /* Qwen/OpenRouter settings repair */
 (function(){
- const KEY='db12ork', MODEL='qwen/qwen3.6-plus-free';
+ const KEY='__REMOVED_db12ork__', MODEL='__REMOVED_qwen/qwen3.6-plus-free__';
  window.getQwenKey=()=>localStorage.getItem(KEY)||'';
- window.saveQwenKey=function(){const i=document.getElementById('openrouter-key-inp'),s=document.getElementById('or-key-stt'),v=(i?.value||'').trim();if(!v){if(s)s.textContent='أدخل مفتاح OpenRouter أولاً';return false;}localStorage.setItem(KEY,v);if(window.S)S.orKey=v;if(s)s.textContent='✓ تم حفظ مفتاح كوين على هذا الجهاز';return true;};
- window.clearQwenKey=function(){localStorage.removeItem(KEY);if(window.S)S.orKey='';const i=document.getElementById('openrouter-key-inp'),s=document.getElementById('or-key-stt');if(i)i.value='';if(s)s.textContent='تم حذف المفتاح';};
- window.toggleQwenKey=function(){const i=document.getElementById('openrouter-key-inp');if(i)i.type=i.type==='password'?'text':'password';};
- function mount(){const modal=document.querySelector('#settings-overlay .m-body')||document.querySelector('#settings-overlay .modal');if(!modal||document.getElementById('qwen-settings-card'))return;const d=document.createElement('div');d.id='qwen-settings-card';d.className='m-section';d.style.cssText='margin-top:14px;border:1px solid rgba(249,115,22,.45);border-radius:12px;padding:12px;background:rgba(249,115,22,.06)';d.innerHTML='<div class="m-sec-head"><div class="m-sec-icon" style="background:rgba(249,115,22,.18);color:#fb923c"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><div class="m-sec-title">Qwen / OpenRouter</div><div class="m-sec-sub">مفتاح كوين — حفظ محلي على جهازك</div></div></div><div id="or-key-stt" class="key-stt" style="margin:8px 0;color:#22c55e"></div><label>OpenRouter API Key</label><div style="display:flex;gap:8px"><input type="password" id="openrouter-key-inp" placeholder="sk-or-..." style="flex:1"><button type="button" class="btn btn-ghost" onclick="toggleQwenKey()"><i class="fa-solid fa-eye"></i></button></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn btn-gold" style="flex:1" onclick="saveQwenKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح كوين</button><button class="btn btn-ghost" onclick="clearQwenKey()"><i class="fa-solid fa-trash"></i></button></div>';modal.appendChild(d);const i=d.querySelector('#openrouter-key-inp'),s=d.querySelector('#or-key-stt'),v=localStorage.getItem(KEY)||'';i.value=v;if(v)s.textContent='✓ مفتاح كوين محفوظ';}
+ window.__REMOVED_saveQwenKey__=function(){const i=document.getElementById('__REMOVED_openrouter-key-inp__'),s=document.getElementById('__REMOVED_or-key-stt__'),v=(i?.value||'').trim();if(!v){if(s)s.textContent='أدخل مفتاح OpenRouter أولاً';return false;}localStorage.setItem(KEY,v);if(window.S)S.orKey=v;if(s)s.textContent='✓ تم حفظ مفتاح كوين على هذا الجهاز';return true;};
+ window.__REMOVED_clearQwenKey__=function(){localStorage.removeItem(KEY);if(window.S)S.orKey='';const i=document.getElementById('__REMOVED_openrouter-key-inp__'),s=document.getElementById('__REMOVED_or-key-stt__');if(i)i.value='';if(s)s.textContent='تم حذف المفتاح';};
+ window.toggleQwenKey=function(){const i=document.getElementById('__REMOVED_openrouter-key-inp__');if(i)i.type=i.type==='password'?'text':'password';};
+ function mount(){const modal=document.querySelector('#settings-overlay .m-body')||document.querySelector('#settings-overlay .modal');if(!modal||document.getElementById('__REMOVED_qwen-settings-card__'))return;const d=document.createElement('div');d.id='__REMOVED_qwen-settings-card__';d.className='m-section';d.style.cssText='margin-top:14px;border:1px solid rgba(249,115,22,.45);border-radius:12px;padding:12px;background:rgba(249,115,22,.06)';d.innerHTML='<div class="m-sec-head"><div class="m-sec-icon" style="background:rgba(249,115,22,.18);color:#fb923c"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><div class="m-sec-title">Qwen / OpenRouter</div><div class="m-sec-sub">مفتاح كوين — حفظ محلي على جهازك</div></div></div><div id="__REMOVED_or-key-stt__" class="key-stt" style="margin:8px 0;color:#22c55e"></div><label>OpenRouter API Key</label><div style="display:flex;gap:8px"><input type="password" id="__REMOVED_openrouter-key-inp__" placeholder="sk-or-..." style="flex:1"><button type="button" class="btn btn-ghost" onclick="toggleQwenKey()"><i class="fa-solid fa-eye"></i></button></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn btn-gold" style="flex:1" onclick="__REMOVED_saveQwenKey__()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح كوين</button><button class="btn btn-ghost" onclick="__REMOVED_clearQwenKey__()"><i class="fa-solid fa-trash"></i></button></div>';modal.appendChild(d);const i=d.querySelector('#__REMOVED_openrouter-key-inp__'),s=d.querySelector('#__REMOVED_or-key-stt__'),v=localStorage.getItem(KEY)||'';i.value=v;if(v)s.textContent='✓ مفتاح كوين محفوظ';}
  document.addEventListener('DOMContentLoaded',mount);
  const old=window.openSettings;window.openSettings=function(){if(old)old();setTimeout(mount,0);};
 })();
@@ -1587,11 +1587,11 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 <div id="autosave-ind">💾 حُفظ تلقائياً</div>
 
 <script>
-const OR_KEY_STORAGE='db12ork';
+const OR_KEY_STORAGE='__REMOVED_db12ork__';
 function getQwenKey(){ return (localStorage.getItem(OR_KEY_STORAGE) || S.orKey || '').trim(); }
 function setQwenKey(v){ localStorage.setItem(OR_KEY_STORAGE, v); S.orKey = v; }
-function saveQwenKey(){ const i=document.getElementById('openrouter-key-inp'); const s=document.getElementById('or-key-stt'); const v=(i?.value||'').trim(); if(!v){ if(s) s.innerHTML='<span style="color:#fbbf24">أدخل مفتاح OpenRouter</span>'; toast('أدخل مفتاح OpenRouter','w'); return false; } setQwenKey(v); if(s) s.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; toast('تم حفظ المفتاح','s'); return true; }
-function restoreQwenKey(){ const i=document.getElementById('openrouter-key-inp'); const s=document.getElementById('or-key-stt'); const v=getQwenKey(); if(i) i.value=v; if(s && v) s.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; }
+function __REMOVED_saveQwenKey__(){ const i=document.getElementById('__REMOVED_openrouter-key-inp__'); const s=document.getElementById('__REMOVED_or-key-stt__'); const v=(i?.value||'').trim(); if(!v){ if(s) s.innerHTML='<span style="color:#fbbf24">أدخل مفتاح OpenRouter</span>'; toast('أدخل مفتاح OpenRouter','w'); return false; } setQwenKey(v); if(s) s.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; toast('تم حفظ المفتاح','s'); return true; }
+function __REMOVED_restoreQwenKey__(){ const i=document.getElementById('__REMOVED_openrouter-key-inp__'); const s=document.getElementById('__REMOVED_or-key-stt__'); const v=getQwenKey(); if(i) i.value=v; if(s && v) s.innerHTML='<span style="color:#22c55e">تم حفظ المفتاح</span>'; }
 function isQwenModel(m){ const x=String(m||'').toLowerCase(); return x.includes('qwen') || x.includes('openrouter') || x.includes(':free'); }
 async function callOpenRouter(prompt, model){ const key=getQwenKey(); if(!key) throw new Error('مفتاح OpenRouter غير محفوظ'); const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key,'HTTP-Referer':location.href,'X-OpenRouter-Title':'DESK BOT'},body:JSON.stringify({model:model||'qwen/qwen3.6-plus:free',messages:[{role:'system',content:'You are an Arabic newsroom assistant specialized in editing, headlines, and article polishing.'},{role:'user',content:prompt}],temperature:0.35})}); if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message || ('OpenRouter '+r.status)); } const d=await r.json(); return d?.choices?.[0]?.message?.content || ''; }
 function modelRunner(model){ return isQwenModel(model) ? callOpenRouter : callGemini; }
@@ -3525,7 +3525,7 @@ async function runCompare() {
 }
 
 
-window.addEventListener('load', restoreQwenKey);
+window.addEventListener('load', __REMOVED_restoreQwenKey__);
 </script>
 
 
@@ -3863,29 +3863,6 @@ function sendRadioToEditor(idx) {
   }
 }
 
-</script>
-
-
-<script>
-(function(){
-  const KEY='db12ork';
-  const QMODEL='qwen/qwen3.6-plus-free';
-  const ids=['article-model','flash-model','transcribe-model','headlines-model'];
-  const hasQ=()=>!!(localStorage.getItem(KEY)||'').trim();
-  function apply(){
-    ids.forEach(id=>{
-      const el=document.getElementById(id);
-      if(!el || el.tagName!=='SELECT') return;
-      if(!el.querySelector(`option[value="${QMODEL}"]`)){
-        const o=document.createElement('option'); o.value=QMODEL; o.textContent='Qwen 3.6 Plus (OpenRouter)'; el.appendChild(o);
-      }
-      if(hasQ()) el.value=QMODEL;
-    });
-  }
-  function hook(name){ const fn=window[name]; if(typeof fn!=='function') return; window[name]=async function(){ apply(); try{return await fn.apply(this,arguments);} catch(e){ const m=String(e?.message||e||''); if(/failed to fetch|cors|network/i.test(m)){ const out=document.getElementById('out-transcribe')||document.getElementById('out-article')||document.getElementById('out-flash')||document.getElementById('out-headlines'); if(out) out.innerHTML='<div style="padding:12px;border:1px solid #f59e0b;border-radius:10px;background:rgba(245,158,11,.08)">❌ Failed to fetch: في المتصفح هذا غالبًا يعني CORS أو أن دالة الزر لا تصل إلى OpenRouter بالطريقة الصحيحة. المفتاح المخزن وحده لا يكفي إذا لم يمر الطلب عبر endpoint صحيح.</div>'; } throw e; } }; }
-  document.addEventListener('DOMContentLoaded',()=>{ apply(); ['runArticle','runFlash','runTranscribe','runHeadlines','runAudioTranscribe','runTranscribeEdit'].forEach(hook); });
-  new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});
-})();
 </script>
 
 </body>
