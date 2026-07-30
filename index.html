@@ -3869,29 +3869,14 @@ function sendRadioToEditor(idx) {
 <script>
 (function(){
   const KEY='db12ork';
-  const MODEL='qwen/qwen3.6-plus-free';
-  const ids=['article-model','flash-model','transcribe-model','headlines-model'];
-  const keySaved=()=>!!(localStorage.getItem(KEY)||'').trim();
-  function sync(){
-    if(!keySaved()) return;
-    ids.forEach(id=>{
-      const el=document.getElementById(id);
-      if(!el) return;
-      if(el.tagName==='SELECT'){
-        if(!el.querySelector('option[value="'+MODEL+'"]')){
-          const opt=document.createElement('option'); opt.value=MODEL; opt.textContent='Qwen 3.6 Plus (OpenRouter)'; el.appendChild(opt);
-        }
-        el.value=MODEL;
-      }
-    });
-  }
-  document.addEventListener('DOMContentLoaded',sync);
-  const _open=window.openSettings;
-  window.openSettings=function(){ if(_open) _open(); setTimeout(sync,0); };
-  const _save=window.saveQwenKey;
-  window.saveQwenKey=function(){ const ok=_save? _save():false; setTimeout(sync,0); return ok; };
-  const _clear=window.clearQwenKey;
-  window.clearQwenKey=function(){ const ok=_clear? _clear():false; ids.forEach(id=>{const el=document.getElementById(id); if(el && el.dataset.qwenprev){ el.value=el.dataset.qwenprev; }}); return ok; };
+  const QMODEL='qwen/qwen3.6-plus-free';
+  function hasQ(){ return !!(localStorage.getItem(KEY)||'').trim(); }
+  function setToolModel(id){ const el=document.getElementById(id); if(!el) return; if(el.tagName==='SELECT'){ if(!el.querySelector(`option[value="${QMODEL}"]`)){ const o=document.createElement('option'); o.value=QMODEL; o.textContent='Qwen 3.6 Plus (OpenRouter)'; el.appendChild(o);} el.value=QMODEL; } else if('value' in el){ el.value=QMODEL; } }
+  function syncTranscribe(){ if(hasQ()) setToolModel('transcribe-model'); }
+  function hook(name){ const old=window[name]; if(typeof old!=='function') return; window[name]=async function(){ syncTranscribe(); try{ return await old.apply(this, arguments); } catch(e){ const m=String(e?.message||e||''); if(/failed to fetch|cors|network/i.test(m)){ const out=document.getElementById('out-transcribe')||document.querySelector('.out-box'); if(out) out.innerHTML='<div style="padding:12px;border:1px solid #f59e0b;border-radius:10px;background:rgba(245,158,11,.08)">❌ Failed to fetch: هذا ليس بالضرورة من المفتاح المخزن. غالبًا الاستدعاء المباشر من المتصفح يواجه CORS أو أن زر التفريغ ما زال لا يمر عبر دالة OpenRouter الصحيحة.</div>'; } throw e; } }; }
+  document.addEventListener('DOMContentLoaded', ()=>{ syncTranscribe(); hook('runTranscribe'); hook('runAudioTranscribe'); hook('runTranscribeEdit'); });
+  const _open=window.openSettings; window.openSettings=function(){ if(_open) _open(); setTimeout(syncTranscribe,0); };
+  const _save=window.saveQwenKey; window.saveQwenKey=function(){ const ok=_save? _save():false; setTimeout(syncTranscribe,0); return ok; };
 })();
 </script>
 
