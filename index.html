@@ -1053,7 +1053,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
        <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="qwen/qwen3.6-plus:free">Qwen 3.6 Plus Free</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div id="stt-editor" class="stt"></div>
       <div id="out-editor" class="out-box rendered" style="display:none"></div>
@@ -1512,6 +1512,27 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> احصل على مفتاحك المجاني من: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
       </div>
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
+     </div>
+     <div class="settings-divider"></div>
+     <div class="m-section">
+      <div class="m-sec-head">
+       <div class="m-sec-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(124,140,255,.12));color:#ddd6fe">
+        <i class="fa-solid fa-rotate"></i>
+       </div>
+       <div>
+        <div class="m-sec-title">OpenRouter / Qwen API</div>
+        <div class="m-sec-sub">هذه النافذة هي التي تتيح استخدام Qwen</div>
+       </div>
+      </div>
+      <div id="or-key-stt" class="key-stt">جاهز لاستقبال مفتاح OpenRouter</div>
+      <div class="label-compact">OpenRouter API</div>
+      <div class="input-wrap">
+       <i class="fa-solid fa-key in-icon" style="color:#c4b5fd"></i><input type="password" id="openrouter-key-inp" placeholder="sk-or-...">
+      </div>
+      <div class="api-help" style="background:linear-gradient(135deg,rgba(124,58,237,.10),rgba(255,255,255,.02));border-color:rgba(124,58,237,.18);color:#e2d8ff">
+       <i class="fa-solid fa-circle-info"></i> احصل على المفتاح من <a href="https://openrouter.ai/keys" target="_blank" style="color:#c4b5fd">openrouter.ai/keys</a>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="saveAnyKey('openrouter')"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
      </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
