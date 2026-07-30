@@ -833,7 +833,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 .bn-btn#bn-more.open{color:var(--g4)}
 
 </style>
-<style>.key-wrap{display:flex;gap:8px;align-items:center}.key-wrap input{flex:1}.key-toggle{min-width:44px;height:44px;border:1px solid var(--ln2);background:rgba(255,255,255,.05);border-radius:10px;color:var(--t1)}.key-actions{display:flex;gap:8px;margin:8px 0 0}.key-actions .btn{flex:1}.msi-o{background:rgba(249,115,22,.14)}</style></head>
+</head>
 <body>
 
 <!-- API BANNER -->
@@ -1552,7 +1552,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
             <div class="m-sec-sub">Flash: 1500 طلب/يوم · Pro: 50 طلب/يوم — مجاناً</div>
           </div>
         </div>
-        <div id="gemini-key-stt" class="key-stt"></div>
+        <div id="key-stt" class="key-stt"></div>
         <label>مفتاح Gemini API</label>
         <input type="password" id="gemini-key-inp" placeholder="AIzaSy...">
         <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.15);border-radius:8px;padding:10px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.6">
@@ -1561,36 +1561,26 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
         </div>
         <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
-      <div class="m-section">
-        <div class="m-sec-head">
-          <div class="m-sec-icon msi-g"><i class="fa-brands fa-google"></i></div>
-          <div>
-            <div class="m-sec-title">Google Gemini API</div>
-            <div class="m-sec-sub">Flash 15 / Pro 50</div>
-          </div>
-        </div>
-        <div id="gemini-key-stt" class="key-stt"></div>
-        <label>Gemini API Key</label>
-        <div class="key-wrap"><input type="password" id="gemini-key-inp" placeholder="AIzaSy..."><button type="button" class="key-toggle" onclick="toggleKey('gemini-key-inp',this)"><i class="fa-solid fa-eye"></i></button></div>
-        <div class="key-actions"><button class="btn btn-gold" onclick="saveGeminiKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ</button><button class="btn btn-ghost" onclick="clearGeminiKey()"><i class="fa-solid fa-trash"></i></button></div>
-      </div>
-      <div class="m-section">
-        <div class="m-sec-head">
-          <div class="m-sec-icon msi-o"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-          <div>
-            <div class="m-sec-title">Qwen / OpenRouter</div>
-            <div class="m-sec-sub">مفتاح كوين — يظهر هنا</div>
-          </div>
-        </div>
-        <div id="or-key-stt" class="key-stt"></div>
-        <label>OpenRouter API Key</label>
-        <div class="key-wrap"><input type="password" id="openrouter-key-inp" placeholder="sk-or-..."><button type="button" class="key-toggle" onclick="toggleKey('openrouter-key-inp',this)"><i class="fa-solid fa-eye"></i></button></div>
-        <div class="key-actions"><button class="btn btn-gold" onclick="saveQwenKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ</button><button class="btn btn-ghost" onclick="clearQwenKey()"><i class="fa-solid fa-trash"></i></button></div>
       </div>
       <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
   </div>
 </div>
+
+
+<script>
+/* Qwen/OpenRouter settings repair */
+(function(){
+ const KEY='db12ork', MODEL='qwen/qwen3.6-plus-free';
+ window.getQwenKey=()=>localStorage.getItem(KEY)||'';
+ window.saveQwenKey=function(){const i=document.getElementById('openrouter-key-inp'),s=document.getElementById('or-key-stt'),v=(i?.value||'').trim();if(!v){if(s)s.textContent='أدخل مفتاح OpenRouter أولاً';return false;}localStorage.setItem(KEY,v);if(window.S)S.orKey=v;if(s)s.textContent='✓ تم حفظ مفتاح كوين على هذا الجهاز';return true;};
+ window.clearQwenKey=function(){localStorage.removeItem(KEY);if(window.S)S.orKey='';const i=document.getElementById('openrouter-key-inp'),s=document.getElementById('or-key-stt');if(i)i.value='';if(s)s.textContent='تم حذف المفتاح';};
+ window.toggleQwenKey=function(){const i=document.getElementById('openrouter-key-inp');if(i)i.type=i.type==='password'?'text':'password';};
+ function mount(){const modal=document.querySelector('#settings-overlay .m-body')||document.querySelector('#settings-overlay .modal');if(!modal||document.getElementById('qwen-settings-card'))return;const d=document.createElement('div');d.id='qwen-settings-card';d.className='m-section';d.style.cssText='margin-top:14px;border:1px solid rgba(249,115,22,.45);border-radius:12px;padding:12px;background:rgba(249,115,22,.06)';d.innerHTML='<div class="m-sec-head"><div class="m-sec-icon" style="background:rgba(249,115,22,.18);color:#fb923c"><i class="fa-solid fa-wand-magic-sparkles"></i></div><div><div class="m-sec-title">Qwen / OpenRouter</div><div class="m-sec-sub">مفتاح كوين — حفظ محلي على جهازك</div></div></div><div id="or-key-stt" class="key-stt" style="margin:8px 0;color:#22c55e"></div><label>OpenRouter API Key</label><div style="display:flex;gap:8px"><input type="password" id="openrouter-key-inp" placeholder="sk-or-..." style="flex:1"><button type="button" class="btn btn-ghost" onclick="toggleQwenKey()"><i class="fa-solid fa-eye"></i></button></div><div style="display:flex;gap:8px;margin-top:9px"><button class="btn btn-gold" style="flex:1" onclick="saveQwenKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ مفتاح كوين</button><button class="btn btn-ghost" onclick="clearQwenKey()"><i class="fa-solid fa-trash"></i></button></div>';modal.appendChild(d);const i=d.querySelector('#openrouter-key-inp'),s=d.querySelector('#or-key-stt'),v=localStorage.getItem(KEY)||'';i.value=v;if(v)s.textContent='✓ مفتاح كوين محفوظ';}
+ document.addEventListener('DOMContentLoaded',mount);
+ const old=window.openSettings;window.openSettings=function(){if(old)old();setTimeout(mount,0);};
+})();
+</script>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
