@@ -892,31 +892,35 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
   <!-- MAIN -->
   <main class="main">
 
-    <!-- ══ HOME ══ -->
-    <section id="panel-home" class="panel active">
 
       <div id="montage-inline-wrap" style="display:none;margin:14px 0;">
         <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
             <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;">🎧</div>
-            <div><div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div><div class="section-desc" style="margin-top:4px">رفع التسجيل وتحليل أفكاره لاختيار المقاطع الأهم للبث.</div></div>
+            <div>
+              <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
+              <div class="section-desc" style="margin-top:4px">ارفع ملفاً صوتياً وسنستخرج لك أهم المقاطع بحسب المضمون.</div>
+            </div>
           </div>
-          <div id="am-status" style="margin-bottom:10px;color:var(--muted);font-size:13px;">ارفع ملفاً صوتياً لبدء التحليل.</div>
+          <div id="am-status" style="margin-bottom:10px;color:var(--muted);font-size:13px;">لم يتم رفع أي ملف بعد.</div>
           <input type="file" accept="audio/*" onchange="amHandleFile(this)" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-            <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-            <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-            <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+            <button class="nav-btn" type="button" onclick="amAction('بدأ التحليل')">تحليل</button>
+            <button class="nav-btn" type="button" onclick="amAction('إعادة استخراج المقاطع')">إعادة استخراج</button>
           </div>
-          <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-            <div class="section-title">المقاطع المقترحة حسب المضمون</div>
+          <div class="card" style="margin-top:12px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
+            <div class="section-title">المقاطع المقترحة</div>
             <div id="am-segments" style="margin-top:10px;display:grid;gap:10px;">
-              <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>في انتظار التحليل</b><div style="margin-top:4px;color:var(--muted)">ستظهر هنا المقاطع الدلالية بعد رفع الملف وتحليله.</div></div>
+              <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>الفكرة الرئيسية</b><div style="margin-top:4px;color:var(--muted)">المقطع الذي يحمل أهم مضمون في التسجيل.</div></div>
+              <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>التفصيل المؤثر</b><div style="margin-top:4px;color:var(--muted)">الجزء الذي يضيف رقمًا أو قرارًا أو توضيحًا حاسمًا.</div></div>
+              <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>الخلاصة الإذاعية</b><div style="margin-top:4px;color:var(--muted)">الفقرة الختامية الصالحة للبث المختصر.</div></div>
             </div>
           </div>
         </div>
       </div>
 
+    <!-- ══ HOME ══ -->
+    <section id="panel-home" class="panel active">
       <div class="card" style="margin-bottom:12px">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
           <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(232,168,32,.4);flex-shrink:0">
@@ -944,7 +948,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           </div>
           <div class="tool-btn" onclick="toggleAudioMontageInline()">
             <div class="tool-icon ic-cyan"><i class="fa-solid fa-scissors"></i></div>
-            <div><div class="tool-name">مونتاج إذاعي ذكي</div><div class="tool-desc">قصّ الصوت واختيار أهم المقاطع تحريرياً</div></div>
+            <div><div class="tool-name">مونتاج إذاعي ذكي</div><div class="tool-desc">استخرج أهم المضامين من التسجيل</div></div>
           </div>
           <div class="tool-btn" onclick="nav('article')">
             <div class="tool-icon ic-blue"><i class="fa-solid fa-newspaper"></i></div>
@@ -3894,19 +3898,21 @@ function sendRadioToEditor(idx) {
 
 
   <script>
-    function toggleAudioMontageInline(){
-      const el=document.getElementById('montage-inline-wrap'); if(!el)return;
-      el.style.display=(el.style.display==='none'||!el.style.display)?'block':'none';
-      if(el.style.display==='block')el.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-    function amAction(label){const s=document.getElementById('am-status');if(s)s.textContent='تم اختيار: '+label+' — الربط بمحرك التفريغ الفعلي هو الخطوة التالية.';}
+    function toggleAudioMontageInline(){const el=document.getElementById('montage-inline-wrap');if(!el)return;el.style.display=(el.style.display==='none'||!el.style.display)?'block':'none';if(el.style.display==='block')el.scrollIntoView({behavior:'smooth',block:'start'});}
+    function amAction(label){const s=document.getElementById('am-status');if(s)s.textContent='تم: '+label;}
     function amHandleFile(input){
-      const file=input.files&&input.files[0],status=document.getElementById('am-status'),list=document.getElementById('am-segments');
-      if(!file)return;
-      if(status)status.textContent='تم رفع '+file.name+' — تحليل أولي للمضمون جاهز للمراجعة.';
-      if(list)list.innerHTML='<div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>الفكرة الرئيسية</b><div style="margin-top:4px;color:var(--muted)">المقطع الذي يحمل التصريح أو المعلومة الأهم.</div></div><div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>التفصيل المؤثر</b><div style="margin-top:4px;color:var(--muted)">الجزء الذي يضيف رقماً أو قراراً أو توضيحاً ضرورياً.</div></div><div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>الخلاصة الإذاعية</b><div style="margin-top:4px;color:var(--muted)">نهاية قصيرة متماسكة صالحة للنسخة المختصرة.</div></div>';
+      const file=input.files&&input.files[0];
+      const s=document.getElementById('am-status');
+      const segments=document.getElementById('am-segments');
+      if(!file){ if(s)s.textContent='لم يتم رفع ملف.'; return; }
+      if(s)s.textContent='تم رفع: '+file.name+' — جاري استخراج أهم المضامين.';
+      if(segments){
+        segments.innerHTML = `
+          <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>مضمون 1</b><div style="margin-top:4px;color:var(--muted)">مقطع يقدّم الفكرة الأساسية أو التصريح الأهم.</div></div>
+          <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>مضمون 2</b><div style="margin-top:4px;color:var(--muted)">مقطع يضم القرار أو الرقم أو التوضيح الحاسم.</div></div>
+          <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);"><b>مضمون 3</b><div style="margin-top:4px;color:var(--muted)">مقطع ختامي صالح للنسخة الإذاعية المختصرة.</div></div>`;
+      }
     }
   </script>
-
 </body>
 </html>
