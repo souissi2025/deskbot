@@ -888,6 +888,31 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
    </nav>
    <!-- MAIN -->
    <main class="main">
+    <section id="panel-audio-montage" class="panel" style="display:none;">
+     <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+       <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
+       <div>
+        <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
+        <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
+       </div>
+      </div>
+      <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+       <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
+       <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
+       <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
+      </div>
+      <div class="card" style="margin-top:14px;padding:14px;">
+       <div class="section-title">المقاطع المقترحة</div>
+       <div style="margin-top:10px;display:grid;gap:10px;">
+        <div class="card" style="padding:12px">المقطع 1 — 00:18 - 00:33</div>
+        <div class="card" style="padding:12px">المقطع 2 — 00:41 - 01:02</div>
+        <div class="card" style="padding:12px">المقطع 3 — 01:10 - 01:21</div>
+       </div>
+      </div>
+     </div>
+    </section>
     <!-- ══ HOME ══ -->
     <section id="panel-home" class="panel active">
      <div class="card" style="margin-bottom:12px">
@@ -921,13 +946,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-solid fa-wand-magic-sparkles"></i> الأدوات المتاحة
       </div>
       <div class="tool-grid">
-       <div class="tool-card" onclick="openAudioMontageTool()">
-        <div class="tool-icon">🎧</div>
-        <div>
-         <h4>مونتاج إذاعي ذكي</h4>
-         <p>يقصّ التسجيل ويختار أهم المقاطع الصوتية حسب المضمون، ثم يجهّز نسخة جاهزة للبث.</p>
-        </div>
-       </div>
        <div class="tool-btn" onclick="nav('editor')">
         <div class="tool-icon ic-gold">
          <i class="fa-solid fa-pen-nib"></i>
@@ -944,6 +962,15 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div>
          <div class="tool-name">المقال الإخباري</div>
          <div class="tool-desc">إعادة صياغة احترافية</div>
+        </div>
+       </div>
+       <div class="tool-btn" onclick="nav('audio-montage')">
+        <div class="tool-icon ic-cyan">
+         <i class="fa-solid fa-scissors"></i>
+        </div>
+        <div>
+         <div class="tool-name">مونتاج إذاعي ذكي</div>
+         <div class="tool-desc">قصّ الصوت واختيار أهم المقاطع تحريرياً</div>
         </div>
        </div>
        <div class="tool-btn" onclick="nav('flash')">
@@ -3816,62 +3843,8 @@ function sendRadioToEditor(idx) {
 }
 
 </script>
-  <div id="audioMontageModal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,.72);backdrop-filter:blur(8px);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-   <div style="max-width:980px;width:100%;background:linear-gradient(180deg,#0f172a,#0b1220);border:1px solid rgba(255,255,255,.08);border-radius:24px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.45)">
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
-     <div>
-      <h3 style="margin:0;font-size:20px;color:#fff">مونتاج إذاعي ذكي</h3>
-      <p style="margin:6px 0 0;color:#94a3b8;font-size:13px">قصّ الصوت حسب المضمون واختيار المقاطع الأقوى تحريريًا.</p>
-     </div>
-     <button onclick="closeAudioMontageTool()" style="background:#1f2937;color:#fff;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px 12px;cursor:pointer;font-size:13px">إغلاق</button>
-    </div>
-    <div style="padding:22px;display:grid;grid-template-columns:1.05fr .95fr;gap:18px">
-     <div style="background:rgba(15,23,42,.72);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:16px">
-      <h4 style="margin:0 0 12px;font-size:15px;color:#fff">رفع الملف والتحليل</h4>
-      <input style="width:100%;padding:11px 12px;border-radius:12px;background:#0b1220;color:#e5e7eb;border:1px solid rgba(255,255,255,.08);font-size:13px" type="file" accept="audio/*">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-       <button style="border:none;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;background:#2563eb;color:#fff">تفريغ وتحليل</button>
-       <button style="border:none;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;background:#16a34a;color:#fff">اقتراح المقاطع المهمة</button>
-       <button style="border:none;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;background:#f59e0b;color:#111827">تصدير نسخة مختصرة</button>
-      </div>
-      <div style="margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(37,99,235,.10);border:1px solid rgba(96,165,250,.16);color:#dbeafe;font-size:13px;line-height:1.8">
-       <strong>طريقة العمل:</strong>
-       <br>
-       1) تفريغ الصوت مع التوقيتات.
-       <br>
-       2) تحليل دلالي للمقاطع الصوتية.
-       <br>
-       3) اختيار أهم الأفكار داخل التسجيل.
-       <br>
-       4) قصّ المقاطع وترتيبها.
-       <br>
-       5) إخراج نسخة جاهزة للمراجعة أو البث.
-      </div>
-     </div>
-     <div style="background:rgba(15,23,42,.72);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:16px">
-      <h4 style="margin:0 0 12px;font-size:15px;color:#fff">المقاطع المقترحة</h4>
-      <div style="background:#0b1220;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;margin-bottom:10px">
-       <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#e2e8f0">
-        <strong>المقطع 1</strong><span>00:18 - 00:33</span>
-       </div>
-       <div style="margin-top:6px;color:#94a3b8;font-size:12.5px;line-height:1.7">يحمل التصريح الرئيسي والرقم الأهم في المادة.</div>
-      </div>
-      <div style="background:#0b1220;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;margin-bottom:10px">
-       <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#e2e8f0">
-        <strong>المقطع 2</strong><span>00:41 - 01:02</span>
-       </div>
-       <div style="margin-top:6px;color:#94a3b8;font-size:12.5px;line-height:1.7">يقدّم الخلاصة التنفيذية ويصلح لنسخة النشرة.</div>
-      </div>
-      <div style="background:#0b1220;border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px">
-       <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#e2e8f0">
-        <strong>المقطع 3</strong><span>01:10 - 01:21</span>
-       </div>
-       <div style="margin-top:6px;color:#94a3b8;font-size:12.5px;line-height:1.7">فقرة ختامية قصيرة ومتماسكة للبث الإذاعي.</div>
-      </div>
-     </div>
-    </div>
-   </div>
-  </div>
-  <script>function openAudioMontageTool(){document.getElementById('audioMontageModal').style.display='flex'}function closeAudioMontageTool(){document.getElementById('audioMontageModal').style.display='none'}</script>
+  <script>
+    function amAction(label){ console.log(label); }
+  </script>
  </body>
 </html>
