@@ -894,22 +894,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 
     <!-- ══ HOME ══ -->
     <section id="panel-home" class="panel active">
-      <div class="card" style="margin-bottom:12px">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(232,168,32,.4);flex-shrink:0">
-            <i class="fa-solid fa-newspaper"></i>
-          </div>
-          <div style="flex:1;min-width:0">
-            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--t0)">DESK BOT</div>
-            <div style="font-size:9px;color:var(--t2)">غرفة الأخبار الرقمية</div>
-          </div>
-          <div id="home-greeting" style="font-size:11px;font-weight:700;color:var(--g4);white-space:nowrap"></div>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-val" id="st-req">0</div><div class="stat-lbl">طلبات اليوم</div></div>
-          <div class="stat-card"><div class="stat-val" id="st-arc">0</div><div class="stat-lbl">مواد مؤرشفة</div></div>
-          <div class="stat-card"><div class="stat-val" id="st-ag">0</div><div class="stat-lbl">أحداث الأجندة</div></div>
-        </div>
+
         <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
           <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
@@ -935,6 +920,23 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
             </div>
           </div>
         </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(232,168,32,.4);flex-shrink:0">
+            <i class="fa-solid fa-newspaper"></i>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;color:var(--t0)">DESK BOT</div>
+            <div style="font-size:9px;color:var(--t2)">غرفة الأخبار الرقمية</div>
+          </div>
+          <div id="home-greeting" style="font-size:11px;font-weight:700;color:var(--g4);white-space:nowrap"></div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-val" id="st-req">0</div><div class="stat-lbl">طلبات اليوم</div></div>
+          <div class="stat-card"><div class="stat-val" id="st-arc">0</div><div class="stat-lbl">مواد مؤرشفة</div></div>
+          <div class="stat-card"><div class="stat-val" id="st-ag">0</div><div class="stat-lbl">أحداث الأجندة</div></div>
+        </div>
       </div>
 
       <div class="card">
@@ -943,6 +945,10 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <div class="tool-btn" onclick="nav('editor')">
             <div class="tool-icon ic-gold"><i class="fa-solid fa-pen-nib"></i></div>
             <div><div class="tool-name">داسك الاخبار</div><div class="tool-desc">تحرير + صياغة + SEO</div></div>
+          </div>
+          <div class="tool-btn" onclick="nav('article')">
+            <div class="tool-icon ic-blue"><i class="fa-solid fa-newspaper"></i></div>
+            <div><div class="tool-name">المقال الإخباري</div><div class="tool-desc">إعادة صياغة احترافية</div></div>
           </div>
           <div class="tool-btn" onclick="toggleAudioMontageInline()">
             <div class="tool-icon ic-cyan"><i class="fa-solid fa-scissors"></i></div>
@@ -979,31 +985,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <div class="tool-btn" onclick="nav('compare')">
             <div class="tool-icon" style="background:rgba(20,184,166,.15);color:#2dd4bf"><i class="fa-solid fa-code-compare"></i></div>
             <div><div class="tool-name">مقارن الأخبار</div><div class="tool-desc">عربي × دولي</div></div>
-          </div>
-        </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -1125,31 +1106,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-editor')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-editor','محرر')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1245,31 +1201,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-flash')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-flash','فلاش')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1289,31 +1220,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div id="acts-headlines" class="act-row" style="display:none">
           <button class="btn btn-ghost" onclick="copyOut('out-headlines')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-headlines','عناوين')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-        </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1362,31 +1268,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-ghost" onclick="copyOut('out-hist')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-hist','حدث اليوم')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="card">
         <div class="card-title"><i class="fa-solid fa-futbol"></i> أرشيف المواجهات الرياضية</div>
@@ -1401,31 +1282,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div id="acts-sports" class="act-row" style="display:none">
           <button class="btn btn-ghost" onclick="copyOut('out-sports')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-sports','أرشيف رياضي')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-        </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1455,31 +1311,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div id="acts-profile" class="act-row" style="display:none">
           <button class="btn btn-ghost" onclick="copyOut('out-profile')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-profile','ملف شخصية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-        </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1526,31 +1357,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-radar')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-radar','رادار')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1580,31 +1386,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-ghost" onclick="copyOut('out-angle')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-wa" onclick="waOut('out-angle')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-angle','زاوية خفية')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-        </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1646,31 +1427,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-trend')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-trend','ترند')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1704,31 +1460,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
           <button class="btn btn-wa" onclick="waOut('out-compare')"><i class="fa-brands fa-whatsapp"></i></button>
           <button class="btn btn-ok" onclick="arcOut('out-compare','مقارنة')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1761,31 +1492,6 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
         <div id="acts-timeline" class="act-row" style="display:none">
           <button class="btn btn-ghost" onclick="copyOut('out-timeline')"><i class="fa-solid fa-clipboard"></i> نسخ</button>
           <button class="btn btn-ok" onclick="arcOut('out-timeline', 'جدول زمني')"><i class="fa-solid fa-floppy-disk"></i> أرشفة</button>
-        </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -3370,31 +3076,6 @@ function renderNews(list) {
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
           </button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <span class="news-title">${n.title}</span>
     </div>`;
@@ -4195,31 +3876,6 @@ function renderRadioNews(list) {
             <i class="fa-solid fa-arrow-up-right-from-square"></i>
           </button>
         </div>
-        <div id="montage-inline-wrap" style="display:none;margin-top:14px;">
-          <div class="card" style="padding:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-              <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--g1),var(--g4));display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;box-shadow:0 4px 12px rgba(0,0,0,.12)">🎧</div>
-              <div>
-                <div class="section-title" style="margin:0">مونتاج إذاعي ذكي</div>
-                <div class="section-desc" style="margin-top:4px">قصّ الصوت واختيار المقاطع الأهم تحريرياً مع نسخة مختصرة جاهزة للبث.</div>
-              </div>
-            </div>
-            <input type="file" accept="audio/*" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);" />
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-              <button class="nav-btn" type="button" onclick="amAction('تفريغ وتحليل')">تفريغ وتحليل</button>
-              <button class="nav-btn" type="button" onclick="amAction('اقتراح المقاطع المهمة')">اقتراح المقاطع المهمة</button>
-              <button class="nav-btn" type="button" onclick="amAction('تصدير نسخة مختصرة')">تصدير نسخة مختصرة</button>
-            </div>
-            <div class="card" style="margin-top:14px;padding:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);">
-              <div class="section-title">المقاطع المقترحة</div>
-              <div style="margin-top:10px;display:grid;gap:10px;">
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 1 — 00:18 - 00:33</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 2 — 00:41 - 01:02</div>
-                <div class="card" style="padding:12px;background:var(--panel);border:1px solid var(--line);color:var(--text);">المقطع 3 — 01:10 - 01:21</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <span class="news-title">${n.title}</span>
     </div>`;
@@ -4240,5 +3896,15 @@ function sendRadioToEditor(idx) {
 
 </script>
 
+
+  <script>
+    function amAction(label){ console.log(label); }
+    function toggleAudioMontageInline(){
+      const el = document.getElementById('montage-inline-wrap');
+      if(!el) return;
+      el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none';
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  </script>
 </body>
 </html>
