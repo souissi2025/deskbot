@@ -1053,7 +1053,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
        <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div id="stt-editor" class="stt"></div>
       <div id="out-editor" class="out-box rendered" style="display:none"></div>
@@ -1126,7 +1126,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
-       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-article" class="stt"></div>
@@ -1166,7 +1166,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-flash" class="stt"></div>
@@ -1276,7 +1276,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
        <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
@@ -1300,7 +1300,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
@@ -1328,7 +1328,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-angle" class="stt"></div>
@@ -1351,7 +1351,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
@@ -1379,7 +1379,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-compare" class="stt"></div>
@@ -1401,7 +1401,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
+       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-2.5-flash">Gemini 3.5 Flash ⚡</option> <option value="gemini-2.5-pro">Pro 🧠</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-timeline" class="stt"></div>
@@ -1512,6 +1512,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> احصل على مفتاحك المجاني من: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
       </div>
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
+      <button class="btn btn-ghost btn-full" onclick="runGeminiDiagnostic()"><i class="fa-solid fa-stethoscope"></i> اختبار Gemini</button>
      </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
@@ -1955,7 +1956,7 @@ const PROMPTS = {
 async function callGeminiWithSearch(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
   if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
-  const mdl = model || 'gemini-3.5-flash';
+  const mdl = model || window._geminiWorkingModel || 'gemini-2.5-flash';
   const isFlash35 = mdl.includes('3.5');
   const genConfig = isFlash35
     ? { maxOutputTokens: 8192 }
@@ -1998,7 +1999,7 @@ async function callGeminiWithSearch(prompt, model) {
 async function callGemini(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
   if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
-  const mdl = model || 'gemini-3.5-flash';
+  const mdl = model || window._geminiWorkingModel || 'gemini-2.5-flash';
   const isFlash35 = mdl.includes('3.5');
   const genConfig = isFlash35
     ? { maxOutputTokens: 8192 }
@@ -2112,7 +2113,7 @@ async function run(name, promptKey, getPrompt, btnId) {
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري المعالجة...'; }
   try {
-    const model = (document.getElementById(name + '-model') || {}).value || 'gemini-3.5-flash';
+    const model = (document.getElementById(name + '-model') || {}).value || 'gemini-2.5-flash';
     const prompt = getPrompt();
     const res = await callGemini((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
     showOut(name, renderMD(res));
@@ -2161,7 +2162,7 @@ ${inp}`;
 // ━━ Gemini Audio API — inlineData Base64 ━━
 async function callGeminiAudio(prompt, base64Data, mimeType, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
-  const mdl = model || 'gemini-3.5-flash';
+  const mdl = model || window._geminiWorkingModel || 'gemini-2.5-flash';
   const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -2182,7 +2183,7 @@ async function callGeminiAudio(prompt, base64Data, mimeType, model) {
     throw new Error(e.error?.message || 'خطأ Gemini ' + r.status);
   }
   const d = await r.json();
-  S.req++; localStorage.setItem('db12req', S.req); updateQuota();
+  S.req++; localStorage.setItem('db12_req', S.req); updateQuota();
   return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
@@ -2203,7 +2204,7 @@ async function runTranscribeStep1(prompt) {
   if (btn)  { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ...'; }
 
   try {
-    const model = (document.getElementById('editor-model') || {}).value || 'gemini-3.5-flash';
+    const model = (document.getElementById('editor-model') || {}).value || 'gemini-2.5-flash';
     const res = await callGemini(prompt, model);
     // استخراج النص المفرّغ
     const m1 = res.match(/~~التفريغ الحرفي~~([\s\S]*?)~~نهاية التفريغ~~/);
@@ -2234,7 +2235,7 @@ async function runEditorialStep2() {
   const outA  = document.getElementById('out-editorial');
   const stt   = document.getElementById('stt-editor');
   const editBtn = document.getElementById('btn-editorial-edit');
-  const model = (document.getElementById('editor-model') || {}).value || 'gemini-3.5-flash';
+  const model = (document.getElementById('editor-model') || {}).value || 'gemini-2.5-flash';
 
   if (outA) outA.innerHTML = '<div class="spin"></div>';
   if (editBtn) { editBtn.disabled = true; editBtn.innerHTML = '<div class="spin"></div> جاري التحرير...'; }
@@ -2456,7 +2457,7 @@ function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
   if (!inp) return toast('أدخل النص الأولي للمقال', 'w');
   const cnt   = document.getElementById('article-count')?.value || '1';
-  const model = document.getElementById('article-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('article-model')?.value || 'gemini-2.5-flash';
 
   if (!S.key) { openSettings(); return; }
   if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
@@ -2533,7 +2534,7 @@ async function runArticleRevise() {
   const sttRevise = document.getElementById('stt-article-revise');
   if (sttRevise) { sttRevise.className = 'stt loading'; sttRevise.style.display = 'flex'; sttRevise.innerHTML = '<div class="spin"></div> جارٍ إعادة الصياغة بناءً على ملاحظاتك...'; }
 
-  const model = document.getElementById('article-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('article-model')?.value || 'gemini-2.5-flash';
   const articlePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
 
   const revisePrompt = articlePrompt + `
@@ -2593,7 +2594,7 @@ function runProfile() {
   const n = (document.getElementById('profile-name')?.value || '').trim();
   if (!n) return toast('أدخل اسم الشخصية', 'w');
   const today = new Date().toLocaleDateString('ar-TN', {year:'numeric', month:'long', day:'numeric'});
-  const model = document.getElementById('profile-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('profile-model')?.value || 'gemini-2.5-flash';
   const btn = document.getElementById('btn-profile');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ البحث...'; }
@@ -3027,6 +3028,86 @@ function updateBanner() {
   if (b) S.key ? b.classList.add('hidden') : b.classList.remove('hidden');
 }
 
+
+async function parseGeminiErrorResponse(r) {
+  const txt = await r.text().catch(() => '');
+  let msg = txt || `HTTP ${r.status}`;
+  try {
+    const j = JSON.parse(txt);
+    msg = j.error?.message || j.message || msg;
+  } catch (_) {}
+  if (r.status === 400) return 'طلب Gemini غير مقبول: ' + msg;
+  if (r.status === 401) return 'مفتاح Gemini غير صحيح أو غير نشط: ' + msg;
+  if (r.status === 403) return 'المشروع أو الصلاحيات تمنع الاستدعاء: ' + msg;
+  if (r.status === 404) return 'اسم الموديل غير موجود أو غير مدعوم: ' + msg;
+  if (r.status === 429) return 'تم تجاوز الحصة أو الحد المسموح: ' + msg;
+  return msg;
+}
+
+async function geminiHealthCheck() {
+  if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
+  const models = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-1.5-flash'];
+  const results = [];
+  for (const mdl of models) {
+    try {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: 'قل: اختبار ناجح' }] }],
+          generationConfig: { temperature: 0.1, maxOutputTokens: 64 }
+        })
+      });
+      if (r.ok) {
+        const d = await r.json().catch(() => ({}));
+        const text = d.candidates?.[0]?.content?.parts?.map(p => p.text || '').join(' ').trim() || 'OK';
+        return { ok: true, model: mdl, text, attempts: results };
+      }
+      results.push({ model: mdl, ok: false, error: await parseGeminiErrorResponse(r) });
+    } catch (e) {
+      results.push({ model: mdl, ok: false, error: e.message || String(e) });
+    }
+  }
+  return { ok: false, attempts: results };
+}
+
+async function runGeminiDiagnostic() {
+  const out = document.getElementById('out-compare') || document.getElementById('out-radar') || document.getElementById('out-editor');
+  try {
+    toast('⏳ جارٍ اختبار Gemini...', 'w');
+    const res = await geminiHealthCheck();
+    if (res.ok) {
+      window._geminiWorkingModel = res.model;
+      const html = `
+        <div class="res-card">
+          <div class="res-head"><i class="fa-solid fa-stethoscope"></i><span>تشخيص Gemini</span></div>
+          <div class="res-body">
+            <p><b>الحالة:</b> الاتصال يعمل.</p>
+            <p><b>الموديل العامل:</b> <code>${res.model}</code></p>
+            <p><b>الرد التجريبي:</b> ${esc(res.text)}</p>
+          </div>
+        </div>`;
+      if (out) out.innerHTML = html;
+      toast('✅ Gemini يعمل — تم تحديد موديل صالح', 's');
+      return res.model;
+    }
+    const rows = (res.attempts || []).map(a => `<li><code>${a.model}</code> — ${esc(a.error || 'فشل غير معروف')}</li>`).join('');
+    if (out) out.innerHTML = `
+      <div class="res-card">
+        <div class="res-head"><i class="fa-solid fa-triangle-exclamation"></i><span>تشخيص Gemini</span></div>
+        <div class="res-body">
+          <p><b>الحالة:</b> فشل الاتصال بكل الموديلات المجربة.</p>
+          <ul>${rows}</ul>
+        </div>
+      </div>`;
+    toast('❌ فشل اختبار Gemini', 'e');
+    throw new Error((res.attempts || []).map(a => `${a.model}: ${a.error}`).join(' | '));
+  } catch (e) {
+    toast(e.message || 'فشل التشخيص', 'e');
+    throw e;
+  }
+}
+
 // ── NAV ──
 function nav(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -3237,7 +3318,7 @@ async function runRadar(isAuto) {
   isAuto = isAuto || false;
   if (!S.key) { openSettings(); return; }
   const cat   = document.getElementById('radar-category')?.value || 'all';
-  const model = document.getElementById('radar-model')?.value    || 'gemini-3.5-flash';
+  const model = document.getElementById('radar-model')?.value    || 'gemini-2.5-flash';
   const btn   = document.getElementById('btn-radar');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المسح...'; }
@@ -3383,7 +3464,7 @@ const PROMPT_COMPARE = `أنت محلل إعلامي مقارن متخصص في 
 async function runHiddenAngle() {
   const inp = (document.getElementById('angle-input')?.value || '').trim();
   if (!inp) return toast('أدخل نص الخبر للتحليل', 'w');
-  const model = document.getElementById('angle-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('angle-model')?.value || 'gemini-2.5-flash';
   const btn = document.getElementById('btn-angle');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكشف...'; }
@@ -3406,7 +3487,7 @@ async function runHiddenAngle() {
 
 async function runTrend() {
   const platform = document.getElementById('trend-platform')?.value || 'all';
-  const model = document.getElementById('trend-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('trend-model')?.value || 'gemini-2.5-flash';
   const btn = document.getElementById('btn-trend');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الرصد...'; }
@@ -3432,7 +3513,7 @@ async function runTrend() {
 async function runCompare() {
   const inp = (document.getElementById('compare-input')?.value || '').trim();
   if (!inp) return toast('أدخل نص الخبر للمقارنة', 'w');
-  const model = document.getElementById('compare-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('compare-model')?.value || 'gemini-2.5-flash';
   const btn = document.getElementById('btn-compare');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المقارنة...'; }
@@ -3632,7 +3713,7 @@ async function runTimeline() {
   if (!S.key) { openSettings(); return; }
   if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
 
-  const model = document.getElementById('timeline-model')?.value || 'gemini-3.5-flash';
+  const model = document.getElementById('timeline-model')?.value || 'gemini-2.5-flash';
   const btn = document.getElementById('btn-timeline');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ بناء الجدول الزمني...'; }
