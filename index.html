@@ -1971,11 +1971,15 @@ async function callGeminiWithSearch(prompt, model) {
   });
   if (!r.ok) {
     const e = await r.json().catch(() => ({}));
+    const msg = e.error?.message || '';
     if (r.status === 401) throw new Error('مفتاح API غير صحيح');
     if (r.status === 429) throw new Error('تجاوزت حد الاستخدام');
+    if (r.status === 403 && (msg.includes('denied access') || msg.includes('permission') || msg.includes('not allowed'))) {
+      throw new Error('خدمة Google Search Grounding غير مفعلة في مشروع Gemini الحالي. استخدم مشروعاً مفعّلاً أو جرّب أداة لا تعتمد على البحث المباشر.');
+    }
     // fallback to regular if search grounding not supported
     if (r.status === 400) return callGemini(prompt, model);
-    throw new Error(e.error?.message || `خطأ ${r.status}`);
+    throw new Error(msg || `خطأ ${r.status}`);
   }
   const d = await r.json();
   S.req++;
