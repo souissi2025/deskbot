@@ -2176,10 +2176,7 @@ ${inp}`;
 async function callGeminiAudio(prompt, base64Data, mimeType, model) {
  if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
  const mdl = model || 'gemini-3.5-flash';
- const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({
+ const body = {
  contents: [{
  parts: [
  { text: prompt },
@@ -2187,13 +2184,25 @@ async function callGeminiAudio(prompt, base64Data, mimeType, model) {
  ]
  }],
  generationConfig: { maxOutputTokens: 8192 }
- })
+ };
+ const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mdl}:generateContent?key=${S.key}`, {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify(body)
  });
  if (!r.ok) {
  const e = await r.json().catch(() => ({}));
+ const msg = e?.error?.message || '';
  if (r.status === 401) throw new Error('مفتاح API غير صالح');
+ if (r.status === 403) {
+ if (msg.includes('denied access') || msg.includes('permission') || msg.includes('not allowed')) {
+ throw new Error('المشروع الحالي لا يملك صلاحية استخدام Gemini Audio API. فعّل الفوترة أو استخدم مشروعاً/مفتاحاً يملك صلاحيات الصوت.');
+ }
+ throw new Error(msg || 'تم رفض الوصول من Google — تحقق من إعدادات مشروع Gemini');
+ }
+ if (r.status === 413) throw new Error('الملف كبير جداً للإرسال');
  if (r.status === 429) throw new Error('تجاوزت الحد — انتظر قليلاً');
- throw new Error(e.error?.message || 'خطأ Gemini ' + r.status);
+ throw new Error(msg || 'خطأ Gemini ' + r.status);
  }
  const d = await r.json();
  S.req++; localStorage.setItem('db12req', S.req); updateQuota();
