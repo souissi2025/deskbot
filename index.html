@@ -1997,14 +1997,17 @@ const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const GEMINI_FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.5-pro', 'gemini-2.0-flash'];
 
 function geminiUrl(model) {
-  return `${GEMINI_API_BASE}/models/${String(model || 'gemini-2.5-flash').replace(/^models\//, '')}:generateContent?key=${encodeURIComponent(S.key)}`;
+  return `${GEMINI_API_BASE}/models/${String(model || 'gemini-2.5-flash').replace(/^models\//, '')}:generateContent`;
 }
 
 async function fetchGemini(url, options = {}, timeoutMs = 60000) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  const headers = new Headers(options.headers || {});
+  headers.set('x-goog-api-key', S.key);
+  headers.set('Content-Type', headers.get('Content-Type') || 'application/json');
   try {
-    return await fetch(url, { ...options, signal: ctrl.signal, cache: 'no-store' });
+    return await fetch(url, { ...options, headers, signal: ctrl.signal, cache: 'no-store' });
   } catch (e) {
     if (e.name === 'AbortError') throw new Error('انتهت مهلة الاتصال بـ Gemini. تحقق من الإنترنت ثم أعد المحاولة.');
     if (e instanceof TypeError) throw new Error('تعذر الاتصال بخدمة Gemini. افتح التطبيق عبر HTTPS أو خادم محلي، وتحقق من اتصال الإنترنت.');
@@ -2019,7 +2022,11 @@ async function readGeminiResponse(r) {
   if (!r.ok) {
     const message = payload.error?.message || `خطأ Gemini HTTP ${r.status}`;
     if (r.status === 400) throw new Error('طلب Gemini غير مقبول: ' + message);
-    if (r.status === 401 || r.status === 403) throw new Error('مفتاح Gemini غير صحيح أو لا يملك الصلاحية: ' + message);
+    if (r.status === 401) throw new Error('مفتاح Gemini غير صحيح أو غير نشط: ' + message);
+    if (r.status === 403 && /denied access|permission_denied|project/i.test(message)) {
+      throw new Error('مشروع Google المرتبط بهذا المفتاح مرفوض من Gemini (403). أنشئ مشروعاً جديداً ومفتاحاً جديداً من Google AI Studio، أو اطلب مراجعة المشروع من دعم Google. لا يمكن إصلاح هذا الرفض من داخل ملف HTML.');
+    }
+    if (r.status === 403) throw new Error('المفتاح أو المشروع لا يملك صلاحية Gemini: ' + message);
     if (r.status === 404) throw new Error('موديل Gemini غير متاح: ' + message);
     if (r.status === 429) throw new Error('تم تجاوز حصة Gemini أو حد السرعة: ' + message);
     throw new Error(message);
@@ -2055,8 +2062,11 @@ async function callGeminiWithSearch(prompt, model) {
     const msg = e.error?.message || '';
     if (r.status === 401) throw new Error('مفتاح API غير صحيح');
     if (r.status === 429) throw new Error('تجاوزت حد الاستخدام');
-    if (r.status === 403 && (msg.includes('denied access') || msg.includes('permission') || msg.includes('not allowed'))) {
-      throw new Error('خدمة Google Search Grounding غير مفعلة في مشروع Gemini الحالي. استخدم مشروعاً مفعّلاً أو جرّب أداة لا تعتمد على البحث المباشر.');
+    if (r.status === 403 && /denied access|permission_denied|project/i.test(msg)) {
+      throw new Error('مشروع Google المرتبط بهذا المفتاح مرفوض من Gemini (403). أنشئ مشروعاً جديداً ومفتاحاً جديداً من Google AI Studio أو اطلب مراجعة المشروع من دعم Google.');
+    }
+    if (r.status === 403 && (msg.includes('permission') || msg.includes('not allowed'))) {
+      throw new Error('صلاحية Google Search Grounding غير مفعلة في مشروع Gemini الحالي. جرّب مشروعاً مفعّلاً أو استخدم أداة لا تعتمد على البحث المباشر.');
     }
     // fallback to regular if search grounding not supported
     if (r.status === 400) return callGemini(prompt, model);
@@ -2121,12 +2131,6 @@ async function callGemini(prompt, model) {
       generationConfig: genConfig
     })
   });
-  if (!r.ok) {
-    const e = await r.json().catch(() => ({}));
-    if (r.status === 401) throw new Error('مفتاح API غير صحيح');
-    if (r.status === 429) throw new Error('تجاوزت حد الاستخدام');
-    throw new Error(e.error?.message || `خطأ ${r.status}`);
-  }
   const { text } = await readGeminiResponse(r);
   S.req++;
   localStorage.setItem('db12_req', S.req);
@@ -2255,15 +2259,9 @@ async function callGeminiAudio(prompt, base64Data, mimeType, model) {
       generationConfig: { maxOutputTokens: 8192 }
     })
   });
-  if (!r.ok) {
-    const e = await r.json().catch(() => ({}));
-    if (r.status === 401) throw new Error('مفتاح API غير صالح');
-    if (r.status === 429) throw new Error('تجاوزت الحد — انتظر قليلاً');
-    throw new Error(e.error?.message || 'خطأ Gemini ' + r.status);
-  }
-  const d = await r.json();
+  const { text } = await readGeminiResponse(r);
   S.req++; localStorage.setItem('db12_req', S.req); updateQuota();
-  return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return text;
 }
 
 async function runTranscribeStep1(prompt) {
@@ -3116,6 +3114,7 @@ async function parseGeminiErrorResponse(r) {
   } catch (_) {}
   if (r.status === 400) return 'طلب Gemini غير مقبول: ' + msg;
   if (r.status === 401) return 'مفتاح Gemini غير صحيح أو غير نشط: ' + msg;
+  if (r.status === 403 && /denied access|permission_denied|project/i.test(msg)) return 'مشروع Google المرتبط بالمفتاح مرفوض من Gemini (403). أنشئ مشروعاً ومفتاحاً جديدين من Google AI Studio أو اطلب مراجعة المشروع من دعم Google.';
   if (r.status === 403) return 'المشروع أو الصلاحيات تمنع الاستدعاء: ' + msg;
   if (r.status === 404) return 'اسم الموديل غير موجود أو غير مدعوم: ' + msg;
   if (r.status === 429) return 'تم تجاوز الحصة أو الحد المسموح: ' + msg;
