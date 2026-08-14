@@ -3283,7 +3283,8 @@ document.addEventListener('DOMContentLoaded', () => {
     card.appendChild(btn);
   });
 
-  if (!S.key) setTimeout(openSettings, 600);
+  // لا تفتح الإعدادات تلقائياً حتى لا تغطي جميع أزرار التطبيق عند غياب المفتاح.
+  // يفتحها المستخدم من زر API أو تفتحها أدوات Gemini عند الحاجة.
 });
 
   /* ── إرسال التسجيل بالواتساب ── */
@@ -3730,6 +3731,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   };
 
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeSettings();
+      if (typeof closeMoreMenu === 'function') closeMoreMenu();
+    }
+  });
 }); // end DOMContentLoaded
 
 // ══ MORE MENU ══
