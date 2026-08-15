@@ -2078,6 +2078,19 @@ async function callGeminiWithSearch(prompt, model) {
   return text;
 }
 
+async function callGeminiWithSearchFallback(prompt, model) {
+  const requested = normalizeGeminiModel(model || 'gemini-3.1-pro-preview');
+  try {
+    return { text: await callGeminiWithSearch(prompt, requested), model: requested, grounded: true, fallback: false };
+  } catch (error) {
+    const msg = String(error?.message || error || '');
+    if (/denied access|permission_denied|project.*(denied|restricted)|مرفوض/i.test(msg)) throw error;
+    if (!/quota|rate limit|resource_exhausted|limit:\s*0|grounding|not available|not supported|unsupported/i.test(msg)) throw error;
+    const generated = await callGeminiWithFallback(prompt, requested);
+    return { ...generated, grounded: false, searchError: error };
+  }
+}
+
 async function callGemini(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
   if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
@@ -3456,10 +3469,11 @@ async function runRadar(isAuto) {
   const now = new Date().toLocaleString('ar-TN', {weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'});
   const prompt = RADAR_PROMPTS[cat] + '\n\n> ⏰ تاريخ ووقت المسح: ' + now + ' — استخرج فقط الأخبار التي نُشرت خلال الساعات الأخيرة. رتّب من الأحدث والأهم.';
   try {
-    const res = await callGeminiWithSearch(prompt, model);
+    const generated = await callGeminiWithSearchFallback(prompt, model);
+    const res = generated.text;
     showOut('radar', renderMD(res));
     autoArchive(res, 'radar');
-    setStt('radar', '✅ اكتمل المسح الإخباري', 'ok');
+    setStt('radar', generated.grounded ? '✅ اكتمل المسح الإخباري عبر Google Search' : '✅ اكتمل التحليل عبر Flash بدون Google Search لأن خدمة البحث غير متاحة للحصة الحالية', 'ok');
     setTimeout(() => hideStt('radar'), 3000);
     document.getElementById('acts-radar').style.display = 'flex';
     updateStats();
@@ -3615,6 +3629,7 @@ async function runHiddenAngle() {
 }
 
 async function runTrend() {
+  if (!S.key) { openSettings(); return; }
   const platform = document.getElementById('trend-platform')?.value || 'all';
   const model = document.getElementById('trend-model')?.value || 'gemini-3.1-pro-preview';
   const btn = document.getElementById('btn-trend');
@@ -3625,10 +3640,11 @@ async function runTrend() {
   hideOut('trend');
   const prompt = PROMPT_TREND[platform] + '\n\n> ⏰ وقت الرصد: ' + now + ' — ركّز على ما هو متداول الآن فعلاً.';
   try {
-    const res = await callGeminiWithSearch(prompt, model);
+    const generated = await callGeminiWithSearchFallback(prompt, model);
+    const res = generated.text;
     showOut('trend', renderMD(res));
     autoArchive(res, 'trend');
-    setStt('trend', '✅ اكتمل رصد الترند', 'ok');
+    setStt('trend', generated.grounded ? '✅ اكتمل رصد الترند عبر Google Search' : '✅ اكتمل التحليل عبر Flash بدون Google Search لأن خدمة البحث غير متاحة للحصة الحالية', 'ok');
     setTimeout(() => hideStt('trend'), 3000);
     document.getElementById('acts-trend').style.display = 'flex';
     updateStats();
