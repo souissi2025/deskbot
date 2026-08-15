@@ -1529,6 +1529,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-solid fa-circle-info" style="color:var(--blue)"></i> احصل على مفتاحك المجاني من: <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">aistudio.google.com</a>
       </div>
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
+      <button class="btn btn-danger btn-full" onclick="clearKey()"><i class="fa-solid fa-trash"></i> مسح المفتاح القديم</button>
       <button class="btn btn-ghost btn-full" onclick="runGeminiDiagnostic()"><i class="fa-solid fa-stethoscope"></i> اختبار Gemini</button>
      </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
@@ -3068,17 +3069,30 @@ function openSettings() {
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
+function maskGeminiKey(key) {
+  const k = String(key || '');
+  return k.length > 10 ? k.slice(0, 4) + '••••••' + k.slice(-4) : 'مفتاح محفوظ';
+}
 function saveKey() {
   const k = (document.getElementById('gemini-key-inp')?.value || '').trim();
   if (!k) return toast('أدخل المفتاح أولاً', 'w');
-  S.key = k; localStorage.setItem('db12_gk', k);
+  S.key = k;
+  storageSet('db12_gk', k);
   updateKeyStt(); updateBanner();
-  closeSettings(); toast('✅ تم حفظ المفتاح', 's');
+  closeSettings(); toast('✅ تم حفظ المفتاح الجديد: ' + maskGeminiKey(k), 's');
+}
+function clearKey() {
+  S.key = '';
+  try { localStorage.removeItem('db12_gk'); } catch (_) {}
+  const inp = document.getElementById('gemini-key-inp');
+  if (inp) inp.value = '';
+  updateKeyStt(); updateBanner();
+  toast('تم مسح المفتاح القديم. أدخل مفتاحاً جديداً ثم احفظه.', 'w');
 }
 function updateKeyStt() {
   const el = document.getElementById('key-stt');
   if (el) el.innerHTML = S.key
-    ? '<i class="fa-solid fa-check-circle ks-ok"></i><span class="ks-ok"> مفتاح محفوظ</span>'
+    ? '<i class="fa-solid fa-check-circle ks-ok"></i><span class="ks-ok"> مفتاح محفوظ: ' + maskGeminiKey(S.key) + '</span>'
     : '<i class="fa-solid fa-circle-exclamation ks-err"></i><span class="ks-err"> لم يُدخَل مفتاح</span>';
 }
 function updateBanner() {
