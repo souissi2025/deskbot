@@ -2424,7 +2424,8 @@ function runSpeechTranscription(file) {
 
 أخرج النص المفرّغ مباشرة بدون أي مقدمة أو تعليق.`;
 
-      const result = await callGeminiAudio(TRANSCRIBE_PROMPT, b64, mimeType);
+      const selectedModel = document.getElementById('editor-model')?.value || window._geminiWorkingModel || 'gemini-3.5-flash';
+      const result = await callGeminiAudio(TRANSCRIBE_PROMPT, b64, mimeType, selectedModel);
       const transcribed = result.trim();
 
       if (!transcribed) throw new Error('لم يُكشف عن محتوى صوتي في الملف');
@@ -2443,6 +2444,7 @@ function runSpeechTranscription(file) {
         <div style="font-size:11px;color:var(--t3);margin-top:8px">تأكد من أن الملف صوتي واضح وأن مفتاح API صالح، أو الصق النص يدوياً في الحقل أعلاه واضغط تشغيل.</div>
       </div>`;
       if (stt) { stt.className = 'stt err'; stt.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>${err.message}</span>`; }
+      if (err && /403|مرفوض|denied access/i.test(String(err.message || ''))) updateBanner();
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
     }
