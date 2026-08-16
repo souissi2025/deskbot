@@ -1054,7 +1054,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
        <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
       </div>
       <div id="stt-editor" class="stt"></div>
       <div id="out-editor" class="out-box rendered" style="display:none"></div>
@@ -1127,7 +1127,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
-       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (اختياري)</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-article" class="stt"></div>
@@ -1167,7 +1167,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-flash" class="stt"></div>
@@ -1277,7 +1277,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
       </div>
       <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
        <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
@@ -1301,7 +1301,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
@@ -1329,7 +1329,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-angle" class="stt"></div>
@@ -1352,7 +1352,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
@@ -1380,7 +1380,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-compare" class="stt"></div>
@@ -1402,7 +1402,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
+       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-timeline" class="stt"></div>
@@ -1521,7 +1521,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        </div>
        <div>
         <div class="m-sec-title">Google Gemini API</div>
-        <div class="m-sec-sub">Flash: مجاني وفق حصة المشروع · Pro: يتطلب صلاحية وحصة متاحة</div>
+        <div class="m-sec-sub">Flash: Gemini 3.6 Flash — مجاني وفق حصة المشروع · Pro: يتطلب صلاحية وفوترة API</div>
        </div>
       </div>
       <div id="key-stt" class="key-stt"></div>
@@ -1532,6 +1532,28 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <button class="btn btn-gold btn-full" onclick="saveKey()"><i class="fa-solid fa-floppy-disk"></i> حفظ المفتاح</button>
       <button class="btn btn-danger btn-full" onclick="clearKey()"><i class="fa-solid fa-trash"></i> مسح المفتاح القديم</button>
       <button class="btn btn-ghost btn-full" onclick="runGeminiDiagnostic()"><i class="fa-solid fa-stethoscope"></i> اختبار Gemini</button>
+     </div>
+     <div class="m-section" id="openrouter-section" style="border-color:rgba(168,85,247,.35);background:rgba(168,85,247,.04)">
+      <div class="m-sec-head">
+       <div class="m-sec-icon" style="background:rgba(168,85,247,.15);color:#c084fc"><i class="fa-solid fa-layer-group"></i></div>
+       <div>
+        <div class="m-sec-title">Qwen عبر OpenRouter — للمقالات فقط</div>
+        <div class="m-sec-sub">معزول عن الرادار والترند والتفريغ. عند فشله يعود المقال إلى Gemini Flash.</div>
+       </div>
+      </div>
+      <div id="openrouter-stt" class="key-stt"></div>
+      <label>مفتاح OpenRouter API</label>
+      <input type="password" id="openrouter-key-inp" placeholder="sk-or-v1-..." autocomplete="off">
+      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer">
+       <input type="checkbox" id="qwen-article-enabled" style="width:auto;min-height:0">
+       تفعيل Qwen للمقالات فقط
+      </label>
+      <div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.18);border-radius:8px;padding:10px;margin:10px 0;font-size:11px;color:var(--t2);line-height:1.6">
+       <i class="fa-solid fa-shield-halved" style="color:#c084fc"></i> لا يُستخدم هذا المفتاح في أي أداة أخرى. للاستخدام الشخصي، يُحفظ محلياً في المتصفح.
+      </div>
+      <button class="btn btn-full" style="background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff" onclick="saveOpenRouterSettings()"><i class="fa-solid fa-floppy-disk"></i> حفظ إعداد Qwen</button>
+      <button class="btn btn-ghost btn-full" onclick="runOpenRouterDiagnostic()"><i class="fa-solid fa-stethoscope"></i> اختبار اتصال OpenRouter</button>
+      <button class="btn btn-danger btn-full" onclick="clearOpenRouterKey()"><i class="fa-solid fa-trash"></i> مسح مفتاح OpenRouter وتعطيل Qwen</button>
      </div>
      <button class="btn btn-ghost btn-full" onclick="closeSettings()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
     </div>
@@ -1574,6 +1596,8 @@ function readStoredArray(key) {
 }
 const S = {
   key:     storageGet('db12_gk', ''),
+  orKey:   storageGet('desk_or_key', ''),
+  qwenEnabled: storageGet('desk_qwen_enabled', '0') === '1',
   archive: readStoredArray('db12_arc'),
   agenda:  readStoredArray('db12_ag'),
   today:   new Date().toDateString(),
@@ -1936,53 +1960,175 @@ const PROMPTS = {
 
 // ── GEMINI API ──
 const GEMINI_API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
-const GEMINI_FALLBACK_MODELS = ['gemini-3.7-flash', 'gemini-3-flash-preview', 'gemini-3.5-flash-lite', 'gemini-3.1-pro-preview'];
+const DEFAULT_FREE_MODEL = 'gemini-3.6-flash';
+const GEMINI_FALLBACK_MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-2.5-flash'];
 
 function normalizeGeminiModel(model) {
-  const m = String(model || 'gemini-3.1-pro-preview').replace(/^models\//, '');
+  const m = String(model || DEFAULT_FREE_MODEL).replace(/^models\//, '');
   if (m === 'gemini-2.5-pro') return 'gemini-3.1-pro-preview';
-  if (m === 'gemini-2.5-flash') return 'gemini-3.5-flash';
+  if (m === 'gemini-2.5-flash') return 'gemini-2.5-flash';
+  if (m === 'gemini-3.7-flash' || m === 'gemini-3-flash-preview') return DEFAULT_FREE_MODEL;
   return m;
 }
 function geminiUrl(model) {
   return `${GEMINI_API_BASE}/models/${normalizeGeminiModel(model)}:generateContent`;
 }
 
-async function fetchGemini(url, options = {}, timeoutMs = 60000) {
+const OPENROUTER_API_BASE = 'https://openrouter.ai/api/v1';
+const QWEN_ARTICLE_MODEL = 'qwen/qwen3.6-plus:free';
+
+function isQwenArticleModel(model) { return String(model || '') === 'openrouter-qwen'; }
+function maskOpenRouterKey(key) {
+  const k = String(key || '');
+  return k.length > 12 ? k.slice(0, 8) + '••••••' + k.slice(-4) : 'مفتاح محفوظ';
+}
+function qwenStatus(message, type = 'ok') {
+  const el = document.getElementById('openrouter-stt');
+  if (!el) return;
+  el.className = 'key-stt ' + type;
+  el.innerHTML = `<span>${message}</span>`;
+}
+function updateQwenUI() {
+  const input = document.getElementById('openrouter-key-inp');
+  const checkbox = document.getElementById('qwen-article-enabled');
+  if (input && document.activeElement !== input) input.value = S.orKey || '';
+  if (checkbox) checkbox.checked = Boolean(S.qwenEnabled && S.orKey);
+  document.querySelectorAll('select[id$="-model"] option[value="openrouter-qwen"]').forEach(option => {
+    option.disabled = !(S.qwenEnabled && S.orKey);
+  });
+  const articleModel = document.getElementById('article-model');
+  if (articleModel && isQwenArticleModel(articleModel.value) && !(S.qwenEnabled && S.orKey)) {
+    articleModel.value = DEFAULT_FREE_MODEL;
+  }
+  if (S.orKey && S.qwenEnabled) qwenStatus('Qwen مفعّل للمقالات فقط: ' + maskOpenRouterKey(S.orKey), 'ok');
+  else qwenStatus('Qwen معطّل — Gemini Flash يعمل بشكل مستقل', '');
+}
+
+async function callOpenRouter(messages, options = {}) {
+  if (!S.orKey) throw new Error('أدخل مفتاح OpenRouter من إعدادات Qwen أولاً.');
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-  const headers = new Headers(options.headers || {});
-  headers.set('x-goog-api-key', S.key);
-  headers.set('Content-Type', headers.get('Content-Type') || 'application/json');
+  const timer = setTimeout(() => ctrl.abort(), options.timeoutMs || 90000);
   try {
-    return await fetch(url, { ...options, headers, signal: ctrl.signal, cache: 'no-store' });
-  } catch (e) {
-    if (e.name === 'AbortError') throw new Error('انتهت مهلة الاتصال بـ Gemini. تحقق من الإنترنت ثم أعد المحاولة.');
-    if (e instanceof TypeError) throw new Error('تعذر الاتصال بخدمة Gemini. افتح التطبيق عبر HTTPS أو خادم محلي، وتحقق من اتصال الإنترنت.');
-    throw e;
+    const response = await fetch(`${OPENROUTER_API_BASE}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${S.orKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': location.href,
+        'X-OpenRouter-Title': 'DESK BOT — Newsroom'
+      },
+      body: JSON.stringify({
+        model: options.model || QWEN_ARTICLE_MODEL,
+        messages,
+        temperature: options.temperature ?? 0.35,
+        max_tokens: options.max_tokens || 7000
+      }),
+      signal: ctrl.signal,
+      cache: 'no-store'
+    });
+    const payload = await response.json().catch(() => ({}));
+    const raw = payload.error?.message || '';
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('مفتاح OpenRouter غير صحيح أو غير نشط.');
+      if (response.status === 402) throw new Error('رصيد OpenRouter غير كافٍ أو النموذج المجاني غير متاح حالياً.');
+      if (response.status === 429) throw new Error('OpenRouter مزدحم أو تم بلوغ حد النموذج المجاني مؤقتاً.');
+      if (response.status >= 500) throw new Error('مزود Qwen غير متاح مؤقتاً عبر OpenRouter.');
+      throw new Error(raw || `خطأ OpenRouter HTTP ${response.status}`);
+    }
+    const content = payload.choices?.[0]?.message?.content;
+    if (!content || typeof content !== 'string') throw new Error('لم يُرجع Qwen نصاً صالحاً.');
+    return content.trim();
+  } catch (error) {
+    if (error.name === 'AbortError') throw new Error('انتهت مهلة Qwen عبر OpenRouter.');
+    if (error instanceof TypeError) throw new Error('تعذر الاتصال بـ OpenRouter. تحقق من الإنترنت أو CORS ثم أعد المحاولة.');
+    throw error;
   } finally {
     clearTimeout(timer);
   }
 }
 
+async function callQwenArticle(prompt) {
+  const system = `أنت محرر أخبار عربي محترف. اكتب المقال اعتماداً على المادة التي يرسلها المستخدم فقط. لا تخترع مصدراً أو رقماً أو تصريحاً أو تاريخاً. احترم الهرم المقلوب، ابدأ النص بفعل ماضٍ معلوم، استعمل أسماء الأشهر التونسية، وأخرج الهيكل الذي يطلبه المستخدم دون أي تعليق خارج النتيجة.`;
+  const text = await callOpenRouter([{ role: 'system', content: system }, { role: 'user', content: prompt }], { model: QWEN_ARTICLE_MODEL, temperature: 0.25, max_tokens: 7000 });
+  return { text, model: QWEN_ARTICLE_MODEL, provider: 'openrouter' };
+}
+
+async function callArticleProvider(prompt, model) {
+  if (!isQwenArticleModel(model)) return callGeminiWithFallback(prompt, model);
+  if (!(S.qwenEnabled && S.orKey)) {
+    const fallback = await callGeminiWithFallback(prompt, DEFAULT_FREE_MODEL);
+    return { ...fallback, providerFallback: true, providerError: new Error('Qwen غير مفعّل أو لا يملك مفتاحاً') };
+  }
+  try {
+    return await callQwenArticle(prompt);
+  } catch (error) {
+    // Hard isolation: only the article path falls back; no other task is touched.
+    const fallback = await callGeminiWithFallback(prompt, DEFAULT_FREE_MODEL);
+    return { ...fallback, providerFallback: true, providerError: error };
+  }
+}
+
+async function fetchGemini(url, options = {}, timeoutMs = 60000) {
+  const maxAttempts = 2;
+  let lastError = null;
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    const headers = new Headers(options.headers || {});
+    headers.set('x-goog-api-key', S.key);
+    headers.set('Content-Type', headers.get('Content-Type') || 'application/json');
+    try {
+      const response = await fetch(url, { ...options, headers, signal: ctrl.signal, cache: 'no-store' });
+      if (![429, 503].includes(response.status) || attempt === maxAttempts - 1) return response;
+      const retryAfter = Number(response.headers.get('Retry-After') || 0);
+      const waitMs = Math.min(8000, retryAfter > 0 ? retryAfter * 1000 : (1000 * (2 ** attempt) + Math.floor(Math.random() * 500)));
+      await new Promise(resolve => setTimeout(resolve, waitMs));
+    } catch (e) {
+      lastError = e;
+      if (e.name === 'AbortError') throw new Error('انتهت مهلة الاتصال بـ Gemini. تحقق من الإنترنت ثم أعد المحاولة.');
+      if (e instanceof TypeError) throw new Error('تعذر الاتصال بخدمة Gemini. افتح التطبيق عبر HTTPS أو خادم محلي، وتحقق من اتصال الإنترنت.');
+      throw e;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw lastError || new Error('تعذر الاتصال بخدمة Gemini.');
+}
+
 async function readGeminiResponse(r) {
   const payload = await r.json().catch(() => ({}));
+  const rawMessage = payload.error?.message || '';
+  const attach = (message, transient = false) => {
+    const error = new Error(message);
+    error.geminiStatus = r.status;
+    error.geminiRawMessage = rawMessage;
+    error.transient = transient;
+    error.retryAfter = Number(r.headers.get('Retry-After') || 0) || 0;
+    return error;
+  };
   if (!r.ok) {
-    const message = payload.error?.message || `خطأ Gemini HTTP ${r.status}`;
-    if (r.status === 400) throw new Error('طلب Gemini غير مقبول: ' + message);
-    if (r.status === 401) throw new Error('مفتاح Gemini غير صحيح أو غير نشط: ' + message);
-    if (r.status === 403 && /denied access|permission_denied|project/i.test(message)) {
-      throw new Error('مشروع Google المرتبط بهذا المفتاح مرفوض من Gemini (403). أنشئ مشروعاً جديداً ومفتاحاً جديداً من Google AI Studio، أو اطلب مراجعة المشروع من دعم Google. لا يمكن إصلاح هذا الرفض من داخل ملف HTML.');
+    if (r.status === 400) throw attach('طلب Gemini غير مقبول: ' + (rawMessage || 'تحقق من اسم الموديل وبنية الطلب.'));
+    if (r.status === 401) throw attach('مفتاح Gemini غير صحيح أو غير نشط. أنشئ مفتاحاً جديداً من Google AI Studio.');
+    if (r.status === 403) {
+      if (/billing|paid|payment|quota|permission|project|صلاحية|فوترة|فواتير/i.test(rawMessage)) {
+        throw attach('هذا الموديل أو المشروع يحتاج صلاحية مدفوعة/فوتورة في Gemini API. سيحاول التطبيق استخدام Flash المجاني تلقائياً عند الإمكان.');
+      }
+      throw attach('المفتاح أو المشروع لا يملك صلاحية Gemini: ' + (rawMessage || '403 Forbidden'));
     }
-    if (r.status === 403) throw new Error('المفتاح أو المشروع لا يملك صلاحية Gemini: ' + message);
-    if (r.status === 404) throw new Error('موديل Gemini غير متاح: ' + message);
-    if (r.status === 429) throw new Error('تم تجاوز حصة Gemini أو حد السرعة: ' + message);
-    throw new Error(message);
+    if (r.status === 404) throw attach('موديل Gemini غير متاح لهذا المشروع: ' + (rawMessage || 'تحقق من قائمة الموديلات الحالية.'));
+    if (r.status === 429 || r.status === 503) {
+      const demand = /high demand|spikes in demand|temporarily|busy|unavailable|ازدحام|ضغط/i.test(rawMessage);
+      const message = demand
+        ? 'خدمة Gemini مزدحمة مؤقتاً لهذا الموديل (high demand). سيحاول التطبيق موديل Flash مستقر آخر تلقائياً.'
+        : 'تم بلوغ حد السرعة أو الحصة الحالية لـ Gemini. سيحاول التطبيق موديل Flash بديلاً عند الإمكان.';
+      throw attach(message, true);
+    }
+    throw attach(rawMessage || `خطأ Gemini HTTP ${r.status}`);
   }
   const text = payload.candidates?.[0]?.content?.parts?.map(p => p.text || '').join(' ').trim() || '';
   if (!text) {
     const reason = payload.promptFeedback?.blockReason || payload.candidates?.[0]?.finishReason;
-    throw new Error(reason ? `لم يُرجع Gemini نصاً (${reason})` : 'لم يُرجع Gemini أي نص.');
+    throw attach(reason ? `لم يُرجع Gemini نصاً (${reason})` : 'لم يُرجع Gemini أي نص.');
   }
   return { payload, text };
 }
@@ -1992,7 +2138,7 @@ async function callGeminiWithSearch(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
   const localCap = Number(window.DESK_APP?.localQuotaCap || 1500);
   if (S.req >= localCap) throw new Error(`تم بلوغ الحد المحلي الوقائي (${localCap} طلباً). تحقق من حصة Google الفعلية.`);
-  const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || 'gemini-3.1-pro-preview');
+  const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || DEFAULT_FREE_MODEL);
   const isGemini3 = mdl.includes('gemini-3.');
   const genConfig = isGemini3
     ? { maxOutputTokens: 8192 }
@@ -2020,30 +2166,25 @@ async function callGeminiWithSearch(prompt, model) {
 }
 
 async function callGeminiWithSearchFallback(prompt, model) {
-  const requested = normalizeGeminiModel(model || 'gemini-3.1-pro-preview');
-  try {
-    return { text: await callGeminiWithSearch(prompt, requested), model: requested, grounded: true, fallback: false };
-  } catch (error) {
-    const msg = String(error?.message || error || '');
-    if (/denied access|permission_denied|project.*(denied|restricted)|مرفوض/i.test(msg)) throw error;
-    if (!/quota|rate limit|resource_exhausted|limit:\s*0|grounding|not available|not supported|unsupported/i.test(msg)) throw error;
-    if (/quota|rate limit|resource_exhausted|limit:\s*0/i.test(msg)) {
-      try {
-        const flashSearch = await callGeminiWithSearch(prompt, 'gemini-3.7-flash');
-        return { text: flashSearch, model: 'gemini-3.7-flash', grounded: true, fallback: true, searchError: error };
-      } catch (searchError) {
-        throw new Error('Google Search Grounding غير متاح لهذا المشروع أو لهذه الحصة. لن يتم توليد ترند أو رادار تخميني حتى لا تظهر أخبار غير دقيقة. فعّل الفوترة/حصة البحث في Google AI Studio ثم أعد المحاولة.');
-      }
+  const requested = normalizeGeminiModel(model || DEFAULT_FREE_MODEL);
+  const candidates = [requested, ...GEMINI_FALLBACK_MODELS.filter(m => m !== requested)];
+  let lastError = null;
+  for (const candidate of candidates) {
+    try {
+      return { text: await callGeminiWithSearch(prompt, candidate), model: candidate, grounded: true, fallback: candidate !== requested, searchError: lastError };
+    } catch (error) {
+      lastError = error;
+      if (!shouldTryFallback(error, requested)) break;
     }
-    throw new Error('Google Search Grounding غير متاح. لا يمكن استخراج ترند أو رادار موثوق دون بحث حي.');
   }
+  throw new Error('تعذر تنفيذ البحث الحي حالياً. قد يكون الموديل مزدحماً أو تتطلب ميزة Google Search تفعيل الفوترة. جرّب لاحقاً أو استخدم أداة التحليل النصي دون بحث حي.');
 }
 
 async function callGemini(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
   const localCap = Number(window.DESK_APP?.localQuotaCap || 1500);
   if (S.req >= localCap) throw new Error(`تم بلوغ الحد المحلي الوقائي (${localCap} طلباً). تحقق من حصة Google الفعلية.`);
-  const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || 'gemini-3.1-pro-preview');
+  const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || DEFAULT_FREE_MODEL);
   const isGemini3 = mdl.includes('gemini-3.');
   const genConfig = isGemini3
     ? { maxOutputTokens: 8192 }
@@ -2093,25 +2234,41 @@ async function callGemini(prompt, model) {
   return text;
 }
 
-function isProQuotaError(error, model) {
-  const m = normalizeGeminiModel(model);
-  const msg = String(error?.message || error || '');
-  return m.includes('pro') && /quota|rate limit|resource_exhausted|limit:\s*0|exceeded/i.test(msg);
+function shouldTryFallback(error, requestedModel) {
+  const status = Number(error?.geminiStatus || 0);
+  const message = String(error?.message || error || '');
+  const transient = Boolean(error?.transient) || [408, 429, 500, 502, 503, 504].includes(status);
+  const unavailable = [400, 403, 404].includes(status) && /billing|paid|payment|permission|model|quota|صلاحية|فوترة|موديل|حصة/i.test(message);
+  return transient || unavailable || /high demand|temporarily|rate limit|resource_exhausted|not available|unsupported|quota|ازدحام|ضغط|فوترة|صلاحية/i.test(message);
 }
+
+function fallbackModels(requested) {
+  const m = normalizeGeminiModel(requested || DEFAULT_FREE_MODEL);
+  return GEMINI_FALLBACK_MODELS.filter(candidate => candidate !== m);
+}
+
 async function callGeminiWithFallback(prompt, model) {
-  const requested = normalizeGeminiModel(model || 'gemini-3.1-pro-preview');
+  const requested = normalizeGeminiModel(model || DEFAULT_FREE_MODEL);
   try {
     return { text: await callGemini(prompt, requested), model: requested, fallback: false };
   } catch (error) {
-    if (!isProQuotaError(error, requested)) throw error;
-    const fallbackModel = 'gemini-3.7-flash';
-    const text = await callGemini(prompt, fallbackModel);
-    return { text, model: fallbackModel, fallback: true, originalError: error };
+    if (!shouldTryFallback(error, requested)) throw error;
+    let lastError = error;
+    for (const fallbackModel of fallbackModels(requested)) {
+      try {
+        const text = await callGemini(prompt, fallbackModel);
+        return { text, model: fallbackModel, fallback: true, originalError: error };
+      } catch (fallbackError) {
+        lastError = fallbackError;
+        if (!shouldTryFallback(fallbackError, requested)) break;
+      }
+    }
+    throw new Error('تعذر توليد المحتوى حالياً. Gemini يواجه ضغطاً أو أن الحصة المجانية غير متاحة لهذا المشروع. انتظر قليلاً وتحقق من AI Studio > Rate limits.');
   }
 }
 
 async function callGeminiPartsWithFallback(parts, model) {
-  const requested = normalizeGeminiModel(model || 'gemini-3.1-pro-preview');
+  const requested = normalizeGeminiModel(model || DEFAULT_FREE_MODEL);
   const send = async mdl => {
     const r = await fetchGemini(geminiUrl(mdl), {
       method: 'POST',
@@ -2122,20 +2279,26 @@ async function callGeminiPartsWithFallback(parts, model) {
     S.req++; storageSet('db12_req', S.req); updateQuota();
     return response.text;
   };
-  try {
-    return { text: await send(requested), model: requested, fallback: false };
-  } catch (error) {
-    if (!isProQuotaError(error, requested)) throw error;
-    return { text: await send('gemini-3.7-flash'), model: 'gemini-3.7-flash', fallback: true, originalError: error };
+  try { return { text: await send(requested), model: requested, fallback: false }; }
+  catch (error) {
+    if (!shouldTryFallback(error, requested)) throw error;
+    for (const candidate of fallbackModels(requested)) {
+      try { return { text: await send(candidate), model: candidate, fallback: true, originalError: error }; }
+      catch (nextError) { if (!shouldTryFallback(nextError, requested)) throw nextError; }
+    }
+    throw new Error('تعذر معالجة المرفق. جرّب ملفاً أصغر أو أعد المحاولة بعد انخفاض ضغط Gemini.');
   }
 }
 async function callGeminiAudioWithFallback(prompt, base64Data, mimeType, model) {
-  const requested = normalizeGeminiModel(model || 'gemini-3.1-pro-preview');
-  try {
-    return { text: await callGeminiAudio(prompt, base64Data, mimeType, requested), model: requested, fallback: false };
-  } catch (error) {
-    if (!isProQuotaError(error, requested)) throw error;
-    return { text: await callGeminiAudio(prompt, base64Data, mimeType, 'gemini-3.7-flash'), model: 'gemini-3.7-flash', fallback: true, originalError: error };
+  const requested = normalizeGeminiModel(model || DEFAULT_FREE_MODEL);
+  try { return { text: await callGeminiAudio(prompt, base64Data, mimeType, requested), model: requested, fallback: false }; }
+  catch (error) {
+    if (!shouldTryFallback(error, requested)) throw error;
+    for (const candidate of fallbackModels(requested)) {
+      try { return { text: await callGeminiAudio(prompt, base64Data, mimeType, candidate), model: candidate, fallback: true, originalError: error }; }
+      catch (nextError) { if (!shouldTryFallback(nextError, requested)) throw nextError; }
+    }
+    throw new Error('تعذر تحليل الملف الصوتي/المرئي حالياً بسبب ضغط Gemini أو حدود الموديل.');
   }
 }
 
@@ -2197,13 +2360,13 @@ async function run(name, promptKey, getPrompt, btnId) {
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري المعالجة...'; }
   try {
-    const model = (document.getElementById(name + '-model') || {}).value || 'gemini-3.1-pro-preview';
+    const model = (document.getElementById(name + '-model') || {}).value || DEFAULT_FREE_MODEL;
     const prompt = getPrompt();
     const result = await callGeminiWithFallback((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
     const res = result.text;
     showOut(name, renderMD(res));
     autoArchive(res, name);
-    setStt(name, result.fallback ? '✅ اكتملت عبر Gemini 3.7 Flash لأن حصة Pro غير متاحة' : '✅ اكتملت المعالجة', 'ok');
+    setStt(name, result.fallback ? '✅ اكتملت عبر ' + (result.model || 'Flash') + ' بعد تعذر الموديل المختار' : '✅ اكتملت المعالجة', 'ok');
     setTimeout(() => hideStt(name), 2500);
   } catch(e) {
     setStt(name, '❌ ' + e.message, 'err');
@@ -2251,7 +2414,7 @@ ${inp}`;
 // ━━ Gemini Audio API — inlineData Base64 ━━
 async function callGeminiAudio(prompt, base64Data, mimeType, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
-  const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || 'gemini-3.1-pro-preview');
+  const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || DEFAULT_FREE_MODEL);
   const r = await fetchGemini(geminiUrl(mdl), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -2287,7 +2450,7 @@ async function runTranscribeStep1(prompt) {
   if (btn)  { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ...'; }
 
   try {
-    const model = (document.getElementById('editor-model') || {}).value || 'gemini-3.1-pro-preview';
+    const model = (document.getElementById('editor-model') || {}).value || DEFAULT_FREE_MODEL;
     const generated = await callGeminiWithFallback(prompt, model);
     const res = generated.text;
     // استخراج النص المفرّغ
@@ -2301,7 +2464,7 @@ async function runTranscribeStep1(prompt) {
       editBtn.style.display = 'flex';
       editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الحرفي' + (generated.fallback ? ' عبر Gemini 3.7 Flash بعد انتهاء حصة Pro' : '') + ' — اضغط "تحرير صحفي" للمتابعة</span>'; }
+    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الحرفي' + (generated.fallback ? ' عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار' : '') + ' — اضغط "تحرير صحفي" للمتابعة</span>'; }
   } catch(e) {
     if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + e.message + '</span>'; }
     if (outT) outT.innerHTML = '<span style="color:#fca5a5">حدث خطأ: ' + e.message + '</span>';
@@ -2319,7 +2482,7 @@ async function runEditorialStep2() {
   const outA  = document.getElementById('out-editorial');
   const stt   = document.getElementById('stt-editor');
   const editBtn = document.getElementById('btn-editorial-edit');
-  const model = (document.getElementById('editor-model') || {}).value || 'gemini-3.1-pro-preview';
+  const model = (document.getElementById('editor-model') || {}).value || DEFAULT_FREE_MODEL;
 
   if (outA) outA.innerHTML = '<div class="spin"></div>';
   if (editBtn) { editBtn.disabled = true; editBtn.innerHTML = '<div class="spin"></div> جاري التحرير...'; }
@@ -2394,7 +2557,7 @@ ${transcribed}`;
     const editorial = m ? m[1].trim() : res.trim();
     if (outA) outA.innerHTML = renderMD ? renderMD(editorial) : editorial;
     autoArchive(editorial, 'editorial');
-    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التحرير الصحفي' + (generated.fallback ? ' عبر Gemini 3.7 Flash بعد انتهاء حصة Pro' : '') + '</span>'; setTimeout(() => { if(stt) stt.style.display='none'; }, 3000); }
+    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التحرير الصحفي' + (generated.fallback ? ' عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار' : '') + '</span>'; setTimeout(() => { if(stt) stt.style.display='none'; }, 3000); }
   } catch(e) {
     if (outA) outA.innerHTML = '<span style="color:#fca5a5">حدث خطأ: ' + e.message + '</span>';
     if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + e.message + '</span>'; }
@@ -2446,7 +2609,7 @@ function runSpeechTranscription(file) {
 
 أخرج النص المفرّغ مباشرة بدون أي مقدمة أو تعليق.`;
 
-      const selectedModel = document.getElementById('editor-model')?.value || window._geminiWorkingModel || 'gemini-3.1-pro-preview';
+      const selectedModel = document.getElementById('editor-model')?.value || window._geminiWorkingModel || DEFAULT_FREE_MODEL;
       const generated = await callGeminiAudioWithFallback(TRANSCRIBE_PROMPT, b64, mimeType, selectedModel);
       const result = generated.text;
       const transcribed = result.trim();
@@ -2456,7 +2619,7 @@ function runSpeechTranscription(file) {
       window._transcribedText = transcribed;
       APP.editorFileReadyName = file.name;
       if (outT) outT.innerHTML = typeof renderMD === 'function' ? renderMD(transcribed) : transcribed;
-      if (stt)  { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ' + (generated.fallback ? ' عبر Gemini 3.7 Flash بعد انتهاء حصة Pro' : '') + ' — اضغط "بدء التحرير الصحفي"</span>'; }
+      if (stt)  { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ' + (generated.fallback ? ' عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار' : '') + ' — اضغط "بدء التحرير الصحفي"</span>'; }
       if (editBtn) {
         editBtn.style.display = 'flex';
         setTimeout(() => editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -2558,7 +2721,7 @@ function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
   if (!inp) return toast('أدخل النص الأولي للمقال', 'w');
   const cnt   = document.getElementById('article-count')?.value || '1';
-  const model = document.getElementById('article-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('article-model')?.value || DEFAULT_FREE_MODEL;
 
   if (!S.key) { openSettings(); return; }
   if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
@@ -2584,15 +2747,17 @@ function runArticle() {
         } else {
           parts.push({ inlineData: { mimeType: articleFileData.mimeType, data: articleFileData.data } });
         }
-        const generated = await callGeminiPartsWithFallback(parts, model);
+        const attachmentModel = isQwenArticleModel(model) ? DEFAULT_FREE_MODEL : model;
+        if (isQwenArticleModel(model)) toast('المرفق سيُعالج عبر Gemini Flash؛ Qwen مخصص للنصوص المقالية فقط.', 'w');
+        const generated = await callGeminiPartsWithFallback(parts, attachmentModel);
         result = generated.text;
         usedFallback = generated.fallback;
-        if (generated.fallback) setStt('article', '✅ تمت المعالجة عبر Gemini 3.7 Flash لأن حصة Pro غير متاحة', 'ok');
+        if (generated.fallback) setStt('article', '✅ تمت المعالجة عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار', 'ok');
       } else {
-        const generated = await callGeminiWithFallback(articlePrompt + '\n\n' + userText, model);
+        const generated = await callArticleProvider(articlePrompt + '\n\n' + userText, model);
         result = generated.text;
         usedFallback = generated.fallback;
-        if (generated.fallback) setStt('article', '✅ تمت الكتابة عبر Gemini 3.7 Flash لأن حصة Pro غير متاحة', 'ok');
+        if (generated.fallback) setStt('article', '✅ تمت الكتابة عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار', 'ok');
       }
       showOut('article', renderMD(result));
       const articleReview = reviewArticleText(result);
@@ -2629,7 +2794,7 @@ async function runArticleRevise() {
   const sttRevise = document.getElementById('stt-article-revise');
   if (sttRevise) { sttRevise.className = 'stt loading'; sttRevise.style.display = 'flex'; sttRevise.innerHTML = '<div class="spin"></div> جارٍ إعادة الصياغة بناءً على ملاحظاتك...'; }
 
-  const model = document.getElementById('article-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('article-model')?.value || DEFAULT_FREE_MODEL;
   const articlePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
 
   const revisePrompt = articlePrompt + `
@@ -2649,7 +2814,8 @@ ${notes}
 - أنتج النص المعدّل كاملاً جاهزاً للنشر`;
 
   try {
-    const result = await callGemini(revisePrompt, model);
+    const generated = await callArticleProvider(revisePrompt, model);
+    const result = generated.text;
     showOut('article', renderMD(result));
     if (sttRevise) { sttRevise.className = 'stt ok'; sttRevise.innerHTML = '✅ تم التعديل بناءً على ملاحظاتك'; }
     setTimeout(() => { if (sttRevise) sttRevise.style.display = 'none'; }, 3000);
@@ -2689,7 +2855,7 @@ function runProfile() {
   const n = (document.getElementById('profile-name')?.value || '').trim();
   if (!n) return toast('أدخل اسم الشخصية', 'w');
   const today = new Date().toLocaleDateString('ar-TN', {year:'numeric', month:'long', day:'numeric'});
-  const model = document.getElementById('profile-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('profile-model')?.value || DEFAULT_FREE_MODEL;
   const btn = document.getElementById('btn-profile');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ البحث...'; }
@@ -3101,6 +3267,7 @@ function openSettings() {
   const inp = document.getElementById('gemini-key-inp');
   if (inp) inp.value = S.key;
   updateKeyStt();
+  updateQwenUI();
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings() { document.getElementById('settings-overlay').classList.remove('open'); }
@@ -3124,6 +3291,38 @@ function clearKey() {
   updateKeyStt(); updateBanner();
   toast('تم مسح المفتاح القديم. أدخل مفتاحاً جديداً ثم احفظه.', 'w');
 }
+function saveOpenRouterSettings() {
+  const key = (document.getElementById('openrouter-key-inp')?.value || '').trim();
+  const enabled = Boolean(document.getElementById('qwen-article-enabled')?.checked);
+  if (enabled && !key && !S.orKey) return toast('أدخل مفتاح OpenRouter قبل تفعيل Qwen', 'w');
+  if (key) { S.orKey = key; storageSet('desk_or_key', key); }
+  S.qwenEnabled = enabled && Boolean(S.orKey);
+  storageSet('desk_qwen_enabled', S.qwenEnabled ? '1' : '0');
+  updateQwenUI();
+  toast(S.qwenEnabled ? '✅ تم تفعيل Qwen للمقالات فقط' : 'تم حفظ إعدادات OpenRouter مع إبقاء Qwen معطلاً', 's');
+}
+function clearOpenRouterKey() {
+  S.orKey = '';
+  S.qwenEnabled = false;
+  try { localStorage.removeItem('desk_or_key'); localStorage.removeItem('desk_qwen_enabled'); } catch (_) {}
+  const input = document.getElementById('openrouter-key-inp');
+  if (input) input.value = '';
+  updateQwenUI();
+  toast('تم مسح مفتاح OpenRouter وتعطيل Qwen. Gemini Flash لم يتأثر.', 'w');
+}
+async function runOpenRouterDiagnostic() {
+  if (!S.orKey) return toast('أدخل مفتاح OpenRouter أولاً', 'w');
+  qwenStatus('جارٍ فحص مفتاح OpenRouter دون توليد مقال...', 'loading');
+  try {
+    const response = await fetch(`${OPENROUTER_API_BASE}/key`, { headers: { Authorization: `Bearer ${S.orKey}` }, cache: 'no-store' });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error?.message || `HTTP ${response.status}`);
+    qwenStatus('✅ مفتاح OpenRouter صالح. لم يتم استهلاك طلب توليد.', 'ok');
+  } catch (error) {
+    qwenStatus('❌ تعذر التحقق من مفتاح OpenRouter: ' + error.message, 'err');
+  }
+}
+
 function updateKeyStt() {
   const el = document.getElementById('key-stt');
   if (el) el.innerHTML = S.key
@@ -3154,7 +3353,7 @@ async function parseGeminiErrorResponse(r) {
 
 async function geminiHealthCheck() {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
-  const selected = normalizeGeminiModel(document.getElementById('editor-model')?.value || window._geminiWorkingModel || 'gemini-3.1-pro-preview');
+  const selected = normalizeGeminiModel(document.getElementById('editor-model')?.value || window._geminiWorkingModel || DEFAULT_FREE_MODEL);
   const models = [selected];
   const results = [];
   for (const mdl of models) {
@@ -3385,7 +3584,7 @@ async function runRadar(isAuto) {
   isAuto = isAuto || false;
   if (!S.key) { openSettings(); return; }
   const cat   = document.getElementById('radar-category')?.value || 'all';
-  const model = document.getElementById('radar-model')?.value    || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('radar-model')?.value    || DEFAULT_FREE_MODEL;
   const btn   = document.getElementById('btn-radar');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المسح...'; }
@@ -3532,7 +3731,7 @@ const PROMPT_COMPARE = `أنت محلل إعلامي مقارن متخصص في 
 async function runHiddenAngle() {
   const inp = (document.getElementById('angle-input')?.value || '').trim();
   if (!inp) return toast('أدخل نص الخبر للتحليل', 'w');
-  const model = document.getElementById('angle-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('angle-model')?.value || DEFAULT_FREE_MODEL;
   const btn = document.getElementById('btn-angle');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكشف...'; }
@@ -3556,7 +3755,7 @@ async function runHiddenAngle() {
 async function runTrend() {
   if (!S.key) { openSettings(); return; }
   const platform = document.getElementById('trend-platform')?.value || 'all';
-  const model = document.getElementById('trend-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('trend-model')?.value || DEFAULT_FREE_MODEL;
   const btn = document.getElementById('btn-trend');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الرصد...'; }
@@ -3583,7 +3782,7 @@ async function runTrend() {
 async function runCompare() {
   const inp = (document.getElementById('compare-input')?.value || '').trim();
   if (!inp) return toast('أدخل نص الخبر للمقارنة', 'w');
-  const model = document.getElementById('compare-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('compare-model')?.value || DEFAULT_FREE_MODEL;
   const btn = document.getElementById('btn-compare');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المقارنة...'; }
@@ -3628,16 +3827,16 @@ window.DESK_APP = window.DESK_APP || {
   },
   leave(name) { this.busy.delete(name); },
   modelDefaults: {
-    editor: 'gemini-3.7-flash', article: 'gemini-3.7-flash', flash: 'gemini-3.7-flash',
-    profile: 'gemini-3.7-flash', radar: 'gemini-3.7-flash', angle: 'gemini-3.7-flash',
-    trend: 'gemini-3.7-flash', compare: 'gemini-3.7-flash', timeline: 'gemini-3.7-flash'
+    editor: DEFAULT_FREE_MODEL, article: DEFAULT_FREE_MODEL, flash: DEFAULT_FREE_MODEL,
+    profile: DEFAULT_FREE_MODEL, radar: DEFAULT_FREE_MODEL, angle: DEFAULT_FREE_MODEL,
+    trend: DEFAULT_FREE_MODEL, compare: DEFAULT_FREE_MODEL, timeline: DEFAULT_FREE_MODEL
   }
 };
 const APP = window.DESK_APP;
 
 function setDefaultModels() {
   document.querySelectorAll('select[id$="-model"]').forEach(sel => {
-    const flash = Array.from(sel.options).find(o => o.value === 'gemini-3.7-flash');
+    const flash = Array.from(sel.options).find(o => o.value === 'gemini-3.6-flash');
     if (flash) flash.selected = true;
   });
 }
@@ -3776,7 +3975,7 @@ function deskBoot() {
   }
   tickClock(); setInterval(tickClock, 60000);
   updateGreeting(); updateQuota(); updateBanner(); renderArchive(); renderAgenda(); updateKeyStt();
-  setDefaultModels(); installNavigation(); installPanelCloseButtons(); installActionLocks(); syncEditorMode();
+  setDefaultModels(); updateQwenUI(); installNavigation(); installPanelCloseButtons(); installActionLocks(); syncEditorMode();
   document.getElementById('editor-mode')?.addEventListener('change', syncEditorMode);
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { closeSettings(); if (typeof closeMoreMenu === 'function') closeMoreMenu(); }
@@ -3845,7 +4044,7 @@ async function runTimeline() {
   if (!S.key) { openSettings(); return; }
   if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
 
-  const model = document.getElementById('timeline-model')?.value || 'gemini-3.1-pro-preview';
+  const model = document.getElementById('timeline-model')?.value || DEFAULT_FREE_MODEL;
   const btn = document.getElementById('btn-timeline');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ بناء الجدول الزمني...'; }
