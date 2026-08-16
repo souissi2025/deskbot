@@ -7,6 +7,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#060a12">
   <title>DESK BOT — غرفة الأخبار الرقمية</title>
+  <meta name="desk-bot-architecture" content="v13-structured-runtime">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Amiri:wght@400;700&amp;family=Oswald:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -846,7 +847,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <div class="logo-box">
      <i class="fa-solid fa-newspaper"></i>
     </div>
-    DESK <span class="logo-txt">BOT</span> <span class="logo-ver">v12</span>
+    DESK <span class="logo-txt">BOT</span> <span class="logo-ver">v13</span>
    </div>
    <div class="hdr-spacer"></div>
    <div class="hdr-clock">
@@ -857,7 +858,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <div class="quota-bar">
      <div class="quota-fill" id="quota-fill" style="width:0%"></div>
     </div>
-    <div class="quota-txt" id="quota-txt">0/1500</div>
+    <div class="quota-txt" id="quota-txt">0 محلي</div>
    </div>
    <button class="hdr-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
    <button class="hdr-btn" onclick="openSettings()"><i class="fa-solid fa-gear"></i> <span>API</span></button>
@@ -1053,7 +1054,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
        <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
       </div>
       <div id="stt-editor" class="stt"></div>
       <div id="out-editor" class="out-box rendered" style="display:none"></div>
@@ -1126,7 +1127,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-article" style="flex:1" onclick="runArticle()"><i class="fa-solid fa-pen-nib"></i> كتابة المقال</button>
-       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="article-count" style="width:auto;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="1">واحد</option> <option value="2">اثنان</option> <option value="3">ثلاثة</option> </select> <select id="article-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('article')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-article" class="stt"></div>
@@ -1166,7 +1167,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-flash" class="stt"></div>
@@ -1276,7 +1277,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
       </div>
       <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
        <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
@@ -1300,7 +1301,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
@@ -1328,7 +1329,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-angle" class="stt"></div>
@@ -1351,7 +1352,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
@@ -1379,7 +1380,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-compare" class="stt"></div>
@@ -1401,7 +1402,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash ⚡</option> </select>
+       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.7-flash">Gemini 3.7 Flash (المجاني) ⚡</option> </select>
        <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-timeline" class="stt"></div>
@@ -1520,7 +1521,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        </div>
        <div>
         <div class="m-sec-title">Google Gemini API</div>
-        <div class="m-sec-sub">Flash: 1500 طلب/يوم · Pro: 50 طلب/يوم — مجاناً</div>
+        <div class="m-sec-sub">Flash: مجاني وفق حصة المشروع · Pro: يتطلب صلاحية وحصة متاحة</div>
        </div>
       </div>
       <div id="key-stt" class="key-stt"></div>
@@ -1543,7 +1544,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 
 
 /* ═══════════════════════════════════════════════
-   DESK BOT v12 — BRAIN
+   DESK BOT v13 — STRUCTURED BRAIN
 ═══════════════════════════════════════════════ */
 
 // ── STATE ──
@@ -1697,110 +1698,49 @@ const PROMPTS = {
 (الفقرة 3+: السياق والتفاصيل بالهرم المقلوب)
 
 النص / المحتوى المراد تفريغه وتحريره:`,
-  article: `أنت "محرر أخبار أول" في وكالة تونس إفريقيا للأنباء (وات). مهمتك كتابة مقال إخباري كامل من النص الخام، وفق المعايير التالية بدقة. لا تحيد عنها.
+  article: `أنت محرر أخبار أول في وكالة تونس إفريقيا للأنباء (وات) وإذاعة ديوان أف أم. اكتب مادة صحفية عربية فصحى حديثة من المادة الخام المدخلة، مع الالتزام الصارم بالدقة وعدم اختلاق أي معلومة.
 
-## 🔴 المعايير الإلزامية (انتبه جيداً)
+مبدأ أساسي لا يُخرق:
+- استعمل المعلومات الموجودة في المادة الخام فقط.
+- إذا غاب المصدر أو الرقم أو التاريخ أو التصريح، اذكر أن المادة لا تحدده، ولا تخترع مصدراً أو رقماً أو خلفية.
+- لا تستعمل عبارة "رجحت مصادر مطلعة" إلا إذا وردت هذه المصادر فعلاً في المادة.
+- لا تحوّل العملات إلى الدينار التونسي إلا إذا ورد سعر الصرف أو ما يكفي لحساب التحويل في المادة.
+- لا تضف أسماء أشخاص أو مؤسسات أو تصريحات أو سياقاً سياسياً من معرفتك العامة.
 
-### 1. المصدر – إلزامي في الفقرة الثانية
-- الفقرة الثانية من المقال يجب أن تذكر **الجهة المصدر** و**نوع الوثيقة** (بلاغ، بيان، تصريح، منشور، اجتماع).
-- مثال صارم: "وأوضحت وزارة المالية، في بلاغ صادر عنها، أن القرار يأتي في إطار..." أو "جاء ذلك خلال اجتماع عقده المجلس الوزاري، وفق ما أفاد به مصدر مسؤول."
-- إذا لم يذكر النص الخام مصدراً، استخدم صيغة: "ورجحت مصادر مطلعة أن..." ولكن الأفضل أن تطلب من المستخدم توفير المصدر.
+قواعد التحرير:
+1. العنوان الرئيسي من 6 إلى 10 كلمات، بصيغة فعل مضارع + فاعل + نتيجة، من دون مبالغة أو علامة تعجب.
+2. اقترح خمسة عناوين بديلة: رسمي، رقمي، يبرز الأثر، يبرز الرقم أو التاريخ، وإذاعي.
+3. ابدأ نص المقال بفعل ماضٍ معلوم وفاعل محدد مثل: أعلنت، أكدت، أفادت، أوضحت، كشفت، نفت، دعت، طالبت.
+4. الفقرة الأولى تعرض أهم حدث أو نتيجة وتجيب عن من وماذا ومتى وأين متى توفرت هذه المعطيات.
+5. الفقرة الثانية تذكر المصدر ونوع الوثيقة فقط إذا وردا في المادة، وإلا قل بوضوح إن المصدر غير مذكور.
+6. رتّب بقية المعلومات من الأهم إلى الأقل أهمية وفق الهرم المقلوب، من دون تكرار.
+7. استخدم أربع فقرات متماسكة، وكل فقرة من جملة إلى ثلاث جمل. لا تطِل الجمل حتى تصبح صعبة القراءة.
+8. استعمل أسماء الأشهر التونسية: جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر.
+9. اكتب نسخة إذاعية لديوان FM بين 90 و130 كلمة، واضحة ومباشرة، ولا تضف إليها معلومة غير موجودة في المقال.
+10. تجنب المبني للمجهول والعبارات الإنشائية مثل: تم، صودق، أُقر، انعقد، استقبل، الجدير بالذكر، تجدر الإشارة، في إطار، في سياق، يسعى جاهداً، مما يؤكد.
 
-### 2. طول الفقرات – يجب أن يكون كافياً
-- الفقرة الأولى (الاستهلال): بين 30 و 40 كلمة. تبدأ بـ **فعل ماضٍ معلوم + فاعل** (أعلنت الوزارة / أكّدت الهيئة / أفاد المتحدث / كشف المسؤول / أوضحت الجهة / نفى الناطق).
-- الفقرة الثانية (المصدر): بين 25 و 35 كلمة.
-- الفقرات الثالثة والرابعة (التفاصيل والسياق): بين 40 و 60 كلمة لكل فقرة.
-- الحد الأقصى للجملة: 22 كلمة.
-- الحد الأقصى للفقرة: 4 جمل.
+أخرج النتيجة بهذا الترتيب فقط:
 
-### 3. الاستهلال القوي – ممنوع البدء بالظروف أو المضارع
-- ابدأ الجملة الأولى مباشرة بـ **(فعل ماضٍ معلوم + فاعل + مفعول به إن وجد)**.
-- ✅ مثال صحيح: "أقرّت الحكومة التونسية، الأربعاء، زيادة في أسعار المحروقات بنسبة ثلاثة بالمائة."
-- ❌ مثال خاطئ: "تقرّ الحكومة التونسية..." (ممنوع: فعل مضارع في بداية النص الإخباري).
-- ❌ مثال خاطئ: "في اجتماع عاجل، أقرّت الحكومة..." (ممنوع: البدء بظرف).
+## العنوان الرئيسي
+[عنوان واحد]
 
-### 4. الهرم المقلوب – من الأهم إلى الأقل أهمية
-- الفقرة الأولى: القرار أو الحدث الرئيسي.
-- الفقرة الثانية: المصدر وتفاصيل الوثيقة.
-- الفقرة الثالثة: الأرقام، التواريخ، الآثار المباشرة.
-- الفقرة الرابعة: السياق، الخلفيات، ردود الفعل الأولية.
-- لا تضع معلومات أقل أهمية قبل أكثر أهمية.
+## عناوين بديلة
+1. [عنوان]
+2. [عنوان]
+3. [عنوان]
+4. [عنوان]
+5. [عنوان]
 
-### 5. الممنوعات الصارمة (لا ترتكبها)
-- ممنوع: المبني للمجهول (تم الإعلان، صودق على).
-- ممنوع: **بدء نص المقال بفعل مضارع** — النص يبدأ بفعل ماضٍ دائماً (أعلنت / أكّدت / أفادت).
-- ممنوع: العبارات الإنشائية (يسعى جاهداً، تجدر الإشارة، الجدير بالذكر).
-- ممنوع: الاستنتاج الشخصي (وهو إنجاز، مما يثلج الصدر).
-- ممنوع: إضافة معلومات أو سياق ليس في النص الأصلي.
-- ممنوع: العناوين الفرعية داخل النص.
-- ممنوع: الأخطاء الشهرية (أبريل → أفريل، مايو → ماي، يونيو → جوان).
-- ممنوع: البدء بظرف زمان أو مكان.
-- ممنوع: **تجزئة الفقرة إلى جمل مستقلة منتهية بنقطة** — اربط الأفكار بالحال الوصفي.
+## نص المقال الإخباري
+[أربع فقرات صحفية متماسكة بلا عناوين داخلية]
 
-### 6. العناوين المطلوبة قبل النص
-- العنوان الرئيسي: **فعل مضارع** + فاعل + نتيجة (6-9 كلمات) — العناوين تستخدم المضارع.
-- ثم 5 عناوين بديلة تعكس زوايا مختلفة (النتيجة، الرقم، الجهة، التأثير، السياق).
+## نسخة ديوان FM
+[النص الإذاعي]
 
-### 7. 🔗 أسلوب ربط الفقرة — الحال الوصفي (الطريقة الواتية الإلزامية)
+## كلمات مفتاحية
+[5 إلى 7 كلمات]
 
-داخل كل فقرة: اربط الأفكار المتعددة بـ **الحال الوصفي** بدل الجمل المنفصلة.
-
-❌ أسلوب مرفوض (تجزئة بجمل مستقلة):
-"وأكد الوزراء التزامهم. وجددوا رفضهم للتدخل. وطالبوا بانسحاب المرتزقة. واتفقوا على الاجتماع بالجزائر."
-
-✅ الأسلوب الواتي (حال وصفي متسلسل):
-"وأكد الوزراء التزامهم بمساعدة الأشقاء الليبيين، مجددين رفضهم القاطع للتدخل الأجنبي، ومطالبين بانسحاب كافة المرتزقة، ومتفقين على عقد الاجتماع القادم بالجزائر."
-
-**قاموس الروابط الوصفية الواتية:**
-مشيراً/مشيرين إلى | مضيفاً/مضيفين أن | مبرزاً/مبرزين | موضحاً/موضحين | مؤكداً/مؤكدين | نافياً/نافين | داعياً/داعين إلى | مطالباً/مطالبين بـ | لافتاً/لافتين إلى | محذراً/محذرين من | مستنكراً/مستنكرين | معرباً/معربين عن | مجدداً/مجددين | مرحباً/مرحبين بـ | مثمناً/مثمنين | منوهاً/منوهين | مشيداً/مشيدين بـ
-
-**القاعدة الذهبية:** كل فقرة = جملة رئيسية (فعل ماضٍ + فاعل + مفعول) + 2 إلى 3 حالات وصفية مرتبطة بفاصلة، لا بنقطة.
-
-## 📝 مثال كامل (التزم به حرفياً)
-
-**المدخل (النص الخام):**
-"وزارة التعليم العالي أعلنت اليوم عن منح جديدة للطلبة المتفوقين. المنح تشمل 500 طالب. قيمة المنحة 300 دينار شهرياً. الهدف تشجيع التميز. الترشحات تبدأ من 15 سبتمبر عبر منصة إلكترونية."
-
-**المخرج المطلوب:**
-
-أولاً: العنوان الرئيسي
-وزارة التعليم العالي تُعلن منحاً جديدة للطلبة المتفوقين
-
-ثانياً: العناوين البديلة
-1. 500 منحة دراسية للطلبة المتفوقين في تونس
-2. منح شهرية بقيمة 300 دينار لدعم التميز الأكاديمي
-3. وزارة التعليم العالي تفتح باب الترشح للمنح الاستثنائية
-4. التفاصيل الكاملة لمنح التعليم العالي للطلبة المتفوقين
-5. الترشحات تبدأ 15 سبتمبر: منح دراسية للمتفوقين
-
-ثالثاً: نص المقال الإخباري
-
-أعلنت وزارة التعليم العالي والبحث العلمي، اليوم الأربعاء، فتح باب الترشح لمنح دراسية جديدة لفائدة الطلبة المتفوقين في جميع الاختصاصات.
-
-وأوضحت الوزارة، في بلاغ صادر عنها اليوم، أن هذه المنح ستشمل خمسمائة طالب وطالبة، مشيرةً إلى أن قيمة المنحة الشهرية تبلغ ثلاثمائة دينار، ومؤكدةً صرفها طوال العام الدراسي.
-
-وأضاف البلاغ أن هذا القرار يهدف إلى تشجيع التميز الأكاديمي والرفع من جودة التكوين العالي في تونس، لافتاً إلى أن الترشحات تفتح بدءاً من الخامس عشر من سبتمبر المقبل، ومنوهاً بأن المنصة الإلكترونية المخصصة ستُعلن عنها الوزارة لاحقاً.
-
-## 🔴 تنبيهات أخيرة
-
-- لا تضع أي شرح أو مقدمة قبل المخرجات.
-- لا تكرر المدخلات داخل المخرجات.
-- ابدأ فوراً بـ "أولاً: العنوان الرئيسي".
-- **العناوين**: تستخدم الفعل المضارع (وزارة التعليم تُعلن...).
-- **نص المقال**: يبدأ بفعل ماضٍ معلوم حصراً (أعلنت / أكّدت / أفادت / أوضحت).
-- تأكد من أن الفقرة الثانية تحتوي على **مصدر + نوع وثيقة**.
-
-## 🧠 آلية العمل الداخلي (نفّذها صامتاً قبل الكتابة)
-① استخرج: مَن الفاعل الرئيسي؟ ما القرار/الحدث؟ متى؟ أين؟ الأرقام والنسب؟
-② حدد الوثيقة: بلاغ / بيان / تصريح / منشور / اجتماع؟
-③ صحح الأشهر: أبريل→أفريل | مايو→ماي | يونيو→جوان | يوليو→جويلية | أغسطس→أوت | يناير→جانفي | فبراير→فيفري
-④ العملات الأجنبية → أضف مقابلها بالدينار التونسي بين قوسين.
-⑤ ابنِ الهرم: ف1=القرار، ف2=المصدر+الوثيقة، ف3=التفاصيل+الأرقام، ف4=السياق.
-⑥ ابدأ استهلال النص بـ [فعل ماضٍ معلوم + فاعل + نتيجة]: أعلنت / أكّدت / أفادت / أوضحت / كشفت / نفت — لا مضارع ولا ظرف.
-⑦ اربط أفكار كل فقرة بالحال الوصفي: بدل "وأضاف... وأكد... وأشار..." في جمل منفصلة، استخدم "مضيفاً / مؤكداً / مشيراً / لافتاً / مبرزاً / نافياً" داخل نفس الفقرة.
-⑧ راجع: هل تتجاوز أي جملة 22 كلمة؟ → اقسمها. هل المبني للمجهول موجود؟ → استبدله. هل أضفت معلومة ليست في المصدر؟ → احذفها.
-
-النص المدخل للمعالجة هو:
+المادة الخام:
 `,
   flash: `أنت "رئيس تحرير متمرس" و"مدقق لغوي خبير" في قسم الأخبار بإذاعة "ديوان أف أم" (Diwan FM). مهمتك معالجة النصوص الإخبارية الخام وتحويلها إلى "فلاش إخباري إذاعي" احترافي، يطابق الهوية التحريرية للإذاعة بدقة متناهية، وفقاً للمعايير التالية:
 
@@ -2050,7 +1990,8 @@ async function readGeminiResponse(r) {
 // ── Gemini with Google Search Grounding (for profile) ──
 async function callGeminiWithSearch(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
-  if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
+  const localCap = Number(window.DESK_APP?.localQuotaCap || 1500);
+  if (S.req >= localCap) throw new Error(`تم بلوغ الحد المحلي الوقائي (${localCap} طلباً). تحقق من حصة Google الفعلية.`);
   const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || 'gemini-3.1-pro-preview');
   const isGemini3 = mdl.includes('gemini-3.');
   const genConfig = isGemini3
@@ -2100,7 +2041,8 @@ async function callGeminiWithSearchFallback(prompt, model) {
 
 async function callGemini(prompt, model) {
   if (!S.key) { openSettings(); throw new Error('أدخل مفتاح Gemini API'); }
-  if (S.req >= 1500) throw new Error('تجاوزت الحد اليومي (1500 طلب)');
+  const localCap = Number(window.DESK_APP?.localQuotaCap || 1500);
+  if (S.req >= localCap) throw new Error(`تم بلوغ الحد المحلي الوقائي (${localCap} طلباً). تحقق من حصة Google الفعلية.`);
   const mdl = normalizeGeminiModel(model || window._geminiWorkingModel || 'gemini-3.1-pro-preview');
   const isGemini3 = mdl.includes('gemini-3.');
   const genConfig = isGemini3
@@ -2280,7 +2222,11 @@ async function runEditor() {
     // إذا كان هناك ملف صوتي → استخدم Web Speech API أولاً
     const attachedFile = document.getElementById('editor-file-inp')?.files?.[0];
     if (attachedFile) {
-      // تشغيل الملف وتفريغه عبر Web Speech API
+      if (APP.editorFileProcessing) return toast('جاري تفريغ الملف حالياً...', 'w');
+      if (APP.editorFileReadyName === attachedFile.name) {
+        return toast('اكتمل التفريغ. اضغط «بدء التحرير الصحفي» للمتابعة.', 's');
+      }
+      APP.editorFileProcessing = true;
       runSpeechTranscription(attachedFile);
       return;
     }
@@ -2508,6 +2454,7 @@ function runSpeechTranscription(file) {
       if (!transcribed) throw new Error('لم يُكشف عن محتوى صوتي في الملف');
 
       window._transcribedText = transcribed;
+      APP.editorFileReadyName = file.name;
       if (outT) outT.innerHTML = typeof renderMD === 'function' ? renderMD(transcribed) : transcribed;
       if (stt)  { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ' + (generated.fallback ? ' عبر Gemini 3.7 Flash بعد انتهاء حصة Pro' : '') + ' — اضغط "بدء التحرير الصحفي"</span>'; }
       if (editBtn) {
@@ -2523,6 +2470,7 @@ function runSpeechTranscription(file) {
       if (stt) { stt.className = 'stt err'; stt.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>${err.message}</span>`; }
       if (err && /403|مرفوض|denied access/i.test(String(err.message || ''))) updateBanner();
     } finally {
+      APP.editorFileProcessing = false;
       if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
     }
   };
@@ -2595,6 +2543,17 @@ function clearArticleFile() {
   if (pv) pv.style.display = 'none';
 }
 
+function reviewArticleText(text) {
+  const value = String(text || '');
+  const warnings = [];
+  const banned = ['رجحت مصادر مطلعة', 'الجدير بالذكر', 'تجدر الإشارة', 'يسعى جاهداً', 'في إطار', 'في سياق'];
+  banned.forEach(term => { if (value.includes(term)) warnings.push(`العبارة «${term}»`); });
+  if (!/العنوان الرئيسي|العنوان/.test(value)) warnings.push('غياب عنوان واضح');
+  if (!/نص المقال الإخباري|المقال الإخباري/.test(value)) warnings.push('غياب قسم المقال');
+  if (!/نسخة ديوان FM|ديوان FM/.test(value)) warnings.push('غياب النسخة الإذاعية');
+  return { ok: warnings.length === 0, warnings };
+}
+
 function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
   if (!inp) return toast('أدخل النص الأولي للمقال', 'w');
@@ -2602,7 +2561,7 @@ function runArticle() {
   const model = document.getElementById('article-model')?.value || 'gemini-3.1-pro-preview';
 
   if (!S.key) { openSettings(); return; }
-  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
+  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
 
   const btn = document.getElementById('btn-article');
   const origHTML = btn ? btn.innerHTML : '';
@@ -2636,7 +2595,10 @@ function runArticle() {
         if (generated.fallback) setStt('article', '✅ تمت الكتابة عبر Gemini 3.7 Flash لأن حصة Pro غير متاحة', 'ok');
       }
       showOut('article', renderMD(result));
-      if (!usedFallback) setStt('article', articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال', 'ok');
+      const articleReview = reviewArticleText(result);
+      if (!usedFallback) {
+        setStt('article', articleReview.ok ? (articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال') : '⚠️ تمت الكتابة مع ملاحظات تحريرية: ' + articleReview.warnings.join('، '), articleReview.ok ? 'ok' : 'w');
+      }
       setTimeout(() => hideStt('article'), 3000);
       document.getElementById('acts-article').style.display = 'flex';
       document.getElementById('article-revise-zone').style.display = 'block';
@@ -2658,7 +2620,7 @@ async function runArticleRevise() {
   if (!currentArticle || currentArticle.indexOf('سيظهر') === 0) return toast('لا يوجد مقال لتعديله', 'w');
 
   if (!S.key) { openSettings(); return; }
-  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
+  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
 
   const btn = document.getElementById('btn-article-revise');
   const origHTML = btn ? btn.innerHTML : '';
@@ -3278,10 +3240,11 @@ function updateStats() {
   if (badge) badge.textContent = S.archive.length > 0 ? S.archive.length + ' مادة' : '';
 }
 function updateQuota() {
-  const pct = Math.min((S.req / 1500) * 100, 100);
+  const cap = Number(window.DESK_APP?.localQuotaCap || 1500);
+  const pct = Math.min((S.req / cap) * 100, 100);
   const f = document.getElementById('quota-fill');
   if (f) { f.style.width = pct + '%'; f.style.background = pct > 80 ? 'var(--red)' : pct > 50 ? '#fbbf24' : 'var(--green)'; }
-  const t = document.getElementById('quota-txt'); if (t) t.textContent = S.req + '/1500';
+  const t = document.getElementById('quota-txt'); if (t) t.textContent = S.req + '/' + cap + ' محلي';
   updateStats();
 }
 
@@ -3312,51 +3275,6 @@ function toggleTheme() {
 }
 
 // ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  cleanOldArchive();
-  // Theme
-  if (localStorage.getItem('db12_theme') === 'day') {
-    document.body.classList.add('day-mode');
-    document.getElementById('theme-btn').textContent = '☀️';
-  }
-  
-  tickClock(); setInterval(tickClock, 60000);
-  updateGreeting();
-  updateQuota();
-  updateBanner();
-  renderArchive();
-  renderAgenda();
-  updateKeyStt();
-
-  // NAV
-  document.querySelectorAll('[data-panel]').forEach(btn => {
-    btn.addEventListener('click', () => nav(btn.dataset.panel));
-  });
-
-  // BUTTONS
-  document.getElementById('btn-editor')?.addEventListener('click', runEditor);
-  document.getElementById('btn-article')?.addEventListener('click', runArticle);
-  document.getElementById('btn-flash')?.addEventListener('click', runFlash);
-  document.getElementById('btn-headlines')?.addEventListener('click', runHeadlines);
-  document.getElementById('btn-hist')?.addEventListener('click', runHist);
-  document.getElementById('btn-sports')?.addEventListener('click', runSports);
-  document.getElementById('btn-profile')?.addEventListener('click', runProfile);
-  document.getElementById('btn-add-ag')?.addEventListener('click', addAgenda);
-
-  // Close buttons
-  document.querySelectorAll('.panel > .card').forEach(card => {
-    if (card.querySelector('.panel-close-btn')) return;
-    const btn = document.createElement('button');
-    btn.className = 'panel-close-btn';
-    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> إغلاق';
-    btn.onclick = () => nav('home');
-    card.appendChild(btn);
-  });
-
-  // لا تفتح الإعدادات تلقائياً حتى لا تغطي جميع أزرار التطبيق عند غياب المفتاح.
-  // يفتحها المستخدم من زر API أو تفتحها أدوات Gemini عند الحاجة.
-});
-
   /* ── إرسال التسجيل بالواتساب ── */
   window.waAudioFile = function(src) {
     var f = window._editorAttachedFile;
@@ -3691,126 +3609,182 @@ async function runCompare() {
 
 </script>
   <script>
-document.addEventListener("DOMContentLoaded", function() {
-
-  /* ── مزامنة UI mode ── */
-  var sel    = document.getElementById("editor-mode");
-  var wrap   = document.getElementById("transcribe-wrap");
-  var outEd  = document.getElementById("out-editor");
-  var actsEd = document.getElementById("acts-editor");
-  function syncUI() {
-    var isTr = sel && sel.value === "transcribe";
-    if (wrap)   wrap.style.display   = isTr ? "flex" : "none";
-    if (outEd)  outEd.style.display  = isTr ? "none" : "";
-    if (actsEd) actsEd.style.display = isTr ? "none" : "";
+// ══════════════════════════════════════════════════
+//  DESK BOT RUNTIME — SINGLE INITIALIZATION LAYER
+// ══════════════════════════════════════════════════
+window.DESK_APP = window.DESK_APP || {
+  booted: false,
+  busy: new Set(),
+  editorFileProcessing: false,
+  editorFileReadyName: '',
+  localQuotaCap: 1500,
+  enter(name) {
+    if (this.busy.has(name)) {
+      toast('هذه العملية قيد التنفيذ، انتظر اكتمالها أولاً', 'w');
+      return false;
+    }
+    this.busy.add(name);
+    return true;
+  },
+  leave(name) { this.busy.delete(name); },
+  modelDefaults: {
+    editor: 'gemini-3.7-flash', article: 'gemini-3.7-flash', flash: 'gemini-3.7-flash',
+    profile: 'gemini-3.7-flash', radar: 'gemini-3.7-flash', angle: 'gemini-3.7-flash',
+    trend: 'gemini-3.7-flash', compare: 'gemini-3.7-flash', timeline: 'gemini-3.7-flash'
   }
-  if (sel) { sel.addEventListener("change", syncUI); syncUI(); }
+};
+const APP = window.DESK_APP;
 
-  /* ── معالجة الملف المرفق ── */
-  window.handleEditorFile = function(inp) {
-    if (!inp.files || !inp.files[0]) return;
-    var f  = inp.files[0];
-    if (f.size > 100 * 1024 * 1024) {
-      toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
-      inp.value = '';
-      return;
-    }
-    var nm = document.getElementById("editor-file-name");
-    var aw = document.getElementById("editor-attach-wrap");
-    if (nm) nm.textContent = f.name + "  (" + (f.size/1024/1024).toFixed(2) + " MB)";
-    if (aw) aw.style.display = "block";
-    var ta = document.getElementById("editor-input");
-    if (ta && !ta.value.trim()) ta.value = "[ملف مرفق: " + f.name + "] — أدخل النص المفرّغ من هذا الملف أو اترك الحقل ليُعالج.";
-    window._editorAttachedFile = { name: f.name, type: f.type, file: f };
-
-    // تحميل المشغّل الصوتي
-    if (f.type.startsWith('audio') || f.type.startsWith('video')) {
-      var objUrl = URL.createObjectURL(f);
-      var ap1 = document.getElementById('editor-audio-player');
-      var aw1 = document.getElementById('editor-audio-wrap');
-      if (ap1) { ap1.src = objUrl; }
-      if (aw1) { aw1.classList.add('visible'); }
-      var lbl1 = document.getElementById('editor-audio-label');
-      if (lbl1) { lbl1.textContent = f.name; }
-      var ap2 = document.getElementById('transcribe-audio-player');
-      var aw2 = document.getElementById('transcribe-audio-wrap');
-      if (ap2) { ap2.src = objUrl; }
-      if (aw2) { aw2.classList.add('visible'); }
-      var lbl2 = document.getElementById('transcribe-audio-label');
-      if (lbl2) { lbl2.textContent = f.name; }
-    }
-  };
-
-  window.handleEditorFile = function(input) {
-    var f = input && input.files && input.files[0];
-    if (!f) return;
-    var aw = document.getElementById("editor-attach-wrap");
-    var nm = document.getElementById("editor-file-name");
-    var ta = document.getElementById("editor-input");
-    window._editorAttachedFile = { name: f.name, type: f.type || '', file: f };
-    if (nm) nm.textContent = f.name + " (" + (f.size/1024/1024).toFixed(2) + " MB)";
-    if (aw) aw.style.display = "block";
-    if (ta && !ta.value.trim()) ta.value = "[ملف مرفق: " + f.name + "]";
-    var objUrl = URL.createObjectURL(f);
-    var ap1 = document.getElementById('editor-audio-player');
-    var aw1 = document.getElementById('editor-audio-wrap');
-    var lbl1 = document.getElementById('editor-audio-label');
-    if (ap1 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { ap1.src = objUrl; }
-    if (aw1 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { aw1.classList.add('visible'); }
-    if (lbl1) lbl1.textContent = f.name;
-    var ap2 = document.getElementById('transcribe-audio-player');
-    var aw2 = document.getElementById('transcribe-audio-wrap');
-    var lbl2 = document.getElementById('transcribe-audio-label');
-    if (ap2 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { ap2.src = objUrl; }
-    if (aw2 && (f.type.startsWith('audio') || f.type.startsWith('video'))) { aw2.classList.add('visible'); }
-    if (lbl2) lbl2.textContent = f.name;
-    if ((f.type || '').startsWith('audio') || (f.type || '').startsWith('video')) {
-      runSpeechTranscription(f);
-    }
-  };
-
-  window.removeEditorFile = function() {
-    window._editorAttachedFile = null;
-    var aw = document.getElementById("editor-attach-wrap");
-    var nm = document.getElementById("editor-file-name");
-    var fi = document.getElementById("editor-file-inp");
-    if (aw) aw.style.display = "none";
-    if (nm) nm.textContent = "لا يوجد ملف مرفق";
-    if (fi) fi.value = "";
-    // إخفاء المشغّل الصوتي
-    var aw1 = document.getElementById('editor-audio-wrap');
-    var ap1 = document.getElementById('editor-audio-player');
-    if (aw1) { aw1.classList.remove('visible'); }
-    if (ap1) { ap1.src = ''; }
-    var aw2 = document.getElementById('transcribe-audio-wrap');
-    var ap2 = document.getElementById('transcribe-audio-player');
-    if (aw2) { aw2.classList.remove('visible'); }
-    if (ap2) { ap2.src = ''; }
-  };
-
-  /* ── نسخ قسم محدد ── */
-  window.cpSec = function(id) {
-    var el = document.getElementById(id);
-    var t  = el ? el.innerText.trim() : "";
-    if (!t || t.indexOf("سيظهر") === 0 || t.indexOf("في انتظار") === 0) return toast("لا يوجد نص", "w");
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(t).then(function(){ toast("تم النسخ ✓", "s"); });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = t; ta.style.cssText = "position:fixed;left:-9999px;opacity:0";
-      document.body.appendChild(ta); ta.focus(); ta.select();
-      try { document.execCommand("copy"); toast("تم النسخ ✓", "s"); } catch(e){}
-      document.body.removeChild(ta);
-    }
-  };
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      closeSettings();
-      if (typeof closeMoreMenu === 'function') closeMoreMenu();
-    }
+function setDefaultModels() {
+  document.querySelectorAll('select[id$="-model"]').forEach(sel => {
+    const flash = Array.from(sel.options).find(o => o.value === 'gemini-3.7-flash');
+    if (flash) flash.selected = true;
   });
-}); // end DOMContentLoaded
+}
+
+function installActionLocks() {
+  const names = ['runEditor','runArticle','runArticleRevise','runFlash','runHeadlines','runHist','runSports',
+    'runProfile','runRadar','runHiddenAngle','runTrend','runCompare','runTimeline','runEditorialStep2',
+    'runGeminiDiagnostic'];
+  names.forEach(name => {
+    const fn = window[name];
+    if (typeof fn !== 'function' || fn.__deskWrapped) return;
+    const wrapped = async function(...args) {
+      const key = name.replace(/^run/, '').toLowerCase();
+      if (!APP.enter(key)) return;
+      try { return await fn.apply(this, args); }
+      finally { APP.leave(key); }
+    };
+    wrapped.__deskWrapped = true;
+    window[name] = wrapped;
+  });
+}
+
+function installNavigation() {
+  document.querySelectorAll('[data-panel]').forEach(btn => {
+    if (btn.dataset.deskBound === '1') return;
+    btn.dataset.deskBound = '1';
+    btn.addEventListener('click', event => {
+      if (btn.id === 'bn-more') return;
+      event.preventDefault();
+      nav(btn.dataset.panel);
+    });
+  });
+}
+
+function installPanelCloseButtons() {
+  document.querySelectorAll('.panel > .card').forEach(card => {
+    if (card.querySelector('.panel-close-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'panel-close-btn';
+    btn.type = 'button';
+    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> إغلاق';
+    btn.addEventListener('click', () => nav('home'));
+    card.appendChild(btn);
+  });
+}
+
+function handleEditorFileSingle(input) {
+  const file = input?.files?.[0];
+  if (!file) return;
+  if (file.size > 100 * 1024 * 1024) {
+    toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
+    input.value = '';
+    return;
+  }
+  APP.editorFileReadyName = '';
+  window._editorAttachedFile = { name: file.name, type: file.type || '', file };
+  const nameEl = document.getElementById('editor-file-name');
+  const attachWrap = document.getElementById('editor-attach-wrap');
+  const inputText = document.getElementById('editor-input');
+  if (nameEl) nameEl.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+  if (attachWrap) attachWrap.style.display = 'block';
+  if (inputText && !inputText.value.trim()) inputText.value = `[ملف مرفق: ${file.name}]`;
+
+  if (file.type.startsWith('audio/') || file.type.startsWith('video/')) {
+    const url = URL.createObjectURL(file);
+    ['editor-audio-player', 'transcribe-audio-player'].forEach(id => {
+      const player = document.getElementById(id);
+      if (player) player.src = url;
+    });
+    ['editor-audio-wrap', 'transcribe-audio-wrap'].forEach(id => {
+      const wrap = document.getElementById(id);
+      if (wrap) wrap.classList.add('visible');
+    });
+    ['editor-audio-label', 'transcribe-audio-label'].forEach(id => {
+      const label = document.getElementById(id);
+      if (label) label.textContent = file.name;
+    });
+    if (!APP.editorFileProcessing) {
+      APP.editorFileProcessing = true;
+      runSpeechTranscription(file);
+    }
+  }
+}
+
+window.handleEditorFile = handleEditorFileSingle;
+
+window.removeEditorFile = function() {
+  window._editorAttachedFile = null;
+  APP.editorFileProcessing = false;
+  APP.editorFileReadyName = '';
+  const wrap = document.getElementById('editor-attach-wrap');
+  const name = document.getElementById('editor-file-name');
+  const input = document.getElementById('editor-file-inp');
+  if (wrap) wrap.style.display = 'none';
+  if (name) name.textContent = 'لا يوجد ملف مرفق';
+  if (input) input.value = '';
+  ['editor-audio-wrap', 'transcribe-audio-wrap'].forEach(id => document.getElementById(id)?.classList.remove('visible'));
+  ['editor-audio-player', 'transcribe-audio-player'].forEach(id => { const p = document.getElementById(id); if (p) p.src = ''; });
+};
+
+window.cpSec = function(id) {
+  const el = document.getElementById(id);
+  const value = el?.innerText?.trim() || '';
+  if (!value || value.startsWith('سيظهر') || value.startsWith('في انتظار')) return toast('لا يوجد نص', 'w');
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(value).then(() => toast('تم النسخ ✓', 's')).catch(() => toast('تعذر النسخ من المتصفح', 'e'));
+    return;
+  }
+  const ta = document.createElement('textarea');
+  ta.value = value;
+  ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); toast('تم النسخ ✓', 's'); } catch (_) { toast('تعذر النسخ', 'e'); }
+  ta.remove();
+};
+
+function syncEditorMode() {
+  const sel = document.getElementById('editor-mode');
+  const isTranscribe = !sel || sel.value === 'transcribe';
+  const wrap = document.getElementById('transcribe-wrap');
+  const output = document.getElementById('out-editor');
+  const actions = document.getElementById('acts-editor');
+  if (wrap) wrap.style.display = isTranscribe ? 'flex' : 'none';
+  if (output) output.style.display = isTranscribe ? 'none' : '';
+  if (actions) actions.style.display = isTranscribe ? 'none' : '';
+}
+
+function deskBoot() {
+  if (APP.booted) return;
+  APP.booted = true;
+  cleanOldArchive();
+  if (localStorage.getItem('db12_theme') === 'day') {
+    document.body.classList.add('day-mode');
+    const theme = document.getElementById('theme-btn');
+    if (theme) theme.textContent = '☀️';
+  }
+  tickClock(); setInterval(tickClock, 60000);
+  updateGreeting(); updateQuota(); updateBanner(); renderArchive(); renderAgenda(); updateKeyStt();
+  setDefaultModels(); installNavigation(); installPanelCloseButtons(); installActionLocks(); syncEditorMode();
+  document.getElementById('editor-mode')?.addEventListener('change', syncEditorMode);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { closeSettings(); if (typeof closeMoreMenu === 'function') closeMoreMenu(); }
+  }, { passive: true });
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', deskBoot, { once: true });
+else deskBoot();
 
 // ══ MORE MENU ══
 window.toggleMoreMenu = function(){
@@ -3869,7 +3843,7 @@ async function runTimeline() {
   const inp = (document.getElementById('timeline-input')?.value || '').trim();
   if (!inp) return toast('أدخل النص المتراكم للقضية أولاً', 'w');
   if (!S.key) { openSettings(); return; }
-  if (S.req >= 1500) return toast('تجاوزت الحد اليومي', 'e');
+  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
 
   const model = document.getElementById('timeline-model')?.value || 'gemini-3.1-pro-preview';
   const btn = document.getElementById('btn-timeline');
@@ -4031,5 +4005,15 @@ function sendRadioToEditor(idx) {
 }
 
 </script>
- </body>
+ <script>
+/* DESK BOT v13 — defensive runtime boundary */
+window.addEventListener('error', function(event) {
+  console.error('[DESK BOT]', event.error || event.message);
+});
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('[DESK BOT] unhandled promise rejection', event.reason);
+  if (typeof toast === 'function') toast('حدث خطأ غير متوقع. حاول مرة أخرى.', 'e');
+});
+</script>
+</body>
 </html>
