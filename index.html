@@ -1597,7 +1597,8 @@ function readStoredArray(key) {
 const S = {
   key:     storageGet('db12_gk', ''),
   orKey:   storageGet('desk_or_key', ''),
-  qwenEnabled: storageGet('desk_qwen_enabled', '0') === '1',
+  qwenEnabled: Boolean(storageGet('desk_or_key', '')),
+  // وجود مفتاح محفوظ هو حالة التفعيل؛ زر مسح المفتاح هو التعطيل الصريح.
   archive: readStoredArray('db12_arc'),
   agenda:  readStoredArray('db12_ag'),
   today:   new Date().toDateString(),
@@ -3296,7 +3297,8 @@ function saveOpenRouterSettings() {
   const enabled = Boolean(document.getElementById('qwen-article-enabled')?.checked);
   if (enabled && !key && !S.orKey) return toast('أدخل مفتاح OpenRouter قبل تفعيل Qwen', 'w');
   if (key) { S.orKey = key; storageSet('desk_or_key', key); }
-  S.qwenEnabled = enabled && Boolean(S.orKey);
+  // حفظ مفتاح جديد يعني تفعيل Qwen للمقالات تلقائياً؛ التعطيل الصريح يتم عبر زر المسح.
+  S.qwenEnabled = Boolean(S.orKey) && (enabled || Boolean(key));
   storageSet('desk_qwen_enabled', S.qwenEnabled ? '1' : '0');
   updateQwenUI();
   toast(S.qwenEnabled ? '✅ تم تفعيل Qwen للمقالات فقط' : 'تم حفظ إعدادات OpenRouter مع إبقاء Qwen معطلاً', 's');
