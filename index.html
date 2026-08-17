@@ -1054,7 +1054,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
        <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div id="stt-editor" class="stt"></div>
       <div id="out-editor" class="out-box rendered" style="display:none"></div>
@@ -1167,7 +1167,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-flash" class="stt"></div>
@@ -1277,7 +1277,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
        <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
@@ -1301,7 +1301,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
@@ -1329,7 +1329,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-angle" class="stt"></div>
@@ -1352,7 +1352,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
@@ -1380,7 +1380,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-compare" class="stt"></div>
@@ -1402,7 +1402,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> </select>
+       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-timeline" class="stt"></div>
@@ -1417,8 +1417,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <section id="panel-radiomon" class="panel">
      <div class="card">
       <div class="card-title">
-       <i class="fa-solid fa-tower-broadcast" style="color:#60a5fa"></i> راصد الموجات الإذاعية
-       <span id="radiomon-count-badge" class="rss-count-badge" style="display:none"></span>
+       <i class="fa-solid fa-tower-broadcast" style="color:#60a5fa"></i> راصد الموجات الإذاعية <span id="radiomon-count-badge" class="rss-count-badge" style="display:none"></span>
       </div>
       <div class="card-sub">يجلب أحدث العناوين من الإذاعات التونسية ويتيح إرسالها مباشرة إلى المحرر.</div>
       <div class="rss-header-row">
@@ -1427,7 +1426,9 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <div id="stt-radiomon" class="stt"></div>
       <div id="radiomon-tabs" class="rss-header-row" style="overflow-x:auto;flex-wrap:nowrap"></div>
-      <div id="radiomon-list" style="margin-top:8px"><p style="text-align:center;color:var(--t3);padding:24px;font-size:11px">اضغط «تحديث الموجات» لجلب أحدث الأخبار.</p></div>
+      <div id="radiomon-list" style="margin-top:8px">
+       <p style="text-align:center;color:var(--t3);padding:24px;font-size:11px">اضغط «تحديث الموجات» لجلب أحدث الأخبار.</p>
+      </div>
      </div>
     </section>
     <!-- ══ AGENDA ══ -->
@@ -1535,19 +1536,16 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
      </div>
      <div class="m-section" id="openrouter-section" style="border-color:rgba(168,85,247,.35);background:rgba(168,85,247,.04)">
       <div class="m-sec-head">
-       <div class="m-sec-icon" style="background:rgba(168,85,247,.15);color:#c084fc"><i class="fa-solid fa-layer-group"></i></div>
+       <div class="m-sec-icon" style="background:rgba(168,85,247,.15);color:#c084fc">
+        <i class="fa-solid fa-layer-group"></i>
+       </div>
        <div>
-        <div class="m-sec-title">Qwen عبر OpenRouter — للمقالات فقط</div>
-        <div class="m-sec-sub">معزول عن الرادار والترند والتفريغ. عند فشله يعود المقال إلى Gemini Flash.</div>
+        <div class="m-sec-title">Qwen عبر OpenRouter — للمهام النصية</div>
+        <div class="m-sec-sub">معزول عن الملفات الصوتية والمرئية. يعمل في المسارات النصية، وعند فشله تعود المهمة إلى Gemini Flash.</div>
        </div>
       </div>
       <div id="openrouter-stt" class="key-stt"></div>
-      <label>مفتاح OpenRouter API</label>
-      <input type="password" id="openrouter-key-inp" placeholder="sk-or-v1-..." autocomplete="off">
-      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer">
-       <input type="checkbox" id="qwen-article-enabled" style="width:auto;min-height:0">
-       تفعيل Qwen للمقالات فقط
-      </label>
+      <label>مفتاح OpenRouter API</label> <input type="password" id="openrouter-key-inp" placeholder="sk-or-v1-..." autocomplete="off"> <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer"> <input type="checkbox" id="qwen-article-enabled" style="width:auto;min-height:0"> تفعيل Qwen للمهام النصية </label>
       <div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.18);border-radius:8px;padding:10px;margin:10px 0;font-size:11px;color:var(--t2);line-height:1.6">
        <i class="fa-solid fa-shield-halved" style="color:#c084fc"></i> لا يُستخدم هذا المفتاح في أي أداة أخرى. للاستخدام الشخصي، يُحفظ محلياً في المتصفح.
       </div>
@@ -2001,8 +1999,46 @@ function updateQwenUI() {
   if (articleModel && isQwenArticleModel(articleModel.value) && !(S.qwenEnabled && S.orKey)) {
     articleModel.value = DEFAULT_FREE_MODEL;
   }
-  if (S.orKey && S.qwenEnabled) qwenStatus('Qwen مفعّل للمقالات فقط: ' + maskOpenRouterKey(S.orKey), 'ok');
+  if (S.orKey && S.qwenEnabled) qwenStatus('Qwen مفعّل للمهام النصية: ' + maskOpenRouterKey(S.orKey), 'ok');
   else qwenStatus('Qwen معطّل — Gemini Flash يعمل بشكل مستقل', '');
+}
+
+function canRunTextModel(model) {
+  return Boolean(S.key || (isQwenArticleModel(model) && S.orKey && S.qwenEnabled));
+}
+function providerLabel(result) {
+  if (result?.provider === 'openrouter') return 'Qwen عبر OpenRouter';
+  if (result?.fallback) return (result.model || 'Gemini Flash') + ' بعد تعذر الموديل المختار';
+  return 'Gemini';
+}
+
+async function callTextProvider(prompt, model, options = {}) {
+  const requested = String(model || DEFAULT_FREE_MODEL);
+  const wantsQwen = isQwenArticleModel(requested);
+  const useSearch = Boolean(options.search);
+  if (!wantsQwen) {
+    return useSearch
+      ? callGeminiWithSearchFallback(prompt, requested)
+      : callGeminiWithFallback(prompt, requested);
+  }
+  if (!(S.orKey && S.qwenEnabled)) {
+    const fallback = useSearch
+      ? await callGeminiWithSearchFallback(prompt, DEFAULT_FREE_MODEL)
+      : await callGeminiWithFallback(prompt, DEFAULT_FREE_MODEL);
+    return { ...fallback, providerFallback: true, providerError: new Error('Qwen غير مفعّل أو مفتاح OpenRouter غير موجود') };
+  }
+  try {
+    const result = await callOpenRouter([
+      { role: 'system', content: 'أنت محرر أخبار عربي محترف. اكتب اعتماداً على المادة المعطاة فقط، ولا تخترع أرقاماً أو تصريحات أو مصادر. احترم الهرم المقلوب، العربية الصحفية الفصحى، وأسماء الأشهر التونسية. نفّذ تعليمات المهمة بدقة.' },
+      { role: 'user', content: prompt }
+    ], { model: QWEN_ARTICLE_MODEL, temperature: options.temperature ?? 0.3, max_tokens: options.max_tokens || 8000, search: useSearch });
+    return { text: result, model: QWEN_ARTICLE_MODEL, provider: 'openrouter', grounded: useSearch, fallback: false };
+  } catch (error) {
+    const fallback = useSearch
+      ? await callGeminiWithSearchFallback(prompt, DEFAULT_FREE_MODEL)
+      : await callGeminiWithFallback(prompt, DEFAULT_FREE_MODEL);
+    return { ...fallback, providerFallback: true, providerError: error, fallback: true };
+  }
 }
 
 async function callOpenRouter(messages, options = {}) {
@@ -2022,7 +2058,8 @@ async function callOpenRouter(messages, options = {}) {
         model: options.model || QWEN_ARTICLE_MODEL,
         messages,
         temperature: options.temperature ?? 0.35,
-        max_tokens: options.max_tokens || 7000
+        max_tokens: options.max_tokens || 7000,
+        ...(options.search ? { plugins: [{ id: 'web', max_results: 5 }] } : {})
       }),
       signal: ctrl.signal,
       cache: 'no-store'
@@ -2038,6 +2075,7 @@ async function callOpenRouter(messages, options = {}) {
     }
     const content = payload.choices?.[0]?.message?.content;
     if (!content || typeof content !== 'string') throw new Error('لم يُرجع Qwen نصاً صالحاً.');
+    S.req++; storageSet('db12_req', S.req); updateQuota();
     return content.trim();
   } catch (error) {
     if (error.name === 'AbortError') throw new Error('انتهت مهلة Qwen عبر OpenRouter.');
@@ -2055,18 +2093,7 @@ async function callQwenArticle(prompt) {
 }
 
 async function callArticleProvider(prompt, model) {
-  if (!isQwenArticleModel(model)) return callGeminiWithFallback(prompt, model);
-  if (!(S.qwenEnabled && S.orKey)) {
-    const fallback = await callGeminiWithFallback(prompt, DEFAULT_FREE_MODEL);
-    return { ...fallback, providerFallback: true, providerError: new Error('Qwen غير مفعّل أو لا يملك مفتاحاً') };
-  }
-  try {
-    return await callQwenArticle(prompt);
-  } catch (error) {
-    // Hard isolation: only the article path falls back; no other task is touched.
-    const fallback = await callGeminiWithFallback(prompt, DEFAULT_FREE_MODEL);
-    return { ...fallback, providerFallback: true, providerError: error };
-  }
+  return callTextProvider(prompt, model, { task: 'article', max_tokens: 8000 });
 }
 
 async function fetchGemini(url, options = {}, timeoutMs = 60000) {
@@ -2354,20 +2381,21 @@ function toast(msg, type = '') {
 
 // ── GENERIC RUN ──
 async function run(name, promptKey, getPrompt, btnId) {
-  if (!S.key) { openSettings(); return; }
+  const selectedModel = (document.getElementById(name + '-model') || {}).value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(selectedModel)) { openSettings(); return; }
   setStt(name, 'جاري المعالجة...', 'loading');
   hideOut(name);
   const btn = document.getElementById(btnId || 'btn-' + name);
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري المعالجة...'; }
   try {
-    const model = (document.getElementById(name + '-model') || {}).value || DEFAULT_FREE_MODEL;
+    const model = selectedModel;
     const prompt = getPrompt();
-    const result = await callGeminiWithFallback((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
+    const result = await callTextProvider((PROMPTS[promptKey] || SYS) + '\n\n' + prompt, model);
     const res = result.text;
     showOut(name, renderMD(res));
     autoArchive(res, name);
-    setStt(name, result.fallback ? '✅ اكتملت عبر ' + (result.model || 'Flash') + ' بعد تعذر الموديل المختار' : '✅ اكتملت المعالجة', 'ok');
+    setStt(name, '✅ اكتملت عبر ' + providerLabel(result), 'ok');
     setTimeout(() => hideStt(name), 2500);
   } catch(e) {
     setStt(name, '❌ ' + e.message, 'err');
@@ -2435,7 +2463,8 @@ async function callGeminiAudio(prompt, base64Data, mimeType, model) {
 }
 
 async function runTranscribeStep1(prompt) {
-  if (!S.key) { openSettings(); return; }
+  const selectedModel = (document.getElementById('editor-model') || {}).value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(selectedModel)) { openSettings(); return; }
   const wrap  = document.getElementById('transcribe-wrap');
   const outT  = document.getElementById('out-transcribe');
   const outA  = document.getElementById('out-editorial');
@@ -2451,8 +2480,8 @@ async function runTranscribeStep1(prompt) {
   if (btn)  { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ...'; }
 
   try {
-    const model = (document.getElementById('editor-model') || {}).value || DEFAULT_FREE_MODEL;
-    const generated = await callGeminiWithFallback(prompt, model);
+    const model = selectedModel;
+    const generated = await callTextProvider(prompt, model, { task: 'transcription-text' });
     const res = generated.text;
     // استخراج النص المفرّغ
     const m1 = res.match(/~~التفريغ الحرفي~~([\s\S]*?)~~نهاية التفريغ~~/);
@@ -2465,7 +2494,7 @@ async function runTranscribeStep1(prompt) {
       editBtn.style.display = 'flex';
       editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الحرفي' + (generated.fallback ? ' عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار' : '') + ' — اضغط "تحرير صحفي" للمتابعة</span>'; }
+    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الحرفي عبر ' + providerLabel(generated) + ' — اضغط "تحرير صحفي" للمتابعة</span>'; }
   } catch(e) {
     if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + e.message + '</span>'; }
     if (outT) outT.innerHTML = '<span style="color:#fca5a5">حدث خطأ: ' + e.message + '</span>';
@@ -2478,7 +2507,8 @@ async function runTranscribeStep1(prompt) {
 async function runEditorialStep2() {
   const transcribed = window._transcribedText;
   if (!transcribed) return toast('قم بالتفريغ الحرفي أولاً', 'w');
-  if (!S.key) { openSettings(); return; }
+  const selectedModel = (document.getElementById('editor-model') || {}).value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(selectedModel)) { openSettings(); return; }
 
   const outA  = document.getElementById('out-editorial');
   const stt   = document.getElementById('stt-editor');
@@ -2552,7 +2582,7 @@ async function runEditorialStep2() {
 ${transcribed}`;
 
   try {
-    const generated = await callGeminiWithFallback(EDITORIAL_PROMPT, model);
+    const generated = await callTextProvider(EDITORIAL_PROMPT, model, { task: 'editorial' });
     const res = generated.text;
     const m = res.match(/~~المقال الإخباري~~([\s\S]*)/);
     const editorial = m ? m[1].trim() : res.trim();
@@ -2611,7 +2641,9 @@ function runSpeechTranscription(file) {
 أخرج النص المفرّغ مباشرة بدون أي مقدمة أو تعليق.`;
 
       const selectedModel = document.getElementById('editor-model')?.value || window._geminiWorkingModel || DEFAULT_FREE_MODEL;
-      const generated = await callGeminiAudioWithFallback(TRANSCRIBE_PROMPT, b64, mimeType, selectedModel);
+      const audioModel = isQwenArticleModel(selectedModel) ? DEFAULT_FREE_MODEL : selectedModel;
+      if (isQwenArticleModel(selectedModel)) toast('التفريغ الصوتي والمرئي يعمل عبر Gemini؛ Qwen مخصص للمسارات النصية.', 'w');
+      const generated = await callGeminiAudioWithFallback(TRANSCRIBE_PROMPT, b64, mimeType, audioModel);
       const result = generated.text;
       const transcribed = result.trim();
 
@@ -2724,8 +2756,8 @@ function runArticle() {
   const cnt   = document.getElementById('article-count')?.value || '1';
   const model = document.getElementById('article-model')?.value || DEFAULT_FREE_MODEL;
 
-  if (!S.key) { openSettings(); return; }
-  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
+  if (!canRunTextModel(model)) { openSettings(); return; }
+  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من الحصة الفعلية', 'e');
 
   const btn = document.getElementById('btn-article');
   const origHTML = btn ? btn.innerHTML : '';
@@ -2785,8 +2817,9 @@ async function runArticleRevise() {
   const currentArticle = document.getElementById('out-article')?.innerText?.trim();
   if (!currentArticle || currentArticle.indexOf('سيظهر') === 0) return toast('لا يوجد مقال لتعديله', 'w');
 
-  if (!S.key) { openSettings(); return; }
-  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
+  const reviseModel = document.getElementById('article-model')?.value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(reviseModel)) { openSettings(); return; }
+  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من الحصة الفعلية', 'e');
 
   const btn = document.getElementById('btn-article-revise');
   const origHTML = btn ? btn.innerHTML : '';
@@ -2857,14 +2890,16 @@ function runProfile() {
   if (!n) return toast('أدخل اسم الشخصية', 'w');
   const today = new Date().toLocaleDateString('ar-TN', {year:'numeric', month:'long', day:'numeric'});
   const model = document.getElementById('profile-model')?.value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(model)) { openSettings(); return; }
   const btn = document.getElementById('btn-profile');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ البحث...'; }
   setStt('profile', 'جارٍ البحث عبر Google Search...', 'loading');
   hideOut('profile');
   const fullPrompt = PROMPTS.profile + ' **' + n + '**\n\n> تاريخ الطلب: ' + today;
-  callGeminiWithSearch(fullPrompt, model)
-    .then(res => {
+  callTextProvider(fullPrompt, model, { search: true, task: 'profile' })
+    .then(generated => {
+      const res = generated.text;
       showOut('profile', renderMD(res));
       setStt('profile', 'تم استخراج الملف بنجاح ✓', 'ok');
       setTimeout(() => hideStt('profile'), 3000);
@@ -3301,7 +3336,7 @@ function saveOpenRouterSettings() {
   S.qwenEnabled = Boolean(S.orKey) && (enabled || Boolean(key));
   storageSet('desk_qwen_enabled', S.qwenEnabled ? '1' : '0');
   updateQwenUI();
-  toast(S.qwenEnabled ? '✅ تم تفعيل Qwen للمقالات فقط' : 'تم حفظ إعدادات OpenRouter مع إبقاء Qwen معطلاً', 's');
+  toast(S.qwenEnabled ? '✅ تم تفعيل Qwen للمهام النصية' : 'تم حفظ إعدادات OpenRouter مع إبقاء Qwen معطلاً', 's');
 }
 function clearOpenRouterKey() {
   S.orKey = '';
@@ -3584,9 +3619,9 @@ function startRadarTimer() {
 
 async function runRadar(isAuto) {
   isAuto = isAuto || false;
-  if (!S.key) { openSettings(); return; }
+  const model = document.getElementById('radar-model')?.value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(model)) { openSettings(); return; }
   const cat   = document.getElementById('radar-category')?.value || 'all';
-  const model = document.getElementById('radar-model')?.value    || DEFAULT_FREE_MODEL;
   const btn   = document.getElementById('btn-radar');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المسح...'; }
@@ -3595,7 +3630,7 @@ async function runRadar(isAuto) {
   const now = new Date().toLocaleString('ar-TN', {weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'});
   const prompt = RADAR_PROMPTS[cat] + '\n\n> ⏰ تاريخ ووقت المسح: ' + now + ' — استخرج فقط الأخبار التي نُشرت خلال الساعات الأخيرة. رتّب من الأحدث والأهم.';
   try {
-    const generated = await callGeminiWithSearchFallback(prompt, model);
+    const generated = await callTextProvider(prompt, model, { search: true, task: 'radar' });
     const res = generated.text;
     showOut('radar', renderMD(res));
     autoArchive(res, 'radar');
@@ -3739,8 +3774,10 @@ async function runHiddenAngle() {
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكشف...'; }
   setStt('angle', '🔍 جارٍ التحليل التحقيقي العميق...', 'loading');
   hideOut('angle');
+  if (!canRunTextModel(model)) { openSettings(); return; }
   try {
-    const res = await callGemini(PROMPT_HIDDEN_ANGLE + '\n\n' + inp, model);
+    const generated = await callTextProvider(PROMPT_HIDDEN_ANGLE + '\n\n' + inp, model, { task: 'hidden-angle' });
+    const res = generated.text;
     showOut('angle', renderMD(res));
     autoArchive(res, 'angle');
     setStt('angle', '✅ اكتمل التحليل', 'ok');
@@ -3755,9 +3792,9 @@ async function runHiddenAngle() {
 }
 
 async function runTrend() {
-  if (!S.key) { openSettings(); return; }
   const platform = document.getElementById('trend-platform')?.value || 'all';
   const model = document.getElementById('trend-model')?.value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(model)) { openSettings(); return; }
   const btn = document.getElementById('btn-trend');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الرصد...'; }
@@ -3766,7 +3803,7 @@ async function runTrend() {
   hideOut('trend');
   const prompt = PROMPT_TREND[platform] + '\n\n> ⏰ وقت الرصد: ' + now + ' — ركّز على ما هو متداول الآن فعلاً.';
   try {
-    const generated = await callGeminiWithSearchFallback(prompt, model);
+    const generated = await callTextProvider(prompt, model, { search: true, task: 'trend' });
     const res = generated.text;
     showOut('trend', renderMD(res));
     autoArchive(res, 'trend');
@@ -3785,6 +3822,7 @@ async function runCompare() {
   const inp = (document.getElementById('compare-input')?.value || '').trim();
   if (!inp) return toast('أدخل نص الخبر للمقارنة', 'w');
   const model = document.getElementById('compare-model')?.value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(model)) { openSettings(); return; }
   const btn = document.getElementById('btn-compare');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ المقارنة...'; }
@@ -3793,7 +3831,8 @@ async function runCompare() {
   const now = new Date().toLocaleString('ar-TN', {year:'numeric', month:'long', day:'numeric'});
   const prompt = PROMPT_COMPARE + '\n\n' + inp + '\n\n> تاريخ البحث: ' + now;
   try {
-    const res = await callGeminiWithSearch(prompt, model);
+    const generated = await callTextProvider(prompt, model, { search: true, task: 'compare' });
+    const res = generated.text;
     showOut('compare', renderMD(res));
     autoArchive(res, 'compare');
     setStt('compare', '✅ اكتملت المقارنة', 'ok');
@@ -4043,10 +4082,9 @@ const PROMPT_TIMELINE = `أنت محلل صحفي متخصص في بناء ال�
 async function runTimeline() {
   const inp = (document.getElementById('timeline-input')?.value || '').trim();
   if (!inp) return toast('أدخل النص المتراكم للقضية أولاً', 'w');
-  if (!S.key) { openSettings(); return; }
-  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من حصة Google الفعلية', 'e');
-
   const model = document.getElementById('timeline-model')?.value || DEFAULT_FREE_MODEL;
+  if (!canRunTextModel(model)) { openSettings(); return; }
+  if (S.req >= Number(window.DESK_APP?.localQuotaCap || 1500)) return toast('تم بلوغ الحد المحلي الوقائي؛ تحقق من الحصة الفعلية', 'e');
   const btn = document.getElementById('btn-timeline');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ بناء الجدول الزمني...'; }
@@ -4054,7 +4092,8 @@ async function runTimeline() {
   hideOut('timeline');
 
   try {
-    const res = await callGemini(PROMPT_TIMELINE + '\n\n' + inp, model);
+    const generated = await callTextProvider(PROMPT_TIMELINE + '\n\n' + inp, model, { task: 'timeline' });
+    const res = generated.text;
     showOut('timeline', renderMD(res));
     autoArchive(res, 'timeline');
     setStt('timeline', '✅ تم إنشاء الجدول الزمني', 'ok');
@@ -4206,7 +4245,7 @@ function sendRadioToEditor(idx) {
 }
 
 </script>
- <script>
+  <script>
 /* DESK BOT v13 — defensive runtime boundary */
 window.addEventListener('error', function(event) {
   console.error('[DESK BOT]', event.error || event.message);
@@ -4216,5 +4255,5 @@ window.addEventListener('unhandledrejection', function(event) {
   if (typeof toast === 'function') toast('حدث خطأ غير متوقع. حاول مرة أخرى.', 'e');
 });
 </script>
-</body>
+ </body>
 </html>
