@@ -7,7 +7,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#060a12">
   <title>DESK BOT — غرفة الأخبار الرقمية</title>
-  <meta name="desk-bot-architecture" content="v13-structured-runtime">
+  <meta name="desk-bot-architecture" content="v14-structured-runtime">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&amp;family=Amiri:wght@400;700&amp;family=Oswald:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -847,7 +847,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <div class="logo-box">
      <i class="fa-solid fa-newspaper"></i>
     </div>
-    DESK <span class="logo-txt">BOT</span> <span class="logo-ver">v13</span>
+    DESK <span class="logo-txt">BOT</span> <span class="logo-ver">v14</span>
    </div>
    <div class="hdr-spacer"></div>
    <div class="hdr-clock">
@@ -1048,13 +1048,13 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center">
        <input type="file" id="editor-file-inp" accept="audio/*,video/*,.mp3,.mp4,.wav,.ogg,.m4a,.webm,.aac" style="display:none" onchange="handleEditorFile(this)">
        <button class="btn btn-ghost" style="font-size:12px;padding:7px 14px;color:#93c5fd;border-color:rgba(96,165,250,.35)" onclick="document.getElementById('editor-file-inp').click()"><i class="fa-solid fa-paperclip"></i> إرفاق ملف صوتي / مرئي</button>
-       <span style="font-size:10px;color:var(--t3)">MP3 · MP4 · WAV · AAC · M4A · الحجم الأقصى: 100MB</span>
+       <span style="font-size:10px;color:var(--t3)">MP3 · MP4 · WAV · AAC · M4A · التفريغ الكامل بالتقسيم التلقائي · الحد الأقصى: 100MB</span>
       </div>
       <input type="hidden" id="editor-mode" value="transcribe">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-editor" style="flex:1" onclick="runEditor()"><i class="fa-solid fa-microphone-lines"></i> بدء التفريغ والتحرير</button>
        <button class="btn btn-clear-editor" onclick="clearTool('editor')"><i class="fa-solid fa-trash"></i></button>
-       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="editor-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div id="stt-editor" class="stt"></div>
       <div id="out-editor" class="out-box rendered" style="display:none"></div>
@@ -1114,10 +1114,10 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-solid fa-newspaper"></i> المقال الإخباري
       </div>
       <div class="card-sub">يكتب مقالاً صحفياً متكاملاً — يعالج النص الأولي والمرفقات معاً في آنٍ واحد</div>
-      <label>النص الأولي للمقال <span style="color:var(--t3);font-size:11px">(إلزامي)</span></label> <textarea id="article-input" placeholder="أدخل الفكرة الأساسية أو النص الأولي للمقال..."></textarea> <!-- منطقة المرفقات -->
+      <label>النص التمهيدي للمقال <span style="color:var(--t3);font-size:11px">(اختياري — يمكن الاعتماد على المرفقات فقط)</span></label> <textarea id="article-input" placeholder="اكتب فكرة أو توجيهاً اختيارياً، أو اترك الحقل فارغاً لمعالجة المرفقات كمقال إخباري..."></textarea> <!-- منطقة المرفقات -->
       <div id="article-attach-zone" style="border:2px dashed rgba(255,255,255,.15);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(255,255,255,.03)">
        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <label for="article-file" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--blue);transition:.2s" onmouseover="this.style.background='rgba(96,165,250,.22)'" onmouseout="this.style.background='rgba(96,165,250,.12)'"> <i class="fa-solid fa-paperclip"></i> إرفاق ملف </label> <input type="file" id="article-file" accept=".txt,.pdf,.doc,.docx,audio/*,video/*" style="display:none" onchange="handleArticleFile(this)"> <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">نص، صوت، فيديو — PDF، TXT، MP3، MP4 — الحجم الأقصى: 100MB</span>
+        <label for="article-file" style="cursor:pointer;display:flex;align-items:center;gap:7px;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--blue);transition:.2s" onmouseover="this.style.background='rgba(96,165,250,.22)'" onmouseout="this.style.background='rgba(96,165,250,.12)'"> <i class="fa-solid fa-paperclip"></i> إرفاق ملف </label> <input type="file" id="article-file" accept=".txt,.md,.csv,.json,.pdf,.doc,.docx,audio/*,video/*" multiple style="display:none" onchange="handleArticleFile(this)"> <span id="article-file-name" style="font-size:11px;color:var(--t3);flex:1">أرفق ملفاً أو عدة ملفات — حتى 12 ملفاً، 100MB لكل ملف</span>
         <button id="article-file-clear" onclick="clearArticleFile()" style="display:none;background:none;border:none;color:var(--t3);cursor:pointer;font-size:13px;padding:4px"><i class="fa-solid fa-xmark"></i></button>
        </div>
        <div id="article-file-preview" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:8px;font-size:11px;color:var(--t2)"></div>
@@ -1167,7 +1167,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>معطيات الخبر</label> <textarea id="flash-input" placeholder="اكتب أو الصق معطيات الخبر هنا..."></textarea>
       <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
        <button class="btn btn-gold" id="btn-flash" style="flex:1" onclick="runFlash()"><i class="fa-solid fa-microphone"></i> توليد الفلاش</button>
-       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="flash-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('flash')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-flash" class="stt"></div>
@@ -1277,7 +1277,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>اسم الشخصية أو المسؤول</label> <input type="text" id="profile-name" placeholder="مثال: كمال الجندوبي" onkeydown="if(event.key==='Enter')runProfile()">
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-profile" style="flex:1" onclick="runProfile()"><i class="fa-solid fa-magnifying-glass"></i> استخراج الملف</button>
-       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="profile-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div style="background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--t2);line-height:1.7">
        <i class="fa-brands fa-google" style="color:#60a5fa"></i> <strong style="color:var(--blue)">Google Search Grounding مُفعَّل</strong> — يبحث في الإنترنت مباشرةً للحصول على أحدث المعلومات الموثّقة وتفادي الهلوسة.
@@ -1301,7 +1301,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#f87171;font-size:14px"></i> <span><strong style="color:#f87171">Google Search Grounding مُفعَّل</strong> — يبحث مباشرةً في المواقع الإخبارية التونسية الحية للحصول على أحدث الأحداث الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="radar-category" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">🔴 كل الأخبار العاجلة</option> <option value="politics">🏛️ سياسة وحكومة</option> <option value="economy">💰 اقتصاد وأعمال</option> <option value="security">🛡️ أمن وقضاء</option> <option value="social">👥 مجتمع وبيئة</option> <option value="sports">⚽ رياضة</option> <option value="culture">🎭 ثقافة وفنون</option> <option value="angles">💡 زوايا صحفية مبتكرة</option> </select> <select id="radar-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn btn-gold" id="btn-radar" style="flex:1;background:linear-gradient(135deg,#b91c1c,#ef4444);box-shadow:0 4px 16px rgba(239,68,68,.4)" onclick="runRadar()"><i class="fa-solid fa-satellite-dish"></i> تشغيل الرادار</button>
@@ -1329,7 +1329,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر أو النص المراد تحليله</label> <textarea id="angle-input" placeholder="الصق هنا نص الخبر أو معطياته الأساسية..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-angle" style="flex:1;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border:none;box-shadow:0 4px 16px rgba(168,85,247,.4)" onclick="runHiddenAngle()"><i class="fa-solid fa-magnifying-glass-arrow-right"></i> كشف الزاوية الخفية</button>
-       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="angle-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('angle')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-angle" class="stt"></div>
@@ -1352,7 +1352,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
        <i class="fa-brands fa-google" style="color:#fb923c"></i> <span><strong style="color:#fb923c">Google Search Grounding مُفعَّل</strong> — يرصد النبض الرقمي التونسي الحي الآن.</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="trend-platform" style="flex:1;margin:0;font-size:12px;padding:10px 14px;min-height:44px"> <option value="all">📡 كل المنصات والمواقع التونسية</option> <option value="facebook">📘 فيسبوك التونسي</option> <option value="youtube">▶️ يوتيوب التونسي</option> <option value="news">📰 المواقع الإخبارية</option> <option value="radio">📻 الإذاعات التونسية</option> </select> <select id="trend-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
       </div>
       <div style="display:flex;gap:6px;margin-bottom:10px">
        <button class="btn" id="btn-trend" style="flex:1;background:linear-gradient(135deg,#c2410c,#f97316);color:#fff;border:none;box-shadow:0 4px 16px rgba(249,115,22,.4)" onclick="runTrend()"><i class="fa-solid fa-fire-flame-curved"></i> رصد الترند الآن</button>
@@ -1380,7 +1380,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>الخبر التونسي المراد مقارنته</label> <textarea id="compare-input" placeholder="الصق هنا نص الخبر التونسي أو موضوعه الأساسي..."></textarea>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button class="btn" id="btn-compare" style="flex:1;background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;border:none;box-shadow:0 4px 16px rgba(20,184,166,.4)" onclick="runCompare()"><i class="fa-solid fa-code-compare"></i> تشغيل المقارنة</button>
-       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="compare-model" style="width:auto;margin:0;font-size:12px;padding:10px 24px 10px 10px;min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('compare')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-compare" class="stt"></div>
@@ -1402,7 +1402,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       <label>النص المتراكم للقضية (أخبار، تصريحات، تطورات)</label> <textarea id="timeline-input" placeholder="الصق هنا كل ما توفر عن القضية من نصوص متراكمة..."></textarea>
       <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
        <button class="btn btn-gold" id="btn-timeline" style="flex:1" onclick="runTimeline()"><i class="fa-solid fa-arrows-spin"></i> توليد الجدول الزمني</button>
-       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option> <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
+       <select id="timeline-model" style="width:auto; margin:0; font-size:12px; padding:10px 24px 10px 10px; min-height:44px"> <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview) 🧠</option> <option value="gemini-3.6-flash">Gemini 3.6 Flash (المجاني) ⚡</option>  <option value="openrouter-qwen">Qwen 3.6 Plus — OpenRouter (نصي)</option></select>
        <button class="btn btn-ghost" onclick="clearTool('timeline')"><i class="fa-solid fa-trash"></i></button>
       </div>
       <div id="stt-timeline" class="stt"></div>
@@ -1417,7 +1417,8 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
     <section id="panel-radiomon" class="panel">
      <div class="card">
       <div class="card-title">
-       <i class="fa-solid fa-tower-broadcast" style="color:#60a5fa"></i> راصد الموجات الإذاعية <span id="radiomon-count-badge" class="rss-count-badge" style="display:none"></span>
+       <i class="fa-solid fa-tower-broadcast" style="color:#60a5fa"></i> راصد الموجات الإذاعية
+       <span id="radiomon-count-badge" class="rss-count-badge" style="display:none"></span>
       </div>
       <div class="card-sub">يجلب أحدث العناوين من الإذاعات التونسية ويتيح إرسالها مباشرة إلى المحرر.</div>
       <div class="rss-header-row">
@@ -1426,9 +1427,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
       </div>
       <div id="stt-radiomon" class="stt"></div>
       <div id="radiomon-tabs" class="rss-header-row" style="overflow-x:auto;flex-wrap:nowrap"></div>
-      <div id="radiomon-list" style="margin-top:8px">
-       <p style="text-align:center;color:var(--t3);padding:24px;font-size:11px">اضغط «تحديث الموجات» لجلب أحدث الأخبار.</p>
-      </div>
+      <div id="radiomon-list" style="margin-top:8px"><p style="text-align:center;color:var(--t3);padding:24px;font-size:11px">اضغط «تحديث الموجات» لجلب أحدث الأخبار.</p></div>
      </div>
     </section>
     <!-- ══ AGENDA ══ -->
@@ -1536,16 +1535,19 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
      </div>
      <div class="m-section" id="openrouter-section" style="border-color:rgba(168,85,247,.35);background:rgba(168,85,247,.04)">
       <div class="m-sec-head">
-       <div class="m-sec-icon" style="background:rgba(168,85,247,.15);color:#c084fc">
-        <i class="fa-solid fa-layer-group"></i>
-       </div>
+       <div class="m-sec-icon" style="background:rgba(168,85,247,.15);color:#c084fc"><i class="fa-solid fa-layer-group"></i></div>
        <div>
         <div class="m-sec-title">Qwen عبر OpenRouter — للمهام النصية</div>
         <div class="m-sec-sub">معزول عن الملفات الصوتية والمرئية. يعمل في المسارات النصية، وعند فشله تعود المهمة إلى Gemini Flash.</div>
        </div>
       </div>
       <div id="openrouter-stt" class="key-stt"></div>
-      <label>مفتاح OpenRouter API</label> <input type="password" id="openrouter-key-inp" placeholder="sk-or-v1-..." autocomplete="off"> <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer"> <input type="checkbox" id="qwen-article-enabled" style="width:auto;min-height:0"> تفعيل Qwen للمهام النصية </label>
+      <label>مفتاح OpenRouter API</label>
+      <input type="password" id="openrouter-key-inp" placeholder="sk-or-v1-..." autocomplete="off">
+      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer">
+       <input type="checkbox" id="qwen-article-enabled" style="width:auto;min-height:0">
+       تفعيل Qwen للمهام النصية
+      </label>
       <div style="background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.18);border-radius:8px;padding:10px;margin:10px 0;font-size:11px;color:var(--t2);line-height:1.6">
        <i class="fa-solid fa-shield-halved" style="color:#c084fc"></i> لا يُستخدم هذا المفتاح في أي أداة أخرى. للاستخدام الشخصي، يُحفظ محلياً في المتصفح.
       </div>
@@ -1564,7 +1566,7 @@ body.day-mode .logo-txt { -webkit-text-fill-color: var(--g3); }
 
 
 /* ═══════════════════════════════════════════════
-   DESK BOT v13 — STRUCTURED BRAIN
+   DESK BOT v14 — STRUCTURED BRAIN
 ═══════════════════════════════════════════════ */
 
 // ── STATE ──
@@ -2598,145 +2600,263 @@ ${transcribed}`;
   }
 }
 
-// ━━ تفريغ الملف الصوتي عبر Gemini Audio API (inlineData Base64) ━━
-function runSpeechTranscription(file) {
-  const wrap    = document.getElementById('transcribe-wrap');
-  const outT    = document.getElementById('out-transcribe');
-  const outA    = document.getElementById('out-editorial');
-  const stt     = document.getElementById('stt-editor');
-  const btn     = document.getElementById('btn-editor');
-  const editBtn = document.getElementById('btn-editorial-edit');
+// ━━ تفريغ الملف الصوتي الكامل عبر مقاطع متتابعة وتجميع آمن ━━
+const AUDIO_CHUNK_SECONDS = 120;
+const AUDIO_CHUNK_OVERLAP_SECONDS = 2;
+const AUDIO_CHUNK_WAIT_MS = 650;
 
-  // حجم أقصى 100MB (حد Gemini inlineData)
+function audioWriteAscii(view, offset, value) {
+  for (let i = 0; i < value.length; i++) view.setUint8(offset + i, value.charCodeAt(i));
+}
+
+function audioBufferToWavBlob(buffer, startSeconds, endSeconds) {
+  const channels = Math.max(1, Math.min(buffer.numberOfChannels || 1, 2));
+  const sampleRate = buffer.sampleRate;
+  const start = Math.max(0, Math.floor(startSeconds * sampleRate));
+  const end = Math.min(buffer.length, Math.ceil(endSeconds * sampleRate));
+  const frames = Math.max(1, end - start);
+  const bytesPerSample = 2;
+  const blockAlign = channels * bytesPerSample;
+  const arrayBuffer = new ArrayBuffer(44 + frames * blockAlign);
+  const view = new DataView(arrayBuffer);
+  audioWriteAscii(view, 0, 'RIFF');
+  view.setUint32(4, 36 + frames * blockAlign, true);
+  audioWriteAscii(view, 8, 'WAVE');
+  audioWriteAscii(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * blockAlign, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, 16, true);
+  audioWriteAscii(view, 36, 'data');
+  view.setUint32(40, frames * blockAlign, true);
+  const channelData = [];
+  for (let channel = 0; channel < channels; channel++) channelData.push(buffer.getChannelData(channel));
+  let offset = 44;
+  for (let frame = 0; frame < frames; frame++) {
+    for (let channel = 0; channel < channels; channel++) {
+      const sample = Math.max(-1, Math.min(1, channelData[channel][start + frame] || 0));
+      view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+      offset += 2;
+    }
+  }
+  return new Blob([arrayBuffer], { type: 'audio/wav' });
+}
+
+async function decodeAudioFile(file) {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) throw new Error('المتصفح لا يدعم تقسيم الصوت تلقائياً؛ استخدم Chrome أو Edge حديثاً.');
+  const context = new AudioContextClass();
+  try {
+    const raw = await file.arrayBuffer();
+    return await context.decodeAudioData(raw.slice(0));
+  } finally {
+    try { await context.close(); } catch (_) {}
+  }
+}
+
+async function buildFullAudioChunks(file) {
+  const isVideo = String(file.type || '').startsWith('video/');
+  if (isVideo) return [{ blob: file, mimeType: file.type || 'video/mp4', start: 0, end: 0, index: 1, total: 1 }];
+  const audioBuffer = await decodeAudioFile(file);
+  const duration = Number(audioBuffer.duration || 0);
+  if (!duration) throw new Error('تعذر معرفة مدة التسجيل الصوتي.');
+  if (duration <= AUDIO_CHUNK_SECONDS) return [{ blob: file, mimeType: file.type || 'audio/mpeg', start: 0, end: duration, index: 1, total: 1 }];
+  const chunks = [];
+  let start = 0;
+  while (start < duration) {
+    const end = Math.min(duration, start + AUDIO_CHUNK_SECONDS);
+    chunks.push({ start, end, blob: audioBufferToWavBlob(audioBuffer, start, end), mimeType: 'audio/wav', index: chunks.length + 1, total: 0 });
+    if (end >= duration) break;
+    start = Math.max(start + 1, end - AUDIO_CHUNK_OVERLAP_SECONDS);
+  }
+  chunks.forEach(chunk => chunk.total = chunks.length);
+  return chunks;
+}
+
+function audioBlobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('تعذر تحويل مقطع الصوت إلى صيغة الإرسال.'));
+    reader.onload = event => resolve(String(event.target.result || '').split(',')[1] || '');
+    reader.readAsDataURL(blob);
+  });
+}
+
+function normalizeTranscriptWord(word) {
+  return String(word || '').toLowerCase().replace(/[،؛؟!?.,:()\[\]{}"«»]/g, '').trim();
+}
+
+function mergeTranscriptChunks(chunks) {
+  let merged = '';
+  chunks.forEach((chunk, index) => {
+    const current = String(chunk || '').trim();
+    if (!current) return;
+    if (!merged) { merged = current; return; }
+    const previousWords = merged.split(/\s+/);
+    const currentWords = current.split(/\s+/);
+    const maxOverlap = Math.min(40, previousWords.length, currentWords.length);
+    let overlap = 0;
+    for (let size = maxOverlap; size >= 2; size--) {
+      const a = previousWords.slice(previousWords.length - size).map(normalizeTranscriptWord).join(' ');
+      const b = currentWords.slice(0, size).map(normalizeTranscriptWord).join(' ');
+      if (a && a === b) { overlap = size; break; }
+    }
+    merged += '\n\n' + currentWords.slice(overlap).join(' ');
+  });
+  return merged.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function sleepMs(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function runSpeechTranscription(file) {
+  const wrap = document.getElementById('transcribe-wrap');
+  const outT = document.getElementById('out-transcribe');
+  const outA = document.getElementById('out-editorial');
+  const stt = document.getElementById('stt-editor');
+  const btn = document.getElementById('btn-editor');
+  const editBtn = document.getElementById('btn-editorial-edit');
+  if (!file) return;
   if (file.size > 100 * 1024 * 1024) {
+    APP.editorFileProcessing = false;
     toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
     return;
   }
-
-  const SUPPORTED = ['audio/mp3','audio/mpeg','audio/wav','audio/ogg','audio/aac','audio/m4a','audio/webm','audio/flac','video/mp4','video/webm'];
-  const mimeType = file.type || 'audio/mpeg';
-
-  if (wrap)    wrap.style.display = 'flex';
+  if (wrap) wrap.style.display = 'flex';
   if (editBtn) editBtn.style.display = 'none';
-  if (outA)    outA.innerHTML = '<span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>';
-  if (outT)    outT.innerHTML = '<div style="display:flex;align-items:center;gap:10px"><div class="spin"></div><span>جاري قراءة الملف وتفريغه عبر Gemini...</span></div>';
-  if (stt)     { stt.className = 'stt loading'; stt.innerHTML = '<div class="spin"></div><span>جاري تحليل الملف الصوتي...</span>'; stt.style.display = 'flex'; }
-  if (btn)     { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ...'; }
-
-  // قراءة الملف كـBase64
-  const reader = new FileReader();
-  reader.onload = async function(e) {
-    try {
-      // استخراج Base64 نقياً بدون prefix
-      const b64 = e.target.result.split(',')[1];
-
-      const TRANSCRIBE_PROMPT = `أنت مكلف بمهمة التفريغ الحرفي الكامل للمحتوى الصوتي/المرئي المرفق.
-
-التعليمات الصارمة:
-- فرّغ كل كلمة منطوقة بدقة تامة
-- يُمنع منعاً باتاً: التلخيص، حذف أي جزء، إعادة الصياغة، أو إضافة أي تعليق
-- احتفظ بكل التردد، التكرار، والأخطاء اللغوية الأصلية كما هي
-- إذا كان الكلام باللهجة التونسية، فرّغه بالعربية مع الحفاظ على الألفاظ الأصلية
-
-أخرج النص المفرّغ مباشرة بدون أي مقدمة أو تعليق.`;
-
-      const selectedModel = document.getElementById('editor-model')?.value || window._geminiWorkingModel || DEFAULT_FREE_MODEL;
-      const audioModel = isQwenArticleModel(selectedModel) ? DEFAULT_FREE_MODEL : selectedModel;
-      if (isQwenArticleModel(selectedModel)) toast('التفريغ الصوتي والمرئي يعمل عبر Gemini؛ Qwen مخصص للمسارات النصية.', 'w');
-      const generated = await callGeminiAudioWithFallback(TRANSCRIBE_PROMPT, b64, mimeType, audioModel);
-      const result = generated.text;
-      const transcribed = result.trim();
-
-      if (!transcribed) throw new Error('لم يُكشف عن محتوى صوتي في الملف');
-
-      window._transcribedText = transcribed;
-      APP.editorFileReadyName = file.name;
-      if (outT) outT.innerHTML = typeof renderMD === 'function' ? renderMD(transcribed) : transcribed;
-      if (stt)  { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ' + (generated.fallback ? ' عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار' : '') + ' — اضغط "بدء التحرير الصحفي"</span>'; }
-      if (editBtn) {
-        editBtn.style.display = 'flex';
-        setTimeout(() => editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-      }
-    } catch(err) {
-      if (outT) outT.innerHTML = `<div style="padding:14px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);">
-        <div style="color:#fca5a5;font-weight:700;margin-bottom:6px"><i class="fa-solid fa-circle-exclamation"></i> خطأ في التفريغ</div>
-        <div style="font-size:12px;color:var(--t2);line-height:1.9">${err.message}</div>
-        <div style="font-size:11px;color:var(--t3);margin-top:8px">تأكد من أن الملف صوتي واضح وأن مفتاح API صالح، أو الصق النص يدوياً في الحقل أعلاه واضغط تشغيل.</div>
-      </div>`;
-      if (stt) { stt.className = 'stt err'; stt.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>${err.message}</span>`; }
-      if (err && /403|مرفوض|denied access/i.test(String(err.message || ''))) updateBanner();
-    } finally {
-      APP.editorFileProcessing = false;
-      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
+  if (outA) outA.innerHTML = '<span style="color:var(--t3);font-size:12px">اضغط "بدء التحرير الصحفي" بعد اكتمال التفريغ...</span>';
+  if (outT) outT.innerHTML = '<div style="display:flex;align-items:center;gap:10px"><div class="spin"></div><span>جاري تجهيز التسجيل الكامل...</span></div>';
+  if (stt) { stt.className = 'stt loading'; stt.innerHTML = '<div class="spin"></div><span>جاري تقسيم التسجيل وقراءة جميع المقاطع...</span>'; stt.style.display = 'flex'; }
+  if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جاري التفريغ الكامل...'; }
+  try {
+    const selectedModel = document.getElementById('editor-model')?.value || window._geminiWorkingModel || DEFAULT_FREE_MODEL;
+    const audioModel = isQwenArticleModel(selectedModel) ? DEFAULT_FREE_MODEL : selectedModel;
+    if (isQwenArticleModel(selectedModel)) toast('التفريغ الصوتي يعمل عبر Gemini؛ Qwen مخصص للمسارات النصية.', 'w');
+    const chunks = await buildFullAudioChunks(file);
+    const transcripts = [];
+    let usedFallback = false;
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      if (stt) stt.innerHTML = '<div class="spin"></div><span>جاري تفريغ المقطع ' + (i + 1) + ' من ' + chunks.length + ' — لن يتم اعتماد النتيجة قبل اكتمال التسجيل كله...</span>';
+      const base64 = await audioBlobToBase64(chunk.blob);
+      const prompt = `أنت مسؤول عن التفريغ الحرفي الكامل لتسجيل صوتي. هذا هو المقطع ${i + 1} من ${chunks.length}. فرّغ كل الكلام المسموع في هذا المقطع فقط، دون تلخيص أو حذف أو إعادة صياغة أو تعليق. حافظ على العربية التونسية والأسماء والأرقام والتكرار. لا تكتب عنواناً ولا مقدمة ولا عبارة مثل "إليك التفريغ". إذا بدأ المقطع أو انتهى وسط جملة، اكتب الكلام كما هو دون تخمين.`;
+      const generated = await callGeminiAudioWithFallback(prompt, base64, chunk.mimeType, audioModel);
+      transcripts.push(generated.text || '');
+      usedFallback = usedFallback || Boolean(generated.fallback);
+      if (i < chunks.length - 1) await sleepMs(AUDIO_CHUNK_WAIT_MS);
     }
-  };
-  reader.onerror = function() {
-    if (outT) outT.innerHTML = '<span style="color:#fca5a5">فشل قراءة الملف</span>';
-    if (btn)  { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
-  };
-  reader.readAsDataURL(file);
+    const transcribed = mergeTranscriptChunks(transcripts);
+    if (!transcribed) throw new Error('لم يُكشف عن محتوى صوتي في التسجيل الكامل');
+    window._transcribedText = transcribed;
+    APP.editorFileReadyName = file.name;
+    if (outT) outT.innerHTML = typeof renderMD === 'function' ? renderMD(transcribed) : transcribed;
+    if (stt) { stt.className = 'stt ok'; stt.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>✅ اكتمل التفريغ الكامل للتسجيل (' + chunks.length + ' مقطع)' + (usedFallback ? ' عبر نموذج بديل' : '') + ' — اضغط "تحرير صحفي" للمتابعة</span>'; }
+    if (editBtn) { editBtn.style.display = 'flex'; setTimeout(() => editBtn.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300); }
+  } catch (err) {
+    const message = String(err?.message || err || 'تعذر تفريغ التسجيل');
+    if (outT) outT.innerHTML = '<div style="padding:14px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3)"><div style="color:#fca5a5;font-weight:700;margin-bottom:6px"><i class="fa-solid fa-circle-exclamation"></i> لم يكتمل التفريغ</div><div style="font-size:12px;color:var(--t2);line-height:1.9">' + message + '</div><div style="font-size:11px;color:var(--t3);margin-top:8px">لم يتم اعتماد تفريغ جزئي. أعد المحاولة بملف WAV أو MP3 واضح، أو تحقق من مفتاح Gemini والحصة.</div></div>';
+    if (stt) { stt.className = 'stt err'; stt.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>' + message + '</span>'; }
+    if (/403|مرفوض|denied access/i.test(message)) updateBanner();
+  } finally {
+    APP.editorFileProcessing = false;
+    if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> تشغيل'; }
+    updateQuota();
+  }
 }
 
 
-// ══ Article File Attachment ══
-let articleFileData = null;
+// ══ Article File Attachments — multi-file input ══
+let articleFileData = [];
+const ARTICLE_MAX_FILES = 12;
+const ARTICLE_MAX_FILE_BYTES = 100 * 1024 * 1024;
+const ARTICLE_MAX_TOTAL_BYTES = 250 * 1024 * 1024;
 
-function handleArticleFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 100 * 1024 * 1024) {
-    toast('الملف أكبر من 100MB — استخدم ملفاً أصغر', 'w');
+function articleFileIsText(file) {
+  return file.type === 'text/plain' || /\.(txt|md|csv|json)$/i.test(file.name || '');
+}
+function articleSafeFileName(name) {
+  return String(name || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function readArticleFile(file) {
+  return new Promise((resolve, reject) => {
+    const isAudio = file.type.startsWith('audio/');
+    const isVideo = file.type.startsWith('video/');
+    const isText = articleFileIsText(file);
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('تعذر قراءة الملف: ' + file.name));
+    reader.onload = e => {
+      if (isText) return resolve({ type:'text', mimeType:'text/plain', data:e.target.result, name:file.name, size:file.size });
+      const dataUrl = String(e.target.result || '');
+      resolve({ type:isAudio ? 'audio' : (isVideo ? 'video' : 'document'), mimeType:file.type || 'application/octet-stream', data:dataUrl.split(',')[1] || '', name:file.name, size:file.size });
+    };
+    if (isText) reader.readAsText(file, 'utf-8');
+    else reader.readAsDataURL(file);
+  });
+}
+function renderArticleFiles() {
+  const nameEl = document.getElementById('article-file-name');
+  const clearBtn = document.getElementById('article-file-clear');
+  const preview = document.getElementById('article-file-preview');
+  if (!articleFileData.length) {
+    if (nameEl) { nameEl.textContent = 'أرفق ملفاً أو عدة ملفات — حتى 12 ملفاً، 100MB لكل ملف'; nameEl.style.color = 'var(--t3)'; }
+    if (clearBtn) clearBtn.style.display = 'none';
+    if (preview) { preview.style.display = 'none'; preview.innerHTML = ''; }
+    return;
+  }
+  const totalMB = articleFileData.reduce((sum, f) => sum + (f.size || 0), 0) / (1024 * 1024);
+  if (nameEl) { nameEl.textContent = articleFileData.length + ' ملفاً مرفقاً — ' + totalMB.toFixed(1) + ' MB'; nameEl.style.color = 'var(--blue)'; }
+  if (clearBtn) clearBtn.style.display = 'inline-flex';
+  if (preview) {
+    preview.style.display = 'block';
+    preview.innerHTML = articleFileData.map((f, i) => {
+      const icon = f.type === 'text' ? 'file-lines' : (f.type === 'audio' ? 'music' : (f.type === 'video' ? 'film' : 'file-pdf'));
+      const label = f.type === 'text' ? 'نصي' : (f.type === 'audio' ? 'صوتي' : (f.type === 'video' ? 'مرئي' : 'وثيقة'));
+      return '<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06)"><i class="fa-solid fa-' + icon + '" style="color:#22c55e"></i><span>' + (i + 1) + '. ' + articleSafeFileName(f.name) + ' <small style="color:var(--t3)">(' + label + ')</small></span></div>';
+    }).join('');
+  }
+}
+
+async function handleArticleFile(input) {
+  const files = Array.from(input?.files || []);
+  if (!files.length) return;
+  const existingKeys = new Set(articleFileData.map(f => f.name + ':' + f.size));
+  const fresh = files.filter(f => !existingKeys.has(f.name + ':' + f.size));
+  if (articleFileData.length + fresh.length > ARTICLE_MAX_FILES) {
+    toast('يمكن إرفاق حتى ' + ARTICLE_MAX_FILES + ' ملفاً في المقال الواحد', 'w');
     input.value = '';
     return;
   }
-  const nameEl   = document.getElementById('article-file-name');
-  const clearBtn = document.getElementById('article-file-clear');
-  const preview  = document.getElementById('article-file-preview');
-  const isAudio  = file.type.startsWith('audio/');
-  const isVideo  = file.type.startsWith('video/');
-  const isText   = file.type === 'text/plain' || file.name.endsWith('.txt');
-
-  nameEl.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-  nameEl.style.color = 'var(--blue)';
-  clearBtn.style.display = 'inline-flex';
-
-  const reader = new FileReader();
-  if (isText) {
-    reader.onload = e => {
-      articleFileData = { type: 'text', mimeType: 'text/plain', data: e.target.result, name: file.name };
-      preview.style.display = 'block';
-      preview.innerHTML = '<i class="fa-solid fa-file-lines" style="color:#22c55e"></i> <strong>ملف نصي جاهز:</strong> ' + e.target.result.substring(0, 160) + (e.target.result.length > 160 ? '...' : '');
-    };
-    reader.readAsText(file, 'utf-8');
-  } else if (isAudio || isVideo) {
-    reader.onload = e => {
-      const b64 = e.target.result.split(',')[1];
-      articleFileData = { type: isAudio ? 'audio' : 'video', mimeType: file.type, data: b64, name: file.name };
-      preview.style.display = 'block';
-      preview.innerHTML = '<i class="fa-solid fa-' + (isAudio ? 'music' : 'film') + '" style="color:#22c55e"></i> <strong>' + (isAudio ? 'ملف صوتي' : 'ملف فيديو') + ' جاهز للمعالجة:</strong> ' + file.name;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    reader.onload = e => {
-      const b64 = e.target.result.split(',')[1];
-      articleFileData = { type: 'document', mimeType: file.type || 'application/octet-stream', data: b64, name: file.name };
-      preview.style.display = 'block';
-      preview.innerHTML = '<i class="fa-solid fa-file-pdf" style="color:#22c55e"></i> <strong>وثيقة جاهزة للمعالجة:</strong> ' + file.name;
-    };
-    reader.readAsDataURL(file);
+  const invalid = fresh.find(f => f.size > ARTICLE_MAX_FILE_BYTES);
+  if (invalid) {
+    toast('الملف «' + invalid.name + '» أكبر من 100MB — استخدم ملفاً أصغر', 'w');
+    input.value = '';
+    return;
+  }
+  const total = articleFileData.reduce((sum, f) => sum + (f.size || 0), 0) + fresh.reduce((sum, f) => sum + f.size, 0);
+  if (total > ARTICLE_MAX_TOTAL_BYTES) {
+    toast('الحجم الإجمالي للمرفقات يتجاوز 250MB', 'w');
+    input.value = '';
+    return;
+  }
+  try {
+    const loaded = await Promise.all(fresh.map(readArticleFile));
+    articleFileData = articleFileData.concat(loaded);
+    renderArticleFiles();
+    toast('تم تجهيز ' + loaded.length + ' ملف' + (loaded.length > 1 ? 'ات' : '') + ' للمقال', 's');
+  } catch (error) {
+    toast(error.message || 'تعذر قراءة أحد الملفات', 'w');
+  } finally {
+    input.value = '';
   }
 }
 
 function clearArticleFile() {
-  articleFileData = null;
+  articleFileData = [];
   const fi = document.getElementById('article-file');
   if (fi) fi.value = '';
-  const nameEl = document.getElementById('article-file-name');
-  if (nameEl) { nameEl.textContent = 'نص، صوت، فيديو — PDF، TXT، MP3، MP4...'; nameEl.style.color = 'var(--t3)'; }
-  const cb = document.getElementById('article-file-clear');
-  if (cb) cb.style.display = 'none';
-  const pv = document.getElementById('article-file-preview');
-  if (pv) pv.style.display = 'none';
+  renderArticleFiles();
 }
 
 function reviewArticleText(text) {
@@ -2752,7 +2872,8 @@ function reviewArticleText(text) {
 
 function runArticle() {
   const inp = (document.getElementById('article-input')?.value || '').trim();
-  if (!inp) return toast('أدخل النص الأولي للمقال', 'w');
+  const attachments = Array.isArray(articleFileData) ? articleFileData : [];
+  if (!inp && !attachments.length) return toast('اكتب نصاً أو أرفق ملفاً واحداً على الأقل', 'w');
   const cnt   = document.getElementById('article-count')?.value || '1';
   const model = document.getElementById('article-model')?.value || DEFAULT_FREE_MODEL;
 
@@ -2762,32 +2883,40 @@ function runArticle() {
   const btn = document.getElementById('btn-article');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<div class="spin"></div> جارٍ الكتابة...'; }
-  setStt('article', articleFileData ? '📎 جارٍ معالجة النص والملف المرفق معاً...' : '✍️ جارٍ كتابة المقال...', 'loading');
+  setStt('article', attachments.length ? '📎 جارٍ دمج ' + attachments.length + ' ملفاً في المقال...' : '✍️ جارٍ كتابة المقال...', 'loading');
   hideOut('article');
 
   const articlePrompt = (PROMPTS && PROMPTS.article) ? PROMPTS.article : '';
-  const userText = 'اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً عن:\n' + inp;
+  const userText = inp
+    ? 'اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً عن:\n' + inp
+    : 'لا يوجد نص تمهيدي. استخرج الوقائع من المرفقات وحدها، ثم اكتب ' + cnt + ' مقالاً إخبارياً متكاملاً جاهزاً للنشر.';
+  const intro = inp ? '\n\nالتوجيه أو النص التمهيدي من المستخدم:\n' + inp : '\n\nالمادة المصدرية موجودة في المرفقات فقط؛ لا تطلب نصاً إضافياً ولا تخترع معلومات غير واردة فيها.';
 
   (async () => {
     try {
       let result;
       let usedFallback = false;
-      if (articleFileData) {
-        const parts = [];
-        parts.push({ text: articlePrompt + '\n\n' + userText + '\n\n⚠️ المرفق أدناه جزء من المادة الأولية — اقرأه وادمجه مع النص أعلاه في المعالجة معاً في آنٍ واحد:' });
-        if (articleFileData.type === 'text') {
-          parts.push({ text: '\n--- محتوى الملف المرفق (' + articleFileData.name + ') ---\n' + articleFileData.data });
-        } else {
-          parts.push({ inlineData: { mimeType: articleFileData.mimeType, data: articleFileData.data } });
-        }
+      const hasBinary = attachments.some(file => file.type !== 'text');
+      if (attachments.length && hasBinary) {
+        const parts = [{ text: articlePrompt + '\n\n' + userText + intro + '\n\nاقرأ جميع المرفقات التالية باعتبارها مادة مصدرية واحدة، واربط الوقائع المتطابقة، وميّز التناقضات دون اختلاق حل لها:' }];
+        attachments.forEach(file => {
+          if (file.type === 'text') parts.push({ text: '\n--- ملف نصي: ' + file.name + ' ---\n' + file.data });
+          else parts.push({ inlineData: { mimeType: file.mimeType, data: file.data } });
+        });
         const attachmentModel = isQwenArticleModel(model) ? DEFAULT_FREE_MODEL : model;
-        if (isQwenArticleModel(model)) toast('المرفق سيُعالج عبر Gemini Flash؛ Qwen مخصص للنصوص المقالية فقط.', 'w');
+        if (isQwenArticleModel(model)) toast('المرفقات الصوتية أو المرئية أو الوثائق ستُعالج عبر Gemini؛ Qwen مخصص للنصوص.', 'w');
         const generated = await callGeminiPartsWithFallback(parts, attachmentModel);
         result = generated.text;
         usedFallback = generated.fallback;
         if (generated.fallback) setStt('article', '✅ تمت المعالجة عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار', 'ok');
+      } else if (attachments.length) {
+        const material = attachments.map((file, index) => '\n--- المرفق ' + (index + 1) + ': ' + file.name + ' ---\n' + file.data).join('\n');
+        const generated = await callArticleProvider(articlePrompt + '\n\n' + userText + intro + '\n\nجميع المرفقات النصية:\n' + material, model);
+        result = generated.text;
+        usedFallback = generated.fallback;
+        if (generated.fallback) setStt('article', '✅ تمت الكتابة عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار', 'ok');
       } else {
-        const generated = await callArticleProvider(articlePrompt + '\n\n' + userText, model);
+        const generated = await callArticleProvider(articlePrompt + '\n\n' + userText + intro, model);
         result = generated.text;
         usedFallback = generated.fallback;
         if (generated.fallback) setStt('article', '✅ تمت الكتابة عبر ' + (generated.model || 'Flash') + ' بعد تعذر الموديل المختار', 'ok');
@@ -2795,7 +2924,8 @@ function runArticle() {
       showOut('article', renderMD(result));
       const articleReview = reviewArticleText(result);
       if (!usedFallback) {
-        setStt('article', articleReview.ok ? (articleFileData ? '✅ تمت معالجة النص والمرفق معاً' : '✅ تم كتابة المقال') : '⚠️ تمت الكتابة مع ملاحظات تحريرية: ' + articleReview.warnings.join('، '), articleReview.ok ? 'ok' : 'w');
+        const status = articleReview.ok ? (attachments.length ? '✅ تمت معالجة ' + attachments.length + ' ملفاً في مقال واحد' : '✅ تم كتابة المقال') : '⚠️ تمت الكتابة مع ملاحظات تحريرية: ' + articleReview.warnings.join('، ');
+        setStt('article', status, articleReview.ok ? 'ok' : 'w');
       }
       setTimeout(() => hideStt('article'), 3000);
       document.getElementById('acts-article').style.display = 'flex';
@@ -4245,8 +4375,8 @@ function sendRadioToEditor(idx) {
 }
 
 </script>
-  <script>
-/* DESK BOT v13 — defensive runtime boundary */
+ <script>
+/* DESK BOT v14 — defensive runtime boundary */
 window.addEventListener('error', function(event) {
   console.error('[DESK BOT]', event.error || event.message);
 });
@@ -4255,5 +4385,5 @@ window.addEventListener('unhandledrejection', function(event) {
   if (typeof toast === 'function') toast('حدث خطأ غير متوقع. حاول مرة أخرى.', 'e');
 });
 </script>
- </body>
+</body>
 </html>
